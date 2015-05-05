@@ -1,0 +1,25 @@
+<?php
+$title = 'Spese';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+    <a href="<?php echo $this->url('accantona_categoria', array('action' => 'add')); ?>">Aggiungi</a>
+</p>
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Descrizione</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach ($rows as $row) : ?>
+    <tr>
+        <td><?php echo $this->escapeHtml($row->id); ?></td>
+        <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
+        <td>
+            <a href="<?php echo $this->url('accantona_categoria', array('action' => 'edit', 'id' => $row->id)); ?>">Edit</a>
+            <a href="<?php echo $this->url('accantona_categoria', array('action' => 'delete', 'id' => $row->id)); ?>">Delete</a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>

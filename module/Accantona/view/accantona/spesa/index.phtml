@@ -1,0 +1,97 @@
+<style type="text/css">
+    .table{
+        margin: 0;
+    }
+    .id{
+        width: 41px;
+    }
+    .category{
+        width: 96px;
+    }
+    .valuta{
+        width: 123px;
+    }
+    .amount{
+        width: 87px;
+    }
+    .actions{
+        width: 85px;
+    }
+</style>
+<?php
+$title = 'Spese';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<!-- p><a href="<?php echo $this->url('accantona_spesa', array('action' => 'add')); ?>">Add</a></p -->
+<form id="search" action="<?php echo $this->url('accantona_spesa', array('action' => 'index')); ?>">
+    <table class="table">
+        <tr>
+            <th class="id">Id</th>
+            <th class="category">Category</th>
+            <th class="valuta">Valuta</th>
+            <th class="amount">Amount</th>
+            <th>Description</th>
+            <th class="actions">&nbsp;</th>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <select name="categoryId">
+                    <option value="0">Tutte</option>
+                    <?php foreach ($categories as $category): ?>
+                    <option value="<?php echo $category['id']; ?>"<?php if ($category['id'] == $categoryId) echo 'selected="selected"'; ?>><?php echo $category['descrizione']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+            <td>
+                <select name="months">
+                    <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
+                    <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
+                    <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
+                    <option value="6" <?php if ($months == 6) echo 'selected="selected"'; ?>>Ultimi 6 mesi</option>
+                    <option value="12" <?php if ($months == 12) echo 'selected="selected"'; ?>>Ultimo anno</option>
+                </select>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <?php foreach ($rows as $row) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row->id); ?></td>
+            <td><?php echo $this->escapeHtml($row->categoryDescription); ?></td>
+            <td><?php echo $this->escapeHtml($row->valuta); ?></td>
+            <td><?php echo $this->escapeHtml($row->importo); ?></td>
+            <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
+            <td>
+                <a href="<?php echo $this->url('accantona_spesa', array('action' => 'edit', 'id' => $row->id)); ?>">Edit</a>
+                <a href="<?php echo $this->url('accantona_spesa', array('action' => 'delete', 'id' => $row->id)); ?>">Delete</a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+</form>
+<form action="<?php echo $this->url('accantona_spesa', array('action' => 'add')); ?>">
+    <table class="table">
+        <tr>
+            <td class="id"></td>
+            <td class="category">
+                <select name="categoryId">
+                    <?php foreach ($categories as $category): ?>
+                    <option value="<?php echo $category['id']; ?>"><?php echo $category['descrizione']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+            <td class="valuta"><input name="valuta" size="10"></td>
+            <td class="amount"><input name="amount" size="7"></td>
+            <td><input name="description"></td>
+            <td class="actions"><input name="add" value="Add" type="submit"></td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+    $('#search select').change(function(){
+        $('#search').submit();
+    });
+</script>
