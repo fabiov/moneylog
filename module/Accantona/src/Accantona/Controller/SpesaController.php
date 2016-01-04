@@ -6,7 +6,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Accantona\Model\Spesa;
 use Accantona\Model\CategoriaTable;
-//use Accantona\Form\AnagraficaForm;
+use Accantona\Form\SpesaForm;
+use Zend\Debug\Debug;
 
 class SpesaController extends AbstractActionController
 {
@@ -15,6 +16,25 @@ class SpesaController extends AbstractActionController
 
     public function addAction()
     {
+        $form = new SpesaForm();
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+
+            $spesa = new Spesa();
+            $form->setInputFilter($spesa->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $spesa->exchangeArray($form->getData());
+                $this->getSpesaTable()->save($spesa);
+                // Redirect to list of categories
+                return $this->redirect()->toRoute('accantona_spesa');
+            }
+            Debug::dump($form->getMessages());
+            echo 'NO';die;
+        }
+        return array('form' => $form);
     }
 
     public function indexAction()

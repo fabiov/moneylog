@@ -27,7 +27,7 @@ class CategoriaController extends AbstractActionController
                 $category->exchangeArray($form->getData());
                 $this->getCategoriaTable()->save($category);
 
-                // Redirect to list of albums
+                // Redirect to list of categories
                 return $this->redirect()->toRoute('accantona_categoria');
             }
         }
@@ -92,7 +92,7 @@ class CategoriaController extends AbstractActionController
                 $this->getCategoriaTable()->delete($id);
             }
 
-            // Redirect to list of albums
+            // Redirect to list of categories
             return $this->redirect()->toRoute('accantona_categoria');
         }
 

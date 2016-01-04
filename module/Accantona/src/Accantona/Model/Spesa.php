@@ -26,7 +26,9 @@ class Spesa implements InputFilterAwareInterface
     public $valuta;
     public $importo;
     public $descrizione;
+
     public $categoryDescription;
+
     protected $inputFilter;
 
     // Add content to these methods:
@@ -37,12 +39,11 @@ class Spesa implements InputFilterAwareInterface
 
     public function exchangeArray($data)
     {
-        $this->id                  = empty($data['id'])                  ? null : $data['id'];
-        $this->id_categoria        = empty($data['id_categoria'])        ? null : $data['id_categoria'];
-        $this->valuta              = empty($data['valuta'])              ? null : $data['valuta'];
-        $this->importo             = empty($data['importo'])             ? null : $data['importo'];
-        $this->descrizione         = empty($data['descrizione'])         ? null : $data['descrizione'];
-        $this->categoryDescription = empty($data['categoryDescription']) ? null : $data['categoryDescription'];
+        $this->id           = empty($data['id'])           ? null : $data['id'];
+        $this->valuta       = empty($data['valuta'])       ? null : $data['valuta'];
+        $this->id_categoria = empty($data['id_categoria']) ? null : $data['id_categoria'];
+        $this->importo      = empty($data['importo'])      ? null : $data['importo'];
+        $this->descrizione  = empty($data['descrizione'])  ? null : $data['descrizione'];
     }
 
     // Add the following method:
@@ -57,7 +58,7 @@ class Spesa implements InputFilterAwareInterface
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name'     => 'id_anagrafica',
+                'name'     => 'id_categoria',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'Int'),
@@ -65,18 +66,33 @@ class Spesa implements InputFilterAwareInterface
             ));
 
             $inputFilter->add(array(
-                'name'     => 'id_azienda',
+                'name'     => 'valuta',
                 'required' => true,
-                'filters'  => array(
-                    array('name' => 'Int'),
+                'validators' => array(
+                    array(
+                        'name' => 'Date',
+                    ),
                 ),
             ));
 
             $inputFilter->add(array(
-                'name'     => 'cd_societa',
+                'name'     => 'importo',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name'    => 'Regex',
+                        'options' => array(
+                            'pattern' => '/^[0-9]+$/',
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'descrizione',
                 'required' => true,
                 'filters'  => array(
-                    array('name' => 'Int'),
+                    array('name' => 'StringTrim'),
                 ),
             ));
 

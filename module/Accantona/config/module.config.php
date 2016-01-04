@@ -14,7 +14,7 @@ return array(
             'accantona_spesa' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/accantona/spesa[/:action][/:id]',
+                    'route'    => '/spesa[/:action][/:id]',
                     'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
                     'defaults' => array('controller' => 'Accantona\Controller\Spesa', 'action' => 'index'),
                 ),

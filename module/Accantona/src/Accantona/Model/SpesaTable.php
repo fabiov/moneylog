@@ -30,7 +30,7 @@ class SpesaTable
         return $resultSet;
     }
 
-    public function getAnagrafica($idAnagrafica)
+    public function get($idAnagrafica)
     {
         $idAnagrafica  = (int) $idAnagrafica;
         $rowset = $this->tableGateway->select(array('id_anagrafica' => $idAnagrafica));
@@ -41,22 +41,24 @@ class SpesaTable
         return $row;
     }
 
-    public function saveAnagrafica(Anagrafica $anagrafica)
+    public function save(Spesa $spesa)
     {
         $data = array(
-            'id_azienda' => $anagrafica->id_azienda,
-            'cd_societa' => $anagrafica->cd_societa,
+            'id_categoria' => $spesa->id_categoria,
+            'valuta' => $spesa->valuta,
+            'importo' => $spesa->importo,
+            'descrizione' => $spesa->descrizione,
         );
 
-        $idAnagrafica = (int) $anagrafica->id_anagrafica;
-        if ($idAnagrafica == 0) {
-            $this->tableGateway->insert($data);
-        } else {
-            if ($this->getAnagrafica($idAnagrafica)) {
-                $this->tableGateway->update($data, array('id_anagrafica' => $idAnagrafica));
+        $id = (int) $spesa->id;
+        if ($id) {
+            if ($this->get($id)) {
+                $this->tableGateway->update($data, array('id' => $id));
             } else {
-                throw new \Exception('Anagrafica id does not exist');
+                throw new \Exception('Spesa id does not exist');
             }
+        } else {
+            $this->tableGateway->insert($data);
         }
     }
 
