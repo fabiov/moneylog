@@ -44,10 +44,10 @@ class SpesaController extends AbstractActionController
 
         $where = array();
 
-        if (($categoryId = (int) $this->params()->fromQuery('categoryId', 0)) != false) {
+        if (($categoryId = (int) $this->params()->fromQuery('categoryIdFilter', 0)) != false) {
             $where[] = "categorie.id=$categoryId";
         }
-        if (($months = (int) $this->params()->fromQuery('months', 1)) != false) {
+        if (($months = (int) $this->params()->fromQuery('monthsFilter', 1)) != false) {
             $where[] = 'spese.valuta>"' . date('Y-m-d', strtotime("-$months month")) .'"';
         }
 

@@ -14,6 +14,7 @@
 namespace Accantona\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Debug\Debug;
 
 class SpesaTable
 {

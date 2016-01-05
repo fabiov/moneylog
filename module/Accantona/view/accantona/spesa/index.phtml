@@ -1,15 +1,18 @@
 <style type="text/css">
     .id{
-        width: 41px;
+        width:41px;
     }
     .category{
-        width: 96px;
+        width:96px;
     }
     .valuta{
-        width: 153px;
+        width:153px;
     }
     .amount{
-        width: 87px;
+        width:174px;
+    }
+    .actions{
+        width:85px;
     }
 </style>
 <?php
@@ -31,7 +34,7 @@ $this->headTitle($title);
             <tr id="search">
                 <td></td>
                 <td>
-                    <select id="select-categoryId" name="categoryIdFilter">
+                    <select id="categoryIdFilter" name="categoryIdFilter">
                         <option value="0">Tutte</option>
                         <?php foreach ($categories as $category): ?>
                         <option value="<?php echo $category['id']; ?>"<?php if ($category['id'] == $categoryId) echo 'selected="selected"'; ?>><?php echo $category['descrizione']; ?></option>
@@ -39,7 +42,7 @@ $this->headTitle($title);
                     </select>
                 </td>
                 <td>
-                    <select id="select-months" name="months">
+                    <select id="monthsFilter" name="monthsFilter">
                         <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
                         <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
                         <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
@@ -48,7 +51,7 @@ $this->headTitle($title);
                     </select>
                 </td>
                 <td></td>
-                <td><input name="descriptionFilter" type="text" /></td>
+                <td></td>
                 <td></td>
             </tr>
         </thead>
@@ -81,7 +84,7 @@ $this->headTitle($title);
                 </td>
                 <td class="valuta"><input name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
                 <td class="amount"><input name="importo" size="7" type="number" /></td>
-                <td><input name="descrizione" /></td>
+                <td><input name="descrizione" size="60" /></td>
                 <td class="actions"><input name="add" value="Add" type="submit" /></td>
             </tr>
         </tfoot>
@@ -89,6 +92,8 @@ $this->headTitle($title);
 </form>
 <script type="text/javascript">
     $('#search select').change(function(){
-        location.href = "<?php echo $this->url('accantona_spesa', array('action' => 'index')); ?>";
+        location.href = "<?php echo $this->url('accantona_spesa', array('action' => 'index')); ?>"
+                      + '?categoryIdFilter=' + $('#categoryIdFilter').val()
+                      + '&monthsFilter=' + $('#monthsFilter').val();
     });
 </script>
