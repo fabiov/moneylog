@@ -5,6 +5,7 @@ return array(
         'invokables' => array(
             'Accantona\Controller\Spesa' => 'Accantona\Controller\SpesaController',
             'Accantona\Controller\Categoria' => 'Accantona\Controller\CategoriaController',
+            'Accantona\Controller\Recap' => 'Accantona\Controller\RecapController',
         ),
     ),
 
@@ -25,6 +26,14 @@ return array(
                     'route' => '/accantona/categoria[/:action][/:id]',
                     'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
                     'defaults' => array('controller' => 'Accantona\Controller\Categoria', 'action' => 'index'),
+                ),
+            ),
+            'accantona_recap' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route' => '/recap',
+                    'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
+                    'defaults' => array('controller' => 'Accantona\Controller\Recap', 'action' => 'index'),
                 ),
             ),
         ),

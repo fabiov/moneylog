@@ -1,0 +1,22 @@
+<h1>Riepilogo</h1>
+
+<h2>Spesa per categotia</h2>
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>Categoria</th>
+            <th class="text-right">Spesa media</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    <?php foreach ($avgPerCategory as $row) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row['description']); ?></td>
+            <td class="text-right"><?php echo $this->currencyFormat($row['average'], 'EUR', true, 'it_IT'); ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+
+</table>

@@ -76,4 +76,26 @@ class SpesaTable
         return $this->tableGateway->selectWith($sqlSelect);
     }
 
+    function getAvgPerCategories()
+    {
+        //calcolo le spese medie per ogni categoria
+        $sqlSum = <<< eoc
+SELECT sum(importo) AS somma, min(valuta) AS prima_valuta, id_categoria, categorie.descrizione FROM spese
+INNER JOIN categorie ON categorie.id=spese.id_categoria WHERE date('now', '-30 months') <= valuta GROUP BY id_categoria
+eoc;
+        $statement = $this->tableGateway->adapter->createStatement($sqlSum);
+        $rs = $statement->execute();
+
+        $data = array();
+        foreach ($rs as $row) {
+            list($y, $m, $d) = explode('-', $row['prima_valuta']);
+            $monthDiff = (mktime(0, 0, 0) - mktime(0, 0, 0, $m, $d, $y)) / 2628000;
+            if ($monthDiff) {
+                $data[] = array('average' => $row['somma'] / $monthDiff, 'description' => $row['descrizione']);
+            }
+
+        }
+        return $data;
+    }
+
 }
