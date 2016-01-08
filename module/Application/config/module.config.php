@@ -15,7 +15,7 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Accantona\Controller\Spesa',
+                        'controller' => 'Accantona\Controller\Recap',
                         'action'     => 'index',
                     ),
                 ),
