@@ -13,6 +13,9 @@ use Accantona\Model\SpesaTable;
 use Accantona\Model\Categoria;
 use Accantona\Model\CategoriaTable;
 
+use Accantona\Model\Variabile;
+use Accantona\Model\VariabileTable;
+
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
@@ -56,7 +59,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                      return new TableGateway('spese', $dbAdapter, null, $resultSetPrototype);
                  },
 
-
+                 'Accantona\Model\VariabileTable' => function($sm) {
+                     $tableGateway = $sm->get('VariabileTableGateway');
+                     $table = new VariabileTable($tableGateway);
+                     return $table;
+                 },
+                 'VariabileTableGateway' => function ($sm) {
+                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                     $resultSetPrototype = new ResultSet();
+                     $resultSetPrototype->setArrayObjectPrototype(new Variabile());
+                     return new TableGateway('variabili', $dbAdapter, null, $resultSetPrototype);
+                 },
 
 
                 'Accantona\Model\CategoriaTable' =>  function($sm) {

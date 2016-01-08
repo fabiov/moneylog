@@ -20,3 +20,23 @@
     </tbody>
 
 </table>
+
+<h2>Variabili</h2>
+<table class="table">
+    <tr>
+        <th>Nome</th>
+        <th>Segno</th>
+        <th>Valore</th>
+    </tr>
+
+    <tbody>
+    <?php foreach ($variabili as $row) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($row->nome); ?></td>
+            <td><?php echo $row->segno; ?></td>
+            <td class="text-right"><?php echo $this->currencyFormat($row->valore, 'EUR', true, 'it_IT'); ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+
+</table>

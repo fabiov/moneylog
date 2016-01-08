@@ -13,11 +13,19 @@ class RecapController extends AbstractActionController
 {
 
     protected $spesaTable;
+    protected $variabileTable;
+
 
     public function indexAction()
     {
+        $avgPerCategory = $this->getSpesaTable()->getAvgPerCategories();
+        usort($avgPerCategory, function ($a, $b) {
+            return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? 1 : -1);
+        });
+
         return new ViewModel(array(
-            'avgPerCategory' => $this->getSpesaTable()->getAvgPerCategories(),
+            'avgPerCategory' => $avgPerCategory,
+            'variabili' => $this->getVariabileTable()->fetchAll(),
         ));
     }
 
@@ -28,6 +36,15 @@ class RecapController extends AbstractActionController
             $this->spesaTable = $sm->get('Accantona\Model\SpesaTable');
         }
         return $this->spesaTable;
+    }
+
+    public function getVariabileTable()
+    {
+        if (!$this->variabileTable) {
+            $sm = $this->getServiceLocator();
+            $this->variabileTable = $sm->get('Accantona\Model\VariabileTable');
+        }
+        return $this->variabileTable;
     }
 
 }
