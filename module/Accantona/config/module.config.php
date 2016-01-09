@@ -6,6 +6,7 @@ return array(
             'Accantona\Controller\Spesa' => 'Accantona\Controller\SpesaController',
             'Accantona\Controller\Categoria' => 'Accantona\Controller\CategoriaController',
             'Accantona\Controller\Recap' => 'Accantona\Controller\RecapController',
+            'Accantona\Controller\Accantonato' => 'Accantona\Controller\AccantonatoController',
         ),
     ),
 
@@ -23,7 +24,7 @@ return array(
             'accantona_categoria' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route' => '/accantona/categoria[/:action][/:id]',
+                    'route' => '/categoria[/:action][/:id]',
                     'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
                     'defaults' => array('controller' => 'Accantona\Controller\Categoria', 'action' => 'index'),
                 ),
@@ -34,6 +35,14 @@ return array(
                     'route' => '/recap',
                     'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
                     'defaults' => array('controller' => 'Accantona\Controller\Recap', 'action' => 'index'),
+                ),
+            ),
+            'accantona_accantonato' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route' => '/accantonato[/:action][/:id]',
+                    'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
+                    'defaults' => array('controller' => 'Accantona\Controller\Accantonato', 'action' => 'index'),
                 ),
             ),
         ),

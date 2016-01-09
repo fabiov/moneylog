@@ -1,0 +1,49 @@
+<?php
+$title = 'Accantonati';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<form action="<?php echo $this->url('accantona_accantonato', array('action' => 'add')); ?>" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="id">Id</th>
+                <th class="category">Category</th>
+                <th class="valuta">Valuta</th>
+                <th class="amount">Amount</th>
+                <th>Description</th>
+                <th class="actions">&nbsp;</th>
+            </tr>
+            <tr id="search">
+                <td></td>
+                <td></td>
+                <td>
+                    <select id="monthsFilter" name="monthsFilter">
+                        <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
+                        <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
+                        <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
+                        <option value="6" <?php if ($months == 6) echo 'selected="selected"'; ?>>Ultimi 6 mesi</option>
+                        <option value="12" <?php if ($months == 12) echo 'selected="selected"'; ?>>Ultimo anno</option>
+                    </select>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="valuta"><input name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
+                <td class="amount"><input name="importo" size="7" type="number" /></td>
+                <td><input name="descrizione" size="60" /></td>
+                <td class="actions"><input name="add" value="Add" type="submit" /></td>
+            </tr>
+        </tfoot>
+    </table>
+</form>
