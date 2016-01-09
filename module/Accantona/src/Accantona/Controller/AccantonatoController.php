@@ -22,8 +22,17 @@ class AccantonatoController extends AbstractActionController
 //
         return new ViewModel(array(
             'months' => $months,
-//            'rows' => $this->getSpesaTable()->joinFetchAll($where),
+            'rows' => $this->getAccantonatoTable()->fetchAll($where),
         ));
+    }
+
+    public function getAccantonatoTable()
+    {
+        if (!$this->accantonatoTable) {
+            $sm = $this->getServiceLocator();
+            $this->accantonatoTable = $sm->get('Accantona\Model\AccantonatoTable');
+        }
+        return $this->accantonatoTable;
     }
 
 }

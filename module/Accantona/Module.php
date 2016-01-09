@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Description of Module
- *
  * @author fabio.ventura
  */
 namespace Accantona;
+
+use Accantona\Model\Accantonato;
+use Accantona\Model\AccantonatoTable;
 
 use Accantona\Model\Spesa;
 use Accantona\Model\SpesaTable;
@@ -71,6 +72,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                      return new TableGateway('variabili', $dbAdapter, null, $resultSetPrototype);
                  },
 
+                 'Accantona\Model\AccantonatoTable' => function($sm) {
+                     $tableGateway = $sm->get('AccantonatoTableGateway');
+                     $table = new AccantonatoTable($tableGateway);
+                     return $table;
+                 },
+                 'AccantonatoTableGateway' => function ($sm) {
+                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                     $resultSetPrototype = new ResultSet();
+                     $resultSetPrototype->setArrayObjectPrototype(new Accantonato());
+                     return new TableGateway('accantonati', $dbAdapter, null, $resultSetPrototype);
+                 },
 
                 'Accantona\Model\CategoriaTable' =>  function($sm) {
                      $tableGateway = $sm->get('CategoriaTableGateway');
