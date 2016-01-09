@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var $this Zend\View\Renderer\PhpRenderer
+ */
 $title = 'Accantonati';
 $this->headTitle($title);
 ?>
@@ -8,14 +11,12 @@ $this->headTitle($title);
         <thead>
             <tr>
                 <th class="id">Id</th>
-                <th class="category">Category</th>
                 <th class="valuta">Valuta</th>
                 <th class="amount">Amount</th>
                 <th>Description</th>
                 <th class="actions">&nbsp;</th>
             </tr>
             <tr id="search">
-                <td></td>
                 <td></td>
                 <td>
                     <select id="monthsFilter" name="monthsFilter">
@@ -35,7 +36,14 @@ $this->headTitle($title);
         <tbody>
             <?php foreach ($rows as $row): ?>
             <tr>
-                <td></td>
+                <td><?php echo $row->id; ?></td>
+                <td><?php echo $row->valuta; ?></td>
+                <td class="text-right"><?php echo $this->currencyFormat($row->importo, 'EUR', true, 'it_IT'); ?></td>
+                <td><?php echo $row->descrizione; ?></td>
+                <td>
+                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'edit', 'id' => $row->id)); ?>">Edit</a>
+                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'delete', 'id' => $row->id)); ?>">Delete</a>
+                </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
@@ -43,12 +51,16 @@ $this->headTitle($title);
         <tfoot>
             <tr>
                 <td></td>
-                <td></td>
                 <td class="valuta"><input name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
-                <td class="amount"><input name="importo" size="7" type="number" /></td>
+                <td class="text-right"><input name="importo" size="7" type="number" /></td>
                 <td><input name="descrizione" size="60" /></td>
                 <td class="actions"><input name="add" value="Add" type="submit" /></td>
             </tr>
         </tfoot>
     </table>
 </form>
+<script type="text/javascript">
+    $('#search select').change(function(){
+        location.href = "<?php echo $this->url(null, array('action' => 'index')); ?>" + '&monthsFilter=' + $('#monthsFilter').val();
+    });
+</script>

@@ -25,9 +25,13 @@ class AccantonatoTable
         $this->tableGateway = $tableGateway;
     }
 
-    public function fetchAll()
+    /**
+     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @return mixed
+     */
+    public function fetchAll($where)
     {
-        $resultSet = $this->tableGateway->select();
+        $resultSet = $this->tableGateway->select($where); //->where($where);
         return $resultSet;
     }
 

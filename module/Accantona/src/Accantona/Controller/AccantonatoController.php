@@ -15,11 +15,11 @@ class AccantonatoController extends AbstractActionController
 
     public function indexAction()
     {
-//        $where = array();
+        $where = array();
         if (($months = (int)$this->params()->fromQuery('monthsFilter', 1)) != false) {
-            $where[] = 'spese.valuta>"' . date('Y-m-d', strtotime("-$months month")) . '"';
+            $where[] = 'valuta>"' . date('Y-m-d', strtotime("-$months month")) . '"';
         }
-//
+
         return new ViewModel(array(
             'months' => $months,
             'rows' => $this->getAccantonatoTable()->fetchAll($where),
