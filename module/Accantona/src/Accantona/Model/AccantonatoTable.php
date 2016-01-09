@@ -46,16 +46,19 @@ class AccantonatoTable
         return $row;
     }
 
-    public function save(Accantonato $spesa)
+    /**
+     * @param Accantonato $accantonato
+     * @throws \Exception
+     */
+    public function save(Accantonato $accantonato)
     {
         $data = array(
-            'id_categoria' => $spesa->id_categoria,
-            'valuta' => $spesa->valuta,
-            'importo' => $spesa->importo,
-            'descrizione' => $spesa->descrizione,
+            'valuta' => $accantonato->valuta,
+            'importo' => $accantonato->importo,
+            'descrizione' => $accantonato->descrizione,
         );
 
-        $id = (int) $spesa->id;
+        $id = (int) $accantonato->id;
         if ($id) {
             if ($this->get($id)) {
                 $this->tableGateway->update($data, array('id' => $id));
@@ -67,9 +70,9 @@ class AccantonatoTable
         }
     }
 
-    public function deleteAnagrafica($idAnagrafica)
+    public function delete($id)
     {
-        $this->tableGateway->delete(array('id' => (int) $idAnagrafica));
+        $this->tableGateway->delete(array('id' => (int) $id));
     }
 
     function getAvgPerCategories()

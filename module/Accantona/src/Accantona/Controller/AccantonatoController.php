@@ -3,15 +3,38 @@ namespace Accantona\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Accantona\Model\Spesa;
-use Accantona\Model\CategoriaTable;
-use Accantona\Form\SpesaForm;
+use Accantona\Model\Accantonato;
+use Accantona\Form\AccantonatoForm;
 use Zend\Debug\Debug;
 
 class AccantonatoController extends AbstractActionController
 {
 
     protected $accantonatoTable;
+
+    public function addAction()
+    {
+        $form = new AccantonatoForm();
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+
+            $accantonato = new Accantonato();
+            $form->setInputFilter($accantonato->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $accantonato->exchangeArray($form->getData());
+                $this->getAccantonatoTable()->save($accantonato);
+                // Redirect to list of categories
+                return $this->redirect()->toRoute('accantona_accantonato');
+            }
+            Debug::dump($_POST, '$_POST');
+            Debug::dump($form->getMessages());
+            die();
+        }
+        return array('form' => $form);
+    }
 
     public function indexAction()
     {

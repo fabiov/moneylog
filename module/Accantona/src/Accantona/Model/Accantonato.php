@@ -32,12 +32,10 @@ class Accantonato implements InputFilterAwareInterface
 
     public function exchangeArray($data)
     {
-        $this->id                  = empty($data['id'])                  ? null : $data['id'];
-        $this->valuta              = empty($data['valuta'])              ? null : $data['valuta'];
-        $this->id_categoria        = empty($data['id_categoria'])        ? null : $data['id_categoria'];
-        $this->importo             = empty($data['importo'])             ? null : $data['importo'];
-        $this->descrizione         = empty($data['descrizione'])         ? null : $data['descrizione'];
-        $this->categoryDescription = empty($data['categoryDescription']) ? null : $data['categoryDescription'];
+        $this->id          = empty($data['id'])          ? null : $data['id'];
+        $this->valuta      = empty($data['valuta'])      ? null : $data['valuta'];
+        $this->importo     = empty($data['importo'])     ? null : $data['importo'];
+        $this->descrizione = empty($data['descrizione']) ? null : $data['descrizione'];
     }
 
     // Add the following method:
@@ -50,14 +48,6 @@ class Accantonato implements InputFilterAwareInterface
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
-
-            $inputFilter->add(array(
-                'name'     => 'id_categoria',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'Int'),
-                ),
-            ));
 
             $inputFilter->add(array(
                 'name'     => 'valuta',
