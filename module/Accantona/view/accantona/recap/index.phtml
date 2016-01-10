@@ -1,93 +1,100 @@
 <h1>Riepilogo</h1>
 <?php $sum = 0; ?>
-<h2>Spesa per categotia</h2>
-<table class="table">
 
-    <thead>
-        <tr>
-            <th>Categoria</th>
-            <th class="text-right">Spesa media</th>
-        </tr>
-    </thead>
+<div class="row">
+    <div class="col-md-6">
+        <h2>Spesa per categotia</h2>
+        <table class="table">
 
-    <tbody>
-    <?php foreach ($avgPerCategory as $row) : ?>
-        <tr>
-            <td><?php echo $this->escapeHtml($row['description']); ?></td>
-            <td class="text-right">
-                <?php
-                $sum += $row['average'];
-                echo $this->currencyFormat($row['average'], 'EUR', true, 'it_IT');
-                ?>
-            </td>
-        </tr>
-    <?php endforeach; ?>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td><strong>Somma</strong></td>
-            <td class="text-right">
-                <strong><?php echo $this->currencyFormat($sum, 'EUR', true, 'it_IT'); ?></strong>
-            </td>
-        </tr>
-    </tfoot>
-</table>
+            <thead>
+                <tr>
+                    <th>Categoria</th>
+                    <th class="text-right">Spesa media</th>
+                </tr>
+            </thead>
 
-<h2>Budget</h2>
-<table class="table">
-    <tr>
-        <th>Descrizione</th>
-        <th class="text-right">Valore</th>
-    </tr>
-
-    <tbody>
-        <tr>
-            <td>Saldo in banca</td>
-            <td class="text-right">
-                <?php echo '+ ' . $this->currencyFormat($variables['saldo_banca'], 'EUR', true, 'it_IT'); ?>
-            </td>
-        </tr>
-        <tr>
-            <td>Contanti</td>
-            <td class="text-right">
-                <?php echo '+ ' . $this->currencyFormat($variables['contanti'], 'EUR', true, 'it_IT'); ?>
-            </td>
-        </tr>
-        <tr>
-            <td>Risparmio</td>
-            <td class="text-right">
-                <?php echo '- ' . $this->currencyFormat($variables['risparmio'], 'EUR', true, 'it_IT'); ?>
-            </td>
-        </tr>
-        <tr>
-            <td>Accantonati</td>
-            <td class="text-right">
-                <?php echo '- ' . $this->currencyFormat($stored, 'EUR', true, 'it_IT'); ?>
-            </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td>Budget mensile residuo</td>
-            <td class="text-right">
-                <?php
-                $montlyBudget = $variables['saldo_banca'] + $variables['contanti'] - $variables['risparmio'] - $stored;
-                echo $this->currencyFormat($montlyBudget, 'EUR', true, 'it_IT');
-                ?>
-            </td>
-        </tr>
-        <tr><td>Giorni residui</td><td class="text-right"><?php echo $remainingDays; ?></td></tr>
-        <tr>
-            <td>Budget giornaliero medio ad oggi</td>
-            <td class="text-right">
-                <?php echo $this->currencyFormat($montlyBudget / $remainingDays, 'EUR', true, 'it_IT'); ?>
-            </td>
-        </tr>
-        <tr>
-            <td>Budget giornaliero medio a domani</td>
-            <td class="text-right">
-                <?php echo $this->currencyFormat($montlyBudget / ($remainingDays -1), 'EUR', true, 'it_IT'); ?>
-            </td>
-        </tr>
-    </tfoot>
-</table>
+            <tbody>
+            <?php foreach ($avgPerCategory as $row) : ?>
+                <tr>
+                    <td><?php echo $this->escapeHtml($row['description']); ?></td>
+                    <td class="text-right">
+                        <?php
+                        $sum += $row['average'];
+                        echo $this->currencyFormat($row['average'], 'EUR', true, 'it_IT');
+                        ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><strong>Somma</strong></td>
+                    <td class="text-right">
+                        <strong><?php echo $this->currencyFormat($sum, 'EUR', true, 'it_IT'); ?></strong>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <h2>Budget</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Descrizione</th>
+                    <th class="text-right">Valore</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Saldo in banca</td>
+                <td class="text-right">
+                    <?php echo '+ ' . $this->currencyFormat($variables['saldo_banca'], 'EUR', true, 'it_IT'); ?>
+                </td>
+            </tr>
+            <tr>
+                <td>Contanti</td>
+                <td class="text-right">
+                    <?php echo '+ ' . $this->currencyFormat($variables['contanti'], 'EUR', true, 'it_IT'); ?>
+                </td>
+            </tr>
+            <tr>
+                <td>Risparmio</td>
+                <td class="text-right">
+                    <?php echo '- ' . $this->currencyFormat($variables['risparmio'], 'EUR', true, 'it_IT'); ?>
+                </td>
+            </tr>
+            <tr>
+                <td>Accantonati</td>
+                <td class="text-right">
+                    <?php echo '- ' . $this->currencyFormat($stored, 'EUR', true, 'it_IT'); ?>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>Budget mensile residuo</td>
+                <td class="text-right">
+                    <?php
+                    $montlyBudget = $variables['saldo_banca'] + $variables['contanti'] - $variables['risparmio'] - $stored;
+                    echo $this->currencyFormat($montlyBudget, 'EUR', true, 'it_IT');
+                    ?>
+                </td>
+            </tr>
+            <tr><td>Giorni residui</td><td class="text-right"><?php echo $remainingDays; ?></td></tr>
+            <tr>
+                <td>Budget giornaliero medio ad oggi</td>
+                <td class="text-right">
+                    <?php echo $this->currencyFormat($montlyBudget / $remainingDays, 'EUR', true, 'it_IT'); ?>
+                </td>
+            </tr>
+            <tr>
+                <td>Budget giornaliero medio a domani</td>
+                <td class="text-right">
+                    <?php echo $this->currencyFormat($montlyBudget / ($remainingDays -1), 'EUR', true, 'it_IT'); ?>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
