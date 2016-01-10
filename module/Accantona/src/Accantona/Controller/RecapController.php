@@ -31,10 +31,14 @@ class RecapController extends AbstractActionController
         foreach ($this->getVariabileTable()->fetchAll() as $variable) {
             $variables[$variable->nome] = $variable->valore;
         }
+
+        $payDay = 4;
+        $currentDay = date('j');
         return new ViewModel(array(
             'avgPerCategory' => $avgPerCategory,
             'variables' => $variables,
             'stored' => $this->getAccantonatoTable()->getSum() - $spesaTable->getSum(),
+            'remainingDays' => $currentDay < $payDay ? $payDay - $currentDay : date('t') - $currentDay + $payDay,
         ));
     }
 

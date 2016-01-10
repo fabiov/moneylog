@@ -66,5 +66,28 @@
             </td>
         </tr>
     </tbody>
-
+    <tfoot>
+        <tr>
+            <td>Budget mensile residuo</td>
+            <td class="text-right">
+                <?php
+                $montlyBudget = $variables['saldo_banca'] + $variables['contanti'] - $variables['risparmio'] - $stored;
+                echo $this->currencyFormat($montlyBudget, 'EUR', true, 'it_IT');
+                ?>
+            </td>
+        </tr>
+        <tr><td>Giorni residui</td><td class="text-right"><?php echo $remainingDays; ?></td></tr>
+        <tr>
+            <td>Budget giornaliero medio ad oggi</td>
+            <td class="text-right">
+                <?php echo $this->currencyFormat($montlyBudget / $remainingDays, 'EUR', true, 'it_IT'); ?>
+            </td>
+        </tr>
+        <tr>
+            <td>Budget giornaliero medio a domani</td>
+            <td class="text-right">
+                <?php echo $this->currencyFormat($montlyBudget / ($remainingDays -1), 'EUR', true, 'it_IT'); ?>
+            </td>
+        </tr>
+    </tfoot>
 </table>
