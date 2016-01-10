@@ -9,7 +9,7 @@
         width:153px;
     }
     .amount{
-        width:174px;
+        width:160px;
     }
     .actions{
         width:85px;
@@ -34,7 +34,7 @@ $this->headTitle($title);
             <tr id="search">
                 <td></td>
                 <td>
-                    <select id="categoryIdFilter" name="categoryIdFilter">
+                    <select class="form-control" id="categoryIdFilter" name="categoryIdFilter">
                         <option value="0">Tutte</option>
                         <?php foreach ($categories as $category): ?>
                         <option value="<?php echo $category['id']; ?>"<?php if ($category['id'] == $categoryId) echo 'selected="selected"'; ?>><?php echo $category['descrizione']; ?></option>
@@ -42,7 +42,7 @@ $this->headTitle($title);
                     </select>
                 </td>
                 <td>
-                    <select id="monthsFilter" name="monthsFilter">
+                    <select class="form-control" id="monthsFilter" name="monthsFilter">
                         <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
                         <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
                         <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
@@ -65,8 +65,12 @@ $this->headTitle($title);
                 <td><?php echo $this->escapeHtml($row->importo); ?></td>
                 <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
                 <td>
-                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'edit', 'id' => $row->id)); ?>">Edit</a>
-                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'delete', 'id' => $row->id)); ?>">Delete</a>
+                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </a>
+                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -76,16 +80,22 @@ $this->headTitle($title);
             <tr>
                 <td class="id"></td>
                 <td class="category">
-                    <select name="id_categoria">
+                    <select class="form-control" name="id_categoria">
                         <?php foreach ($categories as $category): ?>
                         <option value="<?php echo $category['id']; ?>"><?php echo $category['descrizione']; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </td>
-                <td class="valuta"><input name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
-                <td class="amount"><input name="importo" size="7" type="number" /></td>
-                <td><input name="descrizione" size="60" /></td>
-                <td class="actions"><input name="add" value="Add" type="submit" /></td>
+                <td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
+                <td class="amount">
+                    <input class="form-control" name="importo" type="number" />
+                </td>
+                <td><input class="form-control" name="descrizione" size="60" /></td>
+                <td class="actions">
+                    <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Salva">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
+                    </button>
+                </td>
             </tr>
         </tfoot>
     </table>

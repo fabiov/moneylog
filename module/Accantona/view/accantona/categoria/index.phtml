@@ -3,9 +3,6 @@ $title = 'Spese';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<p>
-    <a href="<?php echo $this->url('accantona_categoria', array('action' => 'add')); ?>">Aggiungi</a>
-</p>
 <table class="table">
     <tr>
         <th>Id</th>
@@ -23,3 +20,6 @@ $this->headTitle($title);
     </tr>
     <?php endforeach; ?>
 </table>
+<div>
+        <a href="<?php echo $this->url('accantona_categoria', array('action' => 'add')); ?>">Aggiungi</a>
+</div>
