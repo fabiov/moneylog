@@ -1,5 +1,5 @@
 <h1>Riepilogo</h1>
-
+<?php $sum = 0; ?>
 <h2>Spesa per categotia</h2>
 <table class="table">
 
@@ -14,29 +14,57 @@
     <?php foreach ($avgPerCategory as $row) : ?>
         <tr>
             <td><?php echo $this->escapeHtml($row['description']); ?></td>
-            <td class="text-right"><?php echo $this->currencyFormat($row['average'], 'EUR', true, 'it_IT'); ?></td>
+            <td class="text-right">
+                <?php
+                $sum += $row['average'];
+                echo $this->currencyFormat($row['average'], 'EUR', true, 'it_IT');
+                ?>
+            </td>
         </tr>
     <?php endforeach; ?>
     </tbody>
-
+    <tfoot>
+        <tr>
+            <td><strong>Somma</strong></td>
+            <td class="text-right">
+                <strong><?php echo $this->currencyFormat($sum, 'EUR', true, 'it_IT'); ?></strong>
+            </td>
+        </tr>
+    </tfoot>
 </table>
 
-<h2>Variabili</h2>
+<h2>Budget</h2>
 <table class="table">
     <tr>
-        <th>Nome</th>
-        <th>Segno</th>
-        <th>Valore</th>
+        <th>Descrizione</th>
+        <th class="text-right">Valore</th>
     </tr>
 
     <tbody>
-    <?php foreach ($variabili as $row) : ?>
         <tr>
-            <td><?php echo $this->escapeHtml($row->nome); ?></td>
-            <td><?php echo $row->segno; ?></td>
-            <td class="text-right"><?php echo $this->currencyFormat($row->valore, 'EUR', true, 'it_IT'); ?></td>
+            <td>Saldo in banca</td>
+            <td class="text-right">
+                <?php echo '+ ' . $this->currencyFormat($variables['saldo_banca'], 'EUR', true, 'it_IT'); ?>
+            </td>
         </tr>
-    <?php endforeach; ?>
+        <tr>
+            <td>Contanti</td>
+            <td class="text-right">
+                <?php echo '+ ' . $this->currencyFormat($variables['contanti'], 'EUR', true, 'it_IT'); ?>
+            </td>
+        </tr>
+        <tr>
+            <td>Risparmio</td>
+            <td class="text-right">
+                <?php echo '- ' . $this->currencyFormat($variables['risparmio'], 'EUR', true, 'it_IT'); ?>
+            </td>
+        </tr>
+        <tr>
+            <td>Accantonati</td>
+            <td class="text-right">
+                <?php echo '- ' . $this->currencyFormat($stored, 'EUR', true, 'it_IT'); ?>
+            </td>
+        </tr>
     </tbody>
 
 </table>

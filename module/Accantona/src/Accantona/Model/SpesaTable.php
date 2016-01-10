@@ -63,9 +63,9 @@ class SpesaTable
         }
     }
 
-    public function deleteAnagrafica($idAnagrafica)
+    public function delete($id)
     {
-        $this->tableGateway->delete(array('id' => (int) $idAnagrafica));
+        $this->tableGateway->delete(array('id' => (int) $id));
     }
 
     public function joinFetchAll($where)
@@ -96,6 +96,16 @@ eoc;
 
         }
         return $data;
+    }
+
+    /**
+     * @return float
+     */
+    function getSum()
+    {
+        $data = $this->tableGateway->adapter->createStatement('SELECT SUM(importo) AS sum FROM spese')->execute()
+            ->next();
+        return (float) $data['sum'];
     }
 
 }

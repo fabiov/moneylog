@@ -14,21 +14,33 @@ class RecapController extends AbstractActionController
 
     protected $spesaTable;
     protected $variabileTable;
+    protected $accantonatoTable;
 
-
+    /**
+     * @return ViewModel
+     */
     public function indexAction()
     {
-        $avgPerCategory = $this->getSpesaTable()->getAvgPerCategories();
+        $spesaTable = $this->getSpesaTable();
+        $avgPerCategory = $spesaTable->getAvgPerCategories();
         usort($avgPerCategory, function ($a, $b) {
             return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? 1 : -1);
         });
 
+        $variables = array();
+        foreach ($this->getVariabileTable()->fetchAll() as $variable) {
+            $variables[$variable->nome] = $variable->valore;
+        }
         return new ViewModel(array(
             'avgPerCategory' => $avgPerCategory,
-            'variabili' => $this->getVariabileTable()->fetchAll(),
+            'variables' => $variables,
+            'stored' => $this->getAccantonatoTable()->getSum() - $spesaTable->getSum(),
         ));
     }
 
+    /**
+     * @return Accantona\Model\SpesaTable
+     */
     public function getSpesaTable()
     {
         if (!$this->spesaTable) {
@@ -45,6 +57,15 @@ class RecapController extends AbstractActionController
             $this->variabileTable = $sm->get('Accantona\Model\VariabileTable');
         }
         return $this->variabileTable;
+    }
+
+    public function getAccantonatoTable()
+    {
+        if (!$this->accantonatoTable) {
+            $sm = $this->getServiceLocator();
+            $this->accantonatoTable = $sm->get('Accantona\Model\AccantonatoTable');
+        }
+        return $this->accantonatoTable;
     }
 
 }

@@ -97,4 +97,14 @@ eoc;
         return $data;
     }
 
+    /**
+     * @return float
+     */
+    function getSum()
+    {
+        $data = $this->tableGateway->adapter->createStatement('SELECT SUM(importo) AS sum FROM accantonati')->execute()
+            ->next();
+        return (float) $data['sum'];
+    }
+
 }
