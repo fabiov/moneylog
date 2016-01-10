@@ -32,7 +32,7 @@ return array(
             'accantona_recap' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route' => '/recap',
+                    'route' => '/recap[/:action]',
                     'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
                     'defaults' => array('controller' => 'Accantona\Controller\Recap', 'action' => 'index'),
                 ),

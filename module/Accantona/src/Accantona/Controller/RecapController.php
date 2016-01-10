@@ -42,6 +42,11 @@ class RecapController extends AbstractActionController
         ));
     }
 
+    public function editAction()
+    {
+
+    }
+
     /**
      * @return Accantona\Model\SpesaTable
      */

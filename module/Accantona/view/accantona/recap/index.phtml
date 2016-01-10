@@ -1,6 +1,5 @@
 <h1>Riepilogo</h1>
 <?php $sum = 0; ?>
-
 <div class="row">
     <div class="col-md-6">
         <h2>Spesa per categotia</h2>
@@ -38,58 +37,90 @@
     </div>
     <div class="col-lg-6">
         <h2>Budget</h2>
-        <table class="table">
-            <thead><tr><th>Descrizione</th><th class="text-right">Valore</th></tr></thead>
-            <tbody>
-                <tr>
-                    <td>Saldo in banca</td>
-                    <td class="text-right">
-                        <?php echo '+ ' . $this->currencyFormat($variables['saldo_banca'], 'EUR', true, 'it_IT'); ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Contanti</td>
-                    <td class="text-right">
-                        <?php echo '+ ' . $this->currencyFormat($variables['contanti'], 'EUR', true, 'it_IT'); ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Risparmio</td>
-                    <td class="text-right">
-                        <?php echo '- ' . $this->currencyFormat($variables['risparmio'], 'EUR', true, 'it_IT'); ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Accantonati</td>
-                    <td class="text-right">
-                        <?php echo '- ' . $this->currencyFormat($stored, 'EUR', true, 'it_IT'); ?>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td>Budget mensile residuo</td>
-                    <td class="text-right">
-                        <?php
-                        $montlyBudget = $variables['saldo_banca'] + $variables['contanti'] - $variables['risparmio'] - $stored;
-                        echo $this->currencyFormat($montlyBudget, 'EUR', true, 'it_IT');
-                        ?>
-                    </td>
-                </tr>
-                <tr><td>Giorni residui</td><td class="text-right"><?php echo $remainingDays; ?></td></tr>
-                <tr>
-                    <td>Budget giornaliero medio ad oggi</td>
-                    <td class="text-right">
-                        <?php echo $this->currencyFormat($montlyBudget / $remainingDays, 'EUR', true, 'it_IT'); ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Budget giornaliero medio a domani</td>
-                    <td class="text-right">
-                        <?php echo $this->currencyFormat($montlyBudget / ($remainingDays -1), 'EUR', true, 'it_IT'); ?>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        <form action="<?php echo $this->url('accantona_recap', array('action' => 'edit')); ?>" method="post">
+            <table class="table">
+                <thead><tr><th>Descrizione</th><th class="text-right">Valore</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td>Saldo in banca</td>
+                        <td class="text-right">
+                            +
+                            <input class="show-on-edit text-right" name="saldo_banca" style="display: none;" type="number" value="<?php echo $variables['saldo_banca']; ?>" />
+                            <span class="hide-on-edit"><?php echo $this->currencyFormat($variables['saldo_banca'], 'EUR', true, 'it_IT'); ?></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Contanti</td>
+                        <td class="text-right">
+                            +
+                            <input class="show-on-edit text-right" name="contanti" style="display: none;" type="number" value="<?php echo $variables['contanti']; ?>" />
+                            <span class="hide-on-edit"><?php echo $this->currencyFormat($variables['contanti'], 'EUR', true, 'it_IT'); ?></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Risparmio</td>
+                        <td class="text-right">
+                            -
+                            <input class="show-on-edit text-right" name="risparmio" style="display: none;" type="number" value="<?php echo $variables['risparmio']; ?>" />
+                            <span class="hide-on-edit"><?php echo $this->currencyFormat($variables['risparmio'], 'EUR', true, 'it_IT'); ?></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Accantonati</td>
+                        <td class="text-right">
+                            <?php echo '- ' . $this->currencyFormat($stored, 'EUR', true, 'it_IT'); ?>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Budget mensile residuo</td>
+                        <td class="text-right">
+                            <?php
+                            $montlyBudget = $variables['saldo_banca'] + $variables['contanti'] - $variables['risparmio'] - $stored;
+                            echo $this->currencyFormat($montlyBudget, 'EUR', true, 'it_IT');
+                            ?>
+                        </td>
+                    </tr>
+                    <tr><td>Giorni residui</td><td class="text-right"><?php echo $remainingDays; ?></td></tr>
+                    <tr>
+                        <td>Budget giornaliero medio ad oggi</td>
+                        <td class="text-right">
+                            <?php echo $this->currencyFormat($montlyBudget / $remainingDays, 'EUR', true, 'it_IT'); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Budget giornaliero medio a domani</td>
+                        <td class="text-right">
+                            <?php echo $this->currencyFormat($montlyBudget / ($remainingDays -1), 'EUR', true, 'it_IT'); ?>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+        <div class="text-right">
+            <button id="edit" type="button" class="btn btn-default hide-on-edit" aria-label="Modifica">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modifica
+            </button>
+            <button id="cancel" type="button" class="btn btn-default show-on-edit" aria-label="Salva" style="display: none;">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Annulla
+            </button>
+            <button id="save" type="button" class="btn btn-default show-on-edit" aria-label="Salva" style="display: none;">
+                <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Salva
+            </button>
+        </div>
     </div>
 </div>
+<script type="text/javascript">
+    $('#edit').click(function () {
+        $('.hide-on-edit').hide();
+        $('.show-on-edit').show();
+    });
+    $('#cancel').click(function () {
+        $('.hide-on-edit').show();
+        $('.show-on-edit').hide();
+    });
+    $('#save').click(function () {
+        $('form').submit();
+    });
+</script>
