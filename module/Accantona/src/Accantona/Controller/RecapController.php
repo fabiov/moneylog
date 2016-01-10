@@ -2,6 +2,8 @@
 
 namespace Accantona\Controller;
 
+use Accantona\Model\Variabile;
+use Accantona\Model\VariabileTable;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Accantona\Model\Spesa;
@@ -44,7 +46,26 @@ class RecapController extends AbstractActionController
 
     public function editAction()
     {
-
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $variabileTable = $this->getVariabileTable();
+            // saldo_banca
+            $val = $this->params()->fromPost('saldo_banca');
+            if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $val)) {
+                $variabileTable->updateByName('saldo_banca', $val);
+            }
+            // contanti
+            $val = $this->params()->fromPost('contanti');
+            if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $val)) {
+                $variabileTable->updateByName('contanti', $val);
+            }
+            // risparmio
+            $val = $this->params()->fromPost('risparmio');
+            if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $val)) {
+                $variabileTable->updateByName('risparmio', $val);
+            }
+        }
+        return $this->redirect()->toRoute('accantona_recap', array('action' => 'index'));
     }
 
     /**
