@@ -11,7 +11,8 @@
  * file.
  */
 
-return array(
+// set main configurations
+$conf = array(
     'db' => array(
         'driver'   => 'Pdo_Sqlite',
         'database' => __DIR__ . '/../../data/accantona.sqlite',
@@ -21,3 +22,16 @@ return array(
         'factories' => array('Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory'),
     ),
 );
+
+// set configuration for specific environment
+switch (getenv('APP_ENV')) {
+    case 'development':
+        $conf['db'] = array(
+            'driver'   => 'Pdo_Sqlite',
+            'database' => __DIR__ . '/../../data/accantona.development.sqlite',
+//        'driver_options' => array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''),
+        );
+        break;
+}
+
+return $conf;
