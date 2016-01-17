@@ -1,11 +1,11 @@
 <?php
-/**
-  * Display all errors when APPLICATION_ENV is development.
-  */
- if ($_SERVER['APP_ENV'] == 'development') {
-     error_reporting(E_ALL);
-     ini_set("display_errors", 1);
- }
+if (!defined('APP_ENV')) define('APP_ENV', empty($_SERVER['APP_ENV']) ? 'production': $_SERVER['APP_ENV']);
+
+// Display all errors when APP_ENV is development.
+if (APP_ENV == 'development') {
+    error_reporting(E_ALL);
+    ini_set("display_errors", 1);
+}
  
 /**
  * This makes our life easier when dealing with paths. Everything is relative

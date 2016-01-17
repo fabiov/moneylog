@@ -24,7 +24,7 @@ $conf = array(
 );
 
 // set configuration for specific environment
-switch (getenv('APP_ENV')) {
+switch (APP_ENV) {
     case 'development':
         $conf['db'] = array(
             'driver'   => 'Pdo_Sqlite',
