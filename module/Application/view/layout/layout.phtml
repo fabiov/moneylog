@@ -22,8 +22,25 @@
             ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
             ->prependFile($this->basePath('js/html5shiv.js'),   'text/javascript', array('conditional' => 'lt IE 9',));
         ?>
+        <style type="text/css">
+            .app-env{
+                position: fixed;
+                right: 0;
+                top: 0;
+                z-index: 1031;
+            }
+            .app-env span{
+                font-weight: bold;
+                background-color: #f00;
+                padding: 3px;
+                color: #fff;
+            }
+        </style>
     </head>
     <body>
+        <?php if (APP_ENV != 'production'): ?>
+            <div class="app-env"><span><?php echo APP_ENV; ?></span></div>
+        <?php endif; ?>
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
