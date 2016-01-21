@@ -82,7 +82,7 @@ class Spesa implements InputFilterAwareInterface
                     array(
                         'name'    => 'Regex',
                         'options' => array(
-                            'pattern' => '/^[0-9]+$/',
+                            'pattern' => '/^[1-9]\d*(\.\d{1,2})?$/',
                         ),
                     ),
                 ),
