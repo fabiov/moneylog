@@ -34,6 +34,8 @@ class SpesaForm extends Form
             'type' => 'Number',
             'attributes' => array(
                 'label' => 'Importo',
+		'min'  => 0,
+                'step' => 0.01, // default step interval is 1
             ),
         ));
         $this->add(array(
