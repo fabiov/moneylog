@@ -61,7 +61,7 @@ $this->headTitle($title);
             <tr>
                 <td><?php echo $this->escapeHtml($row->id); ?></td>
                 <td><?php echo $this->escapeHtml($row->categoryDescription); ?></td>
-                <td><?php echo $this->escapeHtml($row->valuta); ?></td>
+                <td><?php echo $this->dateForma($row->valuta); ?></td>
                 <td><?php echo $this->escapeHtml($row->importo); ?></td>
                 <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
                 <td>

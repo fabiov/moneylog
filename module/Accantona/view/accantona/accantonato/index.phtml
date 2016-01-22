@@ -37,7 +37,7 @@ $this->headTitle($title);
             <?php foreach ($rows as $row): ?>
             <tr>
                 <td><?php echo $row->id; ?></td>
-                <td><?php echo $row->valuta; ?></td>
+                <td><?php echo $this->dateForma($row->valuta); ?></td>
                 <td class="text-right"><?php echo $this->currencyFormat($row->importo, 'EUR', true, 'it_IT'); ?></td>
                 <td><?php echo $row->descrizione; ?></td>
                 <td>
