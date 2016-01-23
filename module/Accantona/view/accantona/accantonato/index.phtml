@@ -19,7 +19,7 @@ $this->headTitle($title);
             <tr id="search">
                 <td></td>
                 <td>
-                    <select id="monthsFilter" name="monthsFilter">
+                    <select class="form-control" id="monthsFilter" name="monthsFilter">
                         <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
                         <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
                         <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
@@ -55,9 +55,9 @@ $this->headTitle($title);
         <tfoot>
             <tr>
                 <td></td>
-                <td class="valuta"><input name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
-                <td class="text-right"><input name="importo" size="7" type="number" /></td>
-                <td><input name="descrizione" size="60" /></td>
+                <td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
+                <td class="text-right"><input class="form-control" name="importo" size="7" type="number" /></td>
+                <td><input class="form-control" name="descrizione" /></td>
                 <td class="actions">
                     <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Add">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
