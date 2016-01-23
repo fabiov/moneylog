@@ -57,6 +57,7 @@ return array(
     'view_helpers' => array(
         'invokables' => array(
             'dateForma' => 'Accantona\View\Helper\DateForma',
+            'currencyForma' => 'Accantona\View\Helper\CurrencyForma',
         ),
     ),
 

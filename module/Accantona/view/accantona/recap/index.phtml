@@ -19,7 +19,7 @@
                     <td class="text-right">
                         <?php
                         $sum += $row['average'];
-                        echo $this->currencyFormat($row['average'], 'EUR', true, 'it_IT');
+                        echo $this->currencyForma($row['average']);
                         ?>
                     </td>
                 </tr>
@@ -29,7 +29,7 @@
                 <tr>
                     <td><strong>Somma</strong></td>
                     <td class="text-right">
-                        <strong><?php echo $this->currencyFormat($sum, 'EUR', true, 'it_IT'); ?></strong>
+                        <strong><?php echo $this->currencyForma($sum); ?></strong>
                     </td>
                 </tr>
             </tfoot>
@@ -45,30 +45,30 @@
                         <td>Saldo in banca</td>
                         <td class="text-right">
                             +
-                            <input class="show-on-edit text-right" disabled="disabled" name="saldo_banca" style="display: none;" type="number" value="<?php echo $variables['saldo_banca']; ?>" />
-                            <span class="hide-on-edit"><?php echo $this->currencyFormat($variables['saldo_banca'], 'EUR', true, 'it_IT'); ?></span>
+                            <input class="show-on-edit text-right" disabled="disabled" name="saldo_banca" step="0.01" style="display: none;" type="number" value="<?php echo number_format($variables['saldo_banca'], 2, '.', ''); ?>" />
+                            <span class="hide-on-edit"><?php echo $this->currencyForma($variables['saldo_banca']); ?></span>
                         </td>
                     </tr>
                     <tr>
                         <td>Contanti</td>
                         <td class="text-right">
                             +
-                            <input class="show-on-edit text-right" disabled="disabled" name="contanti" style="display: none;" type="number" value="<?php echo $variables['contanti']; ?>" />
-                            <span class="hide-on-edit"><?php echo $this->currencyFormat($variables['contanti'], 'EUR', true, 'it_IT'); ?></span>
+                            <input class="show-on-edit text-right" disabled="disabled" name="contanti" step="0.01" style="display: none;" type="number" value="<?php echo number_format($variables['contanti'], 2); ?>" />
+                            <span class="hide-on-edit"><?php echo $this->currencyForma($variables['contanti']); ?></span>
                         </td>
                     </tr>
                     <tr>
                         <td>Risparmio</td>
                         <td class="text-right">
                             -
-                            <input class="show-on-edit text-right" disabled="disabled" name="risparmio" style="display: none;" type="number" value="<?php echo $variables['risparmio']; ?>" />
-                            <span class="hide-on-edit"><?php echo $this->currencyFormat($variables['risparmio'], 'EUR', true, 'it_IT'); ?></span>
+                            <input class="show-on-edit text-right" disabled="disabled" name="risparmio" step="0.01" style="display: none;" type="number" value="<?php echo number_format($variables['risparmio'], 2); ?>" />
+                            <span class="hide-on-edit"><?php echo $this->currencyForma($variables['risparmio']); ?></span>
                         </td>
                     </tr>
                     <tr>
                         <td>Accantonati</td>
                         <td class="text-right">
-                            <?php echo '- ' . $this->currencyFormat($stored, 'EUR', true, 'it_IT'); ?>
+                            <?php echo '- ' . $this->currencyForma($stored); ?>
                         </td>
                     </tr>
                 </tbody>
@@ -78,21 +78,21 @@
                         <td class="text-right">
                             <?php
                             $montlyBudget = $variables['saldo_banca'] + $variables['contanti'] - $variables['risparmio'] - $stored;
-                            echo $this->currencyFormat($montlyBudget, 'EUR', true, 'it_IT');
+                            echo $this->currencyForma($montlyBudget);
                             ?>
                         </td>
                     </tr>
                     <tr><td>Giorni residui</td><td class="text-right"><?php echo $remainingDays; ?></td></tr>
                     <tr>
-                        <td>Budget giornaliero medio ad oggi</td>
+                        <td><strong>Budget giornaliero medio ad oggi</strong></td>
                         <td class="text-right">
-                            <?php echo $this->currencyFormat($montlyBudget / $remainingDays, 'EUR', true, 'it_IT'); ?>
+                            <strong><?php echo $this->currencyForma($montlyBudget / $remainingDays); ?></strong>
                         </td>
                     </tr>
                     <tr>
-                        <td>Budget giornaliero medio a domani</td>
+                        <td><strong>Budget giornaliero medio a domani</strong></td>
                         <td class="text-right">
-                            <?php echo $this->currencyFormat($montlyBudget / ($remainingDays -1), 'EUR', true, 'it_IT'); ?>
+                            <strong><?php echo $this->currencyForma($montlyBudget / ($remainingDays - 1)); ?></strong>
                         </td>
                     </tr>
                 </tfoot>

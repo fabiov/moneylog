@@ -38,11 +38,15 @@ $this->headTitle($title);
             <tr>
                 <td><?php echo $row->id; ?></td>
                 <td><?php echo $this->dateForma($row->valuta); ?></td>
-                <td class="text-right"><?php echo $this->currencyFormat($row->importo, 'EUR', true, 'it_IT'); ?></td>
+                <td class="text-right"><?php echo $this->currencyForma($row->importo); ?></td>
                 <td><?php echo $row->descrizione; ?></td>
                 <td>
-                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'edit', 'id' => $row->id)); ?>">Edit</a>
-                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'delete', 'id' => $row->id)); ?>">Delete</a>
+                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </a>
+                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -54,7 +58,11 @@ $this->headTitle($title);
                 <td class="valuta"><input name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
                 <td class="text-right"><input name="importo" size="7" type="number" /></td>
                 <td><input name="descrizione" size="60" /></td>
-                <td class="actions"><input name="add" value="Add" type="submit" /></td>
+                <td class="actions">
+                    <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Add">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+                    </button>
+                </td>
             </tr>
         </tfoot>
     </table>

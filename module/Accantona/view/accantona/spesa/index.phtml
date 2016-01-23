@@ -62,7 +62,7 @@ $this->headTitle($title);
                 <td><?php echo $this->escapeHtml($row->id); ?></td>
                 <td><?php echo $this->escapeHtml($row->categoryDescription); ?></td>
                 <td><?php echo $this->dateForma($row->valuta); ?></td>
-                <td><?php echo $this->escapeHtml($row->importo); ?></td>
+                <td class="text-right"><?php echo $this->currencyForma($row->importo); ?></td>
                 <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
                 <td>
                     <a href="<?php echo $this->url('accantona_spesa', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
