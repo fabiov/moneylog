@@ -53,4 +53,12 @@ return array(
             'accantona' => __DIR__ . '/../view',
         ),
     ),
+
+    'view_helpers' => array(
+        'invokables' => array(
+            'dateForma' => 'Accantona\View\Helper\DateForma',
+            'currencyForma' => 'Accantona\View\Helper\CurrencyForma',
+        ),
+    ),
+
 );
