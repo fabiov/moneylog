@@ -56,7 +56,7 @@ $this->headTitle($title);
             <tr>
                 <td></td>
                 <td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
-                <td class="text-right"><input class="form-control" name="importo" size="7" type="number" /></td>
+                <td><input class="form-control text-right" name="importo" step="0.01" type="number" /></td>
                 <td><input class="form-control" name="descrizione" /></td>
                 <td class="actions">
                     <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Add">
