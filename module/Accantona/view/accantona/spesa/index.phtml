@@ -64,7 +64,7 @@ $this->headTitle($title);
                 <td><?php echo $this->dateForma($row->valuta); ?></td>
                 <td class="text-right"><?php echo $this->currencyForma($row->importo); ?></td>
                 <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
-                <td>
+                <td class="text-right">
                     <a href="<?php echo $this->url('accantona_spesa', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </a>
@@ -88,10 +88,10 @@ $this->headTitle($title);
                 </td>
                 <td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
                 <td class="amount">
-                    <input class="form-control" name="importo" type="number" step="0.01" min="0" />
+                    <input class="form-control text-right" name="importo" type="number" step="0.01" min="0" />
                 </td>
                 <td><input class="form-control" name="descrizione" size="60" /></td>
-                <td class="actions">
+                <td class="actions text-right">
                     <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Salva">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
                     </button>
