@@ -89,12 +89,14 @@
                             <strong><?php echo $this->currencyForma($montlyBudget / $remainingDays); ?></strong>
                         </td>
                     </tr>
+                    <?php if ($remainingDays > 1): ?>
                     <tr>
                         <td><strong>Budget giornaliero medio a domani</strong></td>
                         <td class="text-right">
                             <strong><?php echo $this->currencyForma($montlyBudget / ($remainingDays - 1)); ?></strong>
                         </td>
                     </tr>
+                    <?php endif; ?>
                 </tfoot>
             </table>
             <div class="text-right">
