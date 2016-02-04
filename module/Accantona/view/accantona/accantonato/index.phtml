@@ -69,6 +69,6 @@ $this->headTitle($title);
 </form>
 <script type="text/javascript">
     $('#search select').change(function(){
-        location.href = "<?php echo $this->url(null, array('action' => 'index')); ?>" + '&monthsFilter=' + $('#monthsFilter').val();
+        location.href = "<?php echo $this->url(null, array('action' => 'index')); ?>" + '?monthsFilter=' + $('#monthsFilter').val();
     });
 </script>
