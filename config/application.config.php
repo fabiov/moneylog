@@ -4,6 +4,7 @@ return array(
     'modules' => array(
         'Accantona',
         'Application',
+        'Auth',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
