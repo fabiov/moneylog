@@ -38,7 +38,9 @@ use Zend\Permissions\Acl\Acl as ZendAcl,
  * @copyright Copyright (c) 2011, Marco Neumann
  * @license   http://binware.org/license/index/type:new-bsd New BSD License
  */
-class Acl extends ZendAcl {
+class Acl extends ZendAcl
+{
+
     /**
      * Default Role
      */

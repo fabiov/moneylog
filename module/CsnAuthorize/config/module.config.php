@@ -19,7 +19,19 @@ return array(
                 'Auth\Controller\Index' => array(
                     'index' => 'guest',
                     'login' => 'guest',
-                )
+                ),
+                'Accantona\Controller\Spesa' => array(
+                    'add' => 'user',
+                    'index' => 'user',
+                ),
+                'Accantona\Controller\Categoria' => array(
+                    'add' => 'user',
+                    'index' => 'user',
+                ),
+                'Accantona\Controller\Accantonato' => array(
+                    'add' => 'user',
+                    'index' => 'user',
+                ),
             ),
         ),
     ),

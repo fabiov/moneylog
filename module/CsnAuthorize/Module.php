@@ -2,8 +2,8 @@
 
 namespace CsnAuthorize;
 
-// for Acl
 use CsnAuthorize\Acl\Acl;
+use Zend\Debug\Debug;
 
 class Module
 {
@@ -31,7 +31,11 @@ class Module
         $em->attach('route', array($this, 'onRoute'), -100);
     }
 
-    // WORKING the main engine for ACL
+    /**
+     * WORKING the main engine for ACL
+     * @param \Zend\EventManager\EventInterface $e
+     * @throws \Exception
+     */
     public function onRoute(\Zend\EventManager\EventInterface $e) // Event manager of the app
     {
         $application = $e->getApplication();
@@ -41,27 +45,29 @@ class Module
         $config = $sm->get('Config');
         $acl = new Acl($config);
 
-        // everyone is guest untill it gets logged in
-        $role = $auth->hasIdentity() ? $auth->getIdentity()->role : Acl::DEFAULT_ROLE; // The default role is guest $acl
+        // The default role is guest $acl everyone is guest untill it gets logged in
+        $role = $auth->hasIdentity() ? $auth->getIdentity()->role : Acl::DEFAULT_ROLE;
 
         $controller = $routeMatch->getParam('controller');
         $action = $routeMatch->getParam('action');
 
         if (!$acl->hasResource($controller)) {
-            throw new \Exception('Resource ' . $controller . ' not defined');
+            throw new \Exception("Resource $controller not defined");
         }
 
         if (!$acl->isAllowed($role, $controller, $action)) {
-
             $url = $e->getRouter()->assemble(array(), array('name' => 'home'));
             $response = $e->getResponse();
-
             $response->getHeaders()->addHeaderLine('Location', $url);
-            // The HTTP response status code 302 Found is a common way of performing a redirection.
-            // http://en.wikipedia.org/wiki/HTTP_302
+
+            /**
+             * The HTTP response status code 302 Found is a common way of performing a redirection.
+             * @link http://en.wikipedia.org/wiki/HTTP_302
+             */
             $response->setStatusCode(302);
             $response->sendHeaders();
             exit;
         }
     }
+
 }
