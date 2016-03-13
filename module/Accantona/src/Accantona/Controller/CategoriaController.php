@@ -2,6 +2,7 @@
 
 namespace Accantona\Controller;
 
+use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Accantona\Model\Categoria;
@@ -24,7 +25,9 @@ class CategoriaController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $category->exchangeArray($form->getData());
+                $data = $form->getData();
+                $data['userId'] = $this->getUser()->id;
+                $category->exchangeArray($data);
                 $this->getCategoriaTable()->save($category);
 
                 // Redirect to list of categories
@@ -54,18 +57,19 @@ class CategoriaController extends AbstractActionController
             return $this->redirect()->toRoute('accantona_categoria', array('action' => 'index'));
         }
 
+        $user = $this->getUser();
         $form = new CategoriaForm();
         $form->bind($categoria);
         $form->get('submit')->setAttribute('value', 'Edit');
 
         $request = $this->getRequest();
-        if ($request->isPost()) {
+        if ($request->isPost() && $user->id == $categoria->userId) {
 
             $form->setInputFilter($categoria->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-
+                $categoria->userId = $user->id;
                 $this->getCategoriaTable()->save($categoria);
 
                 // Redirect to list
@@ -88,8 +92,7 @@ class CategoriaController extends AbstractActionController
             $del = $request->getPost('del', 'No');
 
             if ($del == 'Yes') {
-                $id = (int) $request->getPost('id');
-                $this->getCategoriaTable()->delete($id);
+                $this->getCategoriaTable()->deleteByAttributes(array('id' => $id, 'userId' => $this->getUser()->id));
             }
 
             // Redirect to list of categories
@@ -109,6 +112,11 @@ class CategoriaController extends AbstractActionController
             $this->categoriaTable = $sm->get('Accantona\Model\CategoriaTable');
         }
         return $this->categoriaTable;
+    }
+
+    public function getUser()
+    {
+        return $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
     }
 
 }

@@ -57,13 +57,15 @@ class VariabileTable
     }
 
     /**
-     * @param $name
-     * @param $value
+     * @param string $name
+     * @param string $value
+     * @param int $userId
+     * @return bool
      */
-    public function updateByName($name, $value)
+    public function updateByName($name, $value, $userId)
     {
         return (bool) $this->tableGateway->adapter
-            ->query('UPDATE variabili SET valore=? WHERE nome=?', array($value, $name));
+            ->query('UPDATE variabili SET valore=? WHERE nome=? AND userId=?', array($value, $name, $userId));
     }
 
     public function delete($id)

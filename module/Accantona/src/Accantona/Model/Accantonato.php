@@ -21,6 +21,7 @@ class Accantonato implements InputFilterAwareInterface
     public $importo;
     public $descrizione;
     public $categoryDescription;
+    public $userId;
 
     protected $inputFilter;
 
@@ -33,6 +34,7 @@ class Accantonato implements InputFilterAwareInterface
     public function exchangeArray($data)
     {
         $this->id          = empty($data['id'])          ? null : $data['id'];
+        $this->userId      = empty($data['userId'])      ? null : $data['userId'];
         $this->valuta      = empty($data['valuta'])      ? null : $data['valuta'];
         $this->importo     = empty($data['importo'])     ? null : $data['importo'];
         $this->descrizione = empty($data['descrizione']) ? null : $data['descrizione'];

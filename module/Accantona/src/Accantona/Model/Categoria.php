@@ -22,6 +22,7 @@ class Categoria implements InputFilterAwareInterface
 {
 
     public $id;
+    public $userId;
     public $descrizione;
 
     protected $inputFilter;
@@ -35,6 +36,7 @@ class Categoria implements InputFilterAwareInterface
     public function exchangeArray($data)
     {
         $this->id           = empty($data['id'])            ? null : $data['id'];
+        $this->userId       = empty($data['userId'])        ? null : $data['userId'];
         $this->descrizione  = empty($data['descrizione'])   ? null : $data['descrizione'];
     }
 

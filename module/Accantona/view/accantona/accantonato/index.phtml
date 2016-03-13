@@ -40,14 +40,14 @@ $this->headTitle($title);
                 <td><?php echo $this->dateForma($row->valuta); ?></td>
                 <td class="text-right"><?php echo $this->currencyForma($row->importo); ?></td>
                 <td><?php echo $row->descrizione; ?></td>
-                <td class="text-right">
-                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                <!-- td class="text-right">
+                    <a href="<?php echo $this->url('accantona_accantonato', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </a>
-                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                    <a href="<?php echo $this->url('accantona_accantonato', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
-                </td>
+                </td -->
             </tr>
             <?php endforeach; ?>
         </tbody>
