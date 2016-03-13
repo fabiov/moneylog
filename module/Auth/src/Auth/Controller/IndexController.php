@@ -45,7 +45,7 @@ class IndexController extends AbstractActionController
                     'user', // there is a method setTableName to do the same
                     'username', // there is a method setIdentityColumn to do the same
                     'password', // there is a method setCredentialColumn to do the same
-                    "MD5(CONCAT(?, salt)) AND active=1" // setCredentialTreatment(parametrized string) 'MD5(?)'
+                    "MD5(CONCAT(?, salt)) AND status=1" // setCredentialTreatment(parametrized string) 'MD5(?)'
                 );
                 $authAdapter->setIdentity($data['username'])->setCredential($data['password']);
 
@@ -68,10 +68,9 @@ class IndexController extends AbstractActionController
                     case Result::SUCCESS:
                         $storage = $auth->getStorage();
                         $storage->write($authAdapter->getResultRowObject(null, 'password'));
-                        $time = 1209600; // 14 days 1209600/3600 = 336 hours => 336/24 = 14 days
                         if ($data['rememberme']) {
                             $sessionManager = new \Zend\Session\SessionManager();
-                            $sessionManager->rememberMe($time);
+                            $sessionManager->rememberMe(604800); // 7 days
                         }
                         break;
                     default:

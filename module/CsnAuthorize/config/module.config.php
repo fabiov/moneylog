@@ -7,10 +7,10 @@ return array(
         ),
         'resources' => array(
             'allow' => array(
-                'Accantona\Controller\Accantona' => array(
-                    'index' => 'user',
-                    'add' => 'user',
-                ),
+//                'Accantona\Controller\Accantona' => array(
+//                    'index' => 'user',
+//                    'add' => 'user',
+//                ),
                 'Accantona\Controller\Recap' => array(
                     'index' => 'user',
                     'add' => 'user',
@@ -23,14 +23,20 @@ return array(
                 'Accantona\Controller\Spesa' => array(
                     'add' => 'user',
                     'index' => 'user',
+                    'edit' => 'user',
+                    'delete' => 'user',
                 ),
                 'Accantona\Controller\Categoria' => array(
                     'add' => 'user',
                     'index' => 'user',
+                    'edit' => 'user',
+                    'delete' => 'user',
                 ),
                 'Accantona\Controller\Accantonato' => array(
                     'add' => 'user',
                     'index' => 'user',
+                    'edit' => 'user',
+                    'delete' => 'user',
                 ),
             ),
         ),

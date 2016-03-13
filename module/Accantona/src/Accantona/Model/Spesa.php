@@ -22,6 +22,7 @@ class Spesa implements InputFilterAwareInterface
 {
 
     public $id;
+    public $userId;
     public $id_categoria;
     public $valuta;
     public $importo;
@@ -39,6 +40,7 @@ class Spesa implements InputFilterAwareInterface
     public function exchangeArray($data)
     {
         $this->id                  = empty($data['id'])                  ? null : $data['id'];
+        $this->userId              = empty($data['userId'])              ? null : $data['userId'];
         $this->valuta              = empty($data['valuta'])              ? null : $data['valuta'];
         $this->id_categoria        = empty($data['id_categoria'])        ? null : $data['id_categoria'];
         $this->importo             = empty($data['importo'])             ? null : $data['importo'];
