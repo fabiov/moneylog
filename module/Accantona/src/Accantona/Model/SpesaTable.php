@@ -45,6 +45,7 @@ class SpesaTable
     public function save(Spesa $spesa)
     {
         $data = array(
+            'userId' => $spesa->userId,
             'id_categoria' => $spesa->id_categoria,
             'valuta' => $spesa->valuta,
             'importo' => $spesa->importo,
@@ -76,12 +77,13 @@ class SpesaTable
         return $this->tableGateway->selectWith($sqlSelect);
     }
 
-    function getAvgPerCategories()
+    function getAvgPerCategories($userId)
     {
         //calcolo le spese medie per ogni categoria
         $sqlSum = <<< eoc
 SELECT sum(importo) AS somma, min(valuta) AS prima_valuta, id_categoria, categorie.descrizione FROM spese
-INNER JOIN categorie ON categorie.id=spese.id_categoria WHERE date_sub(now(), interval 30 month) <= valuta 
+INNER JOIN categorie ON categorie.id=spese.id_categoria AND spese.userId=categorie.userId
+WHERE date_sub(now(), interval 30 month) <= valuta AND spese.userId=$userId
 GROUP BY id_categoria
 eoc;
         $statement = $this->tableGateway->adapter->createStatement($sqlSum);
