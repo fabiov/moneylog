@@ -15,7 +15,7 @@ echo $this->form()->closeTag();
 <?php // view helper
     if ($user = $this->identity()) {
         echo 'Logged in as ' . $this->escapeHtml($user->username);
-?>		
+?>
  | <a href="<?php echo $this->url('auth/default', array('controller' => 'index', 'action' => 'logout'));?>"><?php echo $this->translate('Logout'); ?></a> 
 <?php
     } else {

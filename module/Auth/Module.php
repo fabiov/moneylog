@@ -19,7 +19,7 @@ class Module
     {
         return include __DIR__ . '/config/module.config.php';
     }
-	
+
     public function getAutoloaderConfig()
     {
         return array(
@@ -35,7 +35,7 @@ class Module
     {
         return array(
             'factories' => array(
-				// For Yable data Gateway
+                // For Yable data Gateway
                 'Auth\Model\UsersTable' =>  function($sm) {
                     $tableGateway = $sm->get('UsersTableGateway');
                     $table = new UsersTable($tableGateway);

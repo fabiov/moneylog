@@ -4,15 +4,11 @@ namespace Auth\Controller;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-
 use Zend\Authentication\Result;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session as SessionStorage;
-
 use Zend\Db\Adapter\Adapter as DbAdapter;
-
 use Zend\Authentication\Adapter\DbTable as AuthAdapter;
-
 use Auth\Model\Auth;
 use Auth\Form\AuthForm;
 
@@ -26,6 +22,10 @@ class IndexController extends AbstractActionController
 
     public function loginAction()
     {
+        $auth = new AuthenticationService();
+        if ($auth->hasIdentity()) {
+            return $this->redirect()->toRoute('accantona_recap');
+        }
         $form = new AuthForm();
         $form->get('submit')->setValue('Login');
         $messages = null;
@@ -33,7 +33,7 @@ class IndexController extends AbstractActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $authFormFilters = new Auth();
-            $form->setInputFilter($authFormFilters->getInputFilter());	
+            $form->setInputFilter($authFormFilters->getInputFilter());
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
@@ -49,7 +49,6 @@ class IndexController extends AbstractActionController
                 );
                 $authAdapter->setIdentity($data['username'])->setCredential($data['password']);
 
-                $auth = new AuthenticationService();
                 // or prepare in the globa.config.php and get it from there. Better to be in a module, so we can replace
                 // in another module.
                 // $auth = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
