@@ -11,13 +11,9 @@ class AuthForm extends Form
         $this->setAttribute('method', 'post');
 
         $this->add(array(
-            'name' => 'username',
-            'attributes' => array(
-                'type'  => 'text',
-            ),
-            'options' => array(
-                'label' => 'Username',
-            ),
+            'name' => 'email',
+            'attributes' => array('type' => 'email'),
+            'options' => array('label' => 'Email'),
         ));
         $this->add(array(
             'name' => 'password',

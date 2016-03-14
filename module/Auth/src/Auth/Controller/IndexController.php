@@ -43,15 +43,11 @@ class IndexController extends AbstractActionController
                 $authAdapter = new AuthAdapter(
                     $dbAdapter,
                     'user', // there is a method setTableName to do the same
-                    'username', // there is a method setIdentityColumn to do the same
+                    'email',
                     'password', // there is a method setCredentialColumn to do the same
                     "MD5(CONCAT(?, salt)) AND status=1" // setCredentialTreatment(parametrized string) 'MD5(?)'
                 );
-                $authAdapter->setIdentity($data['username'])->setCredential($data['password']);
-
-                // or prepare in the globa.config.php and get it from there. Better to be in a module, so we can replace
-                // in another module.
-                // $auth = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
+                $authAdapter->setIdentity($data['email'])->setCredential($data['password']);
 
                 // You can set the service here but will be loaded only if this action called.
                 // $sm->setService('Zend\Authentication\AuthenticationService', $auth);

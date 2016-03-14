@@ -57,7 +57,7 @@ class Auth implements InputFilterAwareInterface
     {
         throw new \Exception("Not used");
     }
-	
+
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
@@ -65,7 +65,7 @@ class Auth implements InputFilterAwareInterface
             $factory     = new InputFactory();
 
             $inputFilter->add($factory->createInput(array(
-                'name'     => 'username',
+                'name'     => 'email',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
@@ -106,5 +106,6 @@ class Auth implements InputFilterAwareInterface
         }
 
         return $this->inputFilter;
-    }	
+    }
+
 }
