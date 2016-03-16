@@ -56,7 +56,7 @@ class SpesaController extends AbstractActionController
             'months'     => $months,
             'rows'       => $this->getSpesaTable()->joinFetchAll($where),
             'categories' => $categoryTable->fetchAll(array(), 'descrizione')->toArray(),
-            'avgPerCategory' => $this->getSpesaTable()->getAvgPerCategories(),
+            'avgPerCategory' => $this->getSpesaTable()->getAvgPerCategories($this->getUser()->id),
         ));
     }
 
