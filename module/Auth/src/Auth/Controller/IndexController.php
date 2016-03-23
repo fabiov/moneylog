@@ -27,7 +27,6 @@ class IndexController extends AbstractActionController
             return $this->redirect()->toRoute('accantona_recap');
         }
         $form = new AuthForm();
-        $form->get('submit')->setValue('Login');
         $messages = null;
 
         $request = $this->getRequest();
@@ -53,13 +52,8 @@ class IndexController extends AbstractActionController
                 // $sm->setService('Zend\Authentication\AuthenticationService', $auth);
                 $result = $auth->authenticate($authAdapter);
 
+
                 switch ($result->getCode()) {
-                    case Result::FAILURE_IDENTITY_NOT_FOUND:
-                        // do stuff for nonexistent identity
-                        break;
-                    case Result::FAILURE_CREDENTIAL_INVALID:
-                        // do stuff for invalid credential
-                        break;
                     case Result::SUCCESS:
                         $storage = $auth->getStorage();
                         $storage->write($authAdapter->getResultRowObject(null, 'password'));
@@ -67,13 +61,13 @@ class IndexController extends AbstractActionController
                             $sessionManager = new \Zend\Session\SessionManager();
                             $sessionManager->rememberMe(604800); // 7 days
                         }
+                        return $this->redirect()->toRoute('accantona_recap');
                         break;
+                    case Result::FAILURE_IDENTITY_NOT_FOUND:
+                    case Result::FAILURE_CREDENTIAL_INVALID:
                     default:
-                        // do stuff for other failure
+                        $messages = 'Invalid credentials';
                         break;
-                }
-                foreach ($result->getMessages() as $message) {
-                    $messages .= "$message\n"; 
                 }
             }
         }

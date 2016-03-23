@@ -51,6 +51,7 @@
                     </button>
                     <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="/img/Piggy_bank_green_32x32.png" alt="Accantona"/></a>
                 </div>
+                <?php if ($this->identity()): ?>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li class="<?php if (false) echo 'active'; ?>">
@@ -67,6 +68,7 @@
                         </li>
                     </ul>
                 </div><!--/.nav-collapse -->
+                <?php endif; ?>
             </div>
         </nav>
         <div class="container">
