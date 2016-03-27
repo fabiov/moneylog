@@ -10,62 +10,63 @@ class RegistrationForm extends Form
         parent::__construct('registration');
         $this->setAttribute('method', 'post');
 
+//        $this->add(array(
+//            'name' => 'username',
+//            'attributes' => array('type' => 'text', 'class' => 'form-control'),
+//            'options' => array('label' => 'Username'),
+//        ));
+
         $this->add(array(
-            'name' => 'username',
+            'name' => 'email',
             'attributes' => array(
-                'type'  => 'text',
-            ),
-            'options' => array(
-                'label' => 'Username',
-            ),
-        ));
-		
-        $this->add(array(
-            'name' => 'usr_email',
-            'attributes' => array(
-                'type'  => 'email',
+                'type' => 'email',
+                'class' => 'form-control',
             ),
             'options' => array(
                 'label' => 'E-mail',
             ),
-        ));	
-		
+        ));
+
         $this->add(array(
             'name' => 'password',
             'attributes' => array(
-                'type'  => 'password',
+                'type' => 'password',
+                'class' => 'form-control',
             ),
             'options' => array(
                 'label' => 'Password',
             ),
         ));
-		
+
         $this->add(array(
             'name' => 'password_confirm',
             'attributes' => array(
-                'type'  => 'password',
+                'type' => 'password',
+                'class' => 'form-control',
             ),
             'options' => array(
                 'label' => 'Confirm Password',
             ),
-        ));	
+        ));
 
-		$this->add(array(
-			'type' => 'Zend\Form\Element\Captcha',
-			'name' => 'captcha',
-			'options' => array(
-				'label' => 'Please verify you are human',
-				'captcha' => new \Zend\Captcha\Figlet(),
-			),
-		));
-		
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Captcha',
+            'name' => 'captcha',
+            'options' => array(
+                'label' => 'Please verify you are human',
+                'captcha' => new \Zend\Captcha\Figlet(array('wordLen' => 3)),
+                'class' => 'form-control',
+            ),
+        ));
+
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
-                'type'  => 'submit',
+                'type' => 'submit',
                 'value' => 'Go',
                 'id' => 'submitbutton',
+                'class' => 'btn btn-lg btn-primary btn-block',
             ),
-        )); 
+        ));
     }
 }

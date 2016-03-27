@@ -3,7 +3,7 @@ namespace Auth;
 
 // Add this for Table Date Gateway
 use Auth\Model\Auth;
-use Auth\Model\UsersTable;
+use Auth\Model\UserTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
@@ -36,25 +36,26 @@ class Module
         return array(
             'factories' => array(
                 // For Yable data Gateway
-                'Auth\Model\UsersTable' =>  function($sm) {
-                    $tableGateway = $sm->get('UsersTableGateway');
-                    $table = new UsersTable($tableGateway);
+                'Auth\Model\UserTable' =>  function($sm) {
+                    $tableGateway = $sm->get('UserTableGateway');
+                    $table = new UserTable($tableGateway);
                     return $table;
                 },
-                'UsersTableGateway' => function ($sm) {
+                'UserTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Auth()); // Notice what is set here
-                    return new TableGateway('users', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
                 },
-				// Add this for SMTP transport
-				'mail.transport' => function (ServiceManager $serviceManager) {
-					$config = $serviceManager->get('Config'); 
-					$transport = new Smtp();                
-					$transport->setOptions(new SmtpOptions($config['mail']['transport']['options']));
-					return $transport;
-				},
+                // Add this for SMTP transport
+                'mail.transport' => function (ServiceManager $serviceManager) {
+                    $config = $serviceManager->get('Config');
+                    $transport = new Smtp();
+                    $transport->setOptions(new SmtpOptions($config['mail']['transport']['options']));
+                    return $transport;
+                },
             ),
         );
-    }		
+    }
+
 }

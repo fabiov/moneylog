@@ -3,9 +3,9 @@ return array(
 //	'static_salt' => 'aFGQ475SDsdfsaf2342', // I am going to move it to global.php. It should be accessable everywhere
 	'controllers' => array(
         'invokables' => array(
-            'Auth\Controller\Index' => 'Auth\Controller\IndexController',	
-            'Auth\Controller\Registration' => 'Auth\Controller\RegistrationController',	
-            'Auth\Controller\Admin' => 'Auth\Controller\AdminController',	
+            'Auth\Controller\Index' => 'Auth\Controller\IndexController',
+            'Auth\Controller\Registration' => 'Auth\Controller\RegistrationController',
+            'Auth\Controller\Admin' => 'Auth\Controller\AdminController',
         ),
 	),
     'router' => array(
@@ -29,14 +29,14 @@ return array(
 							'constraints' => array(
 								'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
 								'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-								'id'     	 => '[a-zA-Z0-9_-]*',
+								'id' => '[a-zA-Z0-9_-]*',
 							),
 							'defaults' => array(
 							),
 						),
 					),
 				),
-			),			
+			),
 		),
 	),
     'view_manager' => array(
@@ -46,7 +46,6 @@ return array(
         'template_path_stack' => array(
             'auth' => __DIR__ . '/../view'
         ),
-		
 		'display_exceptions' => true,
     ),
 	'service_manager' => array(

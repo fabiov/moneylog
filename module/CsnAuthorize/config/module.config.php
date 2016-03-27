@@ -7,10 +7,11 @@ return array(
         ),
         'resources' => array(
             'allow' => array(
-//                'Accantona\Controller\Accantona' => array(
-//                    'index' => 'user',
-//                    'add' => 'user',
-//                ),
+                'Auth\Controller\Registration' => array(
+                    'confirm-email' => 'guest',
+                    'index' => 'guest',
+                    'registration-success' => 'guest',
+                ),
                 'Accantona\Controller\Recap' => array(
                     'index' => 'user',
                     'add' => 'user',

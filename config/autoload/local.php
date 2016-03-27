@@ -7,8 +7,17 @@
  */
 
 return array(
-//    'db' => array(
-//        'username' => 'root',
-//        'password' => 'root',
-//    ),
+    'mail' => array(
+        'transport' => array(
+            'options' => array(
+                'host' => 'smtp.gmail.com',
+                'connection_class'  => 'plain',
+                'connection_config' => array(
+                    'username' => 'foravatenubi@gmail.com',
+                    'password' => 'nQMnFXS1',
+                    'ssl' => 'tls',
+                ),
+            ),
+        ),
+    ),
 );
