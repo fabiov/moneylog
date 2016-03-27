@@ -3,12 +3,13 @@ return array(
     'acl' => array(
         'roles' => array(
             'guest' => null,
-            'user' => 'guest', // member estende guest
+            'user' => 'guest', // member extendes guest
         ),
         'resources' => array(
             'allow' => array(
                 'Auth\Controller\Registration' => array(
                     'confirm-email' => 'guest',
+                    'forgotten-password' => 'guest',
                     'index' => 'guest',
                     'registration-success' => 'guest',
                 ),
