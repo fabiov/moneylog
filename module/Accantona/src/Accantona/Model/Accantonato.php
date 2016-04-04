@@ -61,18 +61,7 @@ class Accantonato implements InputFilterAwareInterface
                 ),
             ));
 
-            $inputFilter->add(array(
-                'name'     => 'importo',
-                'required' => true,
-                'validators' => array(
-                    array(
-                        'name'    => 'Regex',
-                        'options' => array(
-                            'pattern' => '/^[0-9]+$/',
-                        ),
-                    ),
-                ),
-            ));
+            $inputFilter->add(array('name' => 'importo', 'required' => true));
 
             $inputFilter->add(array(
                 'name'     => 'descrizione',

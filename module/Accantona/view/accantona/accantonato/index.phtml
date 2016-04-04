@@ -1,6 +1,7 @@
 <?php
 /**
- * @var $this Zend\View\Renderer\PhpRenderer
+ * @var Zend\View\Renderer\PhpRenderer $this
+ * @var \Accantona\Form\AccantonatoForm $form
  */
 $title = 'Accantonati';
 $this->headTitle($title);
@@ -56,7 +57,7 @@ $this->headTitle($title);
             <tr>
                 <td></td>
                 <td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
-                <td><input class="form-control text-right" name="importo" step="0.01" type="number" /></td>
+                <td><?php echo $this->formInput($form->get('importo')); ?></td>
                 <td><input class="form-control" name="descrizione" /></td>
                 <td class="actions text-right">
                     <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Add">

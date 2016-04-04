@@ -51,6 +51,7 @@ class AccantonatoController extends AbstractActionController
         return new ViewModel(array(
             'months' => $months,
             'rows' => $this->getAccantonatoTable()->fetchAll($where),
+            'form' => new AccantonatoForm(),
         ));
     }
 

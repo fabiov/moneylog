@@ -25,7 +25,10 @@ class AccantonatoForm extends Form
             'required' => true,
             'type' => 'Number',
             'attributes' => array(
+                'class' => 'form-control text-right',
                 'label' => 'Importo',
+                'min' => 0,
+                'step' => 0.01,
             ),
         ));
         $this->add(array(
