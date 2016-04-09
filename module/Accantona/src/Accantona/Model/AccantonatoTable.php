@@ -53,6 +53,7 @@ class AccantonatoTable
     public function save(Accantonato $accantonato)
     {
         $data = array(
+            'userId' => $accantonato->userId,
             'valuta' => $accantonato->valuta,
             'importo' => $accantonato->importo,
             'descrizione' => $accantonato->descrizione,

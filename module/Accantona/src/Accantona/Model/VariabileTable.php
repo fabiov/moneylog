@@ -57,18 +57,37 @@ class VariabileTable
     }
 
     /**
-     * @param $name
-     * @param $value
+     * @param string $name
+     * @param string $value
+     * @param int $userId
+     * @return bool
      */
-    public function updateByName($name, $value)
+    public function updateByName($name, $value, $userId)
     {
         return (bool) $this->tableGateway->adapter
-            ->query('UPDATE variabili SET valore=? WHERE nome=?', array($value, $name));
+            ->query('UPDATE variabili SET valore=? WHERE nome=? AND userId=?', array($value, $name, $userId));
     }
 
     public function delete($id)
     {
         $this->tableGateway->delete(array('id' => (int) $id));
+    }
+
+    public function createUserVariables($userId)
+    {
+        $vars = array(
+            'saldo_banca' => array('value' => 0, 'sign' =>  1),
+            'contanti'    => array('value' => 0, 'sign' =>  1),
+            'risparmio'   => array('value' => 0, 'sign' => -1),
+        );
+        foreach ($vars as $name => $data) {
+            $this->tableGateway->insert(array(
+                'userId' => $userId,
+                'segno'  => $data['sign'],
+                'nome'   => $name,
+                'valore' => $data['value'],
+            ));
+        }
     }
 
 }

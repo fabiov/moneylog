@@ -12,8 +12,10 @@
  * @author fabio.ventura
  */
 namespace Accantona\Model;
+
 use Zend\Db\Sql\Select;
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Debug\Debug;
 
 class CategoriaTable
 {
@@ -49,7 +51,7 @@ class CategoriaTable
 
     public function save(Categoria $categoria)
     {
-        $data = array('id' => $categoria->id, 'descrizione' => $categoria->descrizione);
+        $data = array('id' => $categoria->id, 'userId' => $categoria->userId, 'descrizione' => $categoria->descrizione);
 
         $id = (int) $categoria->id;
         if ($id == 0) {
@@ -66,6 +68,12 @@ class CategoriaTable
     public function delete($id)
     {
         $this->tableGateway->delete(array('id' => (int) $id));
+    }
+
+    public function deleteByAttributes(array $attributes)
+    {
+        //Debug::dump($attributes);die;
+        $this->tableGateway->delete($attributes);
     }
 
 }

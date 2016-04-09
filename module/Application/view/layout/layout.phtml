@@ -51,31 +51,33 @@
                     </button>
                     <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="/img/Piggy_bank_green_32x32.png" alt="Accantona"/></a>
                 </div>
+                <?php if ($this->identity()): ?>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li class="<?php if (false) echo 'active'; ?>">
-                            <a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Riepilogo') ?></a>
+                            <a href="<?php echo $this->url('accantona_recap') ?>"><?php echo $this->translate('Riepilogo'); ?></a>
                         </li>
                         <li class="<?php if (false) echo 'active'; ?>">
-                            <a href="<?php echo $this->url('accantona_spesa') ?>"><?php echo $this->translate('Spese') ?></a>
+                            <a href="<?php echo $this->url('accantona_spesa') ?>"><?php echo $this->translate('Spese'); ?></a>
                         </li>
                         <li class="<?php if (false) echo 'active'; ?>">
-                            <a href="<?php echo $this->url('accantona_categoria') ?>"><?php echo $this->translate('Categorie') ?></a>
+                            <a href="<?php echo $this->url('accantona_categoria') ?>"><?php echo $this->translate('Categorie'); ?></a>
                         </li>
                         <li class="<?php if (false) echo 'active'; ?>">
-                            <a href="<?php echo $this->url('accantona_accantonato') ?>"><?php echo $this->translate('Accantonati') ?></a>
+                            <a href="<?php echo $this->url('accantona_accantonato'); ?>"><?php echo $this->translate('Accantonati'); ?></a>
                         </li>
                     </ul>
                 </div><!--/.nav-collapse -->
+                <?php endif; ?>
             </div>
         </nav>
         <div class="container">
             <?php echo $this->content; ?>
             <hr>
             <footer>
-                <p>&copy; 2015 - <?php echo date('Y') ?> by Fabio Ventura. <?php echo $this->translate('All rights reserved.') ?></p>
+                <p>&copy; 2015 - <?php echo date('Y'); ?> by Fabio Ventura. <?php echo $this->translate('All rights reserved.'); ?></p>
             </footer>
-        </div> <!-- /container -->
-        <?php echo $this->inlineScript() ?>
+        </div>
+        <?php echo $this->inlineScript(); ?>
     </body>
 </html>

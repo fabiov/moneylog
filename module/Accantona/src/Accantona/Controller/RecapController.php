@@ -14,6 +14,9 @@ use Zend\Debug\Debug;
 class RecapController extends AbstractActionController
 {
 
+    /**
+     * @var SpesaTable $spesaTable
+     */
     protected $spesaTable;
     protected $variabileTable;
     protected $accantonatoTable;
@@ -23,14 +26,15 @@ class RecapController extends AbstractActionController
      */
     public function indexAction()
     {
+        $user = $this->getUser();
         $spesaTable = $this->getSpesaTable();
-        $avgPerCategory = $spesaTable->getAvgPerCategories();
+        $avgPerCategory = $spesaTable->getAvgPerCategories($user->id);
         usort($avgPerCategory, function ($a, $b) {
             return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? 1 : -1);
         });
 
         $variables = array();
-        foreach ($this->getVariabileTable()->fetchAll() as $variable) {
+        foreach ($this->getVariabileTable()->fetchAll(array('userId' => $user->id)) as $variable) {
             $variables[$variable->nome] = $variable->valore;
         }
 
@@ -48,21 +52,24 @@ class RecapController extends AbstractActionController
     {
         $request = $this->getRequest();
         if ($request->isPost()) {
+            /* @var VariabileTable $variabileTable */
             $variabileTable = $this->getVariabileTable();
+            $user = $this->getUser();
+
             // saldo_banca
             $val = $this->params()->fromPost('saldo_banca');
             if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $val)) {
-                $variabileTable->updateByName('saldo_banca', $val);
+                $variabileTable->updateByName('saldo_banca', $val, $user->id);
             }
             // contanti
             $val = $this->params()->fromPost('contanti');
             if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $val)) {
-                $variabileTable->updateByName('contanti', $val);
+                $variabileTable->updateByName('contanti', $val, $user->id);
             }
             // risparmio
             $val = $this->params()->fromPost('risparmio');
             if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $val)) {
-                $variabileTable->updateByName('risparmio', $val);
+                $variabileTable->updateByName('risparmio', $val, $user->id);
             }
         }
         return $this->redirect()->toRoute('accantona_recap', array('action' => 'index'));
@@ -96,6 +103,11 @@ class RecapController extends AbstractActionController
             $this->accantonatoTable = $sm->get('Accantona\Model\AccantonatoTable');
         }
         return $this->accantonatoTable;
+    }
+
+    public function getUser()
+    {
+        return $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
     }
 
 }

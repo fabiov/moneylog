@@ -1,0 +1,40 @@
+<?php
+/* @var Auth\Form\AuthForm $form */
+$form = $this->form;
+$form->setAttributes(array(
+    'action' => $this->url('auth/default', array('controller' => 'index', 'action' => 'login')),
+    'class' => 'form-signin',
+));
+$form->prepare();
+?>
+<style type="text/css">
+    .form-signin {
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+    }
+</style>
+<?php echo $this->form()->openTag($form); ?>
+    <h1 class="form-signin-heading">Please sign in</h1>
+
+    <?php echo $this->formLabel($form->get('email')); ?>
+    <?php echo $this->formInput($form->get('email')); ?>
+
+    <?php echo $this->formLabel($form->get('password')); ?>
+    <?php echo $this->formInput($form->get('password')); ?>
+
+    <div class="checkbox">
+        <?php echo $this->formRow($form->get('rememberme')); ?>
+    </div>
+    <?php echo $this->formSubmit($form->get('submit')); ?>
+    <br />
+    <?php if ($this->messages): ?>
+    <div class="alert alert-danger" role="alert"><?php echo $this->escapeHtml($this->messages); ?></div>
+    <?php endif; ?>
+    <div>
+        <a href="<?php echo $this->url('auth/default', array('controller' => 'registration', 'action' => 'index'));?>"><?php echo $this->translate('Register'); ?></a>
+        |
+        <a href="<?php echo $this->url('auth/default', array('controller' => 'registration', 'action' => 'forgotten-password'));?>"><?php echo $this->translate('Forgotten Password'); ?></a>
+    </div>
+
+<?php echo $this->form()->closeTag(); ?>

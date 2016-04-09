@@ -25,6 +25,8 @@ $conf = array(
     'service_manager' => array(
         'factories' => array('Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory'),
     ),
+    
+    'static_salt' => 'pippo',
 );
 
 // set configuration for specific environment

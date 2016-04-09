@@ -11,7 +11,6 @@ return array(
 //        'username' => 'root',
 //        'password' => 'root',
 //    ),
-
     'doctrine' => array(
         'connection' => array(
             'orm_default' => array(

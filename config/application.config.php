@@ -5,6 +5,8 @@ return array(
         'Accantona',
         'Album',
         'Application',
+        'Auth',
+        'CsnAuthorize',
         'DoctrineModule',
         'DoctrineORMModule',
     ),

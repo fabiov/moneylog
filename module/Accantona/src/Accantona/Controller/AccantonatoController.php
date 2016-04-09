@@ -10,6 +10,7 @@ use Zend\Debug\Debug;
 class AccantonatoController extends AbstractActionController
 {
 
+    protected $user;
     protected $accantonatoTable;
 
     public function addAction()
@@ -24,7 +25,9 @@ class AccantonatoController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $accantonato->exchangeArray($form->getData());
+                $data = $form->getData();
+                $data['userId'] = $this->getUser()->id;
+                $accantonato->exchangeArray($data);
                 $this->getAccantonatoTable()->save($accantonato);
                 // Redirect to list of categories
                 return $this->redirect()->toRoute('accantona_accantonato');
@@ -38,24 +41,34 @@ class AccantonatoController extends AbstractActionController
 
     public function indexAction()
     {
-        $where = array();
-        if (($months = (int)$this->params()->fromQuery('monthsFilter', 1)) != false) {
+        $where = array(
+            'userId=' . $this->getUser()->id,
+        );
+        if (($months = (int) $this->params()->fromQuery('monthsFilter', 1)) != false) {
             $where[] = 'valuta>"' . date('Y-m-d', strtotime("-$months month")) . '"';
         }
 
         return new ViewModel(array(
             'months' => $months,
             'rows' => $this->getAccantonatoTable()->fetchAll($where),
+            'form' => new AccantonatoForm(),
         ));
     }
 
     public function getAccantonatoTable()
     {
         if (!$this->accantonatoTable) {
-            $sm = $this->getServiceLocator();
-            $this->accantonatoTable = $sm->get('Accantona\Model\AccantonatoTable');
+            $this->accantonatoTable = $this->getServiceLocator()->get('Accantona\Model\AccantonatoTable');
         }
         return $this->accantonatoTable;
+    }
+
+    public function getUser()
+    {
+        if (!$this->user) {
+            $this->user = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+        }
+        return $this->user;
     }
 
 }

@@ -27,12 +27,12 @@ class SpesaController extends AbstractActionController
 
             if ($form->isValid()) {
                 $spesa->exchangeArray($form->getData());
+                $spesa->userId = $this->getUser()->id;
                 $this->getSpesaTable()->save($spesa);
                 // Redirect to list of categories
                 return $this->redirect()->toRoute('accantona_spesa');
             }
             Debug::dump($form->getMessages());
-            echo 'NO';die;
         }
         return array('form' => $form);
     }
@@ -42,7 +42,7 @@ class SpesaController extends AbstractActionController
         $sm = $this->getServiceLocator();
         $categoryTable = $sm->get('Accantona\Model\CategoriaTable');
 
-        $where = array();
+        $where = array('spese.userId' => $this->getUser()->id);
 
         if (($categoryId = (int) $this->params()->fromQuery('categoryIdFilter', 0)) != false) {
             $where[] = "categorie.id=$categoryId";
@@ -56,7 +56,7 @@ class SpesaController extends AbstractActionController
             'months'     => $months,
             'rows'       => $this->getSpesaTable()->joinFetchAll($where),
             'categories' => $categoryTable->fetchAll(array(), 'descrizione')->toArray(),
-            'avgPerCategory' => $this->getSpesaTable()->getAvgPerCategories(),
+            'avgPerCategory' => $this->getSpesaTable()->getAvgPerCategories($this->getUser()->id),
         ));
     }
 
@@ -75,6 +75,11 @@ class SpesaController extends AbstractActionController
             $this->spesaTable = $sm->get('Accantona\Model\SpesaTable');
         }
         return $this->spesaTable;
+    }
+
+    public function getUser()
+    {
+        return $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
     }
 
 }
