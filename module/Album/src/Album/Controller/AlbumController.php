@@ -4,13 +4,28 @@ namespace Album\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Album\Model\Album;
+//use Album\Model\Album;
+use Album\Entity\Album;
 use Album\Form\AlbumForm;
+use Doctrine\ORM\EntityManager;
 
 class AlbumController extends AbstractActionController
 {
 
     protected $albumTable;
+
+    /**
+     * @var DoctrineORMEntityManager
+     */
+    protected $em;
+
+    public function getEntityManager()
+    {
+        if (null === $this->em) {
+            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        }
+        return $this->em;
+    }
 
     public function addAction()
     {
@@ -25,7 +40,9 @@ class AlbumController extends AbstractActionController
 
             if ($form->isValid()) {
                 $album->exchangeArray($form->getData());
-                $this->getAlbumTable()->saveAlbum($album);
+//                $this->getAlbumTable()->saveAlbum($album);
+                $this->getEntityManager()->persist($album);
+                $this->getEntityManager()->flush();
 
                 // Redirect to list of albums
                 return $this->redirect()->toRoute('album');
@@ -37,7 +54,8 @@ class AlbumController extends AbstractActionController
     public function indexAction()
     {
         return new ViewModel(array(
-            'albums' => $this->getAlbumTable()->fetchAll(),
+//            'albums' => $this->getAlbumTable()->fetchAll(),
+            'albums' => $this->getEntityManager()->getRepository('Album\Entity\Album')->findAll(),
         ));
     }
 
@@ -46,17 +64,23 @@ class AlbumController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('album', array(
-                    'action' => 'add'
+                'action' => 'add'
             ));
         }
 
         // Get the Album with the specified id.  An exception is thrown
         // if it cannot be found, in which case go to the index page.
-        try {
-            $album = $this->getAlbumTable()->getAlbum($id);
-        } catch (\Exception $ex) {
+//        try {
+//            $album = $this->getAlbumTable()->getAlbum($id);
+//        } catch (\Exception $ex) {
+//            return $this->redirect()->toRoute('album', array(
+//                    'action' => 'index'
+//            ));
+//        }
+        $album = $this->getEntityManager()->find('Album\Entity\Album', $id);
+        if (!$album) {
             return $this->redirect()->toRoute('album', array(
-                    'action' => 'index'
+                'action' => 'index'
             ));
         }
 
@@ -70,7 +94,8 @@ class AlbumController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getAlbumTable()->saveAlbum($album);
+//                $this->getAlbumTable()->saveAlbum($album);
+                $this->getEntityManager()->flush();
 
                 // Redirect to list of albums
                 return $this->redirect()->toRoute('album');
@@ -96,7 +121,12 @@ class AlbumController extends AbstractActionController
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getAlbumTable()->deleteAlbum($id);
+//                $this->getAlbumTable()->deleteAlbum($id);
+                $album = $this->getEntityManager()->find('Album\Entity\Album', $id);
+                if ($album) {
+                    $this->getEntityManager()->remove($album);
+                    $this->getEntityManager()->flush();
+                }
             }
 
             // Redirect to list of albums
