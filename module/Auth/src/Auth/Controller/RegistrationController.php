@@ -65,7 +65,14 @@ class RegistrationController extends AbstractActionController
         $token = $this->params()->fromRoute('id');
         $viewModel = new ViewModel(array('token' => $token));
         try {
-            $this->getUserTable()->activateUser($this->getUserTable()->getUserByToken($token)->id);
+
+            $userTable = $this->getUserTable();
+
+            $user = $userTable->getUserByToken($token);
+            $userTable->activateUser($user->id);
+
+            $this->getVariableTable()->createUserVariables($user->id);
+
         } catch(\Exception $e) {
             $viewModel->setTemplate('auth/registration/confirm-email-error.phtml');
         }
@@ -229,6 +236,11 @@ class RegistrationController extends AbstractActionController
             $this->userTable = $sm->get('Auth\Model\UserTable');
         }
         return $this->userTable;
+    }
+
+    public function getVariableTable()
+    {
+        return $this->getServiceLocator()->get('Accantona\Model\VariabileTable');
     }
 
     public function sendConfirmationEmail($auth)

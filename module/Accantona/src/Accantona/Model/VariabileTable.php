@@ -73,4 +73,21 @@ class VariabileTable
         $this->tableGateway->delete(array('id' => (int) $id));
     }
 
+    public function createUserVariables($userId)
+    {
+        $vars = array(
+            'saldo_banca' => array('value' => 0, 'sign' =>  1),
+            'contanti'    => array('value' => 0, 'sign' =>  1),
+            'risparmio'   => array('value' => 0, 'sign' => -1),
+        );
+        foreach ($vars as $name => $data) {
+            $this->tableGateway->insert(array(
+                'userId' => $userId,
+                'segno'  => $data['sign'],
+                'nome'   => $name,
+                'valore' => $data['value'],
+            ));
+        }
+    }
+
 }
