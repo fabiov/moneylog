@@ -40,6 +40,9 @@ return array(
                     'edit' => 'user',
                     'delete' => 'user',
                 ),
+                'Accantona\Controller\Settings' => array(
+                    'index' => 'user',
+                ),
             ),
         ),
     ),

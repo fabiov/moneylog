@@ -66,6 +66,12 @@
                         <li class="<?php if (false) echo 'active'; ?>">
                             <a href="<?php echo $this->url('accantona_accantonato'); ?>"><?php echo $this->translate('Accantonati'); ?></a>
                         </li>
+                        <li class="<?php if (false) echo 'active'; ?>">
+                            <a href="<?php echo $this->url('accantonaSettings'); ?>"><?php echo $this->translate('Settings'); ?></a>
+                        </li>
+                        <li class="<?php if (false) echo 'active'; ?>">
+                            <a href="<?php echo $this->url('auth/default', array('action' => 'logout')); ?>"><?php echo $this->translate('Logout'); ?></a>
+                        </li>
                     </ul>
                 </div><!--/.nav-collapse -->
                 <?php endif; ?>

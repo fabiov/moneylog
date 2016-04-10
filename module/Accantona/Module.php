@@ -25,6 +25,7 @@ use Zend\ModuleManager\Feature\ConfigProviderInterface;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
+
     public function getAutoloaderConfig()
     {
         return array(
@@ -48,7 +49,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
      {
          return array(
              'factories' => array(
-                 'Accantona\Model\SpesaTable' =>  function($sm) {
+                 'Accantona\Model\SpesaTable' => function($sm) {
                      $tableGateway = $sm->get('SpesaTableGateway');
                      $table = new SpesaTable($tableGateway);
                      return $table;
@@ -83,8 +84,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                      $resultSetPrototype->setArrayObjectPrototype(new Accantonato());
                      return new TableGateway('accantonati', $dbAdapter, null, $resultSetPrototype);
                  },
-
-                'Accantona\Model\CategoriaTable' =>  function($sm) {
+                'Accantona\Model\CategoriaTable' => function($sm) {
                      $tableGateway = $sm->get('CategoriaTableGateway');
                      $table = new CategoriaTable($tableGateway);
                      return $table;
