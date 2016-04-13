@@ -1,0 +1,28 @@
+<style type="text/css">
+    .form-setting {
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+    }
+</style>
+<form class="form-setting" action="<?php echo $this->url(); ?>">
+    <div class="row form-group">
+        <h1>Impostazioni</h1>
+    </div>
+    <?php foreach ($userSettings as $setting): ?>
+    <div class="row form-group">
+        <label class="form-control-label" for="<?php echo $setting->setting->name; ?>"><?php echo $setting->setting->name; ?></label>
+        <input required
+               class="form-control"
+               name="<?php echo $setting->setting->name; ?>"
+               type="<?php echo $setting->setting->type; ?>"
+               <?php foreach ($setting->setting->options as $name => $value): ?>
+               <?php echo $name; ?>="<?php echo $value; ?>"
+               <?php endforeach; ?>
+                />
+        </div>
+    <?php endforeach; ?>
+    <div class="row form-group">
+        <input class="form-control btn-primary" type="submit" value="Salva" />
+    </div>
+</form>

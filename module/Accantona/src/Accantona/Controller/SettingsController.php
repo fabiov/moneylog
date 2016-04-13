@@ -2,17 +2,18 @@
 namespace Accantona\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-//use Zend\View\Model\ViewModel;
-//use Accantona\Model\Accantonato;
-//use Accantona\Form\AccantonatoForm;
+use Zend\View\Model\ViewModel;
 //use Zend\Debug\Debug;
 
 class SettingsController extends AbstractActionController
 {
-//
-//    protected $user;
-//    protected $accantonatoTable;
-//
+
+    /**
+     * @var DoctrineORMEntityManager
+     */
+    protected $em;
+    protected $user;
+
 //    public function addAction()
 //    {
 //        $form = new AccantonatoForm();
@@ -38,31 +39,24 @@ class SettingsController extends AbstractActionController
 //        }
 //        return array('form' => $form);
 //    }
-//
-//    public function indexAction()
-//    {
-//        $where = array(
-//            'userId=' . $this->getUser()->id,
-//        );
-//        if (($months = (int) $this->params()->fromQuery('monthsFilter', 1)) != false) {
-//            $where[] = 'valuta>"' . date('Y-m-d', strtotime("-$months month")) . '"';
-//        }
-//
-//        return new ViewModel(array(
-//            'months' => $months,
-//            'rows' => $this->getAccantonatoTable()->fetchAll($where),
-//            'form' => new AccantonatoForm(),
-//        ));
-//    }
-//
-//    public function getAccantonatoTable()
-//    {
-//        if (!$this->accantonatoTable) {
-//            $this->accantonatoTable = $this->getServiceLocator()->get('Accantona\Model\AccantonatoTable');
-//        }
-//        return $this->accantonatoTable;
-//    }
-//
+
+    public function indexAction()
+    {
+        return new ViewModel(array(
+            'userSettings' => $this->getEntityManager()->getRepository('Application\Entity\UserSetting')->findBy(array(
+                'userId' => 1,
+            )),
+        ));
+    }
+
+    public function getEntityManager()
+    {
+        if (null === $this->em) {
+            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        }
+        return $this->em;
+    }
+
 //    public function getUser()
 //    {
 //        if (!$this->user) {
@@ -70,5 +64,5 @@ class SettingsController extends AbstractActionController
 //        }
 //        return $this->user;
 //    }
-//
+
 }
