@@ -11,15 +11,8 @@
     </div>
     <?php foreach ($userSettings as $setting): ?>
     <div class="row form-group">
-        <label class="form-control-label" for="<?php echo $setting->setting->name; ?>"><?php echo $setting->setting->name; ?></label>
-        <input required
-               class="form-control"
-               name="<?php echo $setting->setting->name; ?>"
-               type="<?php echo $setting->setting->type; ?>"
-               <?php foreach ($setting->setting->options as $name => $value): ?>
-               <?php echo $name; ?>="<?php echo $value; ?>"
-               <?php endforeach; ?>
-                />
+        <?php echo $this->formLabel($settingForm->get('payDay')); ?>
+        <?php echo $this->formInput($settingForm->get('payDay')); ?>
         </div>
     <?php endforeach; ?>
     <div class="row form-group">

@@ -3,7 +3,8 @@ namespace Accantona\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-//use Zend\Debug\Debug;
+use Zend\Debug\Debug;
+use Accantona\Form\SettingsForm;
 
 class SettingsController extends AbstractActionController
 {
@@ -42,10 +43,20 @@ class SettingsController extends AbstractActionController
 
     public function indexAction()
     {
+        $message = '';
+        $settingForm = new SettingsForm();
+        $userSettings = $this->getEntityManager()->getRepository('Application\Entity\UserSetting')
+            ->findBy(array('userId' => $this->getUser()->id));
+
+        // set user value for input setting
+        foreach ($userSettings as $userSetting) {
+            $settingForm->get($userSetting->setting->name)->setAttribute('value', $userSetting->value);
+        }
+
         return new ViewModel(array(
-            'userSettings' => $this->getEntityManager()->getRepository('Application\Entity\UserSetting')->findBy(array(
-                'userId' => 1,
-            )),
+            'message'      => $message,
+            'settingForm'  => $settingForm,
+            'userSettings' => $userSettings,
         ));
     }
 
@@ -57,12 +68,12 @@ class SettingsController extends AbstractActionController
         return $this->em;
     }
 
-//    public function getUser()
-//    {
-//        if (!$this->user) {
-//            $this->user = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
-//        }
-//        return $this->user;
-//    }
+    public function getUser()
+    {
+        if (!$this->user) {
+            $this->user = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+        }
+        return $this->user;
+    }
 
 }
