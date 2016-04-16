@@ -44,18 +44,35 @@ class SettingsController extends AbstractActionController
     public function indexAction()
     {
         $message = '';
-        $settingForm = new SettingsForm();
+        $form = new SettingsForm();
+
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($album->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+//                $this->getAlbumTable()->saveAlbum($album);
+                $this->getEntityManager()->flush();
+
+                // Redirect to list of albums
+                return $this->redirect()->toRoute('album');
+            }
+        }
+
+
         $userSettings = $this->getEntityManager()->getRepository('Application\Entity\UserSetting')
             ->findBy(array('userId' => $this->getUser()->id));
 
         // set user value for input setting
         foreach ($userSettings as $userSetting) {
-            $settingForm->get($userSetting->setting->name)->setAttribute('value', $userSetting->value);
+            $form->get($userSetting->setting->name)->setAttribute('value', $userSetting->value);
         }
 
         return new ViewModel(array(
             'message'      => $message,
-            'settingForm'  => $settingForm,
+            'settingForm'  => $form,
             'userSettings' => $userSettings,
         ));
     }
