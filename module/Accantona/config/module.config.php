@@ -7,6 +7,7 @@ return array(
             'Accantona\Controller\Categoria' => 'Accantona\Controller\CategoriaController',
             'Accantona\Controller\Recap' => 'Accantona\Controller\RecapController',
             'Accantona\Controller\Accantonato' => 'Accantona\Controller\AccantonatoController',
+            'Accantona\Controller\Settings' => 'Accantona\Controller\SettingsController',
         ),
     ),
 
@@ -43,6 +44,14 @@ return array(
                     'route' => '/accantonato[/:action][/:id]',
                     'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
                     'defaults' => array('controller' => 'Accantona\Controller\Accantonato', 'action' => 'index'),
+                ),
+            ),
+            'accantonaSettings' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route' => '/settings[/:action][/:id]',
+                    'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
+                    'defaults' => array('controller' => 'Accantona\Controller\Settings', 'action' => 'index'),
                 ),
             ),
         ),

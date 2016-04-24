@@ -21,6 +21,7 @@ return array(
                 'Auth\Controller\Index' => array(
                     'index' => 'guest',
                     'login' => 'guest',
+                    'logout' => 'guest',
                 ),
                 'Accantona\Controller\Spesa' => array(
                     'add' => 'user',
@@ -39,6 +40,9 @@ return array(
                     'index' => 'user',
                     'edit' => 'user',
                     'delete' => 'user',
+                ),
+                'Accantona\Controller\Settings' => array(
+                    'index' => 'user',
                 ),
             ),
         ),
