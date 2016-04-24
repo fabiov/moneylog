@@ -5,16 +5,23 @@
         margin: 0 auto;
     }
 </style>
-<form class="form-setting" action="<?php echo $this->url(); ?>">
+<form class="form-setting" method="post" action="<?php echo $this->url(); ?>">
     <div class="row form-group">
         <h1>Impostazioni</h1>
     </div>
-    <?php foreach ($userSettings as $setting): ?>
-    <div class="row form-group">
-        <?php echo $this->formLabel($settingForm->get('payDay')); ?>
-        <?php echo $this->formInput($settingForm->get('payDay')); ?>
-        </div>
-    <?php endforeach; ?>
+
+    <?php if ($message): ?>
+        <div class="row alert alert-success" role="alert"><?php echo $message; ?></div>
+    <?php endif; ?>
+
+    <?php $element = $form->get('payDay'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="row form-group <?php if ($errors) echo 'has-error'; ?>">
+        <?php echo $this->formLabel($element); ?>
+        <?php echo $this->formInput($element); ?>
+        <?php echo $errors; ?>
+    </div>
+
     <div class="row form-group">
         <input class="form-control btn-primary" type="submit" value="Salva" />
     </div>

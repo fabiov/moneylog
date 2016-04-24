@@ -1,6 +1,7 @@
 <?php
 namespace Auth\Controller;
 
+use Application\Entity\Setting;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -19,6 +20,7 @@ use Zend\Mail\Message;
 class RegistrationController extends AbstractActionController
 {
     protected $userTable;
+    private $em;
 
     public function indexAction()
     {
@@ -70,6 +72,12 @@ class RegistrationController extends AbstractActionController
 
             $user = $userTable->getUserByToken($token);
             $userTable->activateUser($user->id);
+
+            //create settings
+            $setting = new Setting();
+            $setting->userId = $user->id;
+            $this->getEntityManager()->persist($setting);
+            $this->getEntityManager()->flush();
 
             $this->getVariableTable()->createUserVariables($user->id);
 
@@ -276,4 +284,13 @@ class RegistrationController extends AbstractActionController
                 );
         $transport->send($message);
     }
+
+    public function getEntityManager()
+    {
+        if (null === $this->em) {
+            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        }
+        return $this->em;
+    }
+
 }

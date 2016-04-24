@@ -21,6 +21,7 @@ return array(
                 'Auth\Controller\Index' => array(
                     'index' => 'guest',
                     'login' => 'guest',
+                    'logout' => 'guest',
                 ),
                 'Accantona\Controller\Spesa' => array(
                     'add' => 'user',

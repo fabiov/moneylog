@@ -2,6 +2,8 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
@@ -10,37 +12,24 @@ use Zend\InputFilter\InputFilterInterface;
  *
  * @ORM\Entity
  * @ORM\Table(name="Setting")
- * @property int $id
- * @property string $name
- * @property string $options
+ * @property int $userId
+ * @property int $payDay
  */
 class Setting implements InputFilterAwareInterface
 {
 
-    protected $decodedOptions;
     protected $inputFilter;
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer");
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="userId", type="integer", options={"unsigned"=true});
      */
-    protected $id;
+    protected $userId;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="payDay", type="integer", options={"unsigned"=true})
      */
-    protected $name;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $type;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $options;
+    protected $payDay = 27;
 
     /**
      * Magic getter to expose protected properties.
@@ -50,13 +39,6 @@ class Setting implements InputFilterAwareInterface
      */
     public function __get($property)
     {
-        if ($property == 'options') {
-            if ($this->decodedOptions === null) {
-                $this->decodedOptions = json_decode($this->options);
-            }
-            return $this->decodedOptions;
-        }
-
         return $this->$property;
     }
 
@@ -85,12 +67,13 @@ class Setting implements InputFilterAwareInterface
      * Populate from an array.
      *
      * @param array $data
+     * @return Setting
      */
     public function exchangeArray($data = array())
     {
-        $this->id = $data['id'];
-        $this->artist = $data['artist'];
-        $this->title = $data['title'];
+        $this->userId = isset($data['userId']) ? $data['userId'] : null;
+        $this->payDay = isset($data['payDay']) ? $data['payDay'] : null;
+        return $this;
     }
 
     /**
@@ -104,26 +87,17 @@ class Setting implements InputFilterAwareInterface
         throw new \Exception("Not used");
     }
 
+    /**
+     * @return InputFilter
+     */
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
             $inputFilter->add(array(
-                'name' => 'id',
+                'name' => 'payDay',
                 'required' => true,
-                'filters' => array(array('name' => 'Int'))
-            ));
-            $inputFilter->add(array(
-                'name'     => 'name',
-                'required' => true,
-                'filters'  => array(array('name' => 'StringTrim')),
-                'validators' => array(array('name' => 'StringLength', 'options' => array('encoding' => 'UTF-8'))),
-            ));
-            $inputFilter->add(array(
-                'name'     => 'options',
-                'required' => true,
-                'filters'  => array(array('name' => 'StringTrim')),
-                'validators' => array(array('name' => 'StringLength', 'options' => array('encoding' => 'UTF-8'))),
+                'filters' => array(array('name' => 'Zend\Filter\Int'))
             ));
 
             $this->inputFilter = $inputFilter;

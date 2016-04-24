@@ -1,6 +1,7 @@
 <?php
 namespace Accantona\Controller;
 
+use Application\Entity\Setting;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Debug\Debug;
@@ -12,69 +13,33 @@ class SettingsController extends AbstractActionController
     /**
      * @var DoctrineORMEntityManager
      */
-    protected $em;
-    protected $user;
-
-//    public function addAction()
-//    {
-//        $form = new AccantonatoForm();
-//
-//        $request = $this->getRequest();
-//        if ($request->isPost()) {
-//
-//            $accantonato = new Accantonato();
-//            $form->setInputFilter($accantonato->getInputFilter());
-//            $form->setData($request->getPost());
-//
-//            if ($form->isValid()) {
-//                $data = $form->getData();
-//                $data['userId'] = $this->getUser()->id;
-//                $accantonato->exchangeArray($data);
-//                $this->getAccantonatoTable()->save($accantonato);
-//                // Redirect to list of categories
-//                return $this->redirect()->toRoute('accantona_accantonato');
-//            }
-//            Debug::dump($_POST, '$_POST');
-//            Debug::dump($form->getMessages());
-//            die();
-//        }
-//        return array('form' => $form);
-//    }
+    private $em;
+    private $user;
 
     public function indexAction()
     {
+        $userId = $this->getUser()->id;
         $message = '';
-        $form = new SettingsForm();
+        $setting = $this->getEntityManager()->find('Application\Entity\Setting', $userId);
 
+        $form = new SettingsForm();
+        $form->bind($setting);
+        $form->get('submit')->setAttribute('value', 'Save');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($album->getInputFilter());
+            $form->setInputFilter($setting->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-//                $this->getAlbumTable()->saveAlbum($album);
+                $setting->userId = $userId;
                 $this->getEntityManager()->flush();
 
-                // Redirect to list of albums
-                return $this->redirect()->toRoute('album');
+                $message = 'You successfully saved settings.';
             }
         }
 
-
-        $userSettings = $this->getEntityManager()->getRepository('Application\Entity\UserSetting')
-            ->findBy(array('userId' => $this->getUser()->id));
-
-        // set user value for input setting
-        foreach ($userSettings as $userSetting) {
-            $form->get($userSetting->setting->name)->setAttribute('value', $userSetting->value);
-        }
-
-        return new ViewModel(array(
-            'message'      => $message,
-            'settingForm'  => $form,
-            'userSettings' => $userSettings,
-        ));
+        return array('form' => $form, 'message' => $message);
     }
 
     public function getEntityManager()
