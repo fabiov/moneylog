@@ -22,6 +22,19 @@ class RecapController extends AbstractActionController
     protected $accantonatoTable;
 
     /**
+     * @var DoctrineORMEntityManager
+     */
+    protected $em;
+
+    public function getEntityManager()
+    {
+        if (null === $this->em) {
+            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        }
+        return $this->em;
+    }
+
+    /**
      * @return ViewModel
      */
     public function indexAction()
@@ -38,7 +51,8 @@ class RecapController extends AbstractActionController
             $variables[$variable->nome] = $variable->valore;
         }
 
-        $payDay = 4;
+
+        $payDay = $this->getEntityManager()->find('Application\Entity\Setting', $user->id)->payDay;
         $currentDay = date('j');
         return new ViewModel(array(
             'avgPerCategory' => $avgPerCategory,
