@@ -41,8 +41,8 @@ class SpesaController extends AbstractActionController
     {
         $sm = $this->getServiceLocator();
         $categoryTable = $sm->get('Accantona\Model\CategoriaTable');
-
-        $where = array('spese.userId' => $this->getUser()->id);
+        $user = $this->getUser();
+        $where = array('spese.userId' => $user->id);
 
         if (($categoryId = (int) $this->params()->fromQuery('categoryIdFilter', 0)) != false) {
             $where[] = "categorie.id=$categoryId";
@@ -55,8 +55,8 @@ class SpesaController extends AbstractActionController
             'categoryId' => $categoryId,
             'months'     => $months,
             'rows'       => $this->getSpesaTable()->joinFetchAll($where),
-            'categories' => $categoryTable->fetchAll(array(), 'descrizione')->toArray(),
-            'avgPerCategory' => $this->getSpesaTable()->getAvgPerCategories($this->getUser()->id),
+            'categories' => $categoryTable->fetchAll(array('userId' => $user->id), 'descrizione')->toArray(),
+            'avgPerCategory' => $this->getSpesaTable()->getAvgPerCategories($user->id),
         ));
     }
 
