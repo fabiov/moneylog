@@ -40,7 +40,7 @@ class CategoriaController extends AbstractActionController
     public function indexAction()
     {
         return new ViewModel(array(
-            'rows' => $this->getCategoriaTable()->fetchAll(),
+            'rows' => $this->getCategoriaTable()->fetchAll(array('userId' => $this->getUser()->id)),
         ));
     }
 

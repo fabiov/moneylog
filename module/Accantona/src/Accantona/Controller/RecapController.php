@@ -51,13 +51,12 @@ class RecapController extends AbstractActionController
             $variables[$variable->nome] = $variable->valore;
         }
 
-
         $payDay = $this->getEntityManager()->find('Application\Entity\Setting', $user->id)->payDay;
         $currentDay = date('j');
         return new ViewModel(array(
             'avgPerCategory' => $avgPerCategory,
             'variables' => $variables,
-            'stored' => $this->getAccantonatoTable()->getSum() - $spesaTable->getSum(),
+            'stored' => $this->getAccantonatoTable()->getSum($user->id) - $spesaTable->getSum($user->id),
             'remainingDays' => $currentDay < $payDay ? $payDay - $currentDay : date('t') - $currentDay + $payDay,
         ));
     }

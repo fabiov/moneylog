@@ -102,11 +102,14 @@ eoc;
     }
 
     /**
+     * @param int $userId
      * @return float
      */
-    function getSum()
+    function getSum($userId)
     {
-        $data = $this->tableGateway->adapter->createStatement('SELECT SUM(importo) AS sum FROM spese')->execute()
+        $data = $this->tableGateway->adapter
+            ->createStatement("SELECT SUM(importo) AS sum FROM spese WHERE userId=$userId")
+            ->execute()
             ->next();
         return (float) $data['sum'];
     }
