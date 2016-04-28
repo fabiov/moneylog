@@ -45,7 +45,7 @@
                         <td>Saldo in banca</td>
                         <td class="text-right">
                             +
-                            <input class="show-on-edit text-right" disabled="disabled" name="saldo_banca" step="0.01" style="display: none;" type="number" value="<?php echo number_format($variables['saldo_banca'], 2, '.', ''); ?>" />
+                            <input class="form-control show-on-edit text-right" disabled="disabled" name="saldo_banca" step="0.01" style="display: none; width: 150px;" type="number" value="<?php echo number_format($variables['saldo_banca'], 2, '.', ''); ?>" />
                             <span class="hide-on-edit"><?php echo $this->currencyForma($variables['saldo_banca']); ?></span>
                         </td>
                     </tr>
@@ -53,7 +53,7 @@
                         <td>Contanti</td>
                         <td class="text-right">
                             +
-                            <input class="show-on-edit text-right" disabled="disabled" name="contanti" step="0.01" style="display: none;" type="number" value="<?php echo number_format($variables['contanti'], 2, '.', ''); ?>" />
+                            <input class="form-control show-on-edit text-right" disabled="disabled" name="contanti" step="0.01" style="display: none; width: 150px;" type="number" value="<?php echo number_format($variables['contanti'], 2, '.', ''); ?>" />
                             <span class="hide-on-edit"><?php echo $this->currencyForma($variables['contanti']); ?></span>
                         </td>
                     </tr>
@@ -61,7 +61,7 @@
                         <td>Risparmio</td>
                         <td class="text-right">
                             -
-                            <input class="show-on-edit text-right" disabled="disabled" name="risparmio" step="0.01" style="display: none;" type="number" value="<?php echo number_format($variables['risparmio'], 2, '.', ''); ?>" />
+                            <input class="form-control show-on-edit text-right" disabled="disabled" name="risparmio" step="0.01" style="display: none; width: 150px;" type="number" value="<?php echo number_format($variables['risparmio'], 2, '.', ''); ?>" />
                             <span class="hide-on-edit"><?php echo $this->currencyForma($variables['risparmio']); ?></span>
                         </td>
                     </tr>
@@ -116,7 +116,7 @@
 <script type="text/javascript">
     $('#edit').click(function () {
         $('.hide-on-edit').hide();
-        $('.show-on-edit').prop('disabled', false).show();
+        $('.show-on-edit').prop('disabled', false).show().css('display', 'inline');
     });
     $('#cancel').click(function () {
         $('.hide-on-edit').show();
