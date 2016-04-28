@@ -44,6 +44,13 @@ return array(
                 'Accantona\Controller\Settings' => array(
                     'index' => 'user',
                 ),
+                'Accantona\Controller\Account' => array(
+                    'add' => 'user',
+                    'index' => 'user',
+                    'edit' => 'user',
+                    'delete' => 'user',
+                ),
+
             ),
         ),
     ),
