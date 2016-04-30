@@ -1,14 +1,23 @@
 <?php
-$title = 'Add new category';
+$title = 'Aggiungi un nuovo conto';
 $this->headTitle($title);
+
+$form->setAttribute('action', $this->url('accantonaAccount', array('action' => 'add')));
+$form->prepare();
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<?php
-$form->setAttribute('action', $this->url('accantona_categoria', array('action' => 'add')));
-$form->prepare();
 
-echo $this->form()->openTag($form);
-echo $this->formHidden($form->get('id'));
-echo $this->formRow($form->get('descrizione'));
+<?php echo $this->form()->openTag($form); ?>
+<?php echo $this->formHidden($form->get('id')); ?>
+
+    <?php $element = $form->get('name'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+        <?= $this->formLabel($element); ?>
+        <?= $this->formInput($element); ?>
+        <?= $errors; ?>
+    </div>
+
+<?php
 echo $this->formSubmit($form->get('submit'));
 echo $this->form()->closeTag();

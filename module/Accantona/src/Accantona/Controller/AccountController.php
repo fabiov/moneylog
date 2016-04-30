@@ -2,6 +2,9 @@
 
 namespace Accantona\Controller;
 
+use Accantona\Form\AccountForm;
+use Application\Entity\Account;
+use Zend\Captcha\Dumb;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -11,27 +14,25 @@ use Accantona\Form\CategoriaForm;
 class AccountController extends AbstractActionController
 {
 
-    protected $categoriaTable;
-
     public function addAction()
     {
-        $form = new CategoriaForm();
-        $form->get('submit')->setValue('Add');
+        $form = new AccountForm();
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $category = new Categoria();
-            $form->setInputFilter($category->getInputFilter());
+
+            $account = new Account();
+            $form->setInputFilter($account->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
                 $data = $form->getData();
                 $data['userId'] = $this->getUser()->id;
-                $category->exchangeArray($data);
-                $this->getCategoriaTable()->save($category);
+                $account->exchangeArray($data);
+                $this->getEntityManager()->persist($account);
+                $this->getEntityManager()->flush();
 
-                // Redirect to list of categories
-                return $this->redirect()->toRoute('accantona_categoria');
+                return $this->redirect()->toRoute('accantonaAccount');
             }
         }
         return array('form' => $form);
@@ -39,8 +40,10 @@ class AccountController extends AbstractActionController
 
     public function indexAction()
     {
+        $em = $this->getEntityManager();
         return new ViewModel(array(
-            'rows' => $this->getCategoriaTable()->fetchAll(array('userId' => $this->getUser()->id)),
+//            'rows' => $this->getCategoriaTable()->fetchAll(array('userId' => $this->getUser()->id)),
+            'rows' => $em->getRepository('Application\Entity\Account')->findAll(array('userId' => $this->getUser()->id)),
         ));
     }
 
@@ -117,6 +120,11 @@ class AccountController extends AbstractActionController
     public function getUser()
     {
         return $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+    }
+
+    public function getEntityManager()
+    {
+        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
     }
 
 }
