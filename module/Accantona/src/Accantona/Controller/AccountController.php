@@ -51,32 +51,28 @@ class AccountController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('accantona_categoria', array('action' => 'add'));
+            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'add'));
         }
 
-        try {
-            $categoria = $this->getCategoriaTable()->getCategoria($id);
-        } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('accantona_categoria', array('action' => 'index'));
+        $em = $this->getEntityManager();
+        $account = $em->getRepository('Application\Entity\Account')
+            ->findOneBy(array('id' => $id, 'userId' => $this->getUser()->id));
+
+        if (!$account) {
+            return $this->redirect()->toRoute('album', array('action' => 'index'));
         }
 
-        $user = $this->getUser();
-        $form = new CategoriaForm();
-        $form->bind($categoria);
-        $form->get('submit')->setAttribute('value', 'Edit');
+        $form = new AccountForm();
+        $form->bind($account);
 
         $request = $this->getRequest();
-        if ($request->isPost() && $user->id == $categoria->userId) {
-
-            $form->setInputFilter($categoria->getInputFilter());
+        if ($request->isPost()) {
+            $form->setInputFilter($account->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $categoria->userId = $user->id;
-                $this->getCategoriaTable()->save($categoria);
-
-                // Redirect to list
-                return $this->redirect()->toRoute('accantona_categoria');
+                $em->flush();
+                return $this->redirect()->toRoute('accantonaAccount'); // Redirect to list
             }
         }
 

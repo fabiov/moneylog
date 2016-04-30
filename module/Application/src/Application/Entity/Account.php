@@ -49,12 +49,6 @@ class Account implements InputFilterAwareInterface
      */
     protected $updated;
 
-//    /**
-//     * @ORM\ManyToOne(targetEntity="Setting")
-//     * @ORM\JoinColumn(name="settingId", referencedColumnName="id")
-//     */
-//    private $settings;
-
     /**
      * Magic getter to expose protected properties.
      *
@@ -76,16 +70,16 @@ class Account implements InputFilterAwareInterface
 //    {
 //        $this->$property = $value;
 //    }
-//
-//    /**
-//     * Convert the object to an array.
-//     *
-//     * @return array
-//     */
-//    public function getArrayCopy()
-//    {
-//        return get_object_vars($this);
-//    }
+
+    /**
+     * Convert the object to an array.
+     *
+     * @return array
+     */
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
+    }
 
     /**
      * Populate from an array.
@@ -95,8 +89,10 @@ class Account implements InputFilterAwareInterface
      */
     public function exchangeArray(array $data = array())
     {
-        $this->userId = isset($data['userId']) ? $data['userId'] : null;
-        $this->name   = isset($data['name'])   ? $data['name']   : null;
+        if (isset($data['userId'])) {
+            $this->userId =  $data['userId'];
+        }
+        $this->name = isset($data['name']) ? $data['name'] : null;
         return $this;
     }
 

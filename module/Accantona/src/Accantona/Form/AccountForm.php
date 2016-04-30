@@ -6,12 +6,6 @@
  * and open the template in the editor.
  */
 
-/**
- *
- *
- * @author fabio.ventura
- */
-
 namespace Accantona\Form;
 
 use Zend\Form\Form;
@@ -29,26 +23,18 @@ class AccountForm extends Form
 
         $this->add(array(
             'name' => 'id',
-            'type' => 'Hidden',
+            'type' => 'Hidden'
         ));
         $this->add(array(
+            'attributes' => array('type' => 'text', 'class' => 'form-control'),
             'name' => 'name',
+            'options' => array('label' => 'Name'),
             'type' => 'Text',
-            'attributes' => array(
-                'type' => 'text',
-                'class' => 'form-control',
-            ),
-            'options' => array(
-                'label' => 'Name',
-            ),
         ));
         $this->add(array(
+            'attributes' => array('class' => 'btn btn-primary', 'id' => 'submitbutton', 'value' => 'Salva'),
             'name' => 'submit',
             'type' => 'Submit',
-            'attributes' => array(
-                'value' => 'Add',
-                'id' => 'submitbutton',
-            ),
         ));
     }
 

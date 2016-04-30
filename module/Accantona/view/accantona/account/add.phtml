@@ -18,6 +18,11 @@ $form->prepare();
         <?= $errors; ?>
     </div>
 
-<?php
-echo $this->formSubmit($form->get('submit'));
-echo $this->form()->closeTag();
+    <?php $element = $form->get('submit'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group text-right <?php if ($errors) echo 'has-error'; ?>">
+        <?= $this->formInput($element); ?>
+        <?= $errors; ?>
+    </div>
+
+<?php echo $this->form()->closeTag(); ?>
