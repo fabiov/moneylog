@@ -62,6 +62,33 @@ class SpesaController extends AbstractActionController
 
     public function editAction()
     {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        $em = $this->getEntityManager();
+        $spend = $em->find('Application\Entity\Spese', $id);
+        if (!$spend) {
+            return $this->redirect()->toRoute('accantona_spesa', array('action' => 'index'));
+        }
+
+        $form = new SpesaForm();
+        $form->bind($spend);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($spend->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->flush();
+
+                return $this->redirect()->toRoute('accantona_spesa');
+            }
+
+            Debug::dump($form->getMessages());
+            echo 'Cazzo';
+            die();
+        }
+
+        return array('id' => $id, 'form' => $form);
     }
 
     public function deleteAction()
@@ -80,6 +107,11 @@ class SpesaController extends AbstractActionController
     public function getUser()
     {
         return $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+    }
+
+    public function getEntityManager()
+    {
+        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
     }
 
 }
