@@ -69,7 +69,7 @@ class SpesaController extends AbstractActionController
             return $this->redirect()->toRoute('accantona_spesa', array('action' => 'index'));
         }
 
-        $form = new SpesaForm();
+        $form = new SpesaForm('spesa', array(), $em);
         $form->bind($spend);
 
         $request = $this->getRequest();
@@ -81,11 +81,11 @@ class SpesaController extends AbstractActionController
                 $this->getEntityManager()->flush();
 
                 return $this->redirect()->toRoute('accantona_spesa');
+            } else {
+                echo 'INVALIDO';
+                Debug::dump($form->getMessages(), '$form->getMessages()');
+                die();
             }
-
-            Debug::dump($form->getMessages());
-            echo 'Cazzo';
-            die();
         }
 
         return array('id' => $id, 'form' => $form);

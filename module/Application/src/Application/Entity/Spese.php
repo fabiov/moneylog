@@ -27,6 +27,7 @@ class Spese implements InputFilterAwareInterface
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
@@ -36,7 +37,7 @@ class Spese implements InputFilterAwareInterface
     protected $userId;
 
     /**
-     * @ORM\Column(name="valuta", type="datetime")
+     * @ORM\Column(name="valuta", type="date")
      */
     protected $valuta;
 
@@ -95,12 +96,12 @@ class Spese implements InputFilterAwareInterface
      */
     public function exchangeArray($data = array())
     {
-
-        $this->userId = isset($data['userId']) ? $data['userId'] : null;
-        $this->valuta = isset($data['valuta']) ? $data['valuta'] : null;
+        $this->id           = isset($data['id'])     ? $data['id'] : null;
+        $this->userId       = isset($data['userId']) ? $data['userId'] : null;
+        $this->valuta       = isset($data['valuta']) ? $data['valuta'] : null;
         $this->id_categoria = isset($data['id_categoria']) ? $data['id_categoria'] : null;
-        $this->importo = isset($data['importo']) ? $data['importo'] : null;
-        $this->descrizione = isset($data['descrizione']) ? $data['descrizione'] : null;
+        $this->importo      = isset($data['importo']) ? $data['importo'] : null;
+        $this->descrizione  = isset($data['descrizione']) ? $data['descrizione'] : null;
     }
 
     /**
@@ -121,10 +122,51 @@ class Spese implements InputFilterAwareInterface
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
+
             $inputFilter->add(array(
-                'name' => 'payDay',
+                'name'     => 'id',
                 'required' => true,
-                'filters' => array(array('name' => 'Zend\Filter\Int'))
+                'filters'  => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'userId',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'valuta',
+                'required' => true,
+                'filters'  => array(),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'id_categoria',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'importo',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'descrizione',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
             ));
 
             $this->inputFilter = $inputFilter;

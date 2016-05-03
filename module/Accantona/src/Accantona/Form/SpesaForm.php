@@ -7,25 +7,22 @@ use Zend\Form\Form;
 class SpesaForm extends Form
 {
 
-    public function __construct($name = null)
+    private $entityManager;
+
+    public function __construct($name = 'spesa', array $options, $entityManager)
     {
         // we want to ignore the name passed
-        parent::__construct('spesa');
+        parent::__construct('spesa', $options = array());
+
+        $this->entityManager = $entityManager;
 
         $this->add(array(
-            'attributes' => array('class' => 'form-control'),
-            'name' => 'id_categoria',
-            'options' => array(
-                'label' => 'Categoria',
-                'value_options' => array(
-                    '0' => 'French',
-                    '1' => 'English',
-                    '2' => 'Japanese',
-                    '3' => 'Chinese',
-                ),
-            ),
-            'required' => true,
-            'type' => 'Select',
+            'name' => 'id',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'name' => 'userId',
+            'type' => 'Hidden',
         ));
         $this->add(array(
             'attributes' => array('class' => 'form-control'),
@@ -33,8 +30,18 @@ class SpesaForm extends Form
             'required' => true,
             'type' => 'Date',
             'options' => array(
-                'label' => 'Descrizione',
+                'label' => 'Valuta',
             ),
+        ));
+        $this->add(array(
+            'attributes' => array('class' => 'form-control'),
+            'name' => 'id_categoria',
+            'options' => array(
+                'label' => 'Categoria',
+                'value_options' => $this->getCategoriesOptions(),
+            ),
+            'required' => true,
+            'type' => 'Select',
         ));
         $this->add(array(
             'attributes' => array('class' => 'form-control', 'min'  => 0, 'step' => 0.01),
@@ -57,6 +64,14 @@ class SpesaForm extends Form
         ));
     }
 
-    
+    private function getCategoriesOptions()
+    {
+        $rs = $this->entityManager->getRepository('Application\Entity\Categorie')->findBy(array('userId' => 1));
+        $options = array();
+        foreach ($rs as $row) {
+            $options[$row->id] = $row->descrizione;
+        }
+        return $options;
+    }
 
 }

@@ -10,6 +10,18 @@ $this->form->prepare();
 </div>
 <?php echo $this->form()->openTag($this->form); ?>
 
+    <?php echo $this->formInput($form->get('id')); ?>
+
+    <?php echo $this->formInput($form->get('userId')); ?>
+
+    <?php $element = $form->get('valuta'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+        <?php echo $this->formLabel($element); ?>
+        <?php echo $this->formInput($element); ?>
+        <?php echo $errors; ?>
+    </div>
+
     <?php $element = $form->get('id_categoria'); ?>
     <?php $errors = $this->formElementErrors($element); ?>
     <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
@@ -20,14 +32,6 @@ $this->form->prepare();
 
 
     <?php $element = $form->get('importo'); ?>
-    <?php $errors = $this->formElementErrors($element); ?>
-    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
-        <?php echo $this->formLabel($element); ?>
-        <?php echo $this->formInput($element); ?>
-        <?php echo $errors; ?>
-    </div>
-
-    <?php $element = $form->get('valuta'); ?>
     <?php $errors = $this->formElementErrors($element); ?>
     <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
         <?php echo $this->formLabel($element); ?>
