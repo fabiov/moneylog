@@ -64,15 +64,16 @@ class SpesaController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         $em = $this->getEntityManager();
+        $user = $this->getUser();
 
         $spend = $em->getRepository('Application\Entity\Spese')
-            ->findOneBy(array('id' => $id, 'userId' => $this->getUser()->id));
+            ->findOneBy(array('id' => $id, 'userId' => $user->id));
 
         if (!$spend) {
             return $this->redirect()->toRoute('accantona_spesa', array('action' => 'index'));
         }
 
-        $form = new SpesaForm('spesa', array(), $em);
+        $form = new SpesaForm('spesa', array(), $em, $user->id);
         $form->bind($spend);
 
         $request = $this->getRequest();
