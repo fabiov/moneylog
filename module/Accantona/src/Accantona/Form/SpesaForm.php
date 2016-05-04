@@ -7,48 +7,71 @@ use Zend\Form\Form;
 class SpesaForm extends Form
 {
 
-    public function __construct($name = null)
+    private $entityManager;
+
+    public function __construct($name = 'spesa', array $options, $entityManager)
     {
         // we want to ignore the name passed
-        parent::__construct('categoria');
+        parent::__construct('spesa', $options = array());
+
+        $this->entityManager = $entityManager;
 
         $this->add(array(
-            'name' => 'id_categoria',
-            'required' => true,
-            'type' => 'Number',
-            'options' => array(
-                'label' => 'Categoria',
-            ),
+            'name' => 'id',
+            'type' => 'Hidden',
         ));
         $this->add(array(
+            'name' => 'userId',
+            'type' => 'Hidden',
+        ));
+        $this->add(array(
+            'attributes' => array('class' => 'form-control'),
             'name' => 'valuta',
             'required' => true,
             'type' => 'Date',
             'options' => array(
-                'label' => 'Descrizione',
+                'label' => 'Valuta',
             ),
         ));
         $this->add(array(
+            'attributes' => array('class' => 'form-control'),
+            'name' => 'id_categoria',
+            'options' => array(
+                'label' => 'Categoria',
+                'value_options' => $this->getCategoriesOptions(),
+            ),
+            'required' => true,
+            'type' => 'Select',
+        ));
+        $this->add(array(
+            'attributes' => array('class' => 'form-control', 'min'  => 0, 'step' => 0.01),
             'name' => 'importo',
             'required' => true,
             'type' => 'Number',
-            'attributes' => array(
-                'label' => 'Importo',
-                'min'  => 0,
-                'step' => 0.01, // default step interval is 1
-            ),
+            'options' => array('label' => 'Importo'),
         ));
         $this->add(array(
+            'attributes' => array('class' => 'form-control'),
             'filters'  => array(
                 array('name' => 'Zend\Filter\StringTrim'),
             ),
             'name' => 'descrizione',
             'required' => true,
             'type' => 'Text',
-            'attributes' => array(
+            'options' => array(
                 'label' => 'Descrizione',
             ),
         ));
+    }
+
+    private function getCategoriesOptions()
+    {
+        $rs = $this->entityManager->getRepository('Application\Entity\Categorie')->findBy(array('userId' => 1));
+        $options = array();
+        foreach ($rs as $row) {
+            $options[$row->id] = $row->descrizione;
+        }
+        return $options;
     }
 
 }

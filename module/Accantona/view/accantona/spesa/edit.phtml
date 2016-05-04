@@ -1,0 +1,55 @@
+<?php
+$title = 'Modifica spesa';
+$this->headTitle($title);
+$this->form->setAttribute('action', $this->url('accantona_spesa', array('action' => 'edit', 'id' => $this->id)));
+$this->form->prepare();
+?>
+
+<div class="form-group">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+</div>
+<?php echo $this->form()->openTag($this->form); ?>
+
+    <?php echo $this->formInput($form->get('id')); ?>
+
+    <?php echo $this->formInput($form->get('userId')); ?>
+
+    <?php $element = $form->get('valuta'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+        <?php echo $this->formLabel($element); ?>
+        <?php echo $this->formInput($element); ?>
+        <?php echo $errors; ?>
+    </div>
+
+    <?php $element = $form->get('id_categoria'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+        <?php echo $this->formLabel($element); ?>
+        <?php echo $this->formSelect($element); ?>
+        <?php echo $errors; ?>
+    </div>
+
+
+    <?php $element = $form->get('importo'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+        <?php echo $this->formLabel($element); ?>
+        <?php echo $this->formInput($element); ?>
+        <?php echo $errors; ?>
+    </div>
+
+    <?php $element = $form->get('descrizione'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+        <?php echo $this->formLabel($element); ?>
+        <?php echo $this->formInput($element); ?>
+        <?php echo $errors; ?>
+    </div>
+
+    <div class="text-right">
+        <a class="btn btn-default" href="<?= $this->url('accantona_spesa') ?>">Annulla</a>
+        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-save"></span> Salva</button>
+    </div>
+
+<?php echo $this->form()->closeTag(); ?>
