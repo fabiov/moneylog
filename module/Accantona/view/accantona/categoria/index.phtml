@@ -14,7 +14,7 @@ $this->headTitle($title);
         <td><?php echo $this->escapeHtml($row->id); ?></td>
         <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
         <td class="text-right">
-            <a href="<?php echo $this->url('accantona_categoria', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+            <a href="<?php echo $this->url('accantona_categoria', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </a>
             <!-- a href="<?php echo $this->url('accantona_categoria', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
@@ -26,8 +26,8 @@ $this->headTitle($title);
     <tfoot>
         <tr>
             <td class="text-right" colspan="3">
-                <a href="<?php echo $this->url('accantona_categoria', array('action' => 'add')); ?>" class="btn btn-default" aria-label="Add">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+                <a href="<?php echo $this->url('accantona_categoria', array('action' => 'add')); ?>" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
                 </a>
             </td>
         </tr>
