@@ -81,10 +81,6 @@ class SpesaController extends AbstractActionController
                 $this->getEntityManager()->flush();
 
                 return $this->redirect()->toRoute('accantona_spesa');
-            } else {
-                echo 'INVALIDO';
-                Debug::dump($form->getMessages(), '$form->getMessages()');
-                die();
             }
         }
 
@@ -93,6 +89,14 @@ class SpesaController extends AbstractActionController
 
     public function deleteAction()
     {
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $spend = $this->getEntityManager()->find('Application\Entity\Spese', $id);
+        if ($spend) {
+            $this->getEntityManager()->remove($spend);
+            $this->getEntityManager()->flush();
+        }
+        return $this->redirect()->toRoute('accantona_spesa');
     }
 
     public function getSpesaTable()
