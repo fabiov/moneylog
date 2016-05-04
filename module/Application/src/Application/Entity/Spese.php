@@ -14,7 +14,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @ORM\Table(name="spese")
  * @property int $id
  * @property int $userId
- * @property mixed $valuta
+ * @property DateTime $valuta
  * @property int $id_categoria
  * @property float $importo
  * @property string $descrizione
@@ -96,12 +96,12 @@ class Spese implements InputFilterAwareInterface
      */
     public function exchangeArray($data = array())
     {
-        $this->id           = isset($data['id'])     ? $data['id'] : null;
-        $this->userId       = isset($data['userId']) ? $data['userId'] : null;
-        $this->valuta       = isset($data['valuta']) ? $data['valuta'] : null;
-        $this->id_categoria = isset($data['id_categoria']) ? $data['id_categoria'] : null;
-        $this->importo      = isset($data['importo']) ? $data['importo'] : null;
-        $this->descrizione  = isset($data['descrizione']) ? $data['descrizione'] : null;
+        $this->id           = isset($data['id'])           ? $data['id']                    : null;
+        $this->userId       = isset($data['userId'])       ? $data['userId']                : null;
+        $this->valuta       = isset($data['valuta'])       ? new \DateTime($data['valuta']) : null;
+        $this->id_categoria = isset($data['id_categoria']) ? $data['id_categoria']          : null;
+        $this->importo      = isset($data['importo'])      ? $data['importo']               : null;
+        $this->descrizione  = isset($data['descrizione'])  ? $data['descrizione']           : null;
     }
 
     /**
