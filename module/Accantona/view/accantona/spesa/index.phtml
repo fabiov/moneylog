@@ -1,19 +1,7 @@
 <style type="text/css">
-    .id{
-        width:41px;
-    }
-    .category{
-        width:96px;
-    }
-    .valuta{
-        width:153px;
-    }
-    .amount{
-        width:160px;
-    }
-    .actions{
-        width:85px;
-    }
+    .valuta{max-width:190px;}
+    .amount{max-width:110px;}
+    .actions{max-width:115px;}
 </style>
 <?php
 $title = 'Spese';
@@ -21,89 +9,104 @@ $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <form action="<?php echo $this->url('accantona_spesa', array('action' => 'add')); ?>" method="post">
-    <table class="table">
-        <thead>
-            <tr>
-                <th class="id">Id</th>
-                <th class="category">Category</th>
-                <th class="valuta">Valuta</th>
-                <th class="amount">Amount</th>
-                <th>Description</th>
-                <th class="actions">&nbsp;</th>
-            </tr>
-            <tr id="search">
-                <td></td>
-                <td>
-                    <select class="form-control" id="categoryIdFilter" name="categoryIdFilter">
-                        <option value="0">Tutte</option>
-                        <?php foreach ($categories as $category): ?>
-                        <option value="<?php echo $category['id']; ?>"<?php if ($category['id'] == $categoryId) echo 'selected="selected"'; ?>><?php echo $category['descrizione']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </td>
-                <td>
-                    <select class="form-control" id="monthsFilter" name="monthsFilter">
-                        <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
-                        <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
-                        <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
-                        <option value="6" <?php if ($months == 6) echo 'selected="selected"'; ?>>Ultimi 6 mesi</option>
-                        <option value="12" <?php if ($months == 12) echo 'selected="selected"'; ?>>Ultimo anno</option>
-                    </select>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </thead>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="category">Category</th>
+                    <th class="valuta">Valuta</th>
+                    <th class="amount">Amount</th>
+                    <th>Description</th>
+                    <th class="actions">&nbsp;</th>
+                </tr>
+                <tr id="search">
+                    <td>
+                        <select class="form-control" id="categoryIdFilter" name="categoryIdFilter">
+                            <option value="0">Tutte</option>
+                            <?php foreach ($categories as $category): ?>
+                            <option value="<?php echo $category['id']; ?>"<?php if ($category['id'] == $categoryId) echo 'selected="selected"'; ?>><?php echo $category['descrizione']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-control" id="monthsFilter" name="monthsFilter">
+                            <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
+                            <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
+                            <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
+                            <option value="6" <?php if ($months == 6) echo 'selected="selected"'; ?>>Ultimi 6 mesi</option>
+                            <option value="12" <?php if ($months == 12) echo 'selected="selected"'; ?>>Ultimo anno</option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
 
-        <tbody>
-        <?php foreach ($rows as $row) : ?>
-            <tr>
-                <td><?php echo $this->escapeHtml($row->id); ?></td>
-                <td><?php echo $this->escapeHtml($row->categoryDescription); ?></td>
-                <td><?php echo $this->dateForma($row->valuta); ?></td>
-                <td class="text-right"><?php echo $this->currencyForma($row->importo); ?></td>
-                <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
-                <td class="text-right">
-                    <!-- a href="<?php echo $this->url('accantona_spesa', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </a>
-                    <a href="<?php echo $this->url('accantona_spesa', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a -->
-                </td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
+            <tbody>
+            <?php foreach ($rows as $row) : ?>
+                <tr>
+                    <td class="category"><?php echo $this->escapeHtml($row->categoryDescription); ?></td>
+                    <td class="date"><?php echo $this->dateForma($row->valuta); ?></td>
+                    <td class="amount text-right"><?php echo $this->currencyForma($row->importo); ?></td>
+                    <td class="description"><?php echo $this->escapeHtml($row->descrizione); ?></td>
+                    <td class="actions text-right">
+                        <a href="<?php echo $this->url('accantona_spesa', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </a>
+                        <span data-href="<?php echo $this->url('accantona_spesa', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default delete-item" title="Elimina">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </span>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
 
-        <tfoot>
-            <tr>
-                <td class="id"></td>
-                <td class="category">
-                    <select class="form-control" name="id_categoria">
-                        <?php foreach ($categories as $category): ?>
-                        <option value="<?php echo $category['id']; ?>"><?php echo $category['descrizione']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </td>
-                <td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
-                <td class="amount">
-                    <input class="form-control text-right" name="importo" type="number" step="0.01" min="0" />
-                </td>
-                <td><input class="form-control" name="descrizione" size="60" /></td>
-                <td class="actions text-right">
-                    <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Salva">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
-                    </button>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+            <tfoot>
+                <tr>
+                    <td class="category">
+                        <select class="form-control" name="id_categoria">
+                            <?php foreach ($categories as $category): ?>
+                            <option value="<?php echo $category['id']; ?>"><?php echo $category['descrizione']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                    <td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
+                    <td class="amount">
+                        <input class="form-control text-right" name="importo" type="number" step="0.01" min="0" />
+                    </td>
+                    <td><input class="form-control" name="descrizione" size="60" /></td>
+                    <td class="actions text-right">
+                        <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Salva">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
+                        </button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </form>
 <script type="text/javascript">
     $('#search select').change(function(){
         location.href = "<?php echo $this->url('accantona_spesa', array('action' => 'index')); ?>"
                       + '?categoryIdFilter=' + $('#categoryIdFilter').val()
                       + '&monthsFilter=' + $('#monthsFilter').val();
+    });
+
+    $(document).on("click", ".delete-item", function(e) {
+        var button = $(this);
+
+        var html = '<h3>Cancellare la spesa selezionata?</h3>' +
+        '<dl class="dl-horizontal">' +
+            '<dt>Descrizione</dt><dd>'  + button.parents('tr').find('.description').html() + '</dd>' +
+            '<dt>Importo</dt><dd>'  + button.parents('tr').find('.amount').html() + '</dd>' +
+            '<dt>Data</dt><dd>'  + button.parents('tr').find('.date').html() + '</dd>' +
+            '<dt>Categoria</dt><dd>'  + button.parents('tr').find('.category').html() + '</dd>' +
+        '</dl>';
+        bootbox.confirm(html, function(result) {
+            if (result) {
+                location.href =  button.data('href');
+            }
+        });
     });
 </script>

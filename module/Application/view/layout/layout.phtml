@@ -81,9 +81,11 @@
             <?php echo $this->content; ?>
             <hr>
             <footer>
-                <p>&copy; 2015 - <?php echo date('Y'); ?> by Fabio Ventura. <?php echo $this->translate('All rights reserved.'); ?></p>
+                <p>&copy; 2015 - <?= date('Y') ?> by Fabio Ventura. Tutti i diritti riservati.</p>
             </footer>
         </div>
         <?php echo $this->inlineScript(); ?>
+        <!-- bootbox code -->
+        <script src="js/node_modules/bootbox/bootbox.min.js"></script>
     </body>
 </html>
