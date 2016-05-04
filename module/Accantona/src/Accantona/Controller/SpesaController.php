@@ -64,7 +64,10 @@ class SpesaController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         $em = $this->getEntityManager();
-        $spend = $em->find('Application\Entity\Spese', $id);
+
+        $spend = $em->getRepository('Application\Entity\Spese')
+            ->findOneBy(array('id' => $id, 'userId' => $this->getUser()->id));
+
         if (!$spend) {
             return $this->redirect()->toRoute('accantona_spesa', array('action' => 'index'));
         }
@@ -90,11 +93,13 @@ class SpesaController extends AbstractActionController
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
+        $em = $this->getEntityManager();
+        $spend = $em->getRepository('Application\Entity\Spese')
+            ->findOneBy(array('id' => $id, 'userId' => $this->getUser()->id));
 
-        $spend = $this->getEntityManager()->find('Application\Entity\Spese', $id);
         if ($spend) {
-            $this->getEntityManager()->remove($spend);
-            $this->getEntityManager()->flush();
+            $em->remove($spend);
+            $em->flush();
         }
         return $this->redirect()->toRoute('accantona_spesa');
     }

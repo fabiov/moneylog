@@ -20,10 +20,10 @@ class SpesaForm extends Form
             'name' => 'id',
             'type' => 'Hidden',
         ));
-        $this->add(array(
-            'name' => 'userId',
-            'type' => 'Hidden',
-        ));
+//        $this->add(array(
+//            'name' => 'userId',
+//            'type' => 'Hidden',
+//        ));
         $this->add(array(
             'attributes' => array('class' => 'form-control'),
             'name' => 'valuta',
