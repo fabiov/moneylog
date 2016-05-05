@@ -13,34 +13,26 @@ class AccantonatoForm extends Form
         parent::__construct('categoria');
 
         $this->add(array(
+            'attributes' => array('class' => 'form-control'),
             'name' => 'valuta',
+            'options' => array('label' => 'Valuta'),
             'required' => true,
             'type' => 'Date',
-            'options' => array(
-                'label' => 'Descrizione',
-            ),
         ));
         $this->add(array(
+            'attributes' => array('class' => 'form-control text-right', 'min' => 0, 'step' => 0.01),
             'name' => 'importo',
+            'options' => array('label' => 'Importo'),
             'required' => true,
             'type' => 'Number',
-            'attributes' => array(
-                'class' => 'form-control text-right',
-                'label' => 'Importo',
-                'min' => 0,
-                'step' => 0.01,
-            ),
         ));
         $this->add(array(
-            'filters'  => array(
-                array('name' => 'Zend\Filter\StringTrim'),
-            ),
+            'attributes' => array('class' => 'form-control'),
+            'filters'  => array(array('name' => 'Zend\Filter\StringTrim')),
             'name' => 'descrizione',
+            'options' => array('label' => 'Descrizione'),
             'required' => true,
             'type' => 'Text',
-            'attributes' => array(
-                'label' => 'Descrizione',
-            ),
         ));
     }
 

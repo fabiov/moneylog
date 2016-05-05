@@ -55,6 +55,37 @@ class AccantonatoController extends AbstractActionController
         ));
     }
 
+    public function editAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        $em = $this->getEntityManager();
+        $user = $this->getUser();
+
+        $spend = $em->getRepository('Application\Entity\Accantonati')
+            ->findOneBy(array('id' => $id, 'userId' => $user->id));
+
+        if (!$spend) {
+            return $this->redirect()->toRoute('accantona_accantonato', array('action' => 'index'));
+        }
+
+        $form = new AccantonatoForm('accantonati');
+        $form->bind($spend);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($spend->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->flush();
+
+                return $this->redirect()->toRoute('accantona_accantonato');
+            }
+        }
+
+        return array('id' => $id, 'form' => $form);
+    }
+
     public function getAccantonatoTable()
     {
         if (!$this->accantonatoTable) {
@@ -69,6 +100,11 @@ class AccantonatoController extends AbstractActionController
             $this->user = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
         }
         return $this->user;
+    }
+
+    public function getEntityManager()
+    {
+        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
     }
 
 }

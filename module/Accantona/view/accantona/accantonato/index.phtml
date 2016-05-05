@@ -11,10 +11,9 @@ $this->headTitle($title);
     <table class="table">
         <thead>
             <tr>
-                <th class="id">Id</th>
                 <th class="valuta">Valuta</th>
-                <th class="amount">Amount</th>
-                <th>Description</th>
+                <th class="amount">Importo</th>
+                <th>Descrizione</th>
                 <th class="actions">&nbsp;</th>
             </tr>
             <tr id="search">
@@ -30,38 +29,35 @@ $this->headTitle($title);
                 </td>
                 <td></td>
                 <td></td>
-                <td></td>
             </tr>
         </thead>
 
         <tbody>
             <?php foreach ($rows as $row): ?>
             <tr>
-                <td><?php echo $row->id; ?></td>
                 <td><?php echo $this->dateForma($row->valuta); ?></td>
                 <td class="text-right"><?php echo $this->currencyForma($row->importo); ?></td>
                 <td><?php echo $row->descrizione; ?></td>
-                <!-- td class="text-right">
-                    <a href="<?php echo $this->url('accantona_accantonato', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                <td class="text-right">
+                    <a href="<?php echo $this->url('accantona_accantonato', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </a>
-                    <a href="<?php echo $this->url('accantona_accantonato', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                    <!-- a href="<?php echo $this->url('accantona_accantonato', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a>
-                </td -->
+                    </a -->
+                </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
 
         <tfoot>
             <tr>
-                <td></td>
                 <td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
                 <td><?php echo $this->formInput($form->get('importo')); ?></td>
                 <td><input class="form-control" name="descrizione" /></td>
                 <td class="actions text-right">
-                    <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Add">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+                    <button id="save" type="submit" class="btn btn-default show-on-edit">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
                     </button>
                 </td>
             </tr>
