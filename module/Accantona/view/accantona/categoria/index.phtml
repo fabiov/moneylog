@@ -3,15 +3,15 @@ $title = 'Categorie di spesa';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<table class="table">
-    <tr>
-        <th>Id</th>
-        <th>Descrizione</th>
-        <th>&nbsp;</th>
-    </tr>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Descrizione</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
     <?php foreach ($rows as $row) : ?>
     <tr>
-        <td><?php echo $this->escapeHtml($row->id); ?></td>
         <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
         <td class="text-right">
             <a href="<?php echo $this->url('accantona_categoria', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
@@ -25,7 +25,7 @@ $this->headTitle($title);
     <?php endforeach; ?>
     <tfoot>
         <tr>
-            <td class="text-right" colspan="3">
+            <td class="text-right" colspan="2">
                 <a href="<?php echo $this->url('accantona_categoria', array('action' => 'add')); ?>" class="btn btn-default">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
                 </a>
