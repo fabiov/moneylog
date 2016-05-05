@@ -6,15 +6,21 @@
 $title = 'Accantonati';
 $this->headTitle($title);
 ?>
+<style type="text/css">
+.has-error ul {
+    color: #a94442;
+    list-style-type: none;
+    padding: 0;
+}
+</style>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<form action="<?php echo $this->url('accantona_accantonato', array('action' => 'add')); ?>" method="post">
+<form action="<?php echo $this->url('accantona_accantonato', array('action' => 'index')); ?>" method="post">
     <table class="table">
         <thead>
             <tr>
-                <th class="id">Id</th>
                 <th class="valuta">Valuta</th>
-                <th class="amount">Amount</th>
-                <th>Description</th>
+                <th class="amount">Importo</th>
+                <th>Descrizione</th>
                 <th class="actions">&nbsp;</th>
             </tr>
             <tr id="search">
@@ -30,38 +36,53 @@ $this->headTitle($title);
                 </td>
                 <td></td>
                 <td></td>
-                <td></td>
             </tr>
         </thead>
 
         <tbody>
             <?php foreach ($rows as $row): ?>
             <tr>
-                <td><?php echo $row->id; ?></td>
-                <td><?php echo $this->dateForma($row->valuta); ?></td>
-                <td class="text-right"><?php echo $this->currencyForma($row->importo); ?></td>
-                <td><?php echo $row->descrizione; ?></td>
-                <!-- td class="text-right">
-                    <a href="<?php echo $this->url('accantona_accantonato', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                <td class="date"><?php echo $this->dateForma($row->valuta); ?></td>
+                <td class="text-right amount"><?php echo $this->currencyForma($row->importo); ?></td>
+                <td class="description"><?php echo $row->descrizione; ?></td>
+                <td class="text-right">
+                    <a href="<?php echo $this->url('accantona_accantonato', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </a>
-                    <a href="<?php echo $this->url('accantona_accantonato', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                    <span data-href="<?php echo $this->url('accantona_accantonato', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default delete-item" title="Elimina">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a>
-                </td -->
+                    </span>
+                </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
 
         <tfoot>
             <tr>
-                <td></td>
-                <td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
-                <td><?php echo $this->formInput($form->get('importo')); ?></td>
-                <td><input class="form-control" name="descrizione" /></td>
+                <!-- td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td -->
+                <?php $element = $form->get('valuta'); ?>
+                <?php $errors = $this->formElementErrors($element); ?>
+                <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
+                    <?php echo $this->formInput($element); ?>
+                    <?php echo $errors; ?>
+                </td>
+
+                <?php $element = $form->get('importo'); ?>
+                <?php $errors = $this->formElementErrors($element); ?>
+                <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
+                    <?php echo $this->formInput($element); ?>
+                    <?php echo $errors; ?>
+                </td>
+
+                <?php $element = $form->get('descrizione'); ?>
+                <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
+                    <?php echo $this->formInput($element); ?>
+                    <?php echo $errors; ?>
+                </td>
+
                 <td class="actions text-right">
-                    <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Add">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+                    <button id="save" type="submit" class="btn btn-default show-on-edit">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
                     </button>
                 </td>
             </tr>
@@ -71,5 +92,21 @@ $this->headTitle($title);
 <script type="text/javascript">
     $('#search select').change(function(){
         location.href = "<?php echo $this->url(null, array('action' => 'index')); ?>" + '?monthsFilter=' + $('#monthsFilter').val();
+    });
+
+    $(document).on("click", ".delete-item", function(e) {
+        var button = $(this);
+
+        var html = '<h3>Cancellare l\'accantonamento selezionato?</h3>' +
+            '<dl class="dl-horizontal">' +
+            '<dt>Descrizione</dt><dd>'  + button.parents('tr').find('.description').html() + '</dd>' +
+            '<dt>Importo</dt><dd>'  + button.parents('tr').find('.amount').html() + '</dd>' +
+            '<dt>Data</dt><dd>'  + button.parents('tr').find('.date').html() + '</dd>' +
+            '</dl>';
+        bootbox.confirm(html, function(result) {
+            if (result) {
+                location.href =  button.data('href');
+            }
+        });
     });
 </script>
