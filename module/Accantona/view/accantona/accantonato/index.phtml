@@ -42,16 +42,16 @@ $this->headTitle($title);
         <tbody>
             <?php foreach ($rows as $row): ?>
             <tr>
-                <td><?php echo $this->dateForma($row->valuta); ?></td>
-                <td class="text-right"><?php echo $this->currencyForma($row->importo); ?></td>
-                <td><?php echo $row->descrizione; ?></td>
+                <td class="date"><?php echo $this->dateForma($row->valuta); ?></td>
+                <td class="text-right amount"><?php echo $this->currencyForma($row->importo); ?></td>
+                <td class="description"><?php echo $row->descrizione; ?></td>
                 <td class="text-right">
                     <a href="<?php echo $this->url('accantona_accantonato', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </a>
-                    <!-- a href="<?php echo $this->url('accantona_accantonato', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                    <span data-href="<?php echo $this->url('accantona_accantonato', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default delete-item" title="Elimina">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a -->
+                    </span>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -92,5 +92,21 @@ $this->headTitle($title);
 <script type="text/javascript">
     $('#search select').change(function(){
         location.href = "<?php echo $this->url(null, array('action' => 'index')); ?>" + '?monthsFilter=' + $('#monthsFilter').val();
+    });
+
+    $(document).on("click", ".delete-item", function(e) {
+        var button = $(this);
+
+        var html = '<h3>Cancellare l\'accantonamento selezionato?</h3>' +
+            '<dl class="dl-horizontal">' +
+            '<dt>Descrizione</dt><dd>'  + button.parents('tr').find('.description').html() + '</dd>' +
+            '<dt>Importo</dt><dd>'  + button.parents('tr').find('.amount').html() + '</dd>' +
+            '<dt>Data</dt><dd>'  + button.parents('tr').find('.date').html() + '</dd>' +
+            '</dl>';
+        bootbox.confirm(html, function(result) {
+            if (result) {
+                location.href =  button.data('href');
+            }
+        });
     });
 </script>

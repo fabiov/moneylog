@@ -13,7 +13,7 @@ class AccantonatoForm extends Form
         parent::__construct('categoria');
 
         $this->add(array(
-            'attributes' => array('class' => 'form-control'),
+            'attributes' => array('class' => 'form-control', 'value' => date('Y-m-d')),
             'name' => 'valuta',
             'options' => array('label' => 'Valuta'),
             'required' => true,

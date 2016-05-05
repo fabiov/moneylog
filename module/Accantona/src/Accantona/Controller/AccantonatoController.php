@@ -78,6 +78,20 @@ class AccantonatoController extends AbstractActionController
         return array('id' => $id, 'form' => $form);
     }
 
+    public function deleteAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        $em = $this->getEntityManager();
+        $spend = $em->getRepository('Application\Entity\Accantonati')
+            ->findOneBy(array('id' => $id, 'userId' => $this->getUser()->id));
+
+        if ($spend) {
+            $em->remove($spend);
+            $em->flush();
+        }
+        return $this->redirect()->toRoute('accantona_accantonato');
+    }
+
     public function getAccantonatoTable()
     {
         if (!$this->accantonatoTable) {
