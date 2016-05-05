@@ -20,14 +20,19 @@ class AccantonatoForm extends Form
             'type' => 'Date',
         ));
         $this->add(array(
-            'attributes' => array('class' => 'form-control text-right', 'min' => 0, 'step' => 0.01),
+            'attributes' => array(
+                'class' => 'form-control text-right',
+                'min' => 0.01,
+                'placeholder' => '0.00',
+                'step' => 0.01
+            ),
             'name' => 'importo',
             'options' => array('label' => 'Importo'),
             'required' => true,
             'type' => 'Number',
         ));
         $this->add(array(
-            'attributes' => array('class' => 'form-control'),
+            'attributes' => array('class' => 'form-control', 'placeholder' => 'Descrizione'),
             'filters'  => array(array('name' => 'Zend\Filter\StringTrim')),
             'name' => 'descrizione',
             'options' => array('label' => 'Descrizione'),

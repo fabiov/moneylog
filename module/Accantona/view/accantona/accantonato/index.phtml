@@ -6,8 +6,15 @@
 $title = 'Accantonati';
 $this->headTitle($title);
 ?>
+<style type="text/css">
+.has-error ul {
+    color: #a94442;
+    list-style-type: none;
+    padding: 0;
+}
+</style>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<form action="<?php echo $this->url('accantona_accantonato', array('action' => 'add')); ?>" method="post">
+<form action="<?php echo $this->url('accantona_accantonato', array('action' => 'index')); ?>" method="post">
     <table class="table">
         <thead>
             <tr>
@@ -52,9 +59,27 @@ $this->headTitle($title);
 
         <tfoot>
             <tr>
-                <td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td>
-                <td><?php echo $this->formInput($form->get('importo')); ?></td>
-                <td><input class="form-control" name="descrizione" /></td>
+                <!-- td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td -->
+                <?php $element = $form->get('valuta'); ?>
+                <?php $errors = $this->formElementErrors($element); ?>
+                <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
+                    <?php echo $this->formInput($element); ?>
+                    <?php echo $errors; ?>
+                </td>
+
+                <?php $element = $form->get('importo'); ?>
+                <?php $errors = $this->formElementErrors($element); ?>
+                <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
+                    <?php echo $this->formInput($element); ?>
+                    <?php echo $errors; ?>
+                </td>
+
+                <?php $element = $form->get('descrizione'); ?>
+                <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
+                    <?php echo $this->formInput($element); ?>
+                    <?php echo $errors; ?>
+                </td>
+
                 <td class="actions text-right">
                     <button id="save" type="submit" class="btn btn-default show-on-edit">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi

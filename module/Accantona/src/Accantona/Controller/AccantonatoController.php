@@ -13,11 +13,12 @@ class AccantonatoController extends AbstractActionController
     protected $user;
     protected $accantonatoTable;
 
-    public function addAction()
+    public function indexAction()
     {
         $form = new AccantonatoForm();
-
         $request = $this->getRequest();
+        $user = $this->getUser();
+
         if ($request->isPost()) {
 
             $accantonato = new Accantonato();
@@ -26,24 +27,15 @@ class AccantonatoController extends AbstractActionController
 
             if ($form->isValid()) {
                 $data = $form->getData();
-                $data['userId'] = $this->getUser()->id;
+                $data['userId'] = $user->id;
                 $accantonato->exchangeArray($data);
                 $this->getAccantonatoTable()->save($accantonato);
                 // Redirect to list of categories
                 return $this->redirect()->toRoute('accantona_accantonato');
             }
-            Debug::dump($_POST, '$_POST');
-            Debug::dump($form->getMessages());
-            die();
         }
-        return array('form' => $form);
-    }
 
-    public function indexAction()
-    {
-        $where = array(
-            'userId=' . $this->getUser()->id,
-        );
+        $where = array('userId=' . $user->id);
         if (($months = (int) $this->params()->fromQuery('monthsFilter', 1)) != false) {
             $where[] = 'valuta>"' . date('Y-m-d', strtotime("-$months month")) . '"';
         }
@@ -51,7 +43,7 @@ class AccantonatoController extends AbstractActionController
         return new ViewModel(array(
             'months' => $months,
             'rows' => $this->getAccantonatoTable()->fetchAll($where),
-            'form' => new AccantonatoForm(),
+            'form' => $form,
         ));
     }
 
