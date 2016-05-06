@@ -16,7 +16,9 @@ class SpesaController extends AbstractActionController
 
     public function addAction()
     {
-        $form = new SpesaForm();
+        $em = $this->getEntityManager();
+        $user = $this->getUser();
+        $form = new SpesaForm('spesa', array(), $em, $user->id);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
