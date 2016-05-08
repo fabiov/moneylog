@@ -29,11 +29,21 @@ class CategoriaForm extends Form
             'type' => 'Hidden',
         ));
         $this->add(array(
+            'attributes' => array('class' => 'form-control'),
             'name' => 'descrizione',
             'type' => 'Text',
+            'options' => array('label' => 'Descrizione'),
+        ));
+        $this->add(array(
+            'attributes' => array('value' => 1),
+            'name' => 'status',
             'options' => array(
-                'label' => 'Descrizione',
+                'label' => 'Attivo',
+                'use_hidden_element' => true,
+                'checked_value' => 1,
+                'unchecked_value' => 0,
             ),
+            'type' => 'Checkbox',
         ));
         $this->add(array(
             'name' => 'submit',

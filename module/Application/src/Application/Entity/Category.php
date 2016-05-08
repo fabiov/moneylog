@@ -1,7 +1,9 @@
 <?php
 namespace Application\Entity;
 
+use Composer\Command\DumpAutoloadCommand;
 use Doctrine\ORM\Mapping as ORM;
+use Zend\Debug\Debug;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
@@ -15,10 +17,11 @@ use Zend\InputFilter\InputFilterInterface;
  * @property int $id
  * @property int $userId
  * @property string $descrizione
+ * @property int $status
  * @property string $created
  * @property string $updated
  */
-class Categorie implements InputFilterAwareInterface
+class Category implements InputFilterAwareInterface
 {
 
     protected $inputFilter;
@@ -39,6 +42,11 @@ class Categorie implements InputFilterAwareInterface
      * @ORM\Column(name="descrizione", type="string")
      */
     protected $descrizione;
+
+    /**
+     * @ORM\Column(name="status", type="integer")
+     */
+    protected $status = 1;
 
     /**
      * @ORM\Column(name="created", type="datetime")
@@ -90,10 +98,11 @@ class Categorie implements InputFilterAwareInterface
      */
     public function exchangeArray($data = array())
     {
-        $this->userId      = isset($data['userId']) ? $data['userId'] : null;
+        if (isset($data['userId'])) {
+            $this->userId = $data['userId'];
+        }
         $this->descrizione = isset($data['descrizione']) ? $data['descrizione'] : null;
-        $this->created     = isset($data['created']) ? $data['created'] : null;
-        $this->updated     = isset($data['updated']) ? $data['updated'] : null;
+        $this->status      = empty($data['status'])      ? 0                    : 1;
     }
 
     /**
@@ -114,14 +123,20 @@ class Categorie implements InputFilterAwareInterface
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
+
             $inputFilter->add(array(
-                'name' => 'payDay',
+                'name'     => 'descrizione',
                 'required' => true,
-                'filters' => array(array('name' => 'Zend\Filter\Int'))
+                'filters'  => array(array('name' => 'StringTrim')),
+            ));
+            $inputFilter->add(array(
+                'name'     => 'status',
+                'filters'  => array(array('name' => 'Int')),
             ));
 
             $this->inputFilter = $inputFilter;
         }
+
         return $this->inputFilter;
     }
 
