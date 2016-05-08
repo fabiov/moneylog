@@ -39,8 +39,9 @@ class CategoriaController extends AbstractActionController
 
     public function indexAction()
     {
+        $em = $this->getEntityManager();
         return new ViewModel(array(
-            'rows' => $this->getCategoriaTable()->fetchAll(array('userId' => $this->getUser()->id)),
+            'rows' => $em->getRepository('Application\Entity\Category')->findBy(array('userId' => $this->getUser()->id))
         ));
     }
 

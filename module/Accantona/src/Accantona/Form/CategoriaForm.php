@@ -35,7 +35,7 @@ class CategoriaForm extends Form
             'options' => array('label' => 'Descrizione'),
         ));
         $this->add(array(
-            'attributes' => array('value' => 1),
+            'attributes' => array('value' => 1, 'id' => 'categotyStatus'),
             'name' => 'status',
             'options' => array(
                 'label' => 'Attivo',

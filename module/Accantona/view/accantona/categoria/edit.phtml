@@ -19,7 +19,7 @@ $this->form->prepare();
 
     <?php
     $element = $form->get('status');
-    $element->setAttribute('id', 'categotyStatus')->setLabelAttributes(array('for' => 'categotyStatus'));
+    $element->setLabelAttributes(array('for' => 'categotyStatus'));
     ?>
     <?php $errors = $this->formElementErrors($element); ?>
     <div class="checkbox <?php if ($errors) echo 'has-error'; ?>">
@@ -28,7 +28,7 @@ $this->form->prepare();
         <?php echo $errors; ?>
     </div>
 
-    <div>
+    <div class="text-right">
         <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Salva">
             <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Salva
         </button>
