@@ -39,44 +39,38 @@ class CategoriaController extends AbstractActionController
 
     public function indexAction()
     {
+        $em = $this->getEntityManager();
         return new ViewModel(array(
-            'rows' => $this->getCategoriaTable()->fetchAll(array('userId' => $this->getUser()->id)),
+            'rows' => $em->getRepository('Application\Entity\Category')->findBy(array('userId' => $this->getUser()->id))
         ));
     }
 
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
-            return $this->redirect()->toRoute('accantona_categoria', array('action' => 'add'));
-        }
+        $user = $this->getUser();
 
-        try {
-            $categoria = $this->getCategoriaTable()->getCategoria($id);
-        } catch (\Exception $ex) {
+        $category = $this->getEntityManager()->getRepository('Application\Entity\Category')
+            ->findOneBy(array('id' => $id, 'userId' => $user->id));
+        if (!$category) {
             return $this->redirect()->toRoute('accantona_categoria', array('action' => 'index'));
         }
 
-        $user = $this->getUser();
         $form = new CategoriaForm();
-        $form->bind($categoria);
-        $form->get('submit')->setAttribute('value', 'Edit');
+        $form->bind($category);
 
         $request = $this->getRequest();
-        if ($request->isPost() && $user->id == $categoria->userId) {
+        if ($request->isPost()) {
 
-            $form->setInputFilter($categoria->getInputFilter());
+            $form->setInputFilter($category->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $categoria->userId = $user->id;
-                $this->getCategoriaTable()->save($categoria);
+                $this->getEntityManager()->flush();
 
-                // Redirect to list
                 return $this->redirect()->toRoute('accantona_categoria');
             }
         }
-
         return array('id' => $id, 'form' => $form);
     }
 
@@ -117,6 +111,11 @@ class CategoriaController extends AbstractActionController
     public function getUser()
     {
         return $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
+    }
+
+    public function getEntityManager()
+    {
+        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
     }
 
 }
