@@ -24,7 +24,7 @@ $this->headTitle($title);
                         <select class="form-control" id="categoryIdFilter" name="categoryIdFilter">
                             <option value="0">Tutte</option>
                             <?php foreach ($categories as $category): ?>
-                            <option value="<?php echo $category['id']; ?>"<?php if ($category['id'] == $categoryId) echo 'selected="selected"'; ?>><?php echo $category['descrizione']; ?></option>
+                            <option value="<?php echo $category->id; ?>"<?php if ($category->id == $categoryId) echo 'selected="selected"'; ?>><?php echo $category->descrizione; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </td>
@@ -67,7 +67,7 @@ $this->headTitle($title);
                     <td class="category">
                         <select class="form-control" name="id_categoria">
                             <?php foreach ($categories as $category): ?>
-                            <option value="<?php echo $category['id']; ?>"><?php echo $category['descrizione']; ?></option>
+                            <option value="<?php echo $category->id; ?>"><?php echo $category->descrizione; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </td>

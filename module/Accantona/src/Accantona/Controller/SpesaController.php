@@ -2,6 +2,7 @@
 
 namespace Accantona\Controller;
 
+use Application\Entity\Category;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Accantona\Model\Spesa;
@@ -34,15 +35,13 @@ class SpesaController extends AbstractActionController
                 // Redirect to list of categories
                 return $this->redirect()->toRoute('accantona_spesa');
             }
-            Debug::dump($form->getMessages());
         }
         return array('form' => $form);
     }
 
     public function indexAction()
     {
-        $sm = $this->getServiceLocator();
-        $categoryTable = $sm->get('Accantona\Model\CategoriaTable');
+        $em = $this->getEntityManager();
         $user = $this->getUser();
         $where = array('spese.userId' => $user->id);
 
@@ -53,11 +52,14 @@ class SpesaController extends AbstractActionController
             $where[] = 'spese.valuta>"' . date('Y-m-d', strtotime("-$months month")) .'"';
         }
 
+        $categories = $em->getRepository('Application\Entity\Category')
+            ->findBy(array('status' => Category::STATUS_ACTIVE, 'userId' => $user->id));
+
         return new ViewModel(array(
             'categoryId' => $categoryId,
             'months'     => $months,
             'rows'       => $this->getSpesaTable()->joinFetchAll($where),
-            'categories' => $categoryTable->fetchAll(array('userId' => $user->id), 'descrizione')->toArray(),
+            'categories' => $categories,
             'avgPerCategory' => $this->getSpesaTable()->getAvgPerCategories($user->id),
         ));
     }
