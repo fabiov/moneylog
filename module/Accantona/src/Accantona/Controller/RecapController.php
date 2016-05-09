@@ -88,9 +88,6 @@ class RecapController extends AbstractActionController
         return $this->redirect()->toRoute('accantona_recap', array('action' => 'index'));
     }
 
-    /**
-     * @return Accantona\Model\SpesaTable
-     */
     public function getSpesaTable()
     {
         if (!$this->spesaTable) {
