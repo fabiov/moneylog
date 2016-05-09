@@ -3,29 +3,33 @@ $title = 'Categorie di spesa';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<table class="table">
-    <tr>
-        <th>Descrizione</th>
-        <th>&nbsp;</th>
-    </tr>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Descrizione</th>
+            <th>Attivo</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
     <?php foreach ($rows as $row) : ?>
     <tr>
         <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
+        <td><?php echo $row->status ? 'Sì' : 'No'; ?></td>
         <td class="text-right">
-            <a href="<?php echo $this->url('accantona_categoria', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+            <a href="<?php echo $this->url('accantona_categoria', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </a>
-            <a href="<?php echo $this->url('accantona_categoria', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+            <!-- a href="<?php echo $this->url('accantona_categoria', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-            </a>
+            </a -->
         </td>
     </tr>
     <?php endforeach; ?>
     <tfoot>
         <tr>
             <td class="text-right" colspan="3">
-                <a href="<?php echo $this->url('accantona_categoria', array('action' => 'add')); ?>" class="btn btn-default" aria-label="Add">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+                <a href="<?php echo $this->url('accantona_categoria', array('action' => 'add')); ?>" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
                 </a>
             </td>
         </tr>

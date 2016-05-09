@@ -1,7 +1,7 @@
 <?php
-$title = 'Modifica spesa';
+$title = 'Modifica accantonamento';
 $this->headTitle($title);
-$this->form->setAttribute('action', $this->url('accantona_spesa', array('action' => 'edit', 'id' => $this->id)));
+$this->form->setAttribute('action', $this->url('accantona_accantonato', array('action' => 'edit', 'id' => $this->id)));
 $this->form->prepare();
 ?>
 
@@ -17,15 +17,6 @@ $this->form->prepare();
         <?php echo $this->formInput($element); ?>
         <?php echo $errors; ?>
     </div>
-
-    <?php $element = $form->get('id_categoria'); ?>
-    <?php $errors = $this->formElementErrors($element); ?>
-    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
-        <?php echo $this->formLabel($element); ?>
-        <?php echo $this->formSelect($element); ?>
-        <?php echo $errors; ?>
-    </div>
-
 
     <?php $element = $form->get('importo'); ?>
     <?php $errors = $this->formElementErrors($element); ?>
@@ -44,7 +35,7 @@ $this->form->prepare();
     </div>
 
     <div class="text-right">
-        <a class="btn btn-default" href="<?= $this->url('accantona_spesa') ?>">Annulla</a>
+        <a class="btn btn-default" href="<?= $this->url('accantona_accantonato') ?>">Annulla</a>
         <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-save"></span> Salva</button>
     </div>
 
