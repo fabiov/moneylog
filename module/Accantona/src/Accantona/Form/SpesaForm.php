@@ -68,7 +68,7 @@ class SpesaForm extends Form
 
     private function getCategoriesOptions()
     {
-        $rs = $this->entityManager->getRepository('Application\Entity\Categorie')->findBy(array('userId' => $this->userId));
+        $rs = $this->entityManager->getRepository('Application\Entity\Category')->findBy(array('userId' => $this->userId));
         $options = array();
         foreach ($rs as $row) {
             $options[$row->id] = $row->descrizione;
