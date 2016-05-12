@@ -263,7 +263,7 @@ class RegistrationController extends AbstractActionController
 
         $message = new Message();
         $message->addTo($auth->email)
-                ->addFrom('foravatenubi@gmail.com')
+                ->addFrom('refistrazione@venol.it', 'Registrazione wol')
                 ->setSubject('Please, confirm your registration!')
                 ->setBody($body);
         $this->getServiceLocator()->get('mail.transport')->send($message);

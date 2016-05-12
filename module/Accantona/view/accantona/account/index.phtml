@@ -5,27 +5,32 @@ $this->headTitle($title);
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 
 <?php if ($rows): ?>
-    <table class="table table-striped table-hover">
-        <tr>
-            <th>Nome</th>
-            <th class="text-right">Operazioni</th>
-        </tr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th class="text-right">Operazioni</th>
+            </tr>
+        </thead>
+
+        <tbody>
         <?php foreach ($rows as $row) : ?>
-        <tr>
-            <td><?php echo $this->escapeHtml($row->name); ?></td>
-            <td class="text-right">
-                <a href="<?php echo $this->url('accantonaAccount', array('action' => 'list', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
-                    <span class="glyphicon glyphicon-list" aria-hidden="true" title="Lista"></span>
-                </a>
-                <a href="<?php echo $this->url('accantonaAccount', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
-                    <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Modifica"></span>
-                </a>
-                <!-- a href="<?php echo $this->url('accantona_categoria', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
-                    <span class="glyphicon glyphicon-trash" aria-hidden="true" title="Elimina"></span>
-                </a -->
-            </td>
-        </tr>
+            <tr>
+                <td><?php echo $this->escapeHtml($row->name); ?></td>
+                <td class="text-right">
+                    <a href="<?php echo $this->url('accantonaAccount', array('action' => 'detail', 'id' => $row->id)); ?>" class="btn btn-default">
+                        <span class="glyphicon glyphicon-list" aria-hidden="true" title="Movimenti"></span>
+                    </a>
+                    <a href="<?php echo $this->url('accantonaAccount', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Modifica"></span>
+                    </a>
+                    <!-- a href="<?php echo $this->url('accantona_categoria', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true" title="Elimina"></span>
+                    </a -->
+                </td>
+            </tr>
         <?php endforeach; ?>
+        </tbody>
 
     </table>
 <?php else: ?>

@@ -42,24 +42,20 @@ class AccountController extends AbstractActionController
     {
         $em = $this->getEntityManager();
         return new ViewModel(array(
-//            'rows' => $this->getCategoriaTable()->fetchAll(array('userId' => $this->getUser()->id)),
-            'rows' => $em->getRepository('Application\Entity\Account')->findAll(array('userId' => $this->getUser()->id)),
+            'rows' => $em->getRepository('Application\Entity\Account')->findBy(array('userId' => $this->getUser()->id)),
         ));
     }
 
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
-            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'add'));
-        }
 
         $em = $this->getEntityManager();
         $account = $em->getRepository('Application\Entity\Account')
             ->findOneBy(array('id' => $id, 'userId' => $this->getUser()->id));
 
         if (!$account) {
-            return $this->redirect()->toRoute('album', array('action' => 'index'));
+            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
         $form = new AccountForm();
@@ -102,6 +98,40 @@ class AccountController extends AbstractActionController
             'id' => $id,
             'category' => $this->getCategoriaTable()->getCategoria($id)
         );
+    }
+
+    public function detailAction()
+    {
+        $form = new AccantonatoForm();
+        $request = $this->getRequest();
+        $user = $this->getUser();
+
+        if ($request->isPost()) {
+
+            $accantonato = new Accantonato();
+            $form->setInputFilter($accantonato->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $data['userId'] = $user->id;
+                $accantonato->exchangeArray($data);
+                $this->getAccantonatoTable()->save($accantonato);
+                // Redirect to list of categories
+                return $this->redirect()->toRoute('accantona_accantonato');
+            }
+        }
+
+        $where = array('userId=' . $user->id);
+        if (($months = (int) $this->params()->fromQuery('monthsFilter', 1)) != false) {
+            $where[] = 'valuta>"' . date('Y-m-d', strtotime("-$months month")) . '"';
+        }
+
+        return new ViewModel(array(
+            'months' => $months,
+            'rows' => $this->getAccantonatoTable()->fetchAll($where),
+            'form' => $form,
+        ));
     }
 
     public function getCategoriaTable()
