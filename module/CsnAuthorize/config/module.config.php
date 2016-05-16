@@ -48,7 +48,7 @@ return array(
                     'add' => 'user',
                     'index' => 'user',
                     'edit' => 'user',
-                    'delete' => 'user',
+                    'moviment' => 'user',
                 ),
 
             ),
