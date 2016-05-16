@@ -50,6 +50,12 @@ class Moviment implements InputFilterAwareInterface
     protected $description;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Account", inversedBy="moviments")
+     * @ORM\JoinColumn(name="accountId", referencedColumnName="id")
+     */
+    protected $account;
+
+    /**
      * Magic getter to expose protected properties.
      *
      * @param string $property

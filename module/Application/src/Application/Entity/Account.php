@@ -50,6 +50,16 @@ class Account implements InputFilterAwareInterface
     protected $updated;
 
     /**
+     * @ORM\OneToMany(targetEntity="Moviment", mappedBy="account")
+     */
+    protected $moviments;
+
+    public function __construct()
+    {
+        $this->moviments = new ArrayCollection();
+    }
+
+    /**
      * Magic getter to expose protected properties.
      *
      * @param string $property
