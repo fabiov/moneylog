@@ -42,10 +42,17 @@ class AccountController extends AbstractActionController
 
     public function indexAction()
     {
-        $em = $this->getEntityManager();
-        return new ViewModel(array(
-            'rows' => $em->getRepository('Application\Entity\Account')->findBy(array('userId' => $this->getUser()->id)),
-        ));
+        /* @var \Doctrine\ORM\QueryBuilder $qb */
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('a.id', 'a.name', 'COALESCE(SUM(m.amount), 0) AS total')
+            ->from('Application\Entity\Account', 'a')
+            ->leftJoin('a.moviments', 'm')
+            ->where('a.userId=?1')
+            ->setParameter(1, 1)
+            ->groupBy('a.id');
+
+        return new ViewModel(array('rows' => $qb->getQuery()->getResult()));
     }
 
     public function editAction()
