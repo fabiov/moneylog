@@ -1,9 +1,9 @@
 <?php
+$total = 0;
 $title = 'Conti';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-
 <?php if ($rows): ?>
     <table class="table table-hover">
         <thead>
@@ -13,12 +13,12 @@ $this->headTitle($title);
                 <th class="text-right">Operazioni</th>
             </tr>
         </thead>
-
         <tbody>
         <?php foreach ($rows as $row) : ?>
+            <?php $total += $row['total']; ?>
             <tr>
                 <td><?php echo $this->escapeHtml($row['name']); ?></td>
-                <td class="text-right"><?php echo $this->escapeHtml($row['total']); ?></td>
+                <td class="text-right"><?php echo number_format($row['total'], 2, ',', ''); ?></td>
                 <td class="text-right">
                     <a href="<?php echo $this->url('accantonaAccount', array('action' => 'moviment', 'id' => $row['id'])); ?>" class="btn btn-default">
                         <span class="glyphicon glyphicon-list" aria-hidden="true" title="Movimenti"></span>
@@ -33,7 +33,13 @@ $this->headTitle($title);
             </tr>
         <?php endforeach; ?>
         </tbody>
-
+        <tfoot>
+            <tr>
+                <td>Totale</td>
+                <td class="text-right"><?php echo number_format($total, 2, ',', ''); ?></td>
+                <td></td>
+            </tr>
+        </tfoot>
     </table>
 <?php else: ?>
     <div>
