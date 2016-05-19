@@ -49,6 +49,7 @@ class AccountController extends AbstractActionController
             ->leftJoin('a.moviments', 'm')
             ->where('a.userId=?1')
             ->setParameter(1, 1)
+            ->orderBy('a.name', 'ASC')
             ->groupBy('a.id');
 
         return new ViewModel(array('rows' => $qb->getQuery()->getResult()));
