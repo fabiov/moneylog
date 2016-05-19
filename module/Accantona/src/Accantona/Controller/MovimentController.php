@@ -69,15 +69,14 @@ class MovimentController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-                $data['accountId'] = $accountId;
                 $moviment->exchangeArray($data);
-
-                Debug::dump($moviment->getArrayCopy());
+                $moviment->account = $account;
 
                 $em->persist($moviment);
                 $em->flush();
 
-                return $this->redirect()->toRoute('accantonaAccount', array('action' => 'moviment', 'id' => $accountId));
+                return $this->redirect()
+                    ->toRoute('accantonaMoviment', array('action' => 'account', 'id' => $accountId));
             }
         }
 
