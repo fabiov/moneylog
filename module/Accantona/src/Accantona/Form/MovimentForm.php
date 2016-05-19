@@ -9,7 +9,6 @@ class MovimentForm extends Form
 
     public function __construct($name = 'moviment')
     {
-        // we want to ignore the name passed
         parent::__construct($name);
 
         $this->add(array(

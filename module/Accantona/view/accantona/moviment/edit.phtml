@@ -1,0 +1,42 @@
+<?php
+$title = 'Modifica accantonamento';
+$this->headTitle($title);
+$this->form->setAttribute('action', $this->url('accantonaMoviment', array('action' => 'edit', 'id' => $this->item->id)));
+$this->form->prepare();
+?>
+
+<div class="form-group">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+</div>
+<?php echo $this->form()->openTag($this->form); ?>
+
+    <?php $element = $form->get('date'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+        <?php echo $this->formLabel($element); ?>
+        <?php echo $this->formInput($element); ?>
+        <?php echo $errors; ?>
+    </div>
+
+    <?php $element = $form->get('amount'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+        <?php echo $this->formLabel($element); ?>
+        <?php echo $this->formInput($element); ?>
+        <?php echo $errors; ?>
+    </div>
+
+    <?php $element = $form->get('description'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+        <?php echo $this->formLabel($element); ?>
+        <?php echo $this->formInput($element); ?>
+        <?php echo $errors; ?>
+    </div>
+
+    <div class="text-right">
+        <a class="btn btn-default" href="<?= $this->url('accantonaMoviment', array('action' => 'account', 'id' => $this->item->accountId)) ?>">Annulla</a>
+        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-save"></span> Salva</button>
+    </div>
+
+<?php echo $this->form()->closeTag(); ?>

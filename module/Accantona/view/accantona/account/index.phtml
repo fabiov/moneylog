@@ -20,7 +20,7 @@ $this->headTitle($title);
                 <td><?php echo $this->escapeHtml($row['name']); ?></td>
                 <td class="text-right"><?php echo number_format($row['total'], 2, ',', ''); ?></td>
                 <td class="text-right">
-                    <a href="<?php echo $this->url('accantonaAccount', array('action' => 'moviment', 'id' => $row['id'])); ?>" class="btn btn-default">
+                    <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $row['id'])); ?>" class="btn btn-default">
                         <span class="glyphicon glyphicon-list" aria-hidden="true" title="Movimenti"></span>
                     </a>
                     <a href="<?php echo $this->url('accantonaAccount', array('action' => 'edit', 'id' => $row['id'])); ?>" class="btn btn-default">

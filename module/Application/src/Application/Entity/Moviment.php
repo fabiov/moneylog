@@ -16,6 +16,9 @@ use Zend\InputFilter\InputFilter;
  * @property DateTime $date
  * @property float $amount
  * @property string $description
+ *
+ * Relations:
+ * @property \Application\Entity\Account $account
  */
 class Moviment implements InputFilterAwareInterface
 {

@@ -11,7 +11,6 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Accantona\Model\Categoria;
 use Accantona\Form\CategoriaForm;
-use Accantona\Form\MovimentForm;
 
 class AccountController extends AbstractActionController
 {
@@ -108,49 +107,6 @@ class AccountController extends AbstractActionController
 //            'category' => $this->getCategoriaTable()->getCategoria($id)
 //        );
 //    }
-
-    public function movimentAction()
-    {
-        $request = $this->getRequest();
-        $params = $this->params();
-        $user = $this->getUser();
-        $em = $this->getEntityManager();
-
-        $accountId = (int) $params->fromRoute('id', 0);
-        $months = (int) $params->fromQuery('monthsFilter', 0);
-
-        $account = $em->getRepository('Application\Entity\Account')
-            ->findOneBy(array('id' => $accountId, 'userId' => $user->id));
-
-        if (!$account) {
-            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
-        }
-
-        $form = new MovimentForm();
-        if ($request->isPost()) {
-
-            $moviment = new Moviment();
-            $data = $request->getPost();
-            $form->setInputFilter($moviment->getInputFilter());
-            $form->setData($data);
-
-            if ($form->isValid()) {
-                $data['accountId'] = $accountId;
-                $moviment->exchangeArray($data);
-                $em->persist($moviment);
-                $em->flush();
-
-                return $this->redirect()->toRoute('accantonaAccount', array('action' => 'moviment', 'id' => $accountId));
-            }
-        }
-
-        return new ViewModel(array(
-            'account' => $account,
-            'form' => $form,
-            'months' => $months,
-            'rows' => $em->getRepository('Application\Entity\Moviment')->findBy(array('accountId' => $accountId)),
-        ));
-    }
 
     public function getCategoriaTable()
     {

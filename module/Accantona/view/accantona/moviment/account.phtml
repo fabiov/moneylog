@@ -15,7 +15,7 @@ $this->headTitle($title);
 </style>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <h2><?php echo $this->escapeHtml($account->name); ?></h2>
-<form action="<?php echo $this->url('accantonaAccount', array('action' => 'moviment', 'id' => $account->id)); ?>" method="post">
+<form action="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $account->id)); ?>" method="post">
     <div class="table-responsive">
         <table class="table table-hover">
             <thead>
@@ -28,7 +28,6 @@ $this->headTitle($title);
                 <tr id="search">
                     <td>
                         <select class="form-control" id="monthsFilter" name="monthsFilter">
-                            <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
                             <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
                             <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
                             <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
@@ -49,17 +48,16 @@ $this->headTitle($title);
                     <td class="text-right amount"><?php echo $this->currencyForma($row->amount); ?></td>
                     <td class="description"><?php echo $row->description; ?></td>
                     <td class="text-right">
-                        <a href="<?php echo $this->url('accantona_accantonato', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
+                        <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </a>
-                        <span data-href="<?php echo $this->url('accantona_accantonato', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default delete-item" title="Elimina">
+                        <span data-href="<?php echo $this->url('accantonaMoviment', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default delete-item" title="Elimina">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         </span>
                     </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
-
             <tfoot>
                 <tr>
                     <?php $element = $form->get('date'); ?>

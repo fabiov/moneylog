@@ -50,7 +50,14 @@ return array(
                     'edit' => 'user',
                     'moviment' => 'user',
                 ),
-
+                'Accantona\Controller\Moviment' => array(
+                    'account' => 'user',
+                    'add' => 'user',
+                    'moviment' => 'user',
+                    'index' => 'user',
+                    'edit' => 'user',
+                    'delete' => 'user',
+                ),
             ),
         ),
     ),

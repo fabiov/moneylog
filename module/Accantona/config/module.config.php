@@ -9,6 +9,7 @@ return array(
             'Accantona\Controller\Accantonato' => 'Accantona\Controller\AccantonatoController',
             'Accantona\Controller\Settings' => 'Accantona\Controller\SettingsController',
             'Accantona\Controller\Account' => 'Accantona\Controller\AccountController',
+            'Accantona\Controller\Moviment' => 'Accantona\Controller\MovimentController',
         ),
     ),
 
@@ -24,7 +25,7 @@ return array(
                 ),
             ),
             'accantona_categoria' => array(
-                'type'    => 'segment',
+                'type' => 'segment',
                 'options' => array(
                     'route' => '/categoria[/:action][/:id]',
                     'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
@@ -32,7 +33,7 @@ return array(
                 ),
             ),
             'accantona_recap' => array(
-                'type'    => 'segment',
+                'type' => 'segment',
                 'options' => array(
                     'route' => '/recap[/:action]',
                     'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
@@ -40,7 +41,7 @@ return array(
                 ),
             ),
             'accantona_accantonato' => array(
-                'type'    => 'segment',
+                'type' => 'segment',
                 'options' => array(
                     'route' => '/accantonato[/:action][/:id]',
                     'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
@@ -48,7 +49,7 @@ return array(
                 ),
             ),
             'accantonaSettings' => array(
-                'type'    => 'segment',
+                'type' => 'segment',
                 'options' => array(
                     'route' => '/settings[/:action][/:id]',
                     'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
@@ -56,11 +57,19 @@ return array(
                 ),
             ),
             'accantonaAccount' => array(
-                'type'    => 'segment',
+                'type' => 'segment',
                 'options' => array(
                     'route' => '/account[/:action][/:id]',
                     'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
                     'defaults' => array('controller' => 'Accantona\Controller\Account', 'action' => 'index'),
+                ),
+            ),
+            'accantonaMoviment' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/moviment[/:action][/:id]',
+                    'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
+                    'defaults' => array('controller' => 'Accantona\Controller\Moviment', 'action' => 'index'),
                 ),
             ),
         ),
