@@ -2,6 +2,7 @@
 namespace Auth\Controller;
 
 use Application\Entity\Setting;
+use Application\Entity\User;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -24,23 +25,26 @@ class RegistrationController extends AbstractActionController
 
     public function indexAction()
     {
-        // A test instantiation to make sure it works. Not used in the application. You can remove the next line
-        // $myValidator = new ConfirmPassword();
         $form = new RegistrationForm();
-        $form->get('submit')->setValue('Register');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
+
             $form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
             $form->setData($request->getPost());
+
             if ($form->isValid()) {
+
                 $data = $form->getData();
                 $data = $this->prepareData($data);
-                $auth = new Auth();
-                $auth->exchangeArray($data);
-                $this->getUserTable()->saveUser($auth);
-                $this->sendConfirmationEmail($auth);
-                $this->flashMessenger()->addMessage($auth->email);
+
+                $user = new User();
+                $user->exchangeArray($data);
+                $this->getEntityManager()->persist($user);
+                $this->getEntityManager()->flush();
+                $this->sendConfirmationEmail($user);
+                $this->flashMessenger()->addMessage($user->email);
+
                 return $this->redirect()->toRoute('auth/default', array(
                     'controller' => 'registration',
                     'action' => 'registration-success'
@@ -251,20 +255,20 @@ class RegistrationController extends AbstractActionController
         return $this->getServiceLocator()->get('Accantona\Model\VariabileTable');
     }
 
-    public function sendConfirmationEmail($auth)
+    public function sendConfirmationEmail($user)
     {
         $body = "Please, click the link to confirm your registration. "
               . $this->getRequest()->getServer('HTTP_ORIGIN')
               . $this->url()->fromRoute('auth/default', array(
                     'controller' => 'registration',
                     'action' => 'confirm-email',
-                    'id' => $auth->registrationToken
+                    'id' => $user->registrationToken
                 ));
 
         $message = new Message();
-        $message->addTo($auth->email)
-                ->addFrom('refistrazione@venol.it', 'Registrazione wol')
-                ->setSubject('Please, confirm your registration!')
+        $message->addTo($user->email)
+                ->addFrom('refistrazione@easywallet.it', 'Registrazione EasyWallet')
+                ->setSubject('Conferma registrazione')
                 ->setBody($body);
         $this->getServiceLocator()->get('mail.transport')->send($message);
     }
