@@ -44,6 +44,20 @@ return array(
                 'Accantona\Controller\Settings' => array(
                     'index' => 'user',
                 ),
+                'Accantona\Controller\Account' => array(
+                    'add' => 'user',
+                    'index' => 'user',
+                    'edit' => 'user',
+                    'moviment' => 'user',
+                ),
+                'Accantona\Controller\Moviment' => array(
+                    'account' => 'user',
+                    'add' => 'user',
+                    'moviment' => 'user',
+                    'index' => 'user',
+                    'edit' => 'user',
+                    'delete' => 'user',
+                ),
             ),
         ),
     ),

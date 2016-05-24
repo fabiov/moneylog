@@ -10,11 +10,17 @@ class RegistrationForm extends Form
         parent::__construct('registration');
         $this->setAttribute('method', 'post');
 
-//        $this->add(array(
-//            'name' => 'username',
-//            'attributes' => array('type' => 'text', 'class' => 'form-control'),
-//            'options' => array('label' => 'Username'),
-//        ));
+        $this->add(array(
+            'name' => 'name',
+            'attributes' => array('class' => 'form-control', 'required' => true, 'type' => 'text'),
+            'options' => array('label' => 'Nome'),
+        ));
+
+        $this->add(array(
+            'name' => 'surname',
+            'attributes' => array('class' => 'form-control', 'required' => true, 'type' => 'text'),
+            'options' => array('label' => 'Cognome'),
+        ));
 
         $this->add(array(
             'name' => 'email',
@@ -63,7 +69,7 @@ class RegistrationForm extends Form
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'Go',
+                'value' => 'Registra',
                 'id' => 'submitbutton',
                 'class' => 'btn btn-lg btn-primary btn-block',
             ),

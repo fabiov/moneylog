@@ -18,8 +18,24 @@ $this->form->prepare();
         padding: 0;
     }
 </style>
-<?= $this->form()->openTag($this->form); ?>
+<?php echo $this->form()->openTag($this->form); ?>
     <h1>Registration</h1>
+
+    <?php $element = $form->get('name'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+        <?php echo $this->formLabel($element); ?>
+        <?php echo $this->formInput($element); ?>
+        <?php echo $errors; ?>
+    </div>
+
+    <?php $element = $form->get('surname'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+        <?php echo $this->formLabel($element); ?>
+        <?php echo $this->formInput($element); ?>
+        <?php echo $errors; ?>
+    </div>
 
     <?php $element = $form->get('email'); ?>
     <?php $errors = $this->formElementErrors($element); ?>

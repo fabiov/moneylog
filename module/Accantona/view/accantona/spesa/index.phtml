@@ -15,7 +15,7 @@ $this->headTitle($title);
                 <tr>
                     <th class="category">Category</th>
                     <th class="valuta">Valuta</th>
-                    <th class="amount">Amount</th>
+                    <th class="amount text-right">Importo</th>
                     <th>Description</th>
                     <th class="actions">&nbsp;</th>
                 </tr>
@@ -24,7 +24,7 @@ $this->headTitle($title);
                         <select class="form-control" id="categoryIdFilter" name="categoryIdFilter">
                             <option value="0">Tutte</option>
                             <?php foreach ($categories as $category): ?>
-                            <option value="<?php echo $category->id; ?>"<?php if ($category->id == $categoryId) echo 'selected="selected"'; ?>><?php echo $category->descrizione; ?></option>
+                                <option value="<?php echo $category->id; ?>"<?php if ($category->id == $categoryId) echo 'selected="selected"'; ?>><?php echo $category->descrizione; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </td>
@@ -49,7 +49,7 @@ $this->headTitle($title);
                     <td class="category"><?php echo $this->escapeHtml($row->categoryDescription); ?></td>
                     <td class="date"><?php echo $this->dateForma($row->valuta); ?></td>
                     <td class="amount text-right"><?php echo $this->currencyForma($row->importo); ?></td>
-                    <td class="description"><?php echo $this->escapeHtml($row->descrizione); ?></td>
+                    <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
                     <td class="actions text-right">
                         <a href="<?php echo $this->url('accantona_spesa', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
