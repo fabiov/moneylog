@@ -15,6 +15,7 @@ use Zend\InputFilter\InputFilter;
  * @property int $id
  * @property int $userId
  * @property string $name
+ * @property bool $recap
  * @property string $created
  * @property string $updated
  */
@@ -39,6 +40,11 @@ class Account implements InputFilterAwareInterface
      * @ORM\Column(type="string", length=255, unique=false, nullable=false)
      */
     protected $name;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    protected $recap = 0;
 
     /**
      * @ORM\Column(name="created", type="datetime")
@@ -104,6 +110,10 @@ class Account implements InputFilterAwareInterface
             $this->userId =  $data['userId'];
         }
         $this->name = isset($data['name']) ? $data['name'] : null;
+
+        if (isset($data['recap'])) {
+            $this->recap =  $data['recap'];
+        }
         return $this;
     }
 

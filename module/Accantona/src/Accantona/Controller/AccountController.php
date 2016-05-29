@@ -44,7 +44,7 @@ class AccountController extends AbstractActionController
         /* @var \Doctrine\ORM\QueryBuilder $qb */
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
-            ->select('a.id', 'a.name', 'COALESCE(SUM(m.amount), 0) AS total')
+            ->select('a.id', 'a.name', 'a.recap', 'COALESCE(SUM(m.amount), 0) AS total')
             ->from('Application\Entity\Account', 'a')
             ->leftJoin('a.moviments', 'm')
             ->where('a.userId=?1')
