@@ -49,6 +49,7 @@ return array(
                     'index' => 'user',
                     'edit' => 'user',
                     'moviment' => 'user',
+                    'balance' => 'user',
                 ),
                 'Accantona\Controller\Moviment' => array(
                     'account' => 'user',

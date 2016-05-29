@@ -109,6 +109,40 @@ class AccountController extends AbstractActionController
 //        );
 //    }
 
+    public function balanceAction()
+    {
+        // check if the user is account owner
+        $amount = $this->params()->fromQuery('amount');
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $em = $this->getEntityManager();
+        $account = $em->getRepository('Application\Entity\Account')
+            ->findOneBy(array('id' => $id, 'userId' => $this->getUser()->id));
+
+        if (!$account || !preg_match('/^[\-\+]?\d+(,\d+)?$/', $amount)) {
+            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+        }
+
+        /* @var \Doctrine\ORM\QueryBuilder $qb */
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('COALESCE(SUM(m.amount), 0) AS total')
+            ->from('Application\Entity\Moviment', 'm')
+            ->where('m.accountId=:accountId')
+            ->setParameter(':accountId', $id);
+        $r = $qb->getQuery()->getOneOrNullResult();
+
+        $moviment = new Moviment();
+        $moviment->account = $account;
+        $moviment->date = new \DateTime();
+        $moviment->amount = str_replace(',', '.', $amount) - $r['total'];
+        $moviment->description = 'Conguaglio';
+        $em->persist($moviment);
+        $em->flush();
+
+        return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+    }
+
     public function getCategoriaTable()
     {
         if (!$this->categoriaTable) {
