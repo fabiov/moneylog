@@ -10,7 +10,7 @@ use Zend\InputFilter\InputFilter;
 /**
  * Setting.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Application\Repository\AccountRepository")
  * @ORM\Table(name="Account")
  * @property int $id
  * @property int $userId
