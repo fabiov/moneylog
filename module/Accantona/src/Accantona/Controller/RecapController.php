@@ -51,13 +51,15 @@ class RecapController extends AbstractActionController
             $variables[$variable->nome] = $variable->valore;
         }
 
-        $payDay = $this->getEntityManager()->find('Application\Entity\Setting', $user->id)->payDay;
+        $em = $this->getEntityManager();
+        $payDay = $em->find('Application\Entity\Setting', $user->id)->payDay;
         $currentDay = date('j');
         return new ViewModel(array(
+            'accounts'       => $em->getRepository('Application\Entity\Account')->getTotals($this->getUser()->id, true),
             'avgPerCategory' => $avgPerCategory,
-            'variables' => $variables,
-            'stored' => $this->getAccantonatoTable()->getSum($user->id) - $spesaTable->getSum($user->id),
-            'remainingDays' => $currentDay < $payDay ? $payDay - $currentDay : date('t') - $currentDay + $payDay,
+            'stored'         => $this->getAccantonatoTable()->getSum($user->id) - $spesaTable->getSum($user->id),
+            'remainingDays'  => $currentDay < $payDay ? $payDay - $currentDay : date('t') - $currentDay + $payDay,
+            'variables'      => $variables,
         ));
     }
 
@@ -69,11 +71,6 @@ class RecapController extends AbstractActionController
             $variabileTable = $this->getVariabileTable();
             $user = $this->getUser();
 
-            // saldo_banca
-            $val = $this->params()->fromPost('saldo_banca');
-            if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $val)) {
-                $variabileTable->updateByName('saldo_banca', $val, $user->id);
-            }
             // contanti
             $val = $this->params()->fromPost('contanti');
             if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $val)) {

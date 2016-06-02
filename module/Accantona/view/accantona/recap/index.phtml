@@ -1,5 +1,8 @@
+<?php
+$sum = 0;
+$montlyBudget = 0;
+?>
 <h1>Riepilogo</h1>
-<?php $sum = 0; ?>
 <div class="row">
     <div class="col-md-6">
         <h2>Spesa per categoria</h2>
@@ -41,14 +44,19 @@
             <table class="table">
                 <thead><tr><th>Descrizione</th><th class="text-right">Valore</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <td>Saldo in banca</td>
-                        <td class="text-right" style="min-width:130px;">
-                            +
-                            <input class="form-control show-on-edit text-right" disabled="disabled" name="saldo_banca" step="0.01" style="display:none;width:100px;" type="number" value="<?php echo number_format($variables['saldo_banca'], 2, '.', ''); ?>" />
-                            <span class="hide-on-edit"><?php echo $this->currencyForma($variables['saldo_banca']); ?></span>
-                        </td>
-                    </tr>
+
+                    <?php foreach ($accounts as $account): ?>
+                        <tr>
+                            <td>
+                                <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $account['id'])); ?>"><?php echo $account['name']; ?></a>
+                            </td>
+                            <td class="text-right" style="min-width:130px;">
+                                <?php echo $this->currencyForma($account['total']); ?>
+                            </td>
+                        </tr>
+                        <?php $montlyBudget += $account['total']; ?>
+                    <?php endforeach; ?>
+
                     <tr>
                         <td>Contanti</td>
                         <td class="text-right" style="min-width:130px;">
@@ -77,7 +85,7 @@
                         <td>Budget mensile residuo</td>
                         <td class="text-right">
                             <?php
-                            $montlyBudget = $variables['saldo_banca'] + $variables['contanti'] - $variables['risparmio'] - $stored;
+                            $montlyBudget += $variables['contanti'] - $variables['risparmio'] - $stored;
                             echo $this->currencyForma($montlyBudget);
                             ?>
                         </td>
