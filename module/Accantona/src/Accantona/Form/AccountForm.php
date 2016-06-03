@@ -32,6 +32,17 @@ class AccountForm extends Form
             'type' => 'Text',
         ));
         $this->add(array(
+            'attributes' => array(),
+            'name' => 'recap',
+            'options' => array(
+                'label' => 'Includi nel riepilogo',
+                'checked_value' => 1,
+                'unchecked_value' => 0,
+                'use_hidden_element' => true,
+            ),
+            'type' => 'checkbox',
+        ));
+        $this->add(array(
             'attributes' => array('class' => 'btn btn-primary', 'id' => 'submitbutton', 'value' => 'Salva'),
             'name' => 'submit',
             'type' => 'Submit',

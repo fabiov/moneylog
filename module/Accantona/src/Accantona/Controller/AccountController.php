@@ -5,12 +5,8 @@ namespace Accantona\Controller;
 use Accantona\Form\AccountForm;
 use Application\Entity\Account;
 use Application\Entity\Moviment;
-use Zend\Captcha\Dumb;
-use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Accantona\Model\Categoria;
-use Accantona\Form\CategoriaForm;
 
 class AccountController extends AbstractActionController
 {
@@ -41,18 +37,8 @@ class AccountController extends AbstractActionController
 
     public function indexAction()
     {
-        /* @var \Doctrine\ORM\QueryBuilder $qb */
-        $qb = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->select('a.id', 'a.name', 'COALESCE(SUM(m.amount), 0) AS total')
-            ->from('Application\Entity\Account', 'a')
-            ->leftJoin('a.moviments', 'm')
-            ->where('a.userId=?1')
-            ->setParameter(1, 1)
-            ->orderBy('a.name', 'ASC')
-            ->groupBy('a.id');
-
-        return new ViewModel(array('rows' => $qb->getQuery()->getResult()));
+        $accountRepository = $this->getEntityManager()->getRepository('Application\Entity\Account');
+        return new ViewModel(array('rows' => $accountRepository->getTotals($this->getUser()->id, false)));
     }
 
     public function editAction()
