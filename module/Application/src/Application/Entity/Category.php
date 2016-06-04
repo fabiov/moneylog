@@ -13,7 +13,7 @@ use Zend\InputFilter\InputFilterInterface;
  * Setting.
  *
  * @ORM\Entity
- * @ORM\Table(name="categorie")
+ * @ORM\Table(name="Category")
  * @property int $id
  * @property int $userId
  * @property string $descrizione

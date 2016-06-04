@@ -80,8 +80,8 @@ class AccantonatoTable
     {
         //calcolo le spese medie per ogni categoria
         $sqlSum = <<< eoc
-SELECT sum(importo) AS somma, min(valuta) AS prima_valuta, id_categoria, categorie.descrizione FROM spese
-INNER JOIN categorie ON categorie.id=spese.id_categoria WHERE date('now', '-30 months') <= valuta GROUP BY id_categoria
+SELECT sum(importo) AS somma, min(valuta) AS prima_valuta, id_categoria, Category.descrizione FROM spese
+INNER JOIN Category ON Category.id=spese.id_categoria WHERE date('now', '-30 months') <= valuta GROUP BY id_categoria
 eoc;
         $statement = $this->tableGateway->adapter->createStatement($sqlSum);
         $rs = $statement->execute();

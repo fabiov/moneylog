@@ -72,7 +72,7 @@ class SpesaTable
     public function joinFetchAll($where)
     {
         $sqlSelect = $this->tableGateway->getSql()->select()
-            ->join('categorie', 'categorie.id=spese.id_categoria', array('categoryDescription' => 'descrizione'))
+            ->join('Category', 'Category.id=spese.id_categoria', array('categoryDescription' => 'descrizione'))
             ->where($where);
         return $this->tableGateway->selectWith($sqlSelect);
     }
@@ -81,9 +81,9 @@ class SpesaTable
     {
         //calcolo le spese medie per ogni categoria
         $sqlSum = <<< eoc
-SELECT sum(importo) AS somma, min(valuta) AS prima_valuta, id_categoria, categorie.descrizione FROM spese
-INNER JOIN categorie ON categorie.id=spese.id_categoria AND spese.userId=categorie.userId
-WHERE date_sub(now(), interval 30 month) <= valuta AND spese.userId=$userId AND categorie.status=1
+SELECT sum(importo) AS somma, min(valuta) AS prima_valuta, id_categoria, Category.descrizione FROM spese
+INNER JOIN Category ON Category.id=spese.id_categoria AND spese.userId=Category.userId
+WHERE date_sub(now(), interval 30 month) <= valuta AND spese.userId=$userId AND Category.status=1
 GROUP BY id_categoria
 eoc;
         $statement = $this->tableGateway->adapter->createStatement($sqlSum);

@@ -5,12 +5,8 @@ namespace Accantona\Controller;
 use Accantona\Form\AccountForm;
 use Application\Entity\Account;
 use Application\Entity\Moviment;
-use Zend\Captcha\Dumb;
-use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Accantona\Model\Categoria;
-use Accantona\Form\CategoriaForm;
 
 class AccountController extends AbstractActionController
 {
@@ -41,18 +37,8 @@ class AccountController extends AbstractActionController
 
     public function indexAction()
     {
-        /* @var \Doctrine\ORM\QueryBuilder $qb */
-        $qb = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->select('a.id', 'a.name', 'COALESCE(SUM(m.amount), 0) AS total')
-            ->from('Application\Entity\Account', 'a')
-            ->leftJoin('a.moviments', 'm')
-            ->where('a.userId=?1')
-            ->setParameter(1, 1)
-            ->orderBy('a.name', 'ASC')
-            ->groupBy('a.id');
-
-        return new ViewModel(array('rows' => $qb->getQuery()->getResult()));
+        $accountRepository = $this->getEntityManager()->getRepository('Application\Entity\Account');
+        return new ViewModel(array('rows' => $accountRepository->getTotals($this->getUser()->id, false)));
     }
 
     public function editAction()
@@ -108,6 +94,40 @@ class AccountController extends AbstractActionController
 //            'category' => $this->getCategoriaTable()->getCategoria($id)
 //        );
 //    }
+
+    public function balanceAction()
+    {
+        // check if the user is account owner
+        $amount = $this->params()->fromQuery('amount');
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $em = $this->getEntityManager();
+        $account = $em->getRepository('Application\Entity\Account')
+            ->findOneBy(array('id' => $id, 'userId' => $this->getUser()->id));
+
+        if (!$account || !preg_match('/^[\-\+]?\d+(,\d+)?$/', $amount)) {
+            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+        }
+
+        /* @var \Doctrine\ORM\QueryBuilder $qb */
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('COALESCE(SUM(m.amount), 0) AS total')
+            ->from('Application\Entity\Moviment', 'm')
+            ->where('m.accountId=:accountId')
+            ->setParameter(':accountId', $id);
+        $r = $qb->getQuery()->getOneOrNullResult();
+
+        $moviment = new Moviment();
+        $moviment->account = $account;
+        $moviment->date = new \DateTime();
+        $moviment->amount = str_replace(',', '.', $amount) - $r['total'];
+        $moviment->description = 'Conguaglio';
+        $em->persist($moviment);
+        $em->flush();
+
+        return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+    }
 
     public function getCategoriaTable()
     {
