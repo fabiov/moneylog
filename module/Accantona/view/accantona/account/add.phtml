@@ -18,6 +18,13 @@ $form->prepare();
         <?= $errors; ?>
     </div>
 
+    <?php $element = $form->get('recap'); ?>
+    <?php $errors = $this->formElementErrors($element); ?>
+    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+        <label><?php echo $this->formCheckbox($element); ?> Includi nel riepilogo</label>
+        <?php echo $errors; ?>
+    </div>
+
     <?php $element = $form->get('submit'); ?>
     <?php $errors = $this->formElementErrors($element); ?>
     <div class="form-group text-right <?php if ($errors) echo 'has-error'; ?>">
