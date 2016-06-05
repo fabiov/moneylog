@@ -7,9 +7,8 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 
 /**
- * Setting.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Application\Repository\MovimentRepository")
  * @ORM\Table(name="Moviment")
  * @property int $id
  * @property int $accountId

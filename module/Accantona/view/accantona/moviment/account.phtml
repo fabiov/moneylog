@@ -20,7 +20,7 @@ $this->headTitle($title);
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th class="valuta">data</th>
+                    <th class="valuta">Data</th>
                     <th class="amount text-right">Importo</th>
                     <th>Descrizione</th>
                     <th class="actions">&nbsp;</th>
@@ -37,6 +37,12 @@ $this->headTitle($title);
                     </td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-right amount"><strong><?php echo $this->currencyForma($this->balanceStart); ?></strong></td>
+                    <td><strong>Saldo precedente</strong></td>
                     <td></td>
                 </tr>
             </thead>
@@ -60,6 +66,12 @@ $this->headTitle($title);
             </tbody>
             <tfoot>
                 <tr>
+                    <td></td>
+                    <td class="text-right amount"><strong><?php echo $this->currencyForma($this->balanceEnd); ?></strong></td>
+                    <td><strong>Saldo finale</strong></td>
+                    <td></td>
+                </tr>
+                <tr>
                     <?php $element = $form->get('date'); ?>
                     <?php $errors = $this->formElementErrors($element); ?>
                     <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
@@ -75,6 +87,7 @@ $this->headTitle($title);
                     </td>
 
                     <?php $element = $form->get('description'); ?>
+                    <?php $errors = $this->formElementErrors($element); ?>
                     <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
                         <?php echo $this->formInput($element); ?>
                         <?php echo $errors; ?>
@@ -92,7 +105,7 @@ $this->headTitle($title);
 </form>
 <script type="text/javascript">
     $('#search select').change(function(){
-        location.href = "<?php echo $this->url(null, array('action' => 'moviment', 'id' => $account->id)); ?>" + '?monthsFilter=' + $('#monthsFilter').val();
+        location.href = "<?php echo $this->url(null, array('action' => 'account', 'id' => $account->id)); ?>" + '?monthsFilter=' + $('#monthsFilter').val();
     });
 
     $(document).on("click", ".delete-item", function(e) {
