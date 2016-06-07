@@ -1,43 +1,10 @@
 <?php
 $sum = 0;
 $montlyBudget = 0;
+$dataChart = array();
 ?>
 <h1>Riepilogo</h1>
 <div class="row">
-    <div class="col-md-6">
-        <h2>Spesa per categoria</h2>
-        <table class="table">
-
-            <thead>
-                <tr>
-                    <th>Categoria</th>
-                    <th class="text-right">Spesa media mensile</th>
-                </tr>
-            </thead>
-
-            <tbody>
-            <?php foreach ($avgPerCategory as $row) : ?>
-                <tr>
-                    <td><?php echo $this->escapeHtml($row['description']); ?></td>
-                    <td class="text-right">
-                        <?php
-                        $sum += $row['average'];
-                        echo $this->currencyForma($row['average']);
-                        ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td><strong>Somma</strong></td>
-                    <td class="text-right">
-                        <strong><?php echo $this->currencyForma($sum); ?></strong>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
     <div class="col-md-6">
         <h2>Budget</h2>
         <form action="<?php echo $this->url('accantona_recap', array('action' => 'edit')); ?>" method="post">
@@ -120,6 +87,46 @@ $montlyBudget = 0;
             </div>
         </form>
     </div>
+
+    <div class="col-md-6">
+        <h2>Spesa per categoria</h2>
+        <table class="table">
+
+            <thead>
+            <tr>
+                <th>Categoria</th>
+                <th class="text-right">Spesa media mensile</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <?php foreach ($avgPerCategory as $row) : ?>
+                <?php $dataChart[] = array($row['description'], $row['average']); ?>
+                <tr>
+                    <td><?php echo $this->escapeHtml($row['description']); ?></td>
+                    <td class="text-right">
+                        <?php
+                        $sum += $row['average'];
+                        echo $this->currencyForma($row['average']);
+                        ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td><strong>Somma</strong></td>
+                <td class="text-right">
+                    <strong><?php echo $this->currencyForma($sum); ?></strong>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+
+        <div>
+            <div id="myPieChart" style="margin:auto;width:350px"></div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
     $('#edit').click(function () {
@@ -133,4 +140,23 @@ $montlyBudget = 0;
     $('#save').click(function () {
         $('form').submit();
     });
+
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        // Define the chart to be drawn.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Categorie');
+        data.addColumn('number', 'Media mensiles');
+        data.addRows(<?php echo json_encode($dataChart); ?>);
+
+        // Instantiate and draw the chart.
+        var chart = new google.visualization.PieChart(document.getElementById('myPieChart'));
+        chart.draw(data, {
+            "chartArea": {
+                width:'100%',
+                height:'93%'
+            }
+        });
+    }
 </script>
