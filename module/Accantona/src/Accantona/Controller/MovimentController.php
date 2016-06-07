@@ -87,7 +87,7 @@ class MovimentController extends AbstractActionController
             'account' => $account,
             'form' => $form,
             'months' => $months,
-            'rows' => $em->getRepository('Application\Entity\Moviment')->findBy(array('accountId' => $accountId)),
+            'rows' => $em->getRepository('Application\Entity\Moviment')->findBy(array('accountId' => $accountId), array('date' => 'DESC')),
             'balanceEnd' => $movimentRepository->getBalance($accountId),
             'balanceStart' => $months ? $movimentRepository->getBalance($accountId, $oDateTime->sub(new \DateInterval('P1D'))) : 0,
         ));
