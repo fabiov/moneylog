@@ -103,6 +103,7 @@ $this->headTitle($title);
         </table>
     </div>
 </form>
+<div id="chart_div"></div>
 <script type="text/javascript">
     $('#search select').change(function(){
         location.href = "<?php echo $this->url(null, array('action' => 'account', 'id' => $account->id)); ?>" + '?monthsFilter=' + $('#monthsFilter').val();
@@ -123,4 +124,31 @@ $this->headTitle($title);
             }
         });
     });
+
+    google.charts.load('current', {'packages':['bar'], 'language': 'it'});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Data');
+        data.addColumn('number', 'Movimento');
+
+        <?php if (true): ?>
+        <?php foreach ($rows as $row): ?>
+            data.addRow([new Date(<?php echo $row->date->format('Y'); ?>, <?php echo $row->date->format('m'); ?>, <?php echo $row->date->format('m'); ?>), <?php echo $row->amount; ?>]);
+        <?php endforeach; ?>
+        <?php endif; ?>
+
+        var options = google.charts.Bar.convertOptions({
+            height: 450,
+            legend: {position: 'none'}
+        });
+        var chart = new google.charts.Bar(document.getElementById('chart_div'));
+        var date_formatter = new google.visualization.DateFormat({
+            pattern: "dd/MM/yyyy"
+        });
+        date_formatter.format(data, 0);
+
+        chart.draw(data, options);
+    }
 </script>
