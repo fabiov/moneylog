@@ -41,8 +41,8 @@ $this->headTitle($title);
                 </tr>
                 <tr>
                     <td></td>
-                    <td class="text-right amount"><strong><?php echo $this->currencyForma($this->balanceStart); ?></strong></td>
-                    <td><strong>Saldo precedente</strong></td>
+                    <td class="text-right amount"><strong><?php echo $this->currencyForma($this->balanceEnd); ?></strong></td>
+                    <td><strong>Saldo finale</strong></td>
                     <td></td>
                 </tr>
             </thead>
@@ -67,8 +67,8 @@ $this->headTitle($title);
             <tfoot>
                 <tr>
                     <td></td>
-                    <td class="text-right amount"><strong><?php echo $this->currencyForma($this->balanceEnd); ?></strong></td>
-                    <td><strong>Saldo finale</strong></td>
+                    <td class="text-right amount"><strong><?php echo $this->currencyForma($this->balanceStart); ?></strong></td>
+                    <td><strong>Saldo precedente</strong></td>
                     <td></td>
                 </tr>
                 <tr>
