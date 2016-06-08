@@ -134,7 +134,7 @@ $this->headTitle($title);
         data.addColumn('number', 'Movimento');
 
         <?php foreach ($rows as $row): ?>
-            data.addRow([new Date(<?php echo $row->date->format('Y'); ?>, <?php echo $row->date->format('n'); ?>, <?php echo $row->date->format('j'); ?>), <?php echo $row->amount; ?>]);
+            data.addRow([new Date(<?php echo $row->date->format('Y'); ?>, <?php echo $row->date->format('n') - 1; ?>, <?php echo $row->date->format('j'); ?>), <?php echo $row->amount; ?>]);
         <?php endforeach; ?>
 
         var options = google.charts.Bar.convertOptions({
