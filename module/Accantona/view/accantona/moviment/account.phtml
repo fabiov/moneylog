@@ -41,8 +41,8 @@ $this->headTitle($title);
                 </tr>
                 <tr>
                     <td></td>
-                    <td class="text-right amount"><strong><?php echo $this->currencyForma($this->balanceStart); ?></strong></td>
-                    <td><strong>Saldo precedente</strong></td>
+                    <td class="text-right amount"><strong><?php echo $this->currencyForma($this->balanceEnd); ?></strong></td>
+                    <td><strong>Saldo finale</strong></td>
                     <td></td>
                 </tr>
             </thead>
@@ -67,8 +67,8 @@ $this->headTitle($title);
             <tfoot>
                 <tr>
                     <td></td>
-                    <td class="text-right amount"><strong><?php echo $this->currencyForma($this->balanceEnd); ?></strong></td>
-                    <td><strong>Saldo finale</strong></td>
+                    <td class="text-right amount"><strong><?php echo $this->currencyForma($this->balanceStart); ?></strong></td>
+                    <td><strong>Saldo precedente</strong></td>
                     <td></td>
                 </tr>
                 <tr>
@@ -134,7 +134,7 @@ $this->headTitle($title);
         data.addColumn('number', 'Movimento');
 
         <?php foreach ($rows as $row): ?>
-            data.addRow([new Date(<?php echo $row->date->format('Y'); ?>, <?php echo $row->date->format('n'); ?>, <?php echo $row->date->format('j'); ?>), <?php echo $row->amount; ?>]);
+            data.addRow([new Date(<?php echo $row->date->format('Y'); ?>, <?php echo $row->date->format('n') - 1; ?>, <?php echo $row->date->format('j'); ?>), <?php echo $row->amount; ?>]);
         <?php endforeach; ?>
 
         var options = google.charts.Bar.convertOptions({
