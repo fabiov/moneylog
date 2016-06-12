@@ -3,12 +3,11 @@
 namespace Accantona\Controller;
 
 use Application\Entity\Category;
+use Application\Entity\Moviment;
+use Application\Entity\Spese;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Accantona\Model\Spesa;
-use Accantona\Model\CategoriaTable;
 use Accantona\Form\SpesaForm;
-use Zend\Debug\Debug;
 
 class SpesaController extends AbstractActionController
 {
@@ -22,20 +21,44 @@ class SpesaController extends AbstractActionController
         $form = new SpesaForm('spesa', array(), $em, $user->id);
 
         $request = $this->getRequest();
+
         if ($request->isPost()) {
 
-            $spesa = new Spesa();
-            $form->setInputFilter($spesa->getInputFilter());
-            $form->setData($request->getPost());
+            $data = $request->getPost();
+            $spese = new Spese();
+            $form->setInputFilter($spese->getInputFilter());
+            $form->setData($data);
 
             if ($form->isValid()) {
-                $spesa->exchangeArray($form->getData());
-                $spesa->userId = $this->getUser()->id;
-                $this->getSpesaTable()->save($spesa);
-                // Redirect to list of categories
+                $spese->exchangeArray($form->getData());
+                $spese->userId = $user->id;
+
+                $em->persist($spese);
+
+                // if is set account id add new moviment to account
+                if ($data['accountId']) {
+
+
+                    $account = $em->getRepository('Application\Entity\Account')
+                        ->findOneBy(array('id' => $data['accountId'], 'userId' => $user->id));
+                    if ($account) {
+                        $moviment = new Moviment();
+                        $moviment->exchangeArray(array(
+                            'amount'      => -1 * $data['importo'],
+                            'date'        => $data['valuta'],
+                            'description' => $data['descrizione'],
+                        ));
+                        $moviment->account = $account;
+                        $em->persist($moviment);
+                    }
+                }
+                $em->flush();
+
+                // Redirect to list of albums
                 return $this->redirect()->toRoute('accantona_spesa');
             }
         }
+
         return array('form' => $form);
     }
 
