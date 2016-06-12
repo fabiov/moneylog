@@ -7,6 +7,21 @@ use Doctrine\ORM\EntityRepository;
 class AccountRepository extends EntityRepository
 {
 
+    public function getUserAccounts($userId, $onlyRecap = false)
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.userId=:userId')
+            ->orderBy('a.name', 'ASC')
+            ->setParameter(':userId', $userId);
+
+        if ($onlyRecap) {
+            $qb->andWhere('a.recap=1');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function getTotals($userId, $onlyRecap = false)
     {
         $qb =  $this->getEntityManager()

@@ -22,10 +22,6 @@ class SpesaForm extends Form
             'name' => 'id',
             'type' => 'Hidden',
         ));
-//        $this->add(array(
-//            'name' => 'userId',
-//            'type' => 'Hidden',
-//        ));
         $this->add(array(
             'attributes' => array('class' => 'form-control'),
             'name' => 'valuta',
@@ -64,6 +60,26 @@ class SpesaForm extends Form
                 'label' => 'Descrizione',
             ),
         ));
+        $this->add(array(
+            'attributes' => array('class' => 'form-control'),
+            'name' => 'accountId',
+            'options' => array(
+                'label' => 'Conto di addebito',
+                'value_options' => $this->getAccountOptions(),
+            ),
+            'required' => false,
+            'type' => 'Select',
+        ));
+    }
+
+    private function getAccountOptions()
+    {
+        $options = array(0 => '');
+        $rs = $this->entityManager->getRepository('Application\Entity\Account')->getUserAccounts($this->userId);
+        foreach ($rs as $row) {
+            $options[$row->id] = $row->name;
+        }
+        return $options;
     }
 
     private function getCategoriesOptions()

@@ -45,58 +45,56 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
         return include __DIR__ . '/config/module.config.php';
     }
 
-     public function getServiceConfig()
-     {
-         return array(
-             'factories' => array(
-                 'Accantona\Model\SpesaTable' => function($sm) {
-                     $tableGateway = $sm->get('SpesaTableGateway');
-                     $table = new SpesaTable($tableGateway);
-                     return $table;
-                 },
-                 'SpesaTableGateway' => function ($sm) {
-                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                     $resultSetPrototype = new ResultSet();
-                     $resultSetPrototype->setArrayObjectPrototype(new Spesa());
-                     return new TableGateway('spese', $dbAdapter, null, $resultSetPrototype);
-                 },
-
-                 'Accantona\Model\VariabileTable' => function($sm) {
-                     $tableGateway = $sm->get('VariabileTableGateway');
-                     $table = new VariabileTable($tableGateway);
-                     return $table;
-                 },
-                 'VariabileTableGateway' => function ($sm) {
-                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                     $resultSetPrototype = new ResultSet();
-                     $resultSetPrototype->setArrayObjectPrototype(new Variabile());
-                     return new TableGateway('variabili', $dbAdapter, null, $resultSetPrototype);
-                 },
-
-                 'Accantona\Model\AccantonatoTable' => function($sm) {
-                     $tableGateway = $sm->get('AccantonatoTableGateway');
-                     $table = new AccantonatoTable($tableGateway);
-                     return $table;
-                 },
-                 'AccantonatoTableGateway' => function ($sm) {
-                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                     $resultSetPrototype = new ResultSet();
-                     $resultSetPrototype->setArrayObjectPrototype(new Accantonato());
-                     return new TableGateway('accantonati', $dbAdapter, null, $resultSetPrototype);
-                 },
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'Accantona\Model\SpesaTable' => function($sm) {
+                    $tableGateway = $sm->get('SpesaTableGateway');
+                    $table = new SpesaTable($tableGateway);
+                    return $table;
+                },
+                'SpesaTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Spesa());
+                    return new TableGateway('spese', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Accantona\Model\VariabileTable' => function($sm) {
+                    $tableGateway = $sm->get('VariabileTableGateway');
+                    $table = new VariabileTable($tableGateway);
+                    return $table;
+                },
+                'VariabileTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Variabile());
+                    return new TableGateway('variabili', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Accantona\Model\AccantonatoTable' => function($sm) {
+                    $tableGateway = $sm->get('AccantonatoTableGateway');
+                    $table = new AccantonatoTable($tableGateway);
+                    return $table;
+                },
+                'AccantonatoTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Accantonato());
+                    return new TableGateway('accantonati', $dbAdapter, null, $resultSetPrototype);
+                },
                 'Accantona\Model\CategoriaTable' => function($sm) {
-                     $tableGateway = $sm->get('CategoriaTableGateway');
-                     $table = new CategoriaTable($tableGateway);
-                     return $table;
-                 },
-                 'CategoriaTableGateway' => function ($sm) {
-                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                     $resultSetPrototype = new ResultSet();
-                     $resultSetPrototype->setArrayObjectPrototype(new Categoria());
-                     return new TableGateway('Category', $dbAdapter, null, $resultSetPrototype);
-                 },
-             ),
-         );
-     }
+                    $tableGateway = $sm->get('CategoriaTableGateway');
+                    $table = new CategoriaTable($tableGateway);
+                    return $table;
+                },
+                'CategoriaTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Categoria());
+                    return new TableGateway('Category', $dbAdapter, null, $resultSetPrototype);
+                },
+            ),
+        );
+    }
 
 }
