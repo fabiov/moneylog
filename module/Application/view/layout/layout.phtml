@@ -10,7 +10,7 @@
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge');
 
         // Le styles
-        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/Piggy_bank_green_32x32.png'))
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/wallet_32x28.png'))
             ->prependStylesheet($this->basePath('css/style.css'))
             ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
             ->prependStylesheet($this->basePath('css/bootstrap.min.css'));
@@ -53,7 +53,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="/img/Piggy_bank_green_32x32.png" alt="Accantona"/></a>
+                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="/img/wallet_32x32.png" alt="Accantona"/></a>
                 </div>
                 <?php if ($this->identity()): ?>
                 <div class="collapse navbar-collapse">
