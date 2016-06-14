@@ -26,6 +26,26 @@
         <!-- google charts -->
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+        <!-- jquery.cookiebar -->
+        <link href="/js/jquery.cookiebar/jquery.cookiebar.css" media="screen" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="/js/jquery.cookiebar/jquery.cookiebar.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var cookieBarOptions = {
+                    acceptText: 'Accetto',
+                    "bottom": true,
+                    "fixed": true,
+                    "message": 'Questo sito utilizza i cookies per migliorare la vostra esperienza.',
+//                    "policyButton": true,
+//                    "policyText": 'Privacy Policy',
+//                    "policyURL": '/privacy-policy',
+                    "zindex": 1
+                };
+                if ($.cookieBar(cookieBarOptions)) {
+                }
+            });
+        </script>
+
         <style type="text/css">
             .app-env{
                 position: fixed;
