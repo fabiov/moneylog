@@ -90,8 +90,9 @@ $dataChart = array();
 
     <div class="col-md-6">
         <h2>Spesa per categoria</h2>
-        <table class="table">
 
+        <?php if ($avgPerCategory): ?>
+        <table class="table">
             <thead>
             <tr>
                 <th>Categoria</th>
@@ -122,6 +123,15 @@ $dataChart = array();
             </tr>
             </tfoot>
         </table>
+        <?php else: ?>
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                Non è stata definita alcuna categoria di spesa.<br />
+                Le categorie di spesa ti aiutano monitorare le voci di spesa per te più significative (es.&nbsp;Casa, Auto, Gas, ecc.).<br />
+                <br />
+                Clicca <a href="<?php echo $this->url('accantona_spesa', array('action' => 'add')); ?>">qui</a> per crearne una.
+            </div>
+        <?php endif; ?>
 
         <div>
             <div id="myPieChart" style="margin:auto;width:350px"></div>
@@ -141,6 +151,7 @@ $dataChart = array();
         $('form').submit();
     });
 
+    <?php if ($dataChart): ?>
     google.charts.load('current', {packages: ['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
@@ -159,4 +170,5 @@ $dataChart = array();
             }
         });
     }
+    <?php endif; ?>
 </script>
