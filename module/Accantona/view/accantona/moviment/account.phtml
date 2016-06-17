@@ -5,6 +5,7 @@
  */
 $title = 'Movimenti';
 $this->headTitle($title);
+$chartData = array();
 ?>
 <style type="text/css">
 .has-error ul {
@@ -49,6 +50,14 @@ $this->headTitle($title);
 
             <tbody>
                 <?php foreach ($rows as $row): ?>
+                    <?php
+                    $strDate = $row->date->format('Y-m-d');
+                    if (isset($chartData[$strDate])) {
+                        $chartData[$strDate] += $row->amount;
+                    } else {
+                        $chartData[$strDate] = $row->amount;
+                    }
+                    ?>
                 <tr>
                     <td class="date"><?php echo $this->dateForma($row->date); ?></td>
                     <td class="text-right amount"><?php echo $this->currencyForma($row->amount); ?></td>
@@ -133,8 +142,9 @@ $this->headTitle($title);
         data.addColumn('date', 'Data');
         data.addColumn('number', 'Movimento');
 
-        <?php foreach ($rows as $row): ?>
-            data.addRow([new Date(<?php echo $row->date->format('Y'); ?>, <?php echo $row->date->format('n') - 1; ?>, <?php echo $row->date->format('j'); ?>), <?php echo $row->amount; ?>]);
+        <?php foreach ($chartData as $strDate => $row): ?>
+            <?php $date = \DateTime::createFromFormat('Y-m-d', $strDate); ?>
+            data.addRow([new Date(<?php echo $date->format('Y'); ?>, <?php echo $date->format('n') - 1; ?>, <?php echo $date->format('j'); ?>), <?php echo $row; ?>]);
         <?php endforeach; ?>
 
         var options = google.charts.Bar.convertOptions({
