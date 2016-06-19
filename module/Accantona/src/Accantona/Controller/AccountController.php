@@ -129,30 +129,6 @@ class AccountController extends AbstractActionController
         return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
     }
 
-    public function moveAction()
-    {
-//        $form = new AccountForm();
-//
-//        $request = $this->getRequest();
-//        if ($request->isPost()) {
-//
-//            $account = new Account();
-//            $form->setInputFilter($account->getInputFilter());
-//            $form->setData($request->getPost());
-//
-//            if ($form->isValid()) {
-//                $data = $form->getData();
-//                $data['userId'] = $this->getUser()->id;
-//                $account->exchangeArray($data);
-//                $this->getEntityManager()->persist($account);
-//                $this->getEntityManager()->flush();
-//
-//                return $this->redirect()->toRoute('accantonaAccount');
-//            }
-//        }
-//        return array('form' => $form);
-    }
-
     public function getCategoriaTable()
     {
         if (!$this->categoriaTable) {

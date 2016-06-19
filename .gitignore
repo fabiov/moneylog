@@ -1,6 +1,5 @@
 .idea
-data/*.sqlite
-note-branches.txt
 config/autoload/local.php
 data/DoctrineORMModule/*
 composer
+/composer.lock

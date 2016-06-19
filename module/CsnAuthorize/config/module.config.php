@@ -50,11 +50,11 @@ return array(
                     'edit' => 'user',
                     'moviment' => 'user',
                     'balance' => 'user',
-                    'move' => 'user',
                 ),
                 'Accantona\Controller\Moviment' => array(
                     'account' => 'user',
                     'add' => 'user',
+                    'move' => 'user',
                     'moviment' => 'user',
                     'index' => 'user',
                     'edit' => 'user',
