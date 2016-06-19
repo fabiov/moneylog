@@ -5,6 +5,8 @@ namespace Accantona\Controller;
 use Accantona\Form\AccountForm;
 use Application\Entity\Account;
 use Application\Entity\Moviment;
+use Doctrine\ORM\EntityManager;
+use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -70,30 +72,34 @@ class AccountController extends AbstractActionController
         return array('id' => $id, 'form' => $form);
     }
 
-//    public function deleteAction()
-//    {
-//        $id = (int) $this->params()->fromRoute('id', 0);
-//        if (!$id) {
-//            return $this->redirect()->toRoute('accantona_categoria');
-//        }
-//
-//        $request = $this->getRequest();
-//        if ($request->isPost()) {
-//            $del = $request->getPost('del', 'No');
-//
-//            if ($del == 'Yes') {
-//                $this->getCategoriaTable()->deleteByAttributes(array('id' => $id, 'userId' => $this->getUser()->id));
-//            }
-//
-//            // Redirect to list of categories
-//            return $this->redirect()->toRoute('accantona_categoria');
-//        }
-//
-//        return array(
-//            'id' => $id,
-//            'category' => $this->getCategoriaTable()->getCategoria($id)
-//        );
-//    }
+    public function deleteAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('accantona_categoria');
+        }
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+
+            /* @var Account $account */
+            $account = $this->getEntityManager()->find('Application\Entity\Account', $id);
+            if ($account && $account->userId == $this->getUser()->id) {
+
+                /* @var EntityManager $em */
+                $em = $this->getEntityManager();
+                $em->createQueryBuilder()
+                    ->delete('Application\Entity\Moviment', 'm')
+                    ->where('m.account=:account')
+                    ->setParameter('account', $account)
+                    ->getQuery()->execute();
+                $em->remove($account);
+                $em->flush();
+            }
+        }
+        // Redirect to list of accounts
+        return $this->redirect()->toRoute('accantonaAccount');
+    }
 
     public function balanceAction()
     {
@@ -143,6 +149,9 @@ class AccountController extends AbstractActionController
         return $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
     }
 
+    /**
+     * @return EntityManager
+     */
     public function getEntityManager()
     {
         return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');

@@ -20,9 +20,9 @@ $this->headTitle($title);
             <?php $dataChart[] = array($row['name'], (float) $row['total']); ?>
             <?php $total += $row['total']; ?>
             <tr>
-                <td><?php echo $this->escapeHtml($row['name']); ?></td>
+                <td class="name"><?php echo $this->escapeHtml($row['name']); ?></td>
                 <td><?php echo $row['recap'] ? 'Sì' : 'No'; ?></td>
-                <td class="text-right"><?php echo number_format($row['total'], 2, ',', ''); ?></td>
+                <td class="text-right total"><?php echo number_format($row['total'], 2, ',', ''); ?></td>
                 <td class="text-right">
 
                     <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
@@ -38,9 +38,9 @@ $this->headTitle($title);
                     <a href="<?php echo $this->url('accantonaAccount', array('action' => 'edit', 'id' => $row['id'])); ?>" class="btn btn-default">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Modifica"></span>
                     </a>
-                    <!-- a href="<?php echo $this->url('accantona_categoria', array('action' => 'delete', 'id' => $row['id'])); ?>" class="btn btn-default" aria-label="Edit">
+                    <span data-href="<?php echo $this->url('accantonaAccount', array('action' => 'delete', 'id' => $row['id'])); ?>" class="btn btn-default delete-item">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true" title="Elimina"></span>
-                    </a -->
+                    </span>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -70,6 +70,28 @@ $this->headTitle($title);
 </div>
 <?php endif; ?>
 <script type="text/javascript">
+    $(document).on("click", ".delete-item", function(e) {
+        var button = $(this);
+
+        var html = '<h3>Cancellare il conto selezionato?</h3>' +
+            '<dl class="dl-horizontal">' +
+            '<dt>Nome</dt><dd>'  + button.parents('tr').find('.name').html() + '</dd>' +
+            '<dt>Saldo</dt><dd>'  + button.parents('tr').find('.total').html() + '</dd>' +
+            '</dl>' +
+            '<div class="alert alert-danger">' +
+            '<strong>Attenzione!</strong> Eliminando il conto saranno cancellati tutti i movimenti associati e non sarà più possibile recuperarli.' +
+            '</div>';
+        bootbox.confirm(html, function(result) {
+            if (result) {
+                var form = document.createElement("form");
+                form.setAttribute("method", 'post');
+                form.setAttribute("action", button.data('href'));
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    });
+
     $('.balance').click(function() {
         var button = $(this);
         bootbox.prompt("Inserisci l'importo del saldo:", function(result) {
