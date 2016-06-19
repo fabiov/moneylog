@@ -26,7 +26,6 @@ abstract class AbstractHelper extends BaseAbstractHelper
      * @var array
      */
     protected $booleanAttributes = array(
-        'autocomplete' => array('on' => 'on',        'off' => 'off'),
         'autofocus'    => array('on' => 'autofocus', 'off' => ''),
         'checked'      => array('on' => 'checked',   'off' => ''),
         'disabled'     => array('on' => 'disabled',  'off' => ''),
@@ -131,8 +130,8 @@ abstract class AbstractHelper extends BaseAbstractHelper
         'onvolumechange'     => true,
         'onwaiting'          => true,
         'role'               => true,
-        'aria-labelled-by'   => true,
-        'aria-described-by'  => true,
+        'aria-labelledby'    => true,
+        'aria-describedby'   => true,
         'spellcheck'         => true,
         'style'              => true,
         'tabindex'           => true,

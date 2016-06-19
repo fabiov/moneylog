@@ -24,6 +24,11 @@ $this->headTitle($title);
                 <td><?php echo $row['recap'] ? 'Sì' : 'No'; ?></td>
                 <td class="text-right"><?php echo number_format($row['total'], 2, ',', ''); ?></td>
                 <td class="text-right">
+
+                    <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
+                        <span title="Sposta i soldi da un conto ad un'altro">Giroconto</span>
+                    </a>
+
                     <span data-href="<?php echo $this->url('accantonaAccount', array('action' => 'balance', 'id' => $row['id'])); ?>" class="btn btn-default balance">
                         <span title="Il conguaglio adegua il conto all'importo indicato">Conguaglia</span>
                     </span>

@@ -2,7 +2,10 @@
 
 namespace Accantona\Controller;
 
+use Accantona\Form\MoveForm;
+use Application\Entity\Account;
 use Application\Entity\Moviment;
+use Application\Repository\AccountRepository;
 use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Accantona\Form\MovimentForm;
@@ -107,6 +110,74 @@ class MovimentController extends AbstractActionController
             $em->flush();
         }
         return $this->redirect()->toRoute('accantonaMoviment', array('action' => 'account', 'id' => $item->accountId));
+    }
+
+    public function moveAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        $em = $this->getEntityManager();
+        $user = $this->getUser();
+
+        /* @var AccountRepository $accountRepo */
+        $accountRepo = $em->getRepository('Application\Entity\Account');
+
+        /* @var $sourceAccount Account */
+        $sourceAccount = $accountRepo->find($id);
+
+        if (!$sourceAccount || $sourceAccount->userId != $user->id) {
+            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+        }
+
+        $accountOptions = array('' => '');
+        foreach ($accountRepo->getUserAccounts($user->id) as $account) {
+            if ($account->id != $sourceAccount->id) {
+                $accountOptions[$account->id] = $account->name;
+            }
+        }
+        $form = new MoveForm();
+        $form->setAccountOptions($accountOptions);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+
+                $data = $form->getData();
+
+                /* @var Account $targetAccount */
+                $targetAccount = $accountRepo->find($data['targetAccountId']);
+
+                if (!$targetAccount || $targetAccount->userId != $user->id) {
+                    return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+                }
+
+                $outcoming = new Moviment();
+                $outcoming->exchangeArray(array(
+                    'date'        => $data['date'],
+                    'amount'      => $data['amount'] * -1,
+                    'description' => $data['description'],
+                ));
+                $outcoming->account = $sourceAccount;
+                $em->persist($outcoming);
+
+                $incoming = new Moviment();
+                $incoming->exchangeArray(array(
+                    'accountId'   => $targetAccount->id,
+                    'date'        => $data['date'],
+                    'amount'      => $data['amount'],
+                    'description' => $data['description'],
+                ));
+                $incoming->account = $targetAccount;
+                $em->persist($incoming);
+
+                $em->flush();
+
+                return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+            }
+        }
+
+        return array('sourceAccount' => $sourceAccount, 'form' => $form);
     }
 
     /**
