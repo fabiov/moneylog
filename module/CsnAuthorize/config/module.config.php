@@ -46,10 +46,11 @@ return array(
                 ),
                 'Accantona\Controller\Account' => array(
                     'add' => 'user',
-                    'index' => 'user',
-                    'edit' => 'user',
-                    'moviment' => 'user',
                     'balance' => 'user',
+                    'delete' => 'user',
+                    'edit' => 'user',
+                    'index' => 'user',
+                    'moviment' => 'user',
                 ),
                 'Accantona\Controller\Moviment' => array(
                     'account' => 'user',
