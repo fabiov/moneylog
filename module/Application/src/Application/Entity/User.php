@@ -114,7 +114,7 @@ class User implements InputFilterAwareInterface
         $this->id                = isset($data['id'])                ? $data['id']                : null;
         $this->email             = isset($data['email'])             ? $data['email']             : null;
         $this->name              = isset($data['name'])              ? $data['name']              : null;
-        $this->surname           = isset($data['name'])              ? $data['name']              : null;
+        $this->surname           = isset($data['surname'])           ? $data['surname']           : null;
         $this->password          = isset($data['password'])          ? $data['password']          : null;
         $this->salt              = isset($data['salt'])              ? $data['salt']              : null;
         $this->status            = isset($data['status'])            ? $data['status']            : null;
@@ -154,7 +154,6 @@ class User implements InputFilterAwareInterface
                 'required' => true,
                 'filters' => array(array('name' => 'StringTrim'))
             ));
-
             $inputFilter->add(array(
                 'name'     => 'password',
                 'required' => true,
