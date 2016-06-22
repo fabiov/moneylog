@@ -85,6 +85,7 @@ class UserTable
 
     public function deleteUser($id)
     {
-        $this->tableGateway->delete(array('usr_id' => $usr_id));
-    }	
+        $this->tableGateway->delete(array('usr_id' => $id));
+    }
+
 }

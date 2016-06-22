@@ -41,7 +41,7 @@ class IndexController extends AbstractActionController
 
                 $authAdapter = new AuthAdapter(
                     $dbAdapter,
-                    'user', // there is a method setTableName to do the same
+                    'User', // there is a method setTableName to do the same
                     'email',
                     'password', // there is a method setCredentialColumn to do the same
                     "MD5(CONCAT(?, salt)) AND status=1" // setCredentialTreatment(parametrized string) 'MD5(?)'

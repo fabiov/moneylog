@@ -45,7 +45,7 @@ class Module
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Auth()); // Notice what is set here
-                    return new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('User', $dbAdapter, null, $resultSetPrototype);
                 },
                 // Add this for SMTP transport
                 'mail.transport' => function (ServiceManager $serviceManager) {

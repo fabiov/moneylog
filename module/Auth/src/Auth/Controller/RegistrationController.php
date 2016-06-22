@@ -1,6 +1,7 @@
 <?php
 namespace Auth\Controller;
 
+use Accantona\Model\VariabileTable;
 use Application\Entity\Setting;
 use Application\Entity\User;
 use Zend\Debug\Debug;
@@ -132,7 +133,6 @@ class RegistrationController extends AbstractActionController
 
     public function prepareData($data)
     {
-        $data['name'] = '';
         $data['salt'] = $this->generateDynamicSalt(4);
         $data['password'] = $this->encriptPassword($data['password'], $data['salt']);
         $data['status'] = 0;
@@ -250,6 +250,9 @@ class RegistrationController extends AbstractActionController
         return $this->userTable;
     }
 
+    /**
+     * @return VariabileTable
+     */
     public function getVariableTable()
     {
         return $this->getServiceLocator()->get('Accantona\Model\VariabileTable');
