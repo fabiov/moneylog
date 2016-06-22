@@ -154,7 +154,6 @@ class User implements InputFilterAwareInterface
                 'required' => true,
                 'filters' => array(array('name' => 'StringTrim'))
             ));
-
             $inputFilter->add(array(
                 'name'     => 'password',
                 'required' => true,
