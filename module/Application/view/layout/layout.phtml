@@ -37,9 +37,9 @@
                     "bottom": true,
                     "fixed": true,
                     "message": "Questo sito usa i cookies, continuando la navigazione assumiamo che tu ne accetti l'utilizzo.",
-//                    "policyButton": true,
-//                    "policyText": 'Privacy Policy',
-//                    "policyURL": '/privacy-policy',
+                    "policyButton": true,
+                    "policyText": 'Privacy Policy',
+                    "policyURL": '/privacy-policy',
                     "zindex": 1
                 });
 
@@ -114,7 +114,7 @@
             <?php echo $this->content; ?>
             <hr>
             <footer>
-                <p>&copy; 2015 - <?= date('Y') ?> by Fabio Ventura. Tutti i diritti riservati.</p>
+                <p>&copy; 2015 - <?= date('Y') ?> by Fabio Ventura. Tutti i diritti riservati. - <a href="/privacy-policy">Privacy policy</a></p>
             </footer>
         </div>
         <?php echo $this->inlineScript(); ?>
