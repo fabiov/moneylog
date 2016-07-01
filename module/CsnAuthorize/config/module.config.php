@@ -61,6 +61,9 @@ return array(
                     'edit' => 'user',
                     'delete' => 'user',
                 ),
+                'PhlySimplePage\Controller\Page' => array(
+                    'all' => 'guest',
+                ),
             ),
         ),
     ),

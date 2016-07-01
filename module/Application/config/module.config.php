@@ -60,6 +60,18 @@ return array(
                     ),
                 ),
             ),
+            'privacy-policy' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/privacy-policy',
+                    'defaults' => array(
+                        'controller' => 'PhlySimplePage\Controller\Page',
+                        'template'   => 'application/pages/privacy-policy',
+                        // optionally set a specific layout for this page
+//                        'layout'     => 'layout/some-layout',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
