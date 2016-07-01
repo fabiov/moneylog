@@ -109,10 +109,9 @@ class Spese implements InputFilterAwareInterface
     }
 
     /**
-     * Set input filter
-     *
-     * @param  InputFilterInterface $inputFilter
-     * @return InputFilterAwareInterface
+     * @param InputFilterInterface $inputFilter
+     * @return void|InputFilterAwareInterface
+     * @throws \Exception
      */
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
@@ -125,31 +124,23 @@ class Spese implements InputFilterAwareInterface
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
+            $this->inputFilter = new InputFilter();
 
-//            $inputFilter->add(array(
-//                'name'     => 'id',
-//                'required' => true,
-//                'filters'  => array(
-//                    array('name' => 'Int'),
-//                ),
-//            ));
+            $this->inputFilter->add(array(
+                'name'     => 'accountId',
+                'required' => false,
+                'filters'  => array(
+                    array('name' => 'Int'),
+                ),
+            ));
 
-//            $inputFilter->add(array(
-//                'name'     => 'userId',
-//                'required' => true,
-//                'filters'  => array(
-//                    array('name' => 'Int'),
-//                ),
-//            ));
-
-            $inputFilter->add(array(
+            $this->inputFilter->add(array(
                 'name'     => 'valuta',
                 'required' => true,
                 'filters'  => array(),
             ));
 
-            $inputFilter->add(array(
+            $this->inputFilter->add(array(
                 'name'     => 'id_categoria',
                 'required' => true,
                 'filters'  => array(
@@ -157,7 +148,7 @@ class Spese implements InputFilterAwareInterface
                 ),
             ));
 
-            $inputFilter->add(array(
+            $this->inputFilter->add(array(
                 'name'     => 'importo',
                 'required' => true,
                 'filters'  => array(
@@ -165,15 +156,13 @@ class Spese implements InputFilterAwareInterface
                 ),
             ));
 
-            $inputFilter->add(array(
+            $this->inputFilter->add(array(
                 'name'     => 'descrizione',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),
             ));
-
-            $this->inputFilter = $inputFilter;
         }
         return $this->inputFilter;
     }
