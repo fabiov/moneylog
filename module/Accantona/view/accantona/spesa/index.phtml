@@ -49,9 +49,12 @@ $this->headTitle($title);
 
         <tbody>
         <?php foreach ($rows as $row) : ?>
-            <?php $sum += $row->importo; ?>
+            <?php
+            /* @var Application\Entity\Spese $row */
+            $sum += $row->importo;
+            ?>
             <tr>
-                <td class="category"><?php echo $this->escapeHtml($row->categoryDescription); ?></td>
+                <td class="category"><?php echo $this->escapeHtml($row->category->descrizione); ?></td>
                 <td class="date"><?php echo $this->dateForma($row->valuta); ?></td>
                 <td class="amount text-right"><?php echo $this->currencyForma($row->importo); ?></td>
                 <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
