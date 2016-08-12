@@ -3,7 +3,6 @@
 namespace Application\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Zend\Debug\Debug;
 
 class SpeseRepository extends EntityRepository
 {
