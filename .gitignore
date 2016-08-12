@@ -3,4 +3,4 @@ config/autoload/local.php
 data/DoctrineORMModule/*
 composer
 /composer.lock
-/vendor/
+/vendor/*

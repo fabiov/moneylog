@@ -10,7 +10,7 @@ use Zend\InputFilter\InputFilterInterface;
 /**
  * Setting.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Application\Repository\SpeseRepository")
  * @ORM\Table(name="spese")
  * @property int $id
  * @property int $userId
@@ -18,6 +18,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @property int $id_categoria
  * @property float $importo
  * @property string $descrizione
+ * @property Category $category
  */
 class Spese implements InputFilterAwareInterface
 {
@@ -42,9 +43,10 @@ class Spese implements InputFilterAwareInterface
     protected $valuta;
 
     /**
-     * @ORM\Column(name="id_categoria", type="integer", options={"unsigned"=true})
+     * @ORM\OneToOne(targetEntity="Category")
+     * @ORM\JoinColumn(name="id_categoria", referencedColumnName="id")
      */
-    protected $id_categoria;
+    protected $category;
 
     /**
      * @ORM\Column(name="importo", type="float")
@@ -103,7 +105,6 @@ class Spese implements InputFilterAwareInterface
             $this->userId = $data['userId'];
         }
         $this->valuta       = isset($data['valuta'])       ? new \DateTime($data['valuta']) : null;
-        $this->id_categoria = isset($data['id_categoria']) ? $data['id_categoria']          : null;
         $this->importo      = isset($data['importo'])      ? $data['importo']               : null;
         $this->descrizione  = isset($data['descrizione'])  ? $data['descrizione']           : null;
     }
