@@ -51,7 +51,12 @@ class CategoriaTable
 
     public function save(Categoria $categoria)
     {
-        $data = array('id' => $categoria->id, 'userId' => $categoria->userId, 'descrizione' => $categoria->descrizione);
+        $data = array(
+            'id'          => $categoria->id,
+            'userId'      => $categoria->userId,
+            'descrizione' => $categoria->descrizione,
+            'status'      => $categoria->status,
+        );
 
         $id = (int) $categoria->id;
         if ($id == 0) {
