@@ -38,6 +38,7 @@ class Categoria implements InputFilterAwareInterface
         $this->id           = empty($data['id'])            ? null : $data['id'];
         $this->userId       = empty($data['userId'])        ? null : $data['userId'];
         $this->descrizione  = empty($data['descrizione'])   ? null : $data['descrizione'];
+        $this->status       = empty($data['status'])        ? 0    : 1;
     }
 
     // Add the following method:
@@ -57,6 +58,12 @@ class Categoria implements InputFilterAwareInterface
                 'filters'  => array(
                     array('name' => 'Int'),
                 ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'status',
+                'required' => true,
+                'filters'  => array(array('name' => 'Int')),
             ));
 
             $inputFilter->add(array(

@@ -71,6 +71,7 @@ class IndexController extends AbstractActionController
                 }
             }
         }
+        $this->layout('layout/unlogged');
         return new ViewModel(array('form' => $form, 'messages' => $messages));
     }
 

@@ -23,9 +23,14 @@ $form->prepare();
     <?php echo $this->formLabel($form->get('password')); ?>
     <?php echo $this->formInput($form->get('password')); ?>
 
-    <div class="checkbox">
+    <!-- div class="checkbox">
         <?php echo $this->formRow($form->get('rememberme')->setAttribute('checked', 'checked')); ?>
+    </div -->
+
+    <div class="checkbox">
+        <label><input name="rememberme" type="hidden" value="0"><input name="rememberme" type="checkbox" value="1">Remember Me</label>
     </div>
+
     <?php echo $this->formSubmit($form->get('submit')); ?>
     <br />
     <?php if ($this->messages): ?>
