@@ -9,8 +9,9 @@
  $title = 'Delete category';
  $this->headTitle($title);
  ?>
- <h1><?php echo $this->escapeHtml($title); ?></h1>
-
+ <div class="row">
+     <h1 class="page-header"><?php echo $this->escapeHtml($title); ?></h1>
+ </div>
  <p>Are you sure that you want to delete
      '<?php echo $this->escapeHtml($category->descrizione); ?>'?
  </p>

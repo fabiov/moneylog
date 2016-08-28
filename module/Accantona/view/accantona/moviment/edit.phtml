@@ -4,9 +4,8 @@ $this->headTitle($title);
 $this->form->setAttribute('action', $this->url('accantonaMoviment', array('action' => 'edit', 'id' => $this->item->id)));
 $this->form->prepare();
 ?>
-
-<div class="form-group">
-    <h1><?php echo $this->escapeHtml($title); ?></h1>
+<div class="row">
+    <h1 class="page-header"><?php echo $this->escapeHtml($title); ?></h1>
 </div>
 <?php echo $this->form()->openTag($this->form); ?>
 

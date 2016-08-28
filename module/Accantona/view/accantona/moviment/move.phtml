@@ -4,7 +4,9 @@ $this->headTitle($title);
 //$this->form->setAttribute('action', $this->url('accantonaAccount', array('action' => 'edit', 'id' => $this->id)));
 //$this->form->prepare();
 ?>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
+<div class="row">
+    <h1 class="page-header"><?php echo $this->escapeHtml($title); ?></h1>
+</div>
 <h2>Preleva da <?php echo $this->sourceAccount->name; ?></h2>
 <?php echo $this->form()->openTag($this->form); ?>
 
