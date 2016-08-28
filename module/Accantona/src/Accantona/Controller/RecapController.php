@@ -66,11 +66,6 @@ class RecapController extends AbstractActionController
             $variabileTable = $this->getVariabileTable();
             $user = $this->getUser();
 
-            // contanti
-            $val = $this->params()->fromPost('contanti');
-            if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $val)) {
-                $variabileTable->updateByName('contanti', $val, $user->id);
-            }
             // risparmio
             $val = $this->params()->fromPost('risparmio');
             if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $val)) {
