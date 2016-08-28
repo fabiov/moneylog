@@ -3,16 +3,16 @@
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
-body {
-  background-color: #f8f8f8;
+body{
+background-color:#f8f8f8;
 }
 #wrapper {
-  width: 100%;
+width:100%;
 }
 #page-wrapper {
-  padding: 0 15px;
-  min-height: 568px;
-  background-color: white;
+padding:0 15px;
+min-height:568px;
+background-color:white;
 }
 @media (min-width: 768px) {
   #page-wrapper {
@@ -65,7 +65,7 @@ margin-left: -123px;
 }
 .navbar-top-links .dropdown-user{
 right:0;
-left:0;
+/*left:0;*/
 }
 .sidebar .sidebar-nav.navbar-collapse {
 padding-left: 0;

@@ -77,7 +77,6 @@ class VariabileTable
     {
         $vars = array(
             'saldo_banca' => array('value' => 0, 'sign' =>  1),
-            'contanti'    => array('value' => 0, 'sign' =>  1),
             'risparmio'   => array('value' => 0, 'sign' => -1),
         );
         foreach ($vars as $name => $data) {
