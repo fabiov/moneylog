@@ -81,13 +81,16 @@
                     <a class="navbar-brand" href="/recap"><img alt="" src="/img/wallet.svg" style="display: inline; vertical-align: middle; width: 30px;" /> <span style="vertical-align: middle;">EasyWallet</span></a>
                 </div>
                 <!-- /.navbar-header -->
-
+                <?php
+                /* @var stdClass $identity */
+                $identity = $this->identity();
+                ?>
                 <?php if ($this->identity()): ?>
                 <ul class="nav navbar-top-links navbar-right">
                     <!-- /.dropdown -->
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                            <i class="fa fa-user fa-fw"></i> <?php echo $identity->name . ' ' . $identity->surname; ?> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-user">
                             <!-- li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a></li -->
