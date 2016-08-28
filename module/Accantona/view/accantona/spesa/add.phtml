@@ -6,9 +6,7 @@ $this->headTitle($title);
 $this->form->setAttribute('action', $this->url('accantona_spesa', array('action' => 'add')));
 $this->form->prepare();
 ?>
-<div class="row">
-    <h1 class="page-header"><?php echo $this->escapeHtml($title); ?></h1>
-</div>
+<?php echo $this->pageHeader($title); ?>
 <div class="form-group" style="margin:auto;max-width:800px;">
     <?php echo $this->form()->openTag($this->form); ?>
 

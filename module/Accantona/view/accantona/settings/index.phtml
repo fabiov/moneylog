@@ -5,9 +5,7 @@
         margin: 0 auto;
     }
 </style>
-<div class="row">
-    <h1 class="page-header">Impostazioni</h1>
-</div>
+<?php echo $this->pageHeader($title); ?>
 <form class="form-setting" method="post" action="<?php echo $this->url(); ?>">
 
     <?php if ($message): ?>

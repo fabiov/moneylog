@@ -13,9 +13,7 @@ $this->headTitle($title);
     padding: 0;
 }
 </style>
-<div class="row">
-    <h1 class="page-header"><?php echo $this->escapeHtml($title); ?></h1>
-</div>
+<?php echo $this->pageHeader($title); ?>
 <form action="<?php echo $this->url('accantona_accantonato', array('action' => 'index')); ?>" method="post">
     <div class="table-responsive">
         <table class="table table-hover">

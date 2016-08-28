@@ -8,9 +8,7 @@ $sum = 0;
 $title = 'Spese';
 $this->headTitle($title);
 ?>
-<div class="row">
-    <h1 class="page-header"><?php echo $this->escapeHtml($title); ?></h1>
-</div>
+<?php echo $this->pageHeader($title); ?>
 <div class="table-responsive">
     <table class="table">
         <thead>
