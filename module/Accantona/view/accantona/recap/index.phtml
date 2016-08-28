@@ -3,7 +3,7 @@ $sum = 0;
 $montlyBudget = 0;
 $dataChart = array();
 ?>
-<h1>Riepilogo</h1>
+<?php echo $this->pageHeader('Dashboard'); ?>
 <div class="row">
     <div class="col-md-6">
         <h2>Budget</h2>
@@ -25,14 +25,6 @@ $dataChart = array();
                     <?php endforeach; ?>
 
                     <tr>
-                        <td>Contanti</td>
-                        <td class="text-right" style="min-width:130px;">
-                            +
-                            <input class="form-control show-on-edit text-right" disabled="disabled" name="contanti" step="0.01" style="display:none;width:100px;" type="number" value="<?php echo number_format($variables['contanti'], 2, '.', ''); ?>" />
-                            <span class="hide-on-edit"><?php echo $this->currencyForma($variables['contanti']); ?></span>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>Risparmio</td>
                         <td class="text-right" style="min-width:130px;">
                             -
@@ -52,7 +44,7 @@ $dataChart = array();
                         <td>Budget mensile residuo</td>
                         <td class="text-right">
                             <?php
-                            $montlyBudget += $variables['contanti'] - $variables['risparmio'] - $stored;
+                            $montlyBudget -= $variables['risparmio'] + $stored;
                             echo $this->currencyForma($montlyBudget);
                             ?>
                         </td>

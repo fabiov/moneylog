@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>SB Admin 2 - Bootstrap Admin Theme</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- MetisMenu CSS -->
+        <link href="/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="/dist/css/sb-admin-2.css" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- jQuery -->
+        <script src="../vendor/jquery/jquery.min.js"></script>
+
+        <!-- jquery.cookiebar -->
+        <link href="/js/jquery.cookiebar/jquery.cookiebar.css" media="screen" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="/js/jquery.cookiebar/jquery.cookiebar.js"></script>
+
+        <!-- begin google analitics code -->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $.cookieBar({
+                    "acceptText": 'Conferma',
+                    "bottom": true,
+                    "fixed": true,
+                    "message": "Questo sito usa i cookies, continuando la navigazione assumiamo che tu ne accetti l'utilizzo.",
+                    "policyButton": true,
+                    "policyText": 'Privacy Policy',
+                    "policyURL": '/privacy-policy',
+                    "zindex": 1
+                });
+
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+                ga('create', 'UA-79448446-1', 'auto');
+                ga('send', 'pageview');
+            });
+        </script>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="<?php echo $this->url('accantona_recap'); ?>"><img alt="" src="/img/wallet.svg" style="display: inline; vertical-align: middle; width: 30px;" /> <span style="vertical-align: middle;">EasyWallet</span></a>
+            </div>
+        </nav>
+        <div class="container">
+            <?php echo $this->content; ?>
+        </div>
+        <hr />
+        <footer>
+            <p class="text-center">&copy; 2015 - <?php echo date('Y'); ?> by Fabio Ventura. Tutti i diritti riservati. - <a href="/privacy-policy">Privacy policy</a></p>
+        </footer>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="/vendor/metisMenu/metisMenu.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="/dist/js/sb-admin-2.js"></script>
+    </body>
+</html>

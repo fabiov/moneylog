@@ -52,6 +52,7 @@ class RegistrationController extends AbstractActionController
                 ));
             }
         }
+        $this->layout('layout/unlogged');
         return new ViewModel(array('form' => $form));
     }
 
@@ -64,6 +65,7 @@ class RegistrationController extends AbstractActionController
                 $usr_email .=  $value;
             }
         }
+        $this->layout('layout/unlogged');
         return new ViewModel(array('usr_email' => $usr_email));
     }
 
@@ -89,6 +91,7 @@ class RegistrationController extends AbstractActionController
         } catch(\Exception $e) {
             $viewModel->setTemplate('auth/registration/confirm-email-error.phtml');
         }
+        $this->layout('layout/unlogged');
         return $viewModel;
     }
 
@@ -116,6 +119,7 @@ class RegistrationController extends AbstractActionController
                 ));
             }
         }
+        $this->layout('layout/unlogged');
         return new ViewModel(array('form' => $form));
     }
 
@@ -128,6 +132,7 @@ class RegistrationController extends AbstractActionController
                 $usr_email .=  $value;
             }
         }
+        $this->layout('layout/unlogged');
         return new ViewModel(array('usr_email' => $usr_email));
     }
 
@@ -270,7 +275,7 @@ class RegistrationController extends AbstractActionController
 
         $message = new Message();
         $message->addTo($user->email)
-                ->addFrom('refistrazione@easywallet.it', 'Registrazione EasyWallet')
+                ->addFrom('registrazione@easywallet.it', 'Registrazione EasyWallet')
                 ->setSubject('Conferma registrazione')
                 ->setBody($body);
         $this->getServiceLocator()->get('mail.transport')->send($message);

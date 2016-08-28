@@ -4,10 +4,7 @@ $this->headTitle($title);
 $this->form->setAttribute('action', $this->url('accantona_accantonato', array('action' => 'edit', 'id' => $this->id)));
 $this->form->prepare();
 ?>
-
-<div class="form-group">
-    <h1><?php echo $this->escapeHtml($title); ?></h1>
-</div>
+<?php echo $this->pageHeader($title); ?>
 <?php echo $this->form()->openTag($this->form); ?>
 
     <?php $element = $form->get('valuta'); ?>

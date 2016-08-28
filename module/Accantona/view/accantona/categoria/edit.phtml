@@ -4,7 +4,7 @@ $this->headTitle($title);
 $this->form->setAttribute('action', $this->url('accantona_categoria', array('action' => 'edit', 'id' => $this->id)));
 $this->form->prepare();
 ?>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php echo $this->pageHeader($title); ?>
 <?php echo $this->form()->openTag($this->form); ?>
 
     <?php echo $this->formHidden($this->form->get('id')); ?>
@@ -23,8 +23,8 @@ $this->form->prepare();
     ?>
     <?php $errors = $this->formElementErrors($element); ?>
     <div class="checkbox <?php if ($errors) echo 'has-error'; ?>">
-        <?php echo $this->formLabel($element); ?>
-        <?php echo $this->formCheckbox($element); ?>
+        <!-- ?php echo $this->formLabel($element); ? -->
+        <label><?php echo $this->formCheckbox($element); ?> Attivo</label>
         <?php echo $errors; ?>
     </div>
 

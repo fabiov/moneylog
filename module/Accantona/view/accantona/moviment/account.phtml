@@ -14,7 +14,7 @@ $chartData = array();
     padding: 0;
 }
 </style>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php echo $this->pageHeader($title); ?>
 <h2><?php echo $this->escapeHtml($account->name); ?></h2>
 <form action="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $account->id)); ?>" method="post">
     <div class="table-responsive">
