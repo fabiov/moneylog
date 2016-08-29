@@ -1,10 +1,8 @@
 <?php
-$title = 'Modifica accantonamento';
-$this->headTitle($title);
 $this->form->setAttribute('action', $this->url('accantona_accantonato', array('action' => 'edit', 'id' => $this->id)));
 $this->form->prepare();
 ?>
-<?php echo $this->pageHeader($title); ?>
+<?php echo $this->pageHeader('Modifica accantonamento'); ?>
 <?php echo $this->form()->openTag($this->form); ?>
 
     <?php $element = $form->get('valuta'); ?>
