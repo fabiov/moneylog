@@ -1,9 +1,10 @@
 <?php
 $total = 0;
-$title = 'Conti';
 $dataChart = array();
+
+$this->bindBalance('.balance');
 ?>
-<?php echo $this->pageHeader($title); ?>
+<?php echo $this->pageHeader('Conti'); ?>
 <?php if ($rows): ?>
     <table class="table table-hover">
         <thead>
@@ -85,21 +86,6 @@ $dataChart = array();
                 form.setAttribute("action", button.data('href'));
                 document.body.appendChild(form);
                 form.submit();
-            }
-        });
-    });
-
-    $('.balance').click(function() {
-        var button = $(this);
-        bootbox.prompt("Inserisci l'importo del saldo:", function(result) {
-            if (result !== null) {
-                var pattern = /^[\-\+]?\d+(,\d+)?$/;
-                result = result.trim();
-                if (pattern.test(result)) {
-                    location.href = button.data('href') + '?amount=' + result;
-                } else {
-                    bootbox.alert("Importo non valido");
-                }
             }
         });
     });
