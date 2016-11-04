@@ -3,8 +3,6 @@
  * @var Zend\View\Renderer\PhpRenderer $this
  * @var \Accantona\Form\AccantonatoForm $form
  */
-$title = 'Movimenti';
-$this->headTitle($title);
 $chartData = array();
 ?>
 <style type="text/css">
@@ -14,7 +12,7 @@ $chartData = array();
     padding: 0;
 }
 </style>
-<?php echo $this->pageHeader($title); ?>
+<?php echo $this->pageHeader('Movimenti'); ?>
 <h2><?php echo $this->escapeHtml($account->name); ?></h2>
 <form action="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $account->id)); ?>" method="post">
     <div class="table-responsive">
@@ -160,3 +158,14 @@ $chartData = array();
         chart.draw(data, options);
     }
 </script>
+
+
+<?php
+$balanceHref = $this->url('accantonaAccount', array('action' => 'balance', 'id' => $account->id));
+$this->floatingButtons()->addRawItem('
+    <span data-href="' . $balanceHref . '" data-mfb-label="Conguaglia" class="balance mfb-component__button--child">
+        <i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>
+    </span>
+');
+$this->bindBalance('.balance');
+?>
