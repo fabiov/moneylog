@@ -1,9 +1,13 @@
 <?php
 namespace Accantona\View\Helper;
 
-// use \Zend\I18n\View\Helper\DateFormat;
 use Zend\View\Helper\AbstractHelper;
 
+/**
+ * Class FloatingButtons
+ * @package Accantona\View\Helper
+ * @link https://github.com/nobitagit/material-floating-button
+ */
 class FloatingButtons extends AbstractHelper
 {
 
@@ -31,6 +35,18 @@ class FloatingButtons extends AbstractHelper
     }
 
     /**
+     * @param $params
+     * @return $this
+     */
+    public function addAnchorItem(array $params)
+    {
+        $html = '<a href="' . $params['href'] . '" data-mfb-label="' . $params['label'] . '" class="mfb-component__button--child">'
+              . '<i class="mfb-component__child-icon glyphicon glyphicon-' . $params['icon'] . '"></i>'
+              . '</a>';
+        return $this->addRawItem($html);
+    }
+
+    /**
      * @return string
      */
     public function __toString()
@@ -43,7 +59,7 @@ class FloatingButtons extends AbstractHelper
             }
             $html .= <<< eoc
 <link href="/node_modules/mfb/src/mfb.css" rel="stylesheet">
-<ul class="mfb-component--br mfb-slidein" data-mfb-toggle="click" data-mfb-state="closed">
+<ul class="mfb-component--br mfb-slidein" data-mfb-toggle="hover" data-mfb-state="closed">
     <li class="mfb-component__wrap">
         <a class="mfb-component__button--main">
             <i class="mfb-component__main-icon--resting glyphicon glyphicon-plus"></i>

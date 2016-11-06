@@ -48,7 +48,6 @@ class MovimentController extends AbstractActionController
 
     public function accountAction()
     {
-        $request = $this->getRequest();
         $params = $this->params();
         $user = $this->getUser();
         $em = $this->getEntityManager();
@@ -65,34 +64,12 @@ class MovimentController extends AbstractActionController
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
-        $form = new MovimentForm();
-        if ($request->isPost()) {
-
-            $moviment = new Moviment();
-            $data = $request->getPost();
-            $form->setInputFilter($moviment->getInputFilter());
-            $form->setData($data);
-
-            if ($form->isValid()) {
-                $moviment->exchangeArray($data);
-                $moviment->account = $account;
-
-                $em->persist($moviment);
-                $em->flush();
-
-                return $this->redirect()
-                    ->toRoute('accantonaMoviment', array('action' => 'account', 'id' => $accountId));
-            }
-        }
-
         $movimentRepository = $em->getRepository('Application\Entity\Moviment');
         return new ViewModel(array(
             'account' => $account,
-            'form' => $form,
             'months' => $months,
             'rows' => $em->getRepository('Application\Entity\Moviment')->findBy(array('accountId' => $accountId), array('date' => 'DESC')),
             'balanceEnd' => $movimentRepository->getBalance($accountId),
-            'balanceStart' => $months ? $movimentRepository->getBalance($accountId, $oDateTime->sub(new \DateInterval('P1D'))) : 0,
         ));
     }
 
@@ -178,6 +155,44 @@ class MovimentController extends AbstractActionController
         }
 
         return array('sourceAccount' => $sourceAccount, 'form' => $form);
+    }
+
+    public function addAction()
+    {
+        $accountId = (int) $this->params()->fromRoute('id');
+
+        $em = $this->getEntityManager();
+        $user = $this->getUser();
+
+        /* @var $account Account */
+        $account = $em->getRepository('Application\Entity\Account')->find($accountId);
+
+        if (!$account || $account->userId != $user->id) {
+            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+        }
+
+        $request = $this->getRequest();
+        $form = new MovimentForm();
+        if ($request->isPost()) {
+
+            $moviment = new Moviment();
+            $data = $request->getPost();
+            $form->setInputFilter($moviment->getInputFilter());
+            $form->setData($data);
+
+            if ($form->isValid()) {
+                $moviment->exchangeArray($data);
+                $moviment->account = $account;
+
+                $em->persist($moviment);
+                $em->flush();
+
+                return $this->redirect()
+                    ->toRoute('accantonaMoviment', array('action' => 'account', 'id' => $accountId));
+            }
+        }
+
+        return array('sourceAccount' => $account, 'form' => $form);
     }
 
     /**
