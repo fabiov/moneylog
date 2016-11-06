@@ -71,42 +71,6 @@ $chartData = array();
                 </tr>
                 <?php endforeach; ?>
             </tbody>
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td class="text-right amount"><strong><?php echo $this->currencyForma($this->balanceStart); ?></strong></td>
-                    <td><strong>Saldo precedente</strong></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <?php $element = $form->get('date'); ?>
-                    <?php $errors = $this->formElementErrors($element); ?>
-                    <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
-                        <?php echo $this->formInput($element); ?>
-                        <?php echo $errors; ?>
-                    </td>
-
-                    <?php $element = $form->get('amount'); ?>
-                    <?php $errors = $this->formElementErrors($element); ?>
-                    <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
-                        <?php echo $this->formInput($element); ?>
-                        <?php echo $errors; ?>
-                    </td>
-
-                    <?php $element = $form->get('description'); ?>
-                    <?php $errors = $this->formElementErrors($element); ?>
-                    <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
-                        <?php echo $this->formInput($element); ?>
-                        <?php echo $errors; ?>
-                    </td>
-
-                    <td class="actions text-right">
-                        <button id="save" type="submit" class="btn btn-default show-on-edit">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
-                        </button>
-                    </td>
-                </tr>
-            </tfoot>
         </table>
     </div>
 </form>
@@ -166,6 +130,8 @@ $this->floatingButtons()->addRawItem('
     <span data-href="' . $balanceHref . '" data-mfb-label="Conguaglia" class="balance mfb-component__button--child">
         <i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>
     </span>
-');
+')
+    ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'add', 'id' => $account->id)), 'label' => 'Aggiungi transazione', 'icon' => 'plus'));
+
 $this->bindBalance('.balance');
 ?>
