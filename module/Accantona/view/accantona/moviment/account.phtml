@@ -170,7 +170,8 @@ $this->floatingButtons()->addRawItem('
         <i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>
     </span>
 ')
-    ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'add', 'id' => $account->id)), 'label' => 'Aggiungi transazione', 'icon' => 'plus'));
+    ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'add', 'id' => $account->id)), 'label' => 'Aggiungi transazione', 'icon' => 'plus'))
+    ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'move', 'id' => $account->id)), 'label' => 'Giroconto', 'icon' => 'transfer'));
 
 $this->bindBalance('.balance');
 ?>
