@@ -140,26 +140,27 @@ usort($morrisData, function ($a, $b) {
             }
         });
     });
-
-    Morris.Bar({
-        element: 'morris',
-        data: <?php echo json_encode($morrisData); ?>,
-        xkey: 'x',
-        ykeys: 'y',
-        labels: ['Importo'],
-        hideHover: "auto",
-        resize: true,
-        "xLabelFormat": function (x) { // <-- changed
-            var d = x.label.split('-');
-            return d[2] + '/' + d[1] + '/' + d[0];
-        },
-        "yLabelFormat": function (x) {
-            var parts = x.toString().split(".");
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            return parts.join(",") + ' €';
-        }
-    });
 </script>
+<?php $this->inlineScript()->captureStart(); ?>
+Morris.Bar({
+    element: 'morris',
+    data: <?php echo json_encode($morrisData); ?>,
+    xkey: 'x',
+    ykeys: 'y',
+    labels: ['Importo'],
+    hideHover: "auto",
+    resize: true,
+    "xLabelFormat": function (x) {
+        var d = x.label.split('-');
+        return d[2] + '/' + d[1] + '/' + d[0];
+    },
+    "yLabelFormat": function (x) {
+        var parts = x.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return parts.join(",") + ' €';
+    }
+});
+<?php $this->inlineScript()->captureEnd();?>
 <?php
 $i = '<i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>';
 $balanceHref = $this->url('accantonaAccount', array('action' => 'balance', 'id' => $account->id));
