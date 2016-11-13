@@ -4,17 +4,22 @@
  * @var \Accantona\Form\AccantonatoForm $form
  */
 $chartData = array();
+$morrisData = array();
 ?>
 <style type="text/css">
-.has-error ul {
-    color: #a94442;
-    list-style-type: none;
-    padding: 0;
-}
+    .has-error ul {
+        color: #a94442;
+        list-style-type: none;
+        padding: 0;
+    }
+    #monthsFilter {
+        margin: 8px 0;
+    }
+    #morris{
+        height: 209px;
+    }
 </style>
-<?php echo $this->pageHeader('Movimenti'); ?>
-<h2><?php echo $this->escapeHtml($account->name); ?></h2>
-
+<?php echo $this->pageHeader("Movimenti $account->name"); ?>
 <div class="row">
     <div class="col-lg-4 col-md-5">
         <div class="panel panel-primary">
@@ -32,33 +37,34 @@ $chartData = array();
                 </div>
             </div>
         </div>
-    </div>
-
-
-
-    <!-- div class="col-lg-8 col-md-7">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div id="morris-bar-chart" style="position: relative; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-                    <svg height="100" version="1.1" width="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative; left: -0.5px;"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.2.0</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><text x="32.515625" y="308" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4">0</tspan></text><path fill="none" stroke="#aaaaaa" d="M45.015625,308H381.5" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="32.515625" y="237.25" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4">25</tspan></text><path fill="none" stroke="#aaaaaa" d="M45.015625,237.25H381.5" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="32.515625" y="166.5" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4">50</tspan></text><path fill="none" stroke="#aaaaaa" d="M45.015625,166.5H381.5" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="32.515625" y="95.75" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4">75</tspan></text><path fill="none" stroke="#aaaaaa" d="M45.015625,95.75H381.5" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="32.515625" y="25" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4">100</tspan></text><path fill="none" stroke="#aaaaaa" d="M45.015625,25H381.5" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="357.4654017857143" y="320.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(1,0,0,1,0,7)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4">2012</tspan></text><text x="261.32700892857144" y="320.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(1,0,0,1,0,7)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4">2010</tspan></text><text x="165.18861607142856" y="320.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(1,0,0,1,0,7)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4">2008</tspan></text><text x="69.05022321428572" y="320.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(1,0,0,1,0,7)"><tspan style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);" dy="4">2006</tspan></text><rect x="51.02427455357143" y="25" width="16.525948660714285" height="283" rx="0" ry="0" fill="#0b62a4" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="70.55022321428572" y="53.29999999999998" width="16.525948660714285" height="254.70000000000002" rx="0" ry="0" fill="#7a92a3" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="99.09347098214286" y="95.75" width="16.525948660714285" height="212.25" rx="0" ry="0" fill="#0b62a4" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="118.61941964285714" y="124.04999999999998" width="16.525948660714285" height="183.95000000000002" rx="0" ry="0" fill="#7a92a3" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="147.16266741071428" y="166.5" width="16.525948660714285" height="141.5" rx="0" ry="0" fill="#0b62a4" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="166.68861607142856" y="194.8" width="16.525948660714285" height="113.19999999999999" rx="0" ry="0" fill="#7a92a3" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="195.23186383928572" y="95.75" width="16.525948660714285" height="212.25" rx="0" ry="0" fill="#0b62a4" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="214.7578125" y="124.04999999999998" width="16.525948660714285" height="183.95000000000002" rx="0" ry="0" fill="#7a92a3" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="243.30106026785717" y="166.5" width="16.525948660714285" height="141.5" rx="0" ry="0" fill="#0b62a4" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="262.82700892857144" y="194.8" width="16.525948660714285" height="113.19999999999999" rx="0" ry="0" fill="#7a92a3" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="291.3702566964286" y="95.75" width="16.525948660714285" height="212.25" rx="0" ry="0" fill="#0b62a4" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="310.8962053571429" y="124.04999999999998" width="16.525948660714285" height="183.95000000000002" rx="0" ry="0" fill="#7a92a3" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="339.439453125" y="25" width="16.525948660714285" height="283" rx="0" ry="0" fill="#0b62a4" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect><rect x="358.9654017857143" y="53.29999999999998" width="16.525948660714285" height="254.70000000000002" rx="0" ry="0" fill="#7a92a3" stroke="none" fill-opacity="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;"></rect></svg>
-                    <div class="morris-hover morris-default-style" style="left: 313.45px; top: 135px; display: none;">
-                        <div class="morris-hover-row-label">2012</div>
-                        <div class="morris-hover-point" style="color: #0b62a4">
-                            Series A:
-                            100
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-filter fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">
+                            <select class="form-control" id="monthsFilter" name="monthsFilter">
+                                <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
+                                <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
+                                <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
+                                <option value="6" <?php if ($months == 6) echo 'selected="selected"'; ?>>Ultimi 6 mesi</option>
+                                <option value="12" <?php if ($months == 12) echo 'selected="selected"'; ?>>Ultimo anno</option>
+                            </select>
                         </div>
-                        <div class="morris-hover-point" style="color: #7a92a3">
-                            Series B:
-                            90
-                        </div>
+                        <div>Filtra</div>
                     </div>
                 </div>
             </div>
         </div>
-    </div -->
-
+    </div>
+    <div class="col-lg-8 col-md-7">
+        <div class="panel panel-default">
+            <div id="morris"></div>
+        </div>
+    </div>
 </div>
-
 <form action="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $account->id)); ?>" method="post">
     <div class="table-responsive">
         <table class="table table-hover">
@@ -69,22 +75,7 @@ $chartData = array();
                     <th>Descrizione</th>
                     <th class="actions">&nbsp;</th>
                 </tr>
-                <tr id="search">
-                    <td>
-                        <select class="form-control" id="monthsFilter" name="monthsFilter">
-                            <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
-                            <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
-                            <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
-                            <option value="6" <?php if ($months == 6) echo 'selected="selected"'; ?>>Ultimi 6 mesi</option>
-                            <option value="12" <?php if ($months == 12) echo 'selected="selected"'; ?>>Ultimo anno</option>
-                        </select>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
             </thead>
-
             <tbody>
                 <?php foreach ($rows as $row): ?>
                     <?php
@@ -114,8 +105,12 @@ $chartData = array();
     </div>
 </form>
 <div id="chart_div"></div>
+
+<script src="http://cdn.oesmith.co.uk/morris-0.5.1.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+
 <script type="text/javascript">
-    $('#search select').change(function(){
+    $('#monthsFilter').change(function(){
         location.href = "<?php echo $this->url(null, array('action' => 'account', 'id' => $account->id)); ?>" + '?monthsFilter=' + $('#monthsFilter').val();
     });
 
@@ -135,33 +130,31 @@ $chartData = array();
         });
     });
 
-    google.charts.load('current', {'packages':['bar'], 'language': 'it'});
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
-
-        var data = new google.visualization.DataTable();
-        data.addColumn('date', 'Data');
-        data.addColumn('number', 'Movimento');
-
-        <?php foreach ($chartData as $strDate => $row): ?>
-            <?php $date = \DateTime::createFromFormat('Y-m-d', $strDate); ?>
-            data.addRow([new Date(<?php echo $date->format('Y'); ?>, <?php echo $date->format('n') - 1; ?>, <?php echo $date->format('j'); ?>), <?php echo $row; ?>]);
-        <?php endforeach; ?>
-
-        var options = google.charts.Bar.convertOptions({
-            height: 400,
-            legend: {position: 'none'}
-        });
-        var chart = new google.charts.Bar(document.getElementById('chart_div'));
-        var date_formatter = new google.visualization.DateFormat({
-            pattern: "dd/MM/yyyy"
-        });
-        date_formatter.format(data, 0);
-
-        chart.draw(data, options);
+    <?php
+    foreach ($chartData as $strDate => $row) {
+        $morrisData[] = array('x' => $strDate, 'y' => $row);
     }
-</script>
+    ?>
 
+    Morris.Bar({
+        element: 'morris',
+        data: <?php echo json_encode($morrisData); ?>,
+        xkey: 'x',
+        ykeys: 'y',
+        labels: ['Importo'],
+        hideHover: "auto",
+        resize: true,
+        "xLabelFormat": function (x) { // <-- changed
+            var d = x.label.split('-');
+            return d[2] + '/' + d[1] + '/' + d[0];
+        },
+        "yLabelFormat": function (x) {
+            var parts = x.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            return parts.join(",") + ' €';
+        }
+    });
+</script>
 
 <?php
 $balanceHref = $this->url('accantonaAccount', array('action' => 'balance', 'id' => $account->id));
@@ -174,4 +167,3 @@ $this->floatingButtons()->addRawItem('
     ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'move', 'id' => $account->id)), 'label' => 'Giroconto', 'icon' => 'transfer'));
 
 $this->bindBalance('.balance');
-?>

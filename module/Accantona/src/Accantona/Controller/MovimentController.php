@@ -55,8 +55,6 @@ class MovimentController extends AbstractActionController
         $accountId = (int) $params->fromRoute('id', 0);
         $months = (int) $params->fromQuery('monthsFilter', 1);
 
-        $oDateTime = new \DateTime("-$months month");
-
         $account = $em->getRepository('Application\Entity\Account')
             ->findOneBy(array('id' => $accountId, 'userId' => $user->id));
 
@@ -68,7 +66,7 @@ class MovimentController extends AbstractActionController
         return new ViewModel(array(
             'account' => $account,
             'months' => $months,
-            'rows' => $em->getRepository('Application\Entity\Moviment')->findBy(array('accountId' => $accountId), array('date' => 'DESC')),
+            'rows' => $movimentRepository->getLatest($accountId, $months ? new \DateTime("-$months month") : null),
             'balanceEnd' => $movimentRepository->getBalance($accountId),
         ));
     }
