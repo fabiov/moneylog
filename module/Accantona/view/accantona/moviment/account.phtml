@@ -108,7 +108,18 @@ $morrisData = array();
 
 <script src="http://cdn.oesmith.co.uk/morris-0.5.1.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-
+<?php
+// prepare data for barchar
+foreach ($chartData as $strDate => $row) {
+    $morrisData[] = array('x' => $strDate, 'y' => $row);
+}
+usort($morrisData, function ($a, $b) {
+    if ($a['x'] == $b['x']) {
+        return 0;
+    }
+    return $a['x'] < $b['x'] ? -1 : 1;
+})
+?>
 <script type="text/javascript">
     $('#monthsFilter').change(function(){
         location.href = "<?php echo $this->url(null, array('action' => 'account', 'id' => $account->id)); ?>" + '?monthsFilter=' + $('#monthsFilter').val();
@@ -130,12 +141,6 @@ $morrisData = array();
         });
     });
 
-    <?php
-    foreach ($chartData as $strDate => $row) {
-        $morrisData[] = array('x' => $strDate, 'y' => $row);
-    }
-    ?>
-
     Morris.Bar({
         element: 'morris',
         data: <?php echo json_encode($morrisData); ?>,
@@ -155,14 +160,11 @@ $morrisData = array();
         }
     });
 </script>
-
 <?php
+$i = '<i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>';
 $balanceHref = $this->url('accantonaAccount', array('action' => 'balance', 'id' => $account->id));
-$this->floatingButtons()->addRawItem('
-    <span data-href="' . $balanceHref . '" data-mfb-label="Conguaglia" class="balance mfb-component__button--child">
-        <i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>
-    </span>
-')
+$this->floatingButtons()
+    ->addRawItem("<span data-href=\"$balanceHref\" data-mfb-label=\"Conguaglia\" class=\"balance mfb-component__button--child\">$i</span>")
     ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'add', 'id' => $account->id)), 'label' => 'Aggiungi transazione', 'icon' => 'plus'))
     ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'move', 'id' => $account->id)), 'label' => 'Giroconto', 'icon' => 'transfer'));
 
