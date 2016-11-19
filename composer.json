@@ -1,5 +1,5 @@
 {
-    "name": "EasyWallet",
+    "name": "venol/easywallet",
     "description": "EasyWallet",
     "license": "BSD-3-Clause",
     "keywords": [
@@ -11,6 +11,6 @@
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.4.*",
         "doctrine/doctrine-orm-module": "^0.9.2",
-        "phly/phly-simple-page": "dev-master"
+        "phly/phly-simple-page": "1.*"
     }
 }
