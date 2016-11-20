@@ -1,5 +1,4 @@
 <?php
-
 namespace Accantona\Controller;
 
 use Accantona\Model\VariabileTable;
@@ -13,7 +12,9 @@ class RecapController extends AbstractActionController
      * @var SpesaTable $spesaTable
      */
     protected $spesaTable;
+
     protected $variabileTable;
+
     protected $accantonatoTable;
 
     /**
@@ -38,23 +39,42 @@ class RecapController extends AbstractActionController
         $spesaTable = $this->getSpesaTable();
         $avgPerCategory = $spesaTable->getAvgPerCategories($user->id);
         usort($avgPerCategory, function ($a, $b) {
-            return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? 1 : -1);
+            return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? 1 : - 1);
         });
 
-        $variables = array();
+        $em             = $this->getEntityManager();
+        $payDay         = $em->find('Application\Entity\Setting', $user->id)->payDay;
+        $stored         = $this->getAccantonatoTable()->getSum($user->id) - $spesaTable->getSum($user->id);
+        $accounts       = $em->getRepository('Application\Entity\Account')->getTotals($this->getUser()->id, true);
+        $variables      = array();
+        $donutSpends    = array();
+        $donutAccouts   = array();
+        $currentDay     = date('j');
+        $monthBudget    = "-$stored";
+
+        foreach ($avgPerCategory as $category) {
+            $donutSpends[] = array('label' => $category['description'], 'value' => $category['average']);
+        }
+
+        foreach ($accounts as $account) {
+            $donutAccouts[] = array('label' => $account['name'], 'value' => $account['total']);
+            $monthBudget += $account['total'];
+        }
+
         foreach ($this->getVariabileTable()->fetchAll(array('userId' => $user->id)) as $variable) {
+            $monthBudget += $variable->valore * $variable->segno;
             $variables[$variable->nome] = $variable->valore;
         }
 
-        $em = $this->getEntityManager();
-        $payDay = $em->find('Application\Entity\Setting', $user->id)->payDay;
-        $currentDay = date('j');
         return new ViewModel(array(
-            'accounts'       => $em->getRepository('Application\Entity\Account')->getTotals($this->getUser()->id, true),
-            'avgPerCategory' => $avgPerCategory,
-            'stored'         => $this->getAccantonatoTable()->getSum($user->id) - $spesaTable->getSum($user->id),
-            'remainingDays'  => $currentDay < $payDay ? $payDay - $currentDay : date('t') - $currentDay + $payDay,
-            'variables'      => $variables,
+            'stored'            => $stored,
+            'accounts'          => $accounts,
+            'variables'         => $variables,
+            'monthBudget'       => $monthBudget,
+            'remainingDays'     => $currentDay < $payDay ? $payDay - $currentDay : date('t') - $currentDay + $payDay,
+            'avgPerCategory'    => $avgPerCategory,
+            'donutSpends'       => $donutSpends,
+            'donutAccounts'     => $donutAccouts,
         ));
     }
 

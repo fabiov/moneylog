@@ -75,10 +75,7 @@ class VariabileTable
 
     public function createUserVariables($userId)
     {
-        $vars = array(
-            'saldo_banca' => array('value' => 0, 'sign' =>  1),
-            'risparmio'   => array('value' => 0, 'sign' => -1),
-        );
+        $vars = array('risparmio'=> array('value' => 0, 'sign' => -1));
         foreach ($vars as $name => $data) {
             $this->tableGateway->insert(array(
                 'userId' => $userId,
