@@ -194,31 +194,11 @@
     $('#save').click(function () {
         $('form').submit();
     });
-
-    <?php $this->inlineScript()->captureStart(); ?>
-    <?php if ($this->donutSpends): ?>
-    Morris.Donut({
-        "element": 'donut-spends',
-        "data": <?php echo json_encode($this->donutSpends); ?>,
-        "formatter": function (y, data) {
-            var parts = parseFloat(Math.round(y * 100) / 100).toFixed(2).toString().split('.');
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-            return '€ ' + parts.join(',');
-        },
-        "colors": ['#0B62A4', '#337ab7', '#3980B5', '#679DC6', '#95BBD7', '#B0CCE1']
-    });
-    <?php endif; ?>
-    <?php if ($this->donutAccounts): ?>
-    Morris.Donut({
-        "element": 'donut-accounts',
-        "data": <?php echo json_encode($this->donutAccounts); ?>,
-        "formatter": function (y, data) {
-            var parts = parseFloat(Math.round(y * 100) / 100).toFixed(2).toString().split('.');
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-            return '€ ' + parts.join(',');
-        }
-    });
-    <?php endif; ?>
-    $("[data-toggle=popover]").popover();
-    <?php $this->inlineScript()->captureEnd(); ?>
 </script>
+<?php
+if ($this->donutSpends) {
+    $this->morris()->donut('donut-spends', $this->donutSpends);
+}
+if ($this->donutAccounts) {
+    $this->morris()->donut('donut-accounts', $this->donutAccounts);
+}

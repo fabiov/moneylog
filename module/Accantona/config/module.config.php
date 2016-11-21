@@ -83,11 +83,12 @@ return array(
 
     'view_helpers' => array(
         'invokables' => array(
+            'bindBalance'       => 'Accantona\View\Helper\BindBalance',
             'dateForma'         => 'Accantona\View\Helper\DateForma',
             'currencyForma'     => 'Accantona\View\Helper\CurrencyForma',
+            'morris'            => 'Accantona\View\Helper\Morris',
             'pageHeader'        => 'Accantona\View\Helper\PageHeader',
             'floatingButtons'   => 'Accantona\View\Helper\FloatingButtons',
-            'bindBalance'       => 'Accantona\View\Helper\BindBalance',
         ),
     ),
 
