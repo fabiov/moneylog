@@ -1,6 +1,8 @@
 <?php
 namespace Accantona\Controller;
 
+use Accantona\Model\AccantonatoTable;
+use Accantona\Model\SpesaTable;
 use Accantona\Model\VariabileTable;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -13,21 +15,31 @@ class RecapController extends AbstractActionController
      */
     protected $spesaTable;
 
+    /**
+     * @var VariabileTable
+     */
     protected $variabileTable;
 
+    /**
+     * @var AccantonatoTable
+     */
     protected $accantonatoTable;
+
+    protected $user;
 
     /**
      * @var DoctrineORMEntityManager
      */
     protected $em;
 
-    public function getEntityManager()
-    {
-        if (null === $this->em) {
-            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        }
-        return $this->em;
+    public function __construct(
+        $em, AccantonatoTable $accantonatoTable, SpesaTable$spesaTable, VariabileTable $variabileTable, $user
+    ) {
+        $this->em               = $em;
+        $this->accantonatoTable = $accantonatoTable;
+        $this->spesaTable       = $spesaTable;
+        $this->variabileTable   = $variabileTable;
+        $this->user             = $user;
     }
 
     /**
@@ -35,20 +47,17 @@ class RecapController extends AbstractActionController
      */
     public function indexAction()
     {
-        $user = $this->getUser();
-        $spesaTable = $this->getSpesaTable();
-        $avgPerCategory = $spesaTable->getAvgPerCategories($user->id);
+        $avgPerCategory = $this->spesaTable->getAvgPerCategories($this->user->id);
         usort($avgPerCategory, function ($a, $b) {
             return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? 1 : - 1);
         });
 
-        $em             = $this->getEntityManager();
-        $payDay         = $em->find('Application\Entity\Setting', $user->id)->payDay;
-        $stored         = $this->getAccantonatoTable()->getSum($user->id) - $spesaTable->getSum($user->id);
-        $accounts       = $em->getRepository('Application\Entity\Account')->getTotals($this->getUser()->id, true);
+        $payDay         = $this->em->find('Application\Entity\Setting', $this->user->id)->payDay;
+        $stored         = $this->accantonatoTable->getSum($this->user->id) - $this->spesaTable->getSum($this->user->id);
+        $accounts       = $this->em->getRepository('Application\Entity\Account')->getTotals($this->user->id, true);
         $variables      = array();
         $donutSpends    = array();
-        $donutAccouts   = array();
+        $donutAccounts  = array();
         $currentDay     = date('j');
         $monthBudget    = "-$stored";
 
@@ -57,11 +66,12 @@ class RecapController extends AbstractActionController
         }
 
         foreach ($accounts as $account) {
-            $donutAccouts[] = array('label' => $account['name'], 'value' => $account['total']);
+            $donutAccounts[] = array('label' => $account['name'], 'value' => $account['total']);
             $monthBudget += $account['total'];
         }
 
-        foreach ($this->getVariabileTable()->fetchAll(array('userId' => $user->id)) as $variable) {
+        $rs = $this->variabileTable->fetchAll(array('userId' => $this->user->id));
+        foreach ($rs as $variable) {
             $monthBudget += $variable->valore * $variable->segno;
             $variables[$variable->nome] = $variable->valore;
         }
@@ -74,7 +84,7 @@ class RecapController extends AbstractActionController
             'remainingDays'     => $currentDay < $payDay ? $payDay - $currentDay : date('t') - $currentDay + $payDay,
             'avgPerCategory'    => $avgPerCategory,
             'donutSpends'       => $donutSpends,
-            'donutAccounts'     => $donutAccouts,
+            'donutAccounts'     => $donutAccounts,
         ));
     }
 
@@ -82,49 +92,12 @@ class RecapController extends AbstractActionController
     {
         $request = $this->getRequest();
         if ($request->isPost()) {
-            /* @var VariabileTable $variabileTable */
-            $variabileTable = $this->getVariabileTable();
-            $user = $this->getUser();
-
             // risparmio
             $val = $this->params()->fromPost('risparmio');
             if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $val)) {
-                $variabileTable->updateByName('risparmio', $val, $user->id);
+                $this->variabileTable->updateByName('risparmio', $val, $this->id);
             }
         }
         return $this->redirect()->toRoute('accantona_recap', array('action' => 'index'));
     }
-
-    public function getSpesaTable()
-    {
-        if (!$this->spesaTable) {
-            $sm = $this->getServiceLocator();
-            $this->spesaTable = $sm->get('Accantona\Model\SpesaTable');
-        }
-        return $this->spesaTable;
-    }
-
-    public function getVariabileTable()
-    {
-        if (!$this->variabileTable) {
-            $sm = $this->getServiceLocator();
-            $this->variabileTable = $sm->get('Accantona\Model\VariabileTable');
-        }
-        return $this->variabileTable;
-    }
-
-    public function getAccantonatoTable()
-    {
-        if (!$this->accantonatoTable) {
-            $sm = $this->getServiceLocator();
-            $this->accantonatoTable = $sm->get('Accantona\Model\AccantonatoTable');
-        }
-        return $this->accantonatoTable;
-    }
-
-    public function getUser()
-    {
-        return $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
-    }
-
 }
