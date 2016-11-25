@@ -3,10 +3,10 @@
 return array(
     'controllers' => array(
         'factories' => array(
-            'Accantona\Controller\Recap' => function($cm) {
-                /* @var Zend\Mvc\Controller\ControllerManager $cm */
+            'Accantona\Controller\Recap' => function($controllerManager) {
+                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 /* @var Zend\ServiceManager\ServiceManager $sm */
-                $sl = $cm->getServiceLocator();
+                $sl = $controllerManager->getServiceLocator();
                 return new \Accantona\Controller\RecapController(
                     $sl->get('doctrine.entitymanager.orm_default'),
                     $sl->get('Accantona\Model\AccantonatoTable'),
@@ -14,15 +14,64 @@ return array(
                     $sl->get('Accantona\Model\VariabileTable'),
                     $sl->get('Zend\Authentication\AuthenticationService')->getIdentity()
                 );
-            }
-        ),
-        'invokables' => array(
-            'Accantona\Controller\Spesa' => 'Accantona\Controller\SpesaController',
-            'Accantona\Controller\Categoria' => 'Accantona\Controller\CategoriaController',
-            'Accantona\Controller\Accantonato' => 'Accantona\Controller\AccantonatoController',
-            'Accantona\Controller\Settings' => 'Accantona\Controller\SettingsController',
-            'Accantona\Controller\Account' => 'Accantona\Controller\AccountController',
-            'Accantona\Controller\Moviment' => 'Accantona\Controller\MovimentController',
+            },
+            'Accantona\Controller\Spesa' => function ($controllerManager) {
+                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Zend\ServiceManager\ServiceManager $sm */
+                $sl = $controllerManager->getServiceLocator();
+                return new \Accantona\Controller\SpesaController(
+                    $sl->get('Accantona\Model\SpesaTable'),
+                    $sl->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $sl->get('doctrine.entitymanager.orm_default')
+                );
+            },
+            'Accantona\Controller\Settings' => function ($controllerManager) {
+                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Zend\ServiceManager\ServiceManager $sm */
+                $sl = $controllerManager->getServiceLocator();
+                return new \Accantona\Controller\SettingsController(
+                    $sl->get('doctrine.entitymanager.orm_default'),
+                    $sl->get('Zend\Authentication\AuthenticationService')->getIdentity()
+                );
+            },
+            'Accantona\Controller\Account' => function ($controllerManager) {
+                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Zend\ServiceManager\ServiceManager $sm */
+                $sl = $controllerManager->getServiceLocator();
+                return new \Accantona\Controller\AccountController(
+                    $sl->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $sl->get('doctrine.entitymanager.orm_default')
+                );
+            },
+            'Accantona\Controller\Accantonato' => function ($controllerManager) {
+                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Zend\ServiceManager\ServiceManager $sm */
+                $sl = $controllerManager->getServiceLocator();
+                return new \Accantona\Controller\AccantonatoController(
+                    $sl->get('Accantona\Model\AccantonatoTable'),
+                    $sl->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $sl->get('doctrine.entitymanager.orm_default')
+                );
+            },
+            'Accantona\Controller\Categoria' => function ($controllerManager) {
+                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Zend\ServiceManager\ServiceManager $sm */
+                $sl = $controllerManager->getServiceLocator();
+                return new \Accantona\Controller\CategoriaController(
+                    $sl->get('Accantona\Model\CategoriaTable'),
+                    $sl->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $sl->get('doctrine.entitymanager.orm_default')
+                );
+            },
+            'Accantona\Controller\Moviment' => function ($controllerManager) {
+                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Zend\ServiceManager\ServiceManager $sm */
+                $sl = $controllerManager->getServiceLocator();
+                return new \Accantona\Controller\MovimentController(
+                    $sl->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $sl->get('doctrine.entitymanager.orm_default')
+                );
+            },
         ),
     ),
 

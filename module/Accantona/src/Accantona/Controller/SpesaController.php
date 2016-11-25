@@ -2,9 +2,11 @@
 
 namespace Accantona\Controller;
 
+use Accantona\Model\SpesaTable;
 use Application\Entity\Category;
 use Application\Entity\Moviment;
 use Application\Entity\Spese;
+use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Accantona\Form\SpesaForm;
@@ -12,13 +14,31 @@ use Accantona\Form\SpesaForm;
 class SpesaController extends AbstractActionController
 {
 
-    protected $spesaTable;
+    /**
+     * @var SpesaTable
+     */
+    private $spesaTable;
+
+    /**
+     * @var \stdClass
+     */
+    private $user;
+
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    public function __construct(SpesaTable $spesaTable, \stdClass $user, EntityManager $em)
+    {
+        $this->spesaTable   = $spesaTable;
+        $this->user         = $user;
+        $this->em           = $em;
+    }
 
     public function addAction()
     {
-        $em = $this->getEntityManager();
-        $user = $this->getUser();
-        $form = new SpesaForm('spesa', array(), $em, $user->id);
+        $form = new SpesaForm('spesa', array(), $this->em, $this->user->id);
 
         $request = $this->getRequest();
 
@@ -31,19 +51,19 @@ class SpesaController extends AbstractActionController
 
             if ($form->isValid()) {
                 $spese->exchangeArray($form->getData());
-                $spese->userId = $user->id;
-                $spese->category = $em->getRepository('Application\Entity\Category')->findOneBy(array(
+                $spese->userId = $this->user->id;
+                $spese->category = $this->em->getRepository('Application\Entity\Category')->findOneBy(array(
                     'id' => $data['id_categoria'],
-                    'userId' => $user->id,
+                    'userId' => $this->user->id,
                 ));
 
-                $em->persist($spese);
+                $this->em->persist($spese);
 
                 // if is set account id add new moviment to account
                 if ($data['accountId']) {
 
-                    $account = $em->getRepository('Application\Entity\Account')
-                        ->findOneBy(array('id' => $data['accountId'], 'userId' => $user->id));
+                    $account = $this->em->getRepository('Application\Entity\Account')
+                        ->findOneBy(array('id' => $data['accountId'], 'userId' => $this->user->id));
                     if ($account) {
                         $moviment = new Moviment();
                         $moviment->exchangeArray(array(
@@ -52,10 +72,10 @@ class SpesaController extends AbstractActionController
                             'description' => $data['descrizione'],
                         ));
                         $moviment->account = $account;
-                        $em->persist($moviment);
+                        $this->em->persist($moviment);
                     }
                 }
-                $em->flush();
+                $this->em->flush();
 
                 // Redirect to list of albums
                 return $this->redirect()->toRoute('accantona_spesa');
@@ -67,10 +87,8 @@ class SpesaController extends AbstractActionController
 
     public function indexAction()
     {
-        $em = $this->getEntityManager();
-        $user = $this->getUser();
         $where = 'spese.userId=:userId';
-        $params = array('userId' => $user->id);
+        $params = array('userId' => $this->user->id);
 
         if (($categoryId = (int) $this->params()->fromQuery('categoryIdFilter', 0)) != false) {
             $where .= ' AND spese.category=:categoryId';
@@ -82,33 +100,31 @@ class SpesaController extends AbstractActionController
             $params['date'] = $dateTime->modify("-$months month");
         }
 
-        $categories = $em->getRepository('Application\Entity\Category')
-            ->findBy(array('status' => Category::STATUS_ACTIVE, 'userId' => $user->id));
+        $categories = $this->em->getRepository('Application\Entity\Category')
+            ->findBy(array('status' => Category::STATUS_ACTIVE, 'userId' => $this->user->id));
 
         return new ViewModel(array(
             'categoryId' => $categoryId,
             'months'     => $months,
-            'rows'       => $em->getRepository('Application\Entity\Spese')->getSpese($where, $params),
+            'rows'       => $this->em->getRepository('Application\Entity\Spese')->getSpese($where, $params),
             'categories' => $categories,
-            'avgPerCategory' => $this->getSpesaTable()->getAvgPerCategories($user->id),
+            'avgPerCategory' => $this->spesaTable->getAvgPerCategories($this->user->id),
         ));
     }
 
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        $em = $this->getEntityManager();
-        $user = $this->getUser();
 
         /* @var Spese $spend */
-        $spend = $em->getRepository('Application\Entity\Spese')
-            ->findOneBy(array('id' => $id, 'userId' => $user->id));
+        $spend = $this->em->getRepository('Application\Entity\Spese')
+            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
 
         if (!$spend) {
             return $this->redirect()->toRoute('accantona_spesa', array('action' => 'index'));
         }
 
-        $form = new SpesaForm('spesa', array(), $em, $user->id);
+        $form = new SpesaForm('spesa', array(), $this->em, $this->user->id);
         $form->bind($spend);
 
         $request = $this->getRequest();
@@ -119,12 +135,12 @@ class SpesaController extends AbstractActionController
 
             if ($form->isValid()) {
 
-                $spend->category = $em->getRepository('Application\Entity\Category')->findOneBy(array(
+                $spend->category = $this->em->getRepository('Application\Entity\Category')->findOneBy(array(
                     'id' => $data['id_categoria'],
-                    'userId' => $user->id,
+                    'userId' => $this->user->id,
                 ));
 
-                $this->getEntityManager()->flush();
+                $this->em->flush();
 
                 return $this->redirect()->toRoute('accantona_spesa');
             }
@@ -136,37 +152,13 @@ class SpesaController extends AbstractActionController
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        $em = $this->getEntityManager();
-        $spend = $em->getRepository('Application\Entity\Spese')
-            ->findOneBy(array('id' => $id, 'userId' => $this->getUser()->id));
+        $spend = $this->em->getRepository('Application\Entity\Spese')
+            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
 
         if ($spend) {
-            $em->remove($spend);
-            $em->flush();
+            $this->em->remove($spend);
+            $this->em->flush();
         }
         return $this->redirect()->toRoute('accantona_spesa');
     }
-
-    public function getSpesaTable()
-    {
-        if (!$this->spesaTable) {
-            $sm = $this->getServiceLocator();
-            $this->spesaTable = $sm->get('Accantona\Model\SpesaTable');
-        }
-        return $this->spesaTable;
-    }
-
-    public function getUser()
-    {
-        return $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-    }
-
 }

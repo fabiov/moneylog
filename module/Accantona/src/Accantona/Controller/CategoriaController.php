@@ -2,7 +2,8 @@
 
 namespace Accantona\Controller;
 
-use Zend\Debug\Debug;
+use Accantona\Model\CategoriaTable;
+use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Accantona\Model\Categoria;
@@ -10,8 +11,27 @@ use Accantona\Form\CategoriaForm;
 
 class CategoriaController extends AbstractActionController
 {
+    /**
+     * @var CategoriaTable
+     */
+    private $categoriaTable;
 
-    protected $categoriaTable;
+    /**
+     * @var \stdClass
+     */
+    private $user;
+
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    public function __construct(CategoriaTable $categoriaTable, \stdClass $user, EntityManager $em)
+    {
+        $this->categoriaTable   = $categoriaTable;
+        $this->user             = $user;
+        $this->em               = $em;
+    }
 
     public function addAction()
     {
@@ -26,9 +46,9 @@ class CategoriaController extends AbstractActionController
 
             if ($form->isValid()) {
                 $data = $form->getData();
-                $data['userId'] = $this->getUser()->id;
+                $data['userId'] = $this->user->id;
                 $category->exchangeArray($data);
-                $this->getCategoriaTable()->save($category);
+                $this->categoriaTable->save($category);
 
                 // Redirect to list of categories
                 return $this->redirect()->toRoute('accantona_categoria');
@@ -39,19 +59,17 @@ class CategoriaController extends AbstractActionController
 
     public function indexAction()
     {
-        $em = $this->getEntityManager();
         return new ViewModel(array(
-            'rows' => $em->getRepository('Application\Entity\Category')->findBy(array('userId' => $this->getUser()->id))
+            'rows' => $this->em->getRepository('Application\Entity\Category')->findBy(array('userId' => $this->user->id))
         ));
     }
 
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        $user = $this->getUser();
 
-        $category = $this->getEntityManager()->getRepository('Application\Entity\Category')
-            ->findOneBy(array('id' => $id, 'userId' => $user->id));
+        $category = $this->em->getRepository('Application\Entity\Category')
+            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
         if (!$category) {
             return $this->redirect()->toRoute('accantona_categoria', array('action' => 'index'));
         }
@@ -66,8 +84,7 @@ class CategoriaController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getEntityManager()->flush();
-
+                $this->em->flush();
                 return $this->redirect()->toRoute('accantona_categoria');
             }
         }
@@ -86,36 +103,13 @@ class CategoriaController extends AbstractActionController
             $del = $request->getPost('del', 'No');
 
             if ($del == 'Yes') {
-                $this->getCategoriaTable()->deleteByAttributes(array('id' => $id, 'userId' => $this->getUser()->id));
+                $this->categoriaTable->deleteByAttributes(array('id' => $id, 'userId' => $this->user->id));
             }
 
             // Redirect to list of categories
             return $this->redirect()->toRoute('accantona_categoria');
         }
 
-        return array(
-            'id' => $id,
-            'category' => $this->getCategoriaTable()->getCategoria($id)
-        );
+        return array('id' => $id, 'category' => $this->categoriaTable->getCategoria($id));
     }
-
-    public function getCategoriaTable()
-    {
-        if (!$this->categoriaTable) {
-            $sm = $this->getServiceLocator();
-            $this->categoriaTable = $sm->get('Accantona\Model\CategoriaTable');
-        }
-        return $this->categoriaTable;
-    }
-
-    public function getUser()
-    {
-        return $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
-    }
-
-    public function getEntityManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-    }
-
 }

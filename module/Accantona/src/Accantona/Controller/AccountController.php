@@ -13,6 +13,22 @@ use Zend\View\Model\ViewModel;
 class AccountController extends AbstractActionController
 {
 
+    /**
+     * @var \stdClass
+     */
+    private $user;
+
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    public function __construct(\stdClass $user, EntityManager $em)
+    {
+        $this->user = $user;
+        $this->em   = $em;
+    }
+
     public function addAction()
     {
         $form = new AccountForm();
@@ -26,10 +42,10 @@ class AccountController extends AbstractActionController
 
             if ($form->isValid()) {
                 $data = $form->getData();
-                $data['userId'] = $this->getUser()->id;
+                $data['userId'] = $this->user->id;
                 $account->exchangeArray($data);
-                $this->getEntityManager()->persist($account);
-                $this->getEntityManager()->flush();
+                $this->em->persist($account);
+                $this->em->flush();
 
                 return $this->redirect()->toRoute('accantonaAccount');
             }
@@ -39,17 +55,16 @@ class AccountController extends AbstractActionController
 
     public function indexAction()
     {
-        $accountRepository = $this->getEntityManager()->getRepository('Application\Entity\Account');
-        return new ViewModel(array('rows' => $accountRepository->getTotals($this->getUser()->id, false)));
+        $accountRepository = $this->em->getRepository('Application\Entity\Account');
+        return new ViewModel(array('rows' => $accountRepository->getTotals($this->user->id, false)));
     }
 
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        $em = $this->getEntityManager();
-        $account = $em->getRepository('Application\Entity\Account')
-            ->findOneBy(array('id' => $id, 'userId' => $this->getUser()->id));
+        $account = $this->em->getRepository('Application\Entity\Account')
+            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
 
         if (!$account) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
@@ -64,11 +79,10 @@ class AccountController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $em->flush();
+                $this->em->flush();
                 return $this->redirect()->toRoute('accantonaAccount'); // Redirect to list
             }
         }
-
         return array('id' => $id, 'form' => $form);
     }
 
@@ -84,7 +98,7 @@ class AccountController extends AbstractActionController
 
             /* @var Account $account */
             $account = $this->getEntityManager()->find('Application\Entity\Account', $id);
-            if ($account && $account->userId == $this->getUser()->id) {
+            if ($account && $account->userId == $this->user->id) {
 
                 /* @var EntityManager $em */
                 $em = $this->getEntityManager();
@@ -107,16 +121,15 @@ class AccountController extends AbstractActionController
         $amount = $this->params()->fromQuery('amount');
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        $em = $this->getEntityManager();
-        $account = $em->getRepository('Application\Entity\Account')
-            ->findOneBy(array('id' => $id, 'userId' => $this->getUser()->id));
+        $account = $this->em->getRepository('Application\Entity\Account')
+            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
 
         if (!$account || !preg_match('/^[\-\+]?\d+(,\d+)?$/', $amount)) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
         /* @var \Doctrine\ORM\QueryBuilder $qb */
-        $qb = $this->getEntityManager()
+        $qb = $this->em
             ->createQueryBuilder()
             ->select('COALESCE(SUM(m.amount), 0) AS total')
             ->from('Application\Entity\Moviment', 'm')
@@ -129,32 +142,9 @@ class AccountController extends AbstractActionController
         $moviment->date = new \DateTime();
         $moviment->amount = str_replace(',', '.', $amount) - $r['total'];
         $moviment->description = 'Conguaglio';
-        $em->persist($moviment);
-        $em->flush();
+        $this->em->persist($moviment);
+        $this->em->flush();
 
         return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
     }
-
-    public function getCategoriaTable()
-    {
-        if (!$this->categoriaTable) {
-            $sm = $this->getServiceLocator();
-            $this->categoriaTable = $sm->get('Accantona\Model\CategoriaTable');
-        }
-        return $this->categoriaTable;
-    }
-
-    public function getUser()
-    {
-        return $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
-    }
-
-    /**
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-    }
-
 }

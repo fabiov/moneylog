@@ -13,27 +13,30 @@ class RecapController extends AbstractActionController
     /**
      * @var SpesaTable $spesaTable
      */
-    protected $spesaTable;
+    private $spesaTable;
 
     /**
      * @var VariabileTable
      */
-    protected $variabileTable;
+    private $variabileTable;
 
     /**
      * @var AccantonatoTable
      */
-    protected $accantonatoTable;
+    private $accantonatoTable;
 
-    protected $user;
+    /**
+     * @var \stdClass
+     */
+    private $user;
 
     /**
      * @var DoctrineORMEntityManager
      */
-    protected $em;
+    private $em;
 
     public function __construct(
-        $em, AccantonatoTable $accantonatoTable, SpesaTable$spesaTable, VariabileTable $variabileTable, $user
+        $em, AccantonatoTable $accantonatoTable, SpesaTable$spesaTable, VariabileTable $variabileTable, \stdClass $user
     ) {
         $this->em               = $em;
         $this->accantonatoTable = $accantonatoTable;
