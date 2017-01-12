@@ -89,9 +89,9 @@ $morrisData = array();
                             }
                             ?>
                         <tr>
-                            <td><?php echo $this->dateForma($row->date); ?></td>
-                            <td class="text-right"><?php echo $this->currencyForma($row->amount); ?></td>
-                            <td><?php echo $row->description; ?></td>
+                            <td class="date"><?php echo $this->dateForma($row->date); ?></td>
+                            <td class="text-right amount"><?php echo $this->currencyForma($row->amount); ?></td>
+                            <td class="description"><?php echo $row->description; ?></td>
                             <td class="text-right">
                                 <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
