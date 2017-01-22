@@ -42,16 +42,6 @@ class UserTable
         $this->tableGateway->update(array('status' => 1), array('id' => $id));
     }
 
-    public function getUserByEmail($usr_email)
-    {
-        $rowset = $this->tableGateway->select(array('usr_email' => $usr_email));
-        $row = $rowset->current();
-        if (!$row) {
-            throw new \Exception("Could not find row $usr_email");
-        }
-        return $row;
-    }
-
     public function changePassword($id, $password)
     {
         $data = array('password' => $password);

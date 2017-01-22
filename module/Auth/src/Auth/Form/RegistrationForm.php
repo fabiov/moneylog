@@ -60,7 +60,10 @@ class RegistrationForm extends Form
             'name' => 'captcha',
             'options' => array(
                 'label' => 'Please verify you are human',
-                'captcha' => new \Zend\Captcha\Figlet(array('wordLen' => 3)),
+                'captcha' => new \Zend\Captcha\ReCaptcha(array(
+                    'pubKey'    => '6LdjpBIUAAAAAGDwoUOVWGSZSudz1U2EYWDOafD7',
+                    'privKey'   => '6LdjpBIUAAAAANHJptlPZIB5Ty3kXKPS6tmSbc1j',
+                )),
                 'class' => 'form-control',
             ),
         ));

@@ -7,22 +7,22 @@ class ForgottenPasswordForm extends Form
 {
     public function __construct($name = null)
     {
-        parent::__construct('registration');
+        parent::__construct('forgotten-password');
         $this->setAttribute('method', 'post');
 
         $this->add(array(
-            'name' => 'email',
-            'attributes' => array('type'  => 'email', 'class' => 'form-control'),
-            'options' => array('label' => 'E-mail'),
+            'attributes'    => array('class' => 'form-control', 'required' => true, 'type' => 'email'),
+            'name'          => 'email',
+            'options'       => array('label' => 'E-mail'),
         ));
 
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
+                'class' => 'btn btn-lg btn-primary btn-block',
+                'id'    => 'submitbutton',
                 'type'  => 'submit',
-                'value' => 'Go',
-                'id' => 'submitbutton',
-                'class' => 'btn btn-lg btn-primary btn-block'
+                'value' => 'Invia',
             ),
         )); 
     }
