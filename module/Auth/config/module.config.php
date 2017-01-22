@@ -1,12 +1,27 @@
 <?php
 return array(
-//'static_salt' => 'aFGQ475SDsdfsaf2342', // I am going to move it to global.php. It should be accessable everywhere
     'controllers' => array(
-        'invokables' => array(
-            'Auth\Controller\Index' => 'Auth\Controller\IndexController',
-            'Auth\Controller\Registration' => 'Auth\Controller\RegistrationController',
-            'Auth\Controller\Admin' => 'Auth\Controller\AdminController',
+        'factories' => array(
+            'Auth\Controller\Index' => function ($controllerManager) {
+                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Zend\ServiceManager\ServiceManager $sm */
+                $sm = $controllerManager->getServiceLocator();
+                return new Auth\Controller\IndexController($sm->get('Zend\Db\Adapter\Adapter'));
+            },
+            'Auth\Controller\Registration' => function ($controllerManager) {
+                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Zend\ServiceManager\ServiceManager $sm */
+                $sm = $controllerManager->getServiceLocator();
+                return new Auth\Controller\RegistrationController(
+                    $sm->get('doctrine.entitymanager.orm_default'),
+                    $sm,
+                    $sm->get('Auth\Model\UserTable')
+                );
+            },
         ),
+//        'invokables' => array(
+//            'Auth\Controller\Admin' => 'Auth\Controller\AdminController',
+//        ),
     ),
     'router' => array(
         'routes' => array(

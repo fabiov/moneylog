@@ -69,11 +69,5 @@ $this->form->prepare();
         <?= $errors; ?>
     </div>
 
-    <!-- ?php echo $this->formLabel($form->get('captcha')); ?>
-    < ?php echo $this->formCaptcha($form->get('captcha')->setAttribute('class', 'form-control')); ?>
-    < ?php echo $this->formElementErrors($form->get('captcha')); ?>
-    <!-- ?php echo $this->formInput($form->get('captcha')); ? -->
-    <!-- ?php echo $this->formRow($this->form->get('captcha')); ? -->
-
     <?= $this->formSubmit($this->form->get('submit')); ?>
 <?= $this->form()->closeTag(); ?>

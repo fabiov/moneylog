@@ -65,9 +65,7 @@ class FloatingButtons extends AbstractHelper
             <i class="mfb-component__main-icon--resting glyphicon glyphicon-plus"></i>
             <i class="mfb-component__main-icon--active glyphicon glyphicon-remove"></i>
         </a>
-        <ul class="mfb-component__list">
-            $items;
-        </ul>
+        <ul class="mfb-component__list">$items</ul>
     </li>
 </ul>
 <script src="/node_modules/mfb/src/mfb.min.js"></script>
@@ -75,5 +73,4 @@ eoc;
         }
         return $html;
     }
-
 }

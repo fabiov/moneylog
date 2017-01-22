@@ -1,25 +1,39 @@
 <?php
 namespace Auth\Controller;
 
-use Zend\Debug\Debug;
+use Auth\Form\AuthForm;
+use Auth\Model\Auth;
+use Zend\Authentication\Adapter\DbTable as AuthAdapter;
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Result;
+use Zend\Db\Adapter\Adapter;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Authentication\Result;
-use Zend\Authentication\AuthenticationService;
-use Zend\Authentication\Storage\Session as SessionStorage;
-use Zend\Db\Adapter\Adapter as DbAdapter;
-use Zend\Authentication\Adapter\DbTable as AuthAdapter;
-use Auth\Model\Auth;
-use Auth\Form\AuthForm;
 
 class IndexController extends AbstractActionController
 {
-    
+    /**
+     * @var Adapter
+     */
+    private $dbAdapter;
+
+    /**
+     * IndexController constructor.
+     * @param Adapter $dbAdapter
+     */
+    public function __construct(Adapter $dbAdapter)
+    {
+        $this->dbAdapter = $dbAdapter;
+    }
+
     public function indexAction()
     {
         return new ViewModel();
     }
 
+    /**
+     * @return \Zend\Http\Response|ViewModel
+     */
     public function loginAction()
     {
         $auth = new AuthenticationService();
@@ -36,11 +50,9 @@ class IndexController extends AbstractActionController
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
-                $sm = $this->getServiceLocator();
-                $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
 
                 $authAdapter = new AuthAdapter(
-                    $dbAdapter,
+                    $this->dbAdapter,
                     'User', // there is a method setTableName to do the same
                     'email',
                     'password', // there is a method setCredentialColumn to do the same
@@ -49,9 +61,7 @@ class IndexController extends AbstractActionController
                 $authAdapter->setIdentity($data['email'])->setCredential($data['password']);
 
                 // You can set the service here but will be loaded only if this action called.
-                // $sm->setService('Zend\Authentication\AuthenticationService', $auth);
                 $result = $auth->authenticate($authAdapter);
-
 
                 switch ($result->getCode()) {
                     case Result::SUCCESS:
@@ -78,14 +88,10 @@ class IndexController extends AbstractActionController
     public function logoutAction()
     {
         $auth = new AuthenticationService();
-        // or prepare in the globa.config.php and get it from there
-        // $auth = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
-
         $auth->clearIdentity();
         $sessionManager = new \Zend\Session\SessionManager();
         $sessionManager->forgetMe();
 
         return $this->redirect()->toRoute('auth/default', array('controller' => 'index', 'action' => 'login'));
     }
-
 }

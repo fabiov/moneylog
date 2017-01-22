@@ -1,7 +1,6 @@
 <?php
 namespace Auth\Form;
 
-use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
 
 class ForgottenPasswordFilter extends InputFilter
@@ -9,18 +8,14 @@ class ForgottenPasswordFilter extends InputFilter
     public function __construct($sm)
     {
         $this->add(array(
-            'name' => 'usr_email',
-            'required' => true,
-            'validators' => array(
+            'name'          => 'email',
+            'required'      => true,
+            'validators'    => array(
+                array('name' => 'EmailAddress'),
                 array(
-                    'name' => 'EmailAddress'
-                ),
-                array(
-                    'name' => 'Zend\Validator\Db\RecordExists',
-                    'options' => array(
-                        'table' => 'user',
-                        'field' => 'email',
-                        'adapter' => $sm->get('Zend\Db\Adapter\Adapter'),
+                    'name'      => 'Zend\Validator\Db\RecordExists',
+                    'options'   => array(
+                        'adapter' => $sm->get('Zend\Db\Adapter\Adapter'), 'field' => 'email', 'table' => 'User'
                     ),
                 ),
             ),

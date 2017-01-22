@@ -49,7 +49,11 @@ service apache2 restart
 
 # create swap file 
 # https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04
-dd if=/dev/zero of=/swapfile bs=1M count=256
+dd if=/dev/zero of=/swapfile bs=1M count=512
 chmod 600 /swapfile
 mkswap /swapfile
 swapon /swapfile
+
+if ! grep -q "swapfile" /etc/fstab; then
+    echo "/swapfile none swap sw 0 0" >> /etc/fstab
+fi

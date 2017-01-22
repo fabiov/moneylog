@@ -7,21 +7,10 @@ return array(
         ),
         'resources' => array(
             'allow' => array(
-                'Auth\Controller\Registration' => array(
-                    'confirm-email' => 'guest',
-                    'forgotten-password' => 'guest',
-                    'index' => 'guest',
-                    'registration-success' => 'guest',
-                ),
                 'Accantona\Controller\Recap' => array(
                     'index' => 'user',
                     'add' => 'user',
                     'edit' => 'user',
-                ),
-                'Auth\Controller\Index' => array(
-                    'index' => 'guest',
-                    'login' => 'guest',
-                    'logout' => 'guest',
                 ),
                 'Accantona\Controller\Spesa' => array(
                     'add' => 'user',
@@ -60,6 +49,18 @@ return array(
                     'index' => 'user',
                     'edit' => 'user',
                     'delete' => 'user',
+                ),
+                'Auth\Controller\Index' => array(
+                    'index'     => 'guest',
+                    'login'     => 'guest',
+                    'logout'    => 'guest',
+                ),
+                'Auth\Controller\Registration' => array(
+                    'confirm-email'             => 'guest',
+                    'forgotten-password'        => 'guest',
+                    'index'                     => 'guest',
+                    'password-change-success'   => 'guest',
+                    'registration-success'      => 'guest',
                 ),
                 'PhlySimplePage\Controller\Page' => array(
                     'all' => 'guest',

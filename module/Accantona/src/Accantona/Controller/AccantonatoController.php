@@ -1,23 +1,42 @@
 <?php
 namespace Accantona\Controller;
 
+use Accantona\Model\AccantonatoTable;
+use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Accantona\Model\Accantonato;
 use Accantona\Form\AccantonatoForm;
-use Zend\Debug\Debug;
 
 class AccantonatoController extends AbstractActionController
 {
 
-    protected $user;
-    protected $accantonatoTable;
+    /**
+     * @var \stdClass
+     */
+    private $user;
+
+    /**
+     * @var AccantonatoTable
+     */
+    private $accantonatoTable;
+
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    public function __construct(AccantonatoTable $accantonatoTable, \stdClass $user, EntityManager $em)
+    {
+        $this->accantonatoTable = $accantonatoTable;
+        $this->user             = $user;
+        $this->em               = $em;
+    }
 
     public function indexAction()
     {
         $form = new AccantonatoForm();
         $request = $this->getRequest();
-        $user = $this->getUser();
 
         if ($request->isPost()) {
 
@@ -27,22 +46,22 @@ class AccantonatoController extends AbstractActionController
 
             if ($form->isValid()) {
                 $data = $form->getData();
-                $data['userId'] = $user->id;
+                $data['userId'] = $this->user->id;
                 $accantonato->exchangeArray($data);
-                $this->getAccantonatoTable()->save($accantonato);
+                $this->accantonatoTable->save($accantonato);
                 // Redirect to list of categories
                 return $this->redirect()->toRoute('accantona_accantonato');
             }
         }
 
-        $where = array('userId=' . $user->id);
+        $where = array('userId=' . $this->user->id);
         if (($months = (int) $this->params()->fromQuery('monthsFilter', 1)) != false) {
             $where[] = 'valuta>"' . date('Y-m-d', strtotime("-$months month")) . '"';
         }
 
         return new ViewModel(array(
             'months' => $months,
-            'rows' => $this->getAccantonatoTable()->fetchAll($where),
+            'rows' => $this->accantonatoTable->fetchAll($where),
             'form' => $form,
         ));
     }
@@ -50,11 +69,9 @@ class AccantonatoController extends AbstractActionController
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        $em = $this->getEntityManager();
-        $user = $this->getUser();
 
-        $spend = $em->getRepository('Application\Entity\Accantonati')
-            ->findOneBy(array('id' => $id, 'userId' => $user->id));
+        $spend = $this->em->getRepository('Application\Entity\Accantonati')
+            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
 
         if (!$spend) {
             return $this->redirect()->toRoute('accantona_accantonato', array('action' => 'index'));
@@ -69,48 +86,23 @@ class AccantonatoController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getEntityManager()->flush();
-
+                $this->em->flush();
                 return $this->redirect()->toRoute('accantona_accantonato');
             }
         }
-
         return array('id' => $id, 'form' => $form);
     }
 
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        $em = $this->getEntityManager();
-        $spend = $em->getRepository('Application\Entity\Accantonati')
-            ->findOneBy(array('id' => $id, 'userId' => $this->getUser()->id));
+        $spend = $this->em->getRepository('Application\Entity\Accantonati')
+            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
 
         if ($spend) {
-            $em->remove($spend);
-            $em->flush();
+            $this->em->remove($spend);
+            $this->em->flush();
         }
         return $this->redirect()->toRoute('accantona_accantonato');
     }
-
-    public function getAccantonatoTable()
-    {
-        if (!$this->accantonatoTable) {
-            $this->accantonatoTable = $this->getServiceLocator()->get('Accantona\Model\AccantonatoTable');
-        }
-        return $this->accantonatoTable;
-    }
-
-    public function getUser()
-    {
-        if (!$this->user) {
-            $this->user = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
-        }
-        return $this->user;
-    }
-
-    public function getEntityManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-    }
-
 }

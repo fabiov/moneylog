@@ -3,27 +3,41 @@
 namespace Accantona\Controller;
 
 use Accantona\Form\MoveForm;
+use Accantona\Form\MovimentForm;
 use Application\Entity\Account;
 use Application\Entity\Moviment;
 use Application\Repository\AccountRepository;
-use Zend\Debug\Debug;
+use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
-use Accantona\Form\MovimentForm;
 use Zend\View\Model\ViewModel;
 
 class MovimentController extends AbstractActionController
 {
 
+    /**
+     * @var \stdClass
+     */
+    private $user;
+
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    public function __construct(\stdClass $user, EntityManager $em)
+    {
+        $this->user = $user;
+        $this->em   = $em;
+    }
+
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        $em = $this->getEntityManager();
-        $user = $this->getUser();
 
         /* @var \Application\Entity\Moviment $item */
-        $item = $em->getRepository('Application\Entity\Moviment')->findOneBy(array('id' => $id));
+        $item = $this->em->getRepository('Application\Entity\Moviment')->findOneBy(array('id' => $id));
 
-        if (!$item || $item->account->userId != $user->id) {
+        if (!$item || $item->account->userId != $this->user->id) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
@@ -36,7 +50,7 @@ class MovimentController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getEntityManager()->flush();
+                $this->em->flush();
 
                 return $this->redirect()
                     ->toRoute('accantonaMoviment', array('action' => 'account', 'id' => $item->accountId));
@@ -49,20 +63,18 @@ class MovimentController extends AbstractActionController
     public function accountAction()
     {
         $params = $this->params();
-        $user = $this->getUser();
-        $em = $this->getEntityManager();
 
         $accountId = (int) $params->fromRoute('id', 0);
         $months = (int) $params->fromQuery('monthsFilter', 1);
 
-        $account = $em->getRepository('Application\Entity\Account')
-            ->findOneBy(array('id' => $accountId, 'userId' => $user->id));
+        $account = $this->em->getRepository('Application\Entity\Account')
+            ->findOneBy(array('id' => $accountId, 'userId' => $this->user->id));
 
         if (!$account) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
-        $movimentRepository = $em->getRepository('Application\Entity\Moviment');
+        $movimentRepository = $this->em->getRepository('Application\Entity\Moviment');
         return new ViewModel(array(
             'account' => $account,
             'months' => $months,
@@ -74,15 +86,13 @@ class MovimentController extends AbstractActionController
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        $em = $this->getEntityManager();
-        $user = $this->getUser();
 
         /* @var $item \Application\Entity\Moviment */
-        $item = $em->getRepository('Application\Entity\Moviment')->findOneBy(array('id' => $id));
+        $item = $this->em->getRepository('Application\Entity\Moviment')->findOneBy(array('id' => $id));
 
-        if ($item && $item->account->userId == $user->id) {
-            $em->remove($item);
-            $em->flush();
+        if ($item && $item->account->userId == $this->user->id) {
+            $this->em->remove($item);
+            $this->em->flush();
         }
         return $this->redirect()->toRoute('accantonaMoviment', array('action' => 'account', 'id' => $item->accountId));
     }
@@ -90,21 +100,19 @@ class MovimentController extends AbstractActionController
     public function moveAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        $em = $this->getEntityManager();
-        $user = $this->getUser();
 
         /* @var AccountRepository $accountRepo */
-        $accountRepo = $em->getRepository('Application\Entity\Account');
+        $accountRepo = $this->em->getRepository('Application\Entity\Account');
 
         /* @var $sourceAccount Account */
         $sourceAccount = $accountRepo->find($id);
 
-        if (!$sourceAccount || $sourceAccount->userId != $user->id) {
+        if (!$sourceAccount || $sourceAccount->userId != $this->user->id) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
         $accountOptions = array('' => '');
-        foreach ($accountRepo->getUserAccounts($user->id) as $account) {
+        foreach ($accountRepo->getUserAccounts($this->user->id) as $account) {
             if ($account->id != $sourceAccount->id) {
                 $accountOptions[$account->id] = $account->name;
             }
@@ -123,7 +131,7 @@ class MovimentController extends AbstractActionController
                 /* @var Account $targetAccount */
                 $targetAccount = $accountRepo->find($data['targetAccountId']);
 
-                if (!$targetAccount || $targetAccount->userId != $user->id) {
+                if (!$targetAccount || $targetAccount->userId != $this->user->id) {
                     return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
                 }
 
@@ -134,7 +142,7 @@ class MovimentController extends AbstractActionController
                     'description' => $data['description'],
                 ));
                 $outcoming->account = $sourceAccount;
-                $em->persist($outcoming);
+                $this->em->persist($outcoming);
 
                 $incoming = new Moviment();
                 $incoming->exchangeArray(array(
@@ -144,9 +152,9 @@ class MovimentController extends AbstractActionController
                     'description' => $data['description'],
                 ));
                 $incoming->account = $targetAccount;
-                $em->persist($incoming);
+                $this->em->persist($incoming);
 
-                $em->flush();
+                $this->em->flush();
 
                 return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
             }
@@ -159,13 +167,10 @@ class MovimentController extends AbstractActionController
     {
         $accountId = (int) $this->params()->fromRoute('id');
 
-        $em = $this->getEntityManager();
-        $user = $this->getUser();
-
         /* @var $account Account */
-        $account = $em->getRepository('Application\Entity\Account')->find($accountId);
+        $account = $this->em->getRepository('Application\Entity\Account')->find($accountId);
 
-        if (!$account || $account->userId != $user->id) {
+        if (!$account || $account->userId != $this->user->id) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
@@ -192,18 +197,4 @@ class MovimentController extends AbstractActionController
 
         return array('sourceAccount' => $account, 'form' => $form);
     }
-
-    /**
-     * @return \Application\Entity\User
-     */
-    public function getUser()
-    {
-        return $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
-    }
-
-    public function getEntityManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-    }
-
 }

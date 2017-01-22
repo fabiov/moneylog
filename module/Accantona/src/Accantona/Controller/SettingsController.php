@@ -1,26 +1,33 @@
 <?php
 namespace Accantona\Controller;
 
-use Application\Entity\Setting;
+use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
-use Zend\Debug\Debug;
 use Accantona\Form\SettingsForm;
 
 class SettingsController extends AbstractActionController
 {
 
     /**
-     * @var DoctrineORMEntityManager
+     * @var EntityManager
      */
     private $em;
+
+    /**
+     * @var \stdClass
+     */
     private $user;
+
+    public function __construct(EntityManager $em, \stdClass $user)
+    {
+        $this->em   = $em;
+        $this->user = $user;
+    }
 
     public function indexAction()
     {
-        $userId = $this->getUser()->id;
         $message = '';
-        $setting = $this->getEntityManager()->find('Application\Entity\Setting', $userId);
+        $setting = $this->em->find('Application\Entity\Setting', $this->user->id);
 
         $form = new SettingsForm();
         $form->bind($setting);
@@ -32,30 +39,11 @@ class SettingsController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $setting->userId = $userId;
-                $this->getEntityManager()->flush();
-
+                $setting->userId = $this->user->id;
+                $this->em->flush();
                 $message = 'You successfully saved settings.';
             }
         }
-
         return array('form' => $form, 'message' => $message);
     }
-
-    public function getEntityManager()
-    {
-        if (null === $this->em) {
-            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        }
-        return $this->em;
-    }
-
-    public function getUser()
-    {
-        if (!$this->user) {
-            $this->user = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService')->getIdentity();
-        }
-        return $this->user;
-    }
-
 }
