@@ -2,6 +2,12 @@
 return array(
     'controllers' => array(
         'factories' => array(
+            'Auth\Controller\Index' => function ($controllerManager) {
+                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Zend\ServiceManager\ServiceManager $sm */
+                $sm = $controllerManager->getServiceLocator();
+                return new Auth\Controller\IndexController($sm->get('Zend\Db\Adapter\Adapter'));
+            },
             'Auth\Controller\Registration' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 /* @var Zend\ServiceManager\ServiceManager $sm */
@@ -13,10 +19,9 @@ return array(
                 );
             },
         ),
-        'invokables' => array(
-            'Auth\Controller\Index' => 'Auth\Controller\IndexController',
-            'Auth\Controller\Admin' => 'Auth\Controller\AdminController',
-        ),
+//        'invokables' => array(
+//            'Auth\Controller\Admin' => 'Auth\Controller\AdminController',
+//        ),
     ),
     'router' => array(
         'routes' => array(

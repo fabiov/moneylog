@@ -10,13 +10,10 @@ use Auth\Form\RegistrationFilter;
 use Auth\Form\RegistrationForm;
 use Auth\Model\UserTable;
 use Doctrine\ORM\EntityManager;
-use Zend\Debug\Debug;
 use Zend\Mail\Message;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Model\ViewModel;
-// a test class in a coolcsn namespace for installer. You can remove the next line
-//use CsnBase\Zend\Validator\ConfirmPassword;
 
 class RegistrationController extends AbstractActionController
 {
