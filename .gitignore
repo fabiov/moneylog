@@ -1,6 +1,7 @@
 .idea
+composer
+composer.lock
+composer.phar
 config/autoload/local.php
 data/DoctrineORMModule/*
-composer
-/composer.lock
-/vendor/*
+vendor/*
