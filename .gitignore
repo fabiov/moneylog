@@ -1,4 +1,5 @@
 .idea
+.vagrant
 composer
 composer.lock
 composer.phar
