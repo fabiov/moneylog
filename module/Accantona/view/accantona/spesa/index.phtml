@@ -35,11 +35,7 @@
                 </td>
                 <td></td>
                 <td></td>
-                <td class="actions text-right">
-                    <a class="btn btn-default" href="<?php echo $this->url('accantona_spesa', array('action' => 'add')); ?>">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
-                    </a>
-                </td>
+                <td></td>
             </tr>
         </thead>
 
@@ -101,3 +97,9 @@
         });
     });
 </script>
+<?php
+$this->floatingButtons()->addAnchorItem(array(
+    'href'  => $this->url('accantona_spesa', array('action' => 'add')),
+    'label' => 'Aggiungi una spesa',
+    'icon'  => 'plus',
+));
