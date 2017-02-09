@@ -5,6 +5,27 @@
 </style>
 <?php $sum = 0; ?>
 <?php echo $this->pageHeader('Spese'); ?>
+<div class="row" id="search">
+    <div class="col-md-6">
+        <label>Categoria</label>
+        <select class="form-control" id="categoryIdFilter" name="categoryIdFilter">
+            <option value="0">Tutte</option>
+            <?php foreach ($categories as $category): ?>
+                <option value="<?php echo $category->id; ?>"<?php if ($category->id == $categoryId) echo 'selected="selected"'; ?>><?php echo $category->descrizione; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label>Data</label>
+        <select class="form-control" id="monthsFilter" name="monthsFilter">
+            <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
+            <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
+            <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
+            <option value="6" <?php if ($months == 6) echo 'selected="selected"'; ?>>Ultimi 6 mesi</option>
+            <option value="12" <?php if ($months == 12) echo 'selected="selected"'; ?>>Ultimo anno</option>
+        </select>
+    </div>
+</div>
 <div class="table-responsive">
     <table class="table">
         <thead>
@@ -15,30 +36,7 @@
                 <th>Descrizione</th>
                 <th class="actions">&nbsp;</th>
             </tr>
-            <tr id="search">
-                <td>
-                    <select class="form-control" id="categoryIdFilter" name="categoryIdFilter">
-                        <option value="0">Tutte</option>
-                        <?php foreach ($categories as $category): ?>
-                            <option value="<?php echo $category->id; ?>"<?php if ($category->id == $categoryId) echo 'selected="selected"'; ?>><?php echo $category->descrizione; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </td>
-                <td>
-                    <select class="form-control" id="monthsFilter" name="monthsFilter">
-                        <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
-                        <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
-                        <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
-                        <option value="6" <?php if ($months == 6) echo 'selected="selected"'; ?>>Ultimi 6 mesi</option>
-                        <option value="12" <?php if ($months == 12) echo 'selected="selected"'; ?>>Ultimo anno</option>
-                    </select>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
         </thead>
-
         <tbody>
         <?php foreach ($rows as $row) : ?>
             <?php
