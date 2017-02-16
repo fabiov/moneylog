@@ -105,4 +105,28 @@ class AccantonatoController extends AbstractActionController
         }
         return $this->redirect()->toRoute('accantona_accantonato');
     }
+
+    public function addAction()
+    {
+        $form = new AccantonatoForm();
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+
+            $accantonato = new Accantonato();
+            $form->setInputFilter($accantonato->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $data['userId'] = $this->user->id;
+                $accantonato->exchangeArray($data);
+                $this->accantonatoTable->save($accantonato);
+                // Redirect to list of categories
+                return $this->redirect()->toRoute('accantona_accantonato');
+            }
+        }
+
+        return new ViewModel(['form' => $form]);
+    }
 }

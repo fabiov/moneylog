@@ -55,37 +55,6 @@
                 </tr>
                 <?php endforeach; ?>
             </tbody>
-
-            <tfoot>
-                <tr>
-                    <!-- td class="valuta"><input class="form-control" name="valuta" type="date" value="<?php echo date('Y-m-d'); ?>" /></td -->
-                    <?php $element = $form->get('valuta'); ?>
-                    <?php $errors = $this->formElementErrors($element); ?>
-                    <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
-                        <?php echo $this->formInput($element); ?>
-                        <?php echo $errors; ?>
-                    </td>
-
-                    <?php $element = $form->get('importo'); ?>
-                    <?php $errors = $this->formElementErrors($element); ?>
-                    <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
-                        <?php echo $this->formInput($element); ?>
-                        <?php echo $errors; ?>
-                    </td>
-
-                    <?php $element = $form->get('descrizione'); ?>
-                    <td class="form-group <?php if ($errors) echo 'has-error'; ?>">
-                        <?php echo $this->formInput($element); ?>
-                        <?php echo $errors; ?>
-                    </td>
-
-                    <td class="actions text-right">
-                        <button id="save" type="submit" class="btn btn-default show-on-edit">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
-                        </button>
-                    </td>
-                </tr>
-            </tfoot>
         </table>
     </div>
 </form>
@@ -110,3 +79,9 @@
         });
     });
 </script>
+<?php
+$this->floatingButtons()->addAnchorItem(array(
+    'href'  => $this->url('accantona_accantonato', array('action' => 'add')),
+    'label' => 'Aggiungi un conto',
+    'icon'  => 'plus'
+));
