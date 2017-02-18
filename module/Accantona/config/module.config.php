@@ -148,9 +148,11 @@ return array(
             'bindBalance'       => 'Accantona\View\Helper\BindBalance',
             'dateForma'         => 'Accantona\View\Helper\DateForma',
             'currencyForma'     => 'Accantona\View\Helper\CurrencyForma',
+            'floatingButtons'   => 'Accantona\View\Helper\FloatingButtons',
             'morris'            => 'Accantona\View\Helper\Morris',
             'pageHeader'        => 'Accantona\View\Helper\PageHeader',
-            'floatingButtons'   => 'Accantona\View\Helper\FloatingButtons',
+            'widgetSelect'      => 'Accantona\View\Helper\WidgetSelect',
+            'widgetText'        => 'Accantona\View\Helper\WidgetText',
         ),
     ),
 );

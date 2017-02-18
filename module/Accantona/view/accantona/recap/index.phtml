@@ -1,53 +1,12 @@
 <?php $sum = 0; ?>
 <?php echo $this->pageHeader('Dashboard'); ?>
 <div class="row">
-    <div class="col-lg-4 col-md-6">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-calendar fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge"><?php echo $remainingDays; ?></div>
-                        <div>Giorni residui</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6">
-        <div class="panel panel-green">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-eur fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge"><?php echo $this->currencyForma($monthBudget / $remainingDays); ?></div>
-                        <div>Budget giornaliero oggi</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6">
-        <div class="panel panel-green">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-eur fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge">
-                            <?php echo $remainingDays > 1 ? $this->currencyForma($monthBudget / ($remainingDays - 1)) : 'n/a'; ?>
-                        </div>
-                        <div>Budget giornaliero domani</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php
+    echo $this->widgetText(['color' => 'yellow',  'col-lg' => '3', 'col-md' => '6', 'fa' => 'eur',      'label' => 'Budget mensile residuo',    'text' => $this->currencyForma($monthBudget)]);
+    echo $this->widgetText(['color' => 'primary', 'col-lg' => '3', 'col-md' => '6', 'fa' => 'calendar', 'label' => 'Giorni residui',            'text' => $remainingDays]);
+    echo $this->widgetText(['color' => 'green',   'col-lg' => '3', 'col-md' => '6', 'fa' => 'eur',      'label' => 'Budget giornaliero oggi',   'text' => $this->currencyForma($monthBudget / $remainingDays)]);
+    echo $this->widgetText(['color' => 'green',   'col-lg' => '3', 'col-md' => '6', 'fa' => 'eur',      'label' => 'Budget giornaliero domani', 'text' => $remainingDays > 1 ? $this->currencyForma($monthBudget / ($remainingDays - 1)) : 'n/a']);
+    ?>
 </div>
 <div class="row">
     <div class="col-md-6">
@@ -103,12 +62,6 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td><strong>Budget mensile residuo</strong></td>
-                                <td class="text-right"><strong><?php echo $this->currencyForma($monthBudget); ?></strong></td>
-                            </tr>
-                        </tfoot>
                     </table>
                     <div class="text-right">
                         <button id="edit" type="button" class="btn btn-default hide-on-edit" aria-label="Modifica">
