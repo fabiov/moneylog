@@ -1,12 +1,12 @@
 <?php
 namespace Accantona\Controller;
 
+use Accantona\Form\AccantonatoForm;
 use Accantona\Model\AccantonatoTable;
+use Application\Entity\Accantonati;
 use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Accantona\Model\Accantonato;
-use Accantona\Form\AccantonatoForm;
 
 class AccantonatoController extends AbstractActionController
 {
@@ -31,6 +31,29 @@ class AccantonatoController extends AbstractActionController
         $this->accantonatoTable = $accantonatoTable;
         $this->user             = $user;
         $this->em               = $em;
+    }
+
+    public function addAction()
+    {
+        $form = new AccantonatoForm();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+
+            $accantonato = new Accantonati();
+            $form->setInputFilter($accantonato->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $data['userId'] = $this->user->id;
+                $accantonato->exchangeArray($data);
+                $this->em->persist($accantonato);
+                $this->em->flush();
+
+                return $this->redirect()->toRoute('accantona_accantonato');
+            }
+        }
+        return new ViewModel(['form' => $form]);
     }
 
     public function indexAction()
@@ -87,29 +110,5 @@ class AccantonatoController extends AbstractActionController
             $this->em->flush();
         }
         return $this->redirect()->toRoute('accantona_accantonato');
-    }
-
-    public function addAction()
-    {
-        $form = new AccantonatoForm();
-        $request = $this->getRequest();
-
-        if ($request->isPost()) {
-
-            $accantonato = new Accantonato();
-            $form->setInputFilter($accantonato->getInputFilter());
-            $form->setData($request->getPost());
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $data['userId'] = $this->user->id;
-                $accantonato->exchangeArray($data);
-                $this->accantonatoTable->save($accantonato);
-                // Redirect to list of categories
-                return $this->redirect()->toRoute('accantona_accantonato');
-            }
-        }
-
-        return new ViewModel(['form' => $form]);
     }
 }
