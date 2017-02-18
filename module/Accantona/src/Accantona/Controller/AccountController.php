@@ -32,7 +32,6 @@ class AccountController extends AbstractActionController
     public function addAction()
     {
         $form = new AccountForm();
-
         $request = $this->getRequest();
         if ($request->isPost()) {
 

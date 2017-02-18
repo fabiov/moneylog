@@ -1,16 +1,15 @@
 <?php
 namespace Accantona\Form;
 
-use Zend\Form\Element;
 use Zend\Form\Form;
 
 class AccantonatoForm extends Form
 {
 
-    public function __construct($name = null)
+    public function __construct($name = 'accantona')
     {
         // we want to ignore the name passed
-        parent::__construct('categoria');
+        parent::__construct($name);
 
         $this->add(array(
             'attributes' => array('class' => 'form-control', 'value' => date('Y-m-d')),
@@ -32,7 +31,7 @@ class AccantonatoForm extends Form
             'type' => 'Number',
         ));
         $this->add(array(
-            'attributes' => array('class' => 'form-control', 'placeholder' => 'Descrizione'),
+            'attributes' => array('class' => 'form-control', 'maxlength' => 255, 'placeholder' => 'Descrizione'),
             'filters'  => array(array('name' => 'Zend\Filter\StringTrim')),
             'name' => 'descrizione',
             'options' => array('label' => 'Descrizione'),

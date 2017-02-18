@@ -1,12 +1,12 @@
 <?php
 namespace Accantona\Controller;
 
+use Accantona\Form\AccantonatoForm;
 use Accantona\Model\AccantonatoTable;
+use Application\Entity\Accantonati;
 use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Accantona\Model\Accantonato;
-use Accantona\Form\AccantonatoForm;
 
 class AccantonatoController extends AbstractActionController
 {
@@ -33,14 +33,13 @@ class AccantonatoController extends AbstractActionController
         $this->em               = $em;
     }
 
-    public function indexAction()
+    public function addAction()
     {
         $form = new AccantonatoForm();
         $request = $this->getRequest();
-
         if ($request->isPost()) {
 
-            $accantonato = new Accantonato();
+            $accantonato = new Accantonati();
             $form->setInputFilter($accantonato->getInputFilter());
             $form->setData($request->getPost());
 
@@ -48,21 +47,28 @@ class AccantonatoController extends AbstractActionController
                 $data = $form->getData();
                 $data['userId'] = $this->user->id;
                 $accantonato->exchangeArray($data);
-                $this->accantonatoTable->save($accantonato);
-                // Redirect to list of categories
+                $this->em->persist($accantonato);
+                $this->em->flush();
+
                 return $this->redirect()->toRoute('accantona_accantonato');
             }
         }
+        return new ViewModel(['form' => $form]);
+    }
+
+    public function indexAction()
+    {
+        $accantonati = $this->em->getRepository('Application\Entity\Accantonati');
 
         $where = array('userId=' . $this->user->id);
-        if (($months = (int) $this->params()->fromQuery('monthsFilter', 1)) != false) {
+        if (($months = (int) $this->params()->fromQuery('monthsFilter', 3)) != false) {
             $where[] = 'valuta>"' . date('Y-m-d', strtotime("-$months month")) . '"';
         }
 
         return new ViewModel(array(
-            'months' => $months,
-            'rows' => $this->accantonatoTable->fetchAll($where),
-            'form' => $form,
+            'balance' => $accantonati->getBalance($this->user->id),
+            'months'  => $months,
+            'rows'    => $this->accantonatoTable->fetchAll($where),
         ));
     }
 
@@ -70,19 +76,19 @@ class AccantonatoController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        $spend = $this->em->getRepository('Application\Entity\Accantonati')
+        $accantonati = $this->em->getRepository('Application\Entity\Accantonati')
             ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
 
-        if (!$spend) {
+        if (!$accantonati) {
             return $this->redirect()->toRoute('accantona_accantonato', array('action' => 'index'));
         }
 
         $form = new AccantonatoForm('accantonati');
-        $form->bind($spend);
+        $form->bind($accantonati);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($spend->getInputFilter());
+            $form->setInputFilter($accantonati->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {

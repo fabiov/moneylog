@@ -187,8 +187,8 @@ class MovimentController extends AbstractActionController
                 $moviment->exchangeArray($data);
                 $moviment->account = $account;
 
-                $em->persist($moviment);
-                $em->flush();
+                $this->em->persist($moviment);
+                $this->em->flush();
 
                 return $this->redirect()
                     ->toRoute('accantonaMoviment', array('action' => 'account', 'id' => $accountId));
