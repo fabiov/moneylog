@@ -110,10 +110,16 @@ class SpesaController extends AbstractActionController
             $sum += $row->importo;
         }
 
+        $categoryOptions = [];
+        foreach ($categories as $category) {
+            $categoryOptions[$category->id] = $category->descrizione;
+        }
+
         return new ViewModel(array(
             'avgPerCategory'    => $this->spesaTable->getAvgPerCategories($this->user->id),
             'categories'        => $categories,
             'categoryId'        => $categoryId,
+            'categoryOptions'   => $categoryOptions,
             'months'            => $months,
             'rows'              => $rows,
             'sum'               => $sum,

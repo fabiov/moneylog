@@ -1,51 +1,37 @@
 <?php echo $this->pageHeader('Spese'); ?>
 <div class="row" id="search">
-    <?php echo $this->widgetText(['color' => 'primary', 'col-lg' => '4', 'col-md' => '6', 'fa' => 'eur', 'label' => 'Totale', 'text' => $this->currencyForma($this->sum)]); ?>
-    <div class="col-lg-4 col-md-6">
-        <div class="panel panel-green">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-filter fa-3x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge">
-                            <select class="form-control" id="categoryIdFilter" name="categoryIdFilter">
-                                <option value="0">Tutte</option>
-                                <?php foreach ($categories as $category): ?>
-                                    <option value="<?php echo $category->id; ?>"<?php if ($category->id == $categoryId) echo 'selected="selected"'; ?>><?php echo $category->descrizione; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div>Categoria</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6">
-        <div class="panel panel-green">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-filter fa-3x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div>
-                            <select class="form-control" id="monthsFilter" name="monthsFilter">
-                                <option value="0" <?php if ($months == 0) echo 'selected="selected"'; ?>>Tutte</option>
-                                <option value="1" <?php if ($months == 1) echo 'selected="selected"'; ?>>Ultimo mese</option>
-                                <option value="3" <?php if ($months == 3) echo 'selected="selected"'; ?>>Ultimi 3 mesi</option>
-                                <option value="6" <?php if ($months == 6) echo 'selected="selected"'; ?>>Ultimi 6 mesi</option>
-                                <option value="12" <?php if ($months == 12) echo 'selected="selected"'; ?>>Ultimo anno</option>
-                            </select>
-                        </div>
-                        <div>Data</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php
+    echo $this->widgetText([
+        'color'     => 'primary',
+        'col-lg'    => '4',
+        'col-md'    => '4',
+        'fa'        => 'eur',
+        'label'     => 'Totale',
+        'text'      => $this->currencyForma($this->sum)
+    ]);
+    echo $this->widgetSelect([
+        'col-lg'    => '4',
+        'col-md'    => '4',
+        'color'     => 'green',
+        'fa'        => 'filter',
+        'id'        => 'categoryIdFilter',
+        'label'     => 'Categoria',
+        'name'      => 'monthsFilter',
+        'options'   => $this->categoryOptions,
+        'selected'  => $categoryId,
+    ]);
+    echo $this->widgetSelect([
+        'col-lg'    => '4',
+        'col-md'    => '4',
+        'color'     => 'green',
+        'fa'        => 'filter',
+        'id'        => 'monthsFilter',
+        'label'     => 'Periodo',
+        'name'      => 'monthsFilter',
+        'options'   => [0 => 'Tutte', 1 => 'Ultimo mese', 3 => 'Ultimi 3 mesi', 6 => 'Ultimi 6 mesi', 12 => 'Ultimo anno'],
+        'selected'  => $months,
+    ]);
+    ?>
 </div>
 <div class="row">
     <div class="col-lg-12">
