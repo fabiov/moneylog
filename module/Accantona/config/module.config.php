@@ -149,8 +149,9 @@ return array(
             'dateForma'         => 'Accantona\View\Helper\DateForma',
             'currencyForma'     => 'Accantona\View\Helper\CurrencyForma',
             'morris'            => 'Accantona\View\Helper\Morris',
-            'pageHeader'        => 'Accantona\View\Helper\PageHeader',
             'floatingButtons'   => 'Accantona\View\Helper\FloatingButtons',
+            'pageHeader'        => 'Accantona\View\Helper\PageHeader',
+            'widgetText'        => 'Accantona\View\Helper\WidgetText',
         ),
     ),
 );

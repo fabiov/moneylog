@@ -1,20 +1,6 @@
 <?php echo $this->pageHeader('Spese'); ?>
 <div class="row" id="search">
-    <div class="col-lg-4 col-md-6">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-euro fa-3x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="font-big"><?php echo $this->currencyForma($this->sum); ?></div>
-                        <div>Totale</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php echo $this->widgetText(['color' => 'primary', 'col-lg' => '4', 'col-md' => '6', 'fa' => 'eur', 'label' => 'Totale', 'text' => $this->currencyForma($this->sum)]); ?>
     <div class="col-lg-4 col-md-6">
         <div class="panel panel-green">
             <div class="panel-heading">

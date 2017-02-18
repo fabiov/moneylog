@@ -6,21 +6,7 @@
 ?>
 <?php echo $this->pageHeader('Accantonati'); ?>
 <div class="row" id="search">
-    <div class="col-lg-6">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-euro fa-3x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="font-big"><?php echo $this->currencyForma($this->balance); ?>&nbsp;€</div>
-                        <div>Saldo</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php echo $this->widgetText(['color' => 'primary', 'col-lg' => '6', 'col-md' => '6', 'fa' => 'eur', 'label' => 'Saldo', 'text' => $this->currencyForma($this->balance)]); ?>
     <div class="col-lg-6">
         <div class="panel panel-green">
             <div class="panel-heading">
