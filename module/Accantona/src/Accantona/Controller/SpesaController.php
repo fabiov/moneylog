@@ -103,12 +103,26 @@ class SpesaController extends AbstractActionController
         $categories = $this->em->getRepository('Application\Entity\Category')
             ->findBy(array('status' => Category::STATUS_ACTIVE, 'userId' => $this->user->id));
 
+        $rows = $this->em->getRepository('Application\Entity\Spese')->getSpese($where, $params);
+
+        $sum = 0;
+        foreach ($rows as $row) {
+            $sum += $row->importo;
+        }
+
+        $categoryOptions = [];
+        foreach ($categories as $category) {
+            $categoryOptions[$category->id] = $category->descrizione;
+        }
+
         return new ViewModel(array(
-            'categoryId' => $categoryId,
-            'months'     => $months,
-            'rows'       => $this->em->getRepository('Application\Entity\Spese')->getSpese($where, $params),
-            'categories' => $categories,
-            'avgPerCategory' => $this->spesaTable->getAvgPerCategories($this->user->id),
+            'avgPerCategory'    => $this->spesaTable->getAvgPerCategories($this->user->id),
+            'categories'        => $categories,
+            'categoryId'        => $categoryId,
+            'categoryOptions'   => $categoryOptions,
+            'months'            => $months,
+            'rows'              => $rows,
+            'sum'               => $sum,
         ));
     }
 
