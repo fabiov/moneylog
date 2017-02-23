@@ -87,23 +87,21 @@ class SpesaController extends AbstractActionController
 
     public function indexAction()
     {
-        $where = 'spese.userId=:userId';
-        $params = array('userId' => $this->user->id);
-
-        if (($categoryId = (int) $this->params()->fromQuery('categoryIdFilter', 0)) != false) {
-            $where .= ' AND spese.category=:categoryId';
-            $params['categoryId'] = $categoryId;
-        }
-        if (($months = (int) $this->params()->fromQuery('monthsFilter', 1)) != false) {
-            $where .= ' AND spese.valuta >= :date';
-            $dateTime = new \DateTime();
-            $params['date'] = $dateTime->modify("-$months month");
-        }
+        $categoryId     = $this->params()->fromQuery('categoryId', 0);
+        $dateMax        = $this->params()->fromQuery('dateMax', date('Y-m-d'));
+        $dateMin        = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
+        $description    = $this->params()->fromQuery('description');
 
         $categories = $this->em->getRepository('Application\Entity\Category')
             ->findBy(array('status' => Category::STATUS_ACTIVE, 'userId' => $this->user->id));
 
-        $rows = $this->em->getRepository('Application\Entity\Spese')->getSpese($where, $params);
+        $rows = $this->em->getRepository('Application\Entity\Spese')->search([
+            'categoryId'    => $categoryId,
+            'dateMax'       => $dateMax,
+            'dateMin'       => $dateMin,
+            'description'   => $description,
+            'userId'        => $this->user->id,
+        ]);
 
         $sum = 0;
         foreach ($rows as $row) {
@@ -120,7 +118,9 @@ class SpesaController extends AbstractActionController
             'categories'        => $categories,
             'categoryId'        => $categoryId,
             'categoryOptions'   => $categoryOptions,
-            'months'            => $months,
+            'dateMax'           => $dateMax,
+            'dateMin'           => $dateMin,
+            'description'       => $description,
             'rows'              => $rows,
             'sum'               => $sum,
         ));

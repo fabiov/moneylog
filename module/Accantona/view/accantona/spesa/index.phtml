@@ -3,35 +3,52 @@
     <?php
     echo $this->widgetText([
         'color'     => 'primary',
-        'col-lg'    => '4',
-        'col-md'    => '4',
+        'col-lg'    => '12',
         'fa'        => 'eur',
         'label'     => 'Totale',
         'text'      => $this->currencyForma($this->sum)
     ]);
-    echo $this->widgetSelect([
-        'col-lg'    => '4',
-        'col-md'    => '4',
-        'color'     => 'green',
-        'fa'        => 'filter',
-        'id'        => 'categoryIdFilter',
-        'label'     => 'Categoria',
-        'name'      => 'monthsFilter',
-        'options'   => $this->categoryOptions,
-        'selected'  => $categoryId,
-    ]);
-    echo $this->widgetSelect([
-        'col-lg'    => '4',
-        'col-md'    => '4',
-        'color'     => 'green',
-        'fa'        => 'filter',
-        'id'        => 'monthsFilter',
-        'label'     => 'Periodo',
-        'name'      => 'monthsFilter',
-        'options'   => [0 => 'Tutte', 1 => 'Ultimo mese', 3 => 'Ultimi 3 mesi', 6 => 'Ultimi 6 mesi', 12 => 'Ultimo anno'],
-        'selected'  => $months,
-    ]);
     ?>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <!--<div class="panel-heading">
+                Cerca
+            </div>-->
+            <div class="panel-body">
+                <div class="row">
+                    <form>
+                        <div class="col-lg-2 col-md-6">
+                            <label>Dal</label>
+                            <input class="form-control" name="dateMin" type="date" value="<?php echo $dateMin; ?>"/>
+                        </div>
+                        <div class="col-lg-2 col-md-6">
+                            <label>Al</label>
+                            <input class="form-control" name="dateMax" type="date" value="<?php echo $dateMax; ?>"/>
+                        </div>
+                        <div class="col-lg-2 col-md-6">
+                            <label>Categoria</label>
+                            <select class="form-control" name="categoryId" name="monthsFilter">
+                                <option value="0">Tutte</option>
+                                <?php foreach ($categories as $category): ?>
+                                <option value="<?php echo $category->id; ?>" <?php if ($category->id == $categoryId) echo 'selected="selected"'; ?>><?php echo $category->descrizione; ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <label>Descrizione</label>
+                            <input name="description" type="text" class="form-control" placeholder="Descrizione" value="<?php echo $description; ?>">
+                        </div>
+                        <div class="col-lg-2">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="form-control btn btn-primary" value="cerca"><i class="fa fa-search"></i> Cerca</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row">
     <div class="col-lg-12">
@@ -71,12 +88,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    $('#search select').change(function(){
-        location.href = "<?php echo $this->url('accantona_spesa', array('action' => 'index')); ?>"
-                      + '?categoryIdFilter=' + $('#categoryIdFilter').val()
-                      + '&monthsFilter=' + $('#monthsFilter').val();
-    });
-
     $(document).on("click", ".delete-item", function(e) {
         var button = $(this);
 
@@ -107,7 +118,8 @@
             "order": [
                 [0, "desc"]
             ],
-            "responsive": true
+            "responsive": true,
+            "searching": false
         });
     });
 </script>
