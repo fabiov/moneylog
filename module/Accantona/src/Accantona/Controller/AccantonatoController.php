@@ -17,20 +17,14 @@ class AccantonatoController extends AbstractActionController
     private $user;
 
     /**
-     * @var AccantonatoTable
-     */
-    private $accantonatoTable;
-
-    /**
      * @var EntityManager
      */
     private $em;
 
-    public function __construct(AccantonatoTable $accantonatoTable, \stdClass $user, EntityManager $em)
+    public function __construct(\stdClass $user, EntityManager $em)
     {
-        $this->accantonatoTable = $accantonatoTable;
-        $this->user             = $user;
-        $this->em               = $em;
+        $this->user = $user;
+        $this->em   = $em;
     }
 
     public function addAction()
@@ -58,17 +52,23 @@ class AccantonatoController extends AbstractActionController
 
     public function indexAction()
     {
+        $dateMax        = $this->params()->fromQuery('dateMax', date('Y-m-d'));
+        $dateMin        = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
+        $description    = $this->params()->fromQuery('description');
+
         $accantonati = $this->em->getRepository('Application\Entity\Accantonati');
 
-        $where = array('userId=' . $this->user->id);
-        if (($months = (int) $this->params()->fromQuery('monthsFilter', 3)) != false) {
-            $where[] = 'valuta>"' . date('Y-m-d', strtotime("-$months month")) . '"';
-        }
-
         return new ViewModel(array(
-            'balance' => $accantonati->getBalance($this->user->id),
-            'months'  => $months,
-            'rows'    => $this->accantonatoTable->fetchAll($where),
+            'balance'       => $accantonati->getBalance($this->user->id),
+            'dateMax'       => $dateMax,
+            'dateMin'       => $dateMin,
+            'description'   => $description,
+            'rows'          => $accantonati->search([
+                'dateMax'       => $dateMax,
+                'dateMin'       => $dateMin,
+                'description'   => $description,
+                'userId'        => $this->user->id,
+            ]),
         ));
     }
 
