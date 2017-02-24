@@ -18,28 +18,37 @@ $morrisData = array();
 </style>
 <?php echo $this->pageHeader("Movimenti $account->name"); ?>
 <div class="row">
-    <div class="col-lg-4 col-md-12">
+    <div class="col-lg-12">
         <div class="row">
-            <?php echo $this->widgetText(['color' => 'primary', 'col-lg' => '12', 'col-md' => '6', 'fa' => 'eur', 'label' => 'Saldo', 'text' => $this->currencyForma($this->balanceEnd)]); ?>
-        </div>
-        <div class="row">
-            <?php echo $this->widgetSelect([
-                'col-lg'    => '12',
-                'col-md'    => '6',
-                'color'     => 'green',
-                'fa'        => 'filter',
-                'id'        => 'monthsFilter',
-                'label'     => 'Periodo',
-                'name'      => 'monthsFilter',
-                'options'   => [0 => 'Tutte', 1 => 'Ultimo mese', 3 => 'Ultimi 3 mesi', 6 => 'Ultimi 6 mesi', 12 => 'Ultimo anno'],
-                'selected'  => $months,
-            ]);
-            ?>
+            <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '12', 'col-md' => '6', 'fa' => 'eur', 'label' => 'Saldo', 'text' => $this->currencyForma($this->balanceEnd)]); ?>
         </div>
     </div>
-    <div class="col-lg-8 col-md-12">
+</div>
+<div class="row">
+    <div class="col-lg-12">
         <div class="panel panel-default">
-            <div id="morris" style="height: 188px;"></div>
+            <div class="panel-body">
+                <div class="row">
+                    <form>
+                        <div class="col-lg-3 col-md-6">
+                            <label>Dal</label>
+                            <input class="form-control" name="dateMin" type="date" value="<?php echo $dateMin; ?>"/>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <label>Al</label>
+                            <input class="form-control" name="dateMax" type="date" value="<?php echo $dateMax; ?>"/>
+                        </div>
+                        <div class="col-lg-4 col-md-12">
+                            <label>Descrizione</label>
+                            <input name="description" type="text" class="form-control" placeholder="Descrizione" value="<?php echo $description; ?>">
+                        </div>
+                        <div class="col-lg-2 col-md-12">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="form-control btn btn-primary" value="cerca"><i class="fa fa-search"></i> Cerca</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -86,6 +95,13 @@ $morrisData = array();
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div id="morris" style="height: 188px;"></div>
+        </div>
+    </div>
+</div>
 <?php
 // prepare data for barchar
 foreach ($chartData as $strDate => $row) {
@@ -99,10 +115,6 @@ usort($morrisData, function ($a, $b) {
 })
 ?>
 <script type="text/javascript">
-    $('#monthsFilter').change(function(){
-        location.href = "<?php echo $this->url(null, array('action' => 'account', 'id' => $account->id)); ?>" + '?monthsFilter=' + $('#monthsFilter').val();
-    });
-
     $(document).on("click", ".delete-item", function(e) {
         var button = $(this);
 
@@ -132,7 +144,8 @@ usort($morrisData, function ($a, $b) {
             "order": [
                 [0, "desc"]
             ],
-            "responsive": true
+            "responsive": true,
+            "searching": false
         });
     });
 </script>
