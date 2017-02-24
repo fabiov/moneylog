@@ -48,7 +48,6 @@ return array(
                 /* @var Zend\ServiceManager\ServiceManager $sm */
                 $sl = $controllerManager->getServiceLocator();
                 return new \Accantona\Controller\AccantonatoController(
-                    $sl->get('Accantona\Model\AccantonatoTable'),
                     $sl->get('Zend\Authentication\AuthenticationService')->getIdentity(),
                     $sl->get('doctrine.entitymanager.orm_default')
                 );

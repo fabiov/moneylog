@@ -17,20 +17,14 @@ class AccantonatoController extends AbstractActionController
     private $user;
 
     /**
-     * @var AccantonatoTable
-     */
-    private $accantonatoTable;
-
-    /**
      * @var EntityManager
      */
     private $em;
 
-    public function __construct(AccantonatoTable $accantonatoTable, \stdClass $user, EntityManager $em)
+    public function __construct(\stdClass $user, EntityManager $em)
     {
-        $this->accantonatoTable = $accantonatoTable;
-        $this->user             = $user;
-        $this->em               = $em;
+        $this->user = $user;
+        $this->em   = $em;
     }
 
     public function addAction()
