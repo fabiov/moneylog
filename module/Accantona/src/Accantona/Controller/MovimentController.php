@@ -62,13 +62,15 @@ class MovimentController extends AbstractActionController
 
     public function accountAction()
     {
-        $params = $this->params();
+        $accountId      = $this->params()->fromRoute('id', 0);
+        $dateMax        = $this->params()->fromQuery('dateMax', date('Y-m-d'));
+        $dateMin        = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
+        $description    = $this->params()->fromQuery('description');
 
-        $accountId = (int) $params->fromRoute('id', 0);
-        $months = (int) $params->fromQuery('monthsFilter', 1);
-
-        $account = $this->em->getRepository('Application\Entity\Account')
-            ->findOneBy(array('id' => $accountId, 'userId' => $this->user->id));
+        $account = $this->em->getRepository('Application\Entity\Account')->findOneBy([
+            'id'        => $accountId,
+            'userId'    => $this->user->id,
+        ]);
 
         if (!$account) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
@@ -76,10 +78,17 @@ class MovimentController extends AbstractActionController
 
         $movimentRepository = $this->em->getRepository('Application\Entity\Moviment');
         return new ViewModel(array(
-            'account' => $account,
-            'months' => $months,
-            'rows' => $movimentRepository->getLatest($accountId, $months ? new \DateTime("-$months month") : null),
-            'balanceEnd' => $movimentRepository->getBalance($accountId),
+            'account'       => $account,
+            'dateMax'       => $dateMax,
+            'dateMin'       => $dateMin,
+            'description'   => $description,
+            'rows'          => $movimentRepository->search([
+                'accountId'     => $accountId,
+                'dateMax'       => $dateMax,
+                'dateMin'       => $dateMin,
+                'description'   => $description,
+            ]),
+            'balanceEnd'    => $movimentRepository->getBalance($accountId),
         ));
     }
 

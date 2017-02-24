@@ -26,27 +26,37 @@ class MovimentRepository extends EntityRepository
     }
 
     /**
-     * @param int $accountId
-     * @param DateTime|string $date
-     * @return mixed
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @param array $params
+     * @return array
      */
-    public function getLatest($accountId, $date = null)
+    public function search(array $params = [])
     {
+        $cleanParams  = [];
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('m')
             ->from('Application\Entity\Moviment', 'm')
-            ->where('m.accountId=:accountId')
-            ->setParameter(':accountId', $accountId)
+            ->where('1=1')
             ->orderBy('m.date', 'DESC');
 
-        if ($date) {
-            $qb->andWhere('m.date>=:date')
-                ->setParameter(':date', $date instanceof \DateTime ? $date->format('Y-m-d') : $date);
+        if (!empty($params['accountId'])) {
+            $qb->andWhere('m.accountId = :accountId');
+            $cleanParams['accountId'] = $params['accountId'];
+        }
+        if (!empty($params['dateMin'])) {
+            $qb->andWhere('m.date >= :dateMin');
+            $cleanParams['dateMin'] = $params['dateMin'];
+        }
+        if (!empty($params['dateMax'])) {
+            $qb->andWhere('m.date <= :dateMax');
+            $cleanParams['dateMax'] = $params['dateMax'];
+        }
+        if (!empty($params['description'])) {
+            $qb->andWhere('m.description LIKE :description');
+            $cleanParams['description'] = '%' . $params['description'] . '%';
         }
 
-        return $qb->getQuery()->getResult();
+        return $qb->setParameters($cleanParams)->orderBy('m.date', 'DESC')->getQuery()->getResult();
     }
 
 }
