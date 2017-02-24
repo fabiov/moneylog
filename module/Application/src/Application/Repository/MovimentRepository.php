@@ -36,8 +36,7 @@ class MovimentRepository extends EntityRepository
             ->createQueryBuilder()
             ->select('m')
             ->from('Application\Entity\Moviment', 'm')
-            ->where('1=1')
-            ->orderBy('m.date', 'DESC');
+            ->where('1=1');
 
         if (!empty($params['accountId'])) {
             $qb->andWhere('m.accountId = :accountId');

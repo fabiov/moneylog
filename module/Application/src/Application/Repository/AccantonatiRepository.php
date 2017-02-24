@@ -29,4 +29,36 @@ class AccantonatiRepository extends EntityRepository
         return $qbA->getQuery()->getSingleScalarResult() - $qbS->getQuery()->getSingleScalarResult();
     }
 
+    /**
+     * @param array $params
+     * @return array
+     */
+    public function search(array $params = [])
+    {
+        $cleanParams  = [];
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('a')
+            ->from('Application\Entity\Accantonati', 'a')
+            ->where('1=1');
+
+        if (!empty($params['userId'])) {
+            $qb->andWhere('a.userId = :userId');
+            $cleanParams['userId'] = $params['userId'];
+        }
+        if (!empty($params['dateMin'])) {
+            $qb->andWhere('a.valuta >= :dateMin');
+            $cleanParams['dateMin'] = $params['dateMin'];
+        }
+        if (!empty($params['dateMax'])) {
+            $qb->andWhere('a.valuta <= :dateMax');
+            $cleanParams['dateMax'] = $params['dateMax'];
+        }
+        if (!empty($params['description'])) {
+            $qb->andWhere('a.descrizione LIKE :description');
+            $cleanParams['description'] = '%' . $params['description'] . '%';
+        }
+
+        return $qb->setParameters($cleanParams)->orderBy('a.valuta', 'DESC')->getQuery()->getResult();
+    }
 }
