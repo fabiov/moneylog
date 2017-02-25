@@ -10,7 +10,7 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractActionController
+class UserController extends AbstractActionController
 {
     /**
      * @var Adapter
@@ -26,7 +26,7 @@ class IndexController extends AbstractActionController
         $this->dbAdapter = $dbAdapter;
     }
 
-    public function indexAction()
+    public function updateAction()
     {
         return new ViewModel();
     }
@@ -92,6 +92,6 @@ class IndexController extends AbstractActionController
         $sessionManager = new \Zend\Session\SessionManager();
         $sessionManager->forgetMe();
 
-        return $this->redirect()->toRoute('auth/default', array('controller' => 'index', 'action' => 'login'));
+        return $this->redirect()->toRoute('auth/default', array('action' => 'login'));
     }
 }

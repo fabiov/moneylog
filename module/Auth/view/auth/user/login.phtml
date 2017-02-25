@@ -2,7 +2,7 @@
 /* @var Auth\Form\AuthForm $form */
 $form = $this->form;
 $form->setAttributes(array(
-    'action' => $this->url('auth/default', array('controller' => 'index', 'action' => 'login')),
+    'action' => $this->url('auth/default', array('controller' => 'user', 'action' => 'login')),
     'class' => 'form-signin',
 ));
 $form->prepare();

@@ -25,7 +25,7 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Auth\Controller\Index',
+                        'controller' => 'Auth\Controller\User',
                         'action'     => 'login',
                     ),
                 ),
