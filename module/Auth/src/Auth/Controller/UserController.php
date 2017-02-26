@@ -1,7 +1,10 @@
 <?php
 namespace Auth\Controller;
 
+use Application\Entity\User;
 use Auth\Form\AuthForm;
+use Auth\Form\Filter\UserFilter;
+use Auth\Form\UserForm;
 use Auth\Model\Auth;
 use Zend\Authentication\Adapter\DbTable as AuthAdapter;
 use Zend\Authentication\AuthenticationService;
@@ -18,17 +21,50 @@ class UserController extends AbstractActionController
     private $dbAdapter;
 
     /**
+     * @var EntityManager
+     */
+    private $em;
+
+    /**
+     * @var \stdClass
+     */
+    private $user;
+
+    /**
      * IndexController constructor.
      * @param Adapter $dbAdapter
      */
-    public function __construct(Adapter $dbAdapter)
+    public function __construct(Adapter $dbAdapter, $user, $em)
     {
         $this->dbAdapter = $dbAdapter;
+        $this->em        = $em;
+        $this->user      = $user;
+
     }
 
     public function updateAction()
     {
-        return new ViewModel();
+        /* @var User $user*/
+        $user = $this->em->find('Application\Entity\User', $this->user->id)->setInputFilter(new UserFilter());
+        if (!$user) {
+            return $this->forward()->dispatch('Auth\Controller\User', ['action' => 'logout']);
+        }
+
+        $form = new UserForm();
+        $form->bind($user);
+        $message = '';
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($user->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $this->em->flush();
+                $message = 'I tuoi dati sono stati salvati correttamente';
+            }
+        }
+
+        return ['form' => $form, 'message' => $message];
     }
 
     /**

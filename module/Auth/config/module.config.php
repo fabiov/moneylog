@@ -6,7 +6,11 @@ return array(
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 /* @var Zend\ServiceManager\ServiceManager $sm */
                 $sm = $controllerManager->getServiceLocator();
-                return new Auth\Controller\UserController($sm->get('Zend\Db\Adapter\Adapter'));
+                return new Auth\Controller\UserController(
+                    $sm->get('Zend\Db\Adapter\Adapter'),
+                    $sm->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $sm->get('doctrine.entitymanager.orm_default')
+                );
             },
             'Auth\Controller\Registration' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
