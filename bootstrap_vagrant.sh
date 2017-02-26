@@ -9,7 +9,7 @@ apt-get -y install mysql-server-5.6
 mysql -uroot -proot -e "CREATE DATABASE easywallet_dev DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
 
 apt-get install -y apache2
-apt-get install -y php5 php5-mysql php5-intl
+apt-get install -y php5 php5-mysql php5-intl php5-xdebug
 #apt-get install -y phpmyadmin
 apt-get install -y git
 
