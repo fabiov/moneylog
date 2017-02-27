@@ -51,9 +51,10 @@ return array(
                     'delete' => 'user',
                 ),
                 'Auth\Controller\User' => array(
-                    'login'     => 'guest',
-                    'logout'    => 'guest',
-                    'update'    => 'user',
+                    'change-password' => 'user',
+                    'login'           => 'guest',
+                    'logout'          => 'guest',
+                    'update'          => 'user',
                 ),
                 'Auth\Controller\Registration' => array(
                     'confirm-email'             => 'guest',

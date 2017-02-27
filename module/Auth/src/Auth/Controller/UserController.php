@@ -130,4 +130,29 @@ class UserController extends AbstractActionController
 
         return $this->redirect()->toRoute('auth/default', array('action' => 'login'));
     }
+
+    public function changePasswordAction()
+    {
+        /* @var User $user*/
+        $user = $this->em->find('Application\Entity\User', $this->user->id)->setInputFilter(new UserFilter());
+        if (!$user) {
+            return $this->forward()->dispatch('Auth\Controller\User', ['action' => 'logout']);
+        }
+
+        $form = new UserForm();
+        $form->bind($user);
+        $message = '';
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($user->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $this->em->flush();
+                $message = 'I tuoi dati sono stati salvati correttamente';
+            }
+        }
+
+        return ['form' => $form, 'message' => $message];
+    }
 }
