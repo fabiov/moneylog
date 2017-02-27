@@ -3,6 +3,7 @@ namespace Auth\Controller;
 
 use Application\Entity\User;
 use Auth\Form\AuthForm;
+use Auth\Form\ChangePasswordForm;
 use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
 use Auth\Model\Auth;
@@ -139,7 +140,7 @@ class UserController extends AbstractActionController
             return $this->forward()->dispatch('Auth\Controller\User', ['action' => 'logout']);
         }
 
-        $form = new UserForm();
+        $form = new ChangePasswordForm();
         $form->bind($user);
         $message = '';
         $request = $this->getRequest();
