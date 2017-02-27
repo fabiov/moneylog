@@ -2,11 +2,15 @@
 return array(
     'controllers' => array(
         'factories' => array(
-            'Auth\Controller\Index' => function ($controllerManager) {
+            'Auth\Controller\User' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 /* @var Zend\ServiceManager\ServiceManager $sm */
                 $sm = $controllerManager->getServiceLocator();
-                return new Auth\Controller\IndexController($sm->get('Zend\Db\Adapter\Adapter'));
+                return new Auth\Controller\UserController(
+                    $sm->get('Zend\Db\Adapter\Adapter'),
+                    $sm->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $sm->get('doctrine.entitymanager.orm_default')
+                );
             },
             'Auth\Controller\Registration' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
@@ -19,9 +23,6 @@ return array(
                 );
             },
         ),
-//        'invokables' => array(
-//            'Auth\Controller\Admin' => 'Auth\Controller\AdminController',
-//        ),
     ),
     'router' => array(
         'routes' => array(
@@ -31,7 +32,7 @@ return array(
                     'route' => '/auth',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Auth\Controller',
-                        'controller' => 'Index',
+                        'controller' => 'User',
                         'action' => 'index',
                     ),
                 ),
@@ -46,7 +47,7 @@ return array(
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'id' => '[a-zA-Z0-9_-]*',
                             ),
-                            'defaults' => array('controller' => 'index', 'action' => 'index'),
+                            'defaults' => array('controller' => 'user', 'action' => 'index'),
                         ),
                     ),
                 ),

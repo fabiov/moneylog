@@ -3,6 +3,7 @@ namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterAwareInterface;
+use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
 
 /**
@@ -111,27 +112,39 @@ class User implements InputFilterAwareInterface
      */
     public function exchangeArray(array $data = array())
     {
-        $this->id                = isset($data['id'])                ? $data['id']                : null;
-        $this->email             = isset($data['email'])             ? $data['email']             : null;
-        $this->name              = isset($data['name'])              ? $data['name']              : null;
-        $this->surname           = isset($data['surname'])           ? $data['surname']           : null;
-        $this->password          = isset($data['password'])          ? $data['password']          : null;
-        $this->salt              = isset($data['salt'])              ? $data['salt']              : null;
-        $this->status            = isset($data['status'])            ? $data['status']            : null;
-        $this->role              = isset($data['role'])              ? $data['role']              : null;
-        $this->registrationToken = isset($data['registrationToken']) ? $data['registrationToken'] : null;
+        $this->id      = isset($data['id'])      ? $data['id']      : null;
+        if (array_key_exists('email', $data)) {
+            $this->email = $data['email'];
+        }
+        $this->name    = isset($data['name'])    ? $data['name']    : null;
+        $this->surname = isset($data['surname']) ? $data['surname'] : null;
+        if (array_key_exists('password', $data)) {
+            $this->password = $data['password'];
+        }
+        if (array_key_exists('salt', $data)) {
+            $this->salt = $data['salt'];
+        }
+        if (array_key_exists('status', $data)) {
+            $this->status = $data['status'];
+        }
+        if (array_key_exists('role', $data)) {
+            $this->role = $data['role'];
+        }
+        if (array_key_exists('registrationToken', $data)) {
+            $this->registrationToken = $data['registrationToken'];
+        }
     }
 
     /**
-     * Not used
+     * ATTENZIONE: filtri e forn devono avere esattamente gli stessi campi
      *
-     * @param  InputFilterInterface $inputFilter
-     * @throws \Exception
-     * @return InputFilterAwareInterface
+     * @param InputFilterInterface $inputFilter
+     * @return $this
      */
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        throw new \Exception("Not used");
+        $this->inputFilter = $inputFilter;
+        return $this;
     }
 
     public function getInputFilter()

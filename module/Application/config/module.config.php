@@ -25,7 +25,7 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Auth\Controller\Index',
+                        'controller' => 'Auth\Controller\User',
                         'action'     => 'login',
                     ),
                 ),
@@ -138,5 +138,11 @@ return array(
                 ),
             ),
         )
+    ),
+
+    'view_helpers' => array(
+        'invokables' => array(
+            'sbaFormRow' => 'Application\ViewHelper\SbaFormRow',
+        ),
     ),
 );
