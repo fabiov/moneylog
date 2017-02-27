@@ -1,3 +1,11 @@
 .font-big{
     font-size: 24px;
 }
+.form-group ul {
+    padding: 0;
+    margin: 5px 0;
+    color: #737373;
+}
+.form-group li {
+    list-style: none;
+}

@@ -139,4 +139,10 @@ return array(
             ),
         )
     ),
+
+    'view_helpers' => array(
+        'invokables' => array(
+            'sbaFormRow' => 'Application\ViewHelper\SbaFormRow',
+        ),
+    ),
 );
