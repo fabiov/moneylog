@@ -13,6 +13,7 @@ class SbaFormRow extends AbstractHelper
      */
     public function __invoke(Element $element)
     {
+        $element->setAttribute('class', 'form-control');
         $errors = $this->view->formElementErrors($element);
         return '<div class="' . ($errors ? 'form-group has-error' : 'form-group') . '">'
             . $this->view->formLabel($element->setLabelAttributes(['class' => 'control-label']))

@@ -3,6 +3,8 @@ namespace Auth\Controller;
 
 use Application\Entity\User;
 use Auth\Form\AuthForm;
+use Auth\Form\ChangePasswordForm;
+use Auth\Form\Filter\ChangePasswordFilter;
 use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
 use Auth\Model\Auth;
@@ -21,7 +23,7 @@ class UserController extends AbstractActionController
     private $dbAdapter;
 
     /**
-     * @var EntityManager
+     * @var \Doctrine\ORM\EntityManager
      */
     private $em;
 
@@ -102,7 +104,8 @@ class UserController extends AbstractActionController
                 switch ($result->getCode()) {
                     case Result::SUCCESS:
                         $storage = $auth->getStorage();
-                        $storage->write($authAdapter->getResultRowObject(null, 'password'));
+                        $identity = $authAdapter->getResultRowObject(null, ['password', 'registrationToken', 'salt']);
+                        $storage->write($identity);
                         if ($data['rememberme']) {
                             $sessionManager = new \Zend\Session\SessionManager();
                             $sessionManager->rememberMe(604800); // 7 days
@@ -130,4 +133,43 @@ class UserController extends AbstractActionController
 
         return $this->redirect()->toRoute('auth/default', array('action' => 'login'));
     }
+
+    public function changePasswordAction()
+    {
+        /* @var User $user*/
+        $user = $this->em->find('Application\Entity\User', $this->user->id)->setInputFilter(new UserFilter());
+        if (!$user) {
+            return $this->forward()->dispatch('Auth\Controller\User', ['action' => 'logout']);
+        }
+
+        $form     = new ChangePasswordForm();
+        $error    = false;
+        $messages = $this->flashMessenger()->getMessages();
+        $message  = $messages ? $messages[0] : '';
+        $request  = $this->getRequest();
+
+        if ($request->isPost()) {
+            $data = $request->getPost();
+
+            $form->setInputFilter(new ChangePasswordFilter());
+            $form->setData($data);
+
+            if ($form->isValid()) {
+
+                if (md5($data['current'] . $user->salt) == $user->password) {
+                    $user->password = md5($data['password'] . $user->salt);
+                    $this->em->persist($user);
+                    $this->em->flush();
+                    $this->flashMessenger()->addMessage('La password è stata aggiornata con successo');
+                    return $this->redirect()->toRoute('auth/default', ['controller' => 'user', 'action' => 'change-password']);
+                } else {
+                    $error   = true;
+                    $message = 'Password non valida';
+                }
+            }
+        }
+
+        return ['error' => $error, 'form' => $form, 'message' => $message];
+    }
+
 }
