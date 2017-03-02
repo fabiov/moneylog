@@ -142,10 +142,11 @@ class UserController extends AbstractActionController
             return $this->forward()->dispatch('Auth\Controller\User', ['action' => 'logout']);
         }
 
-        $form    = new ChangePasswordForm();
-        $error   = false;
-        $message = '';
-        $request = $this->getRequest();
+        $form     = new ChangePasswordForm();
+        $error    = false;
+        $messages = $this->flashMessenger()->getMessages();
+        $message  = $messages ? $messages[0] : '';
+        $request  = $this->getRequest();
 
         if ($request->isPost()) {
             $data = $request->getPost();
@@ -159,7 +160,8 @@ class UserController extends AbstractActionController
                     $user->password = md5($data['password'] . $user->salt);
                     $this->em->persist($user);
                     $this->em->flush();
-                    $message = 'La password è stata aggiornata con successo';
+                    $this->flashMessenger()->addMessage('La password è stata aggiornata con successo');
+                    return $this->redirect()->toRoute('auth/default', ['controller' => 'user', 'action' => 'change-password']);
                 } else {
                     $error   = true;
                     $message = 'Password non valida';
