@@ -4,6 +4,7 @@ namespace Auth\Controller;
 use Application\Entity\User;
 use Auth\Form\AuthForm;
 use Auth\Form\ChangePasswordForm;
+use Auth\Form\Filter\ChangePasswordFilter;
 use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
 use Auth\Model\Auth;
@@ -22,7 +23,7 @@ class UserController extends AbstractActionController
     private $dbAdapter;
 
     /**
-     * @var EntityManager
+     * @var \Doctrine\ORM\EntityManager
      */
     private $em;
 
@@ -103,7 +104,8 @@ class UserController extends AbstractActionController
                 switch ($result->getCode()) {
                     case Result::SUCCESS:
                         $storage = $auth->getStorage();
-                        $storage->write($authAdapter->getResultRowObject(null, 'password'));
+                        $identity = $authAdapter->getResultRowObject(null, ['password', 'registrationToken', 'salt']);
+                        $storage->write($identity);
                         if ($data['rememberme']) {
                             $sessionManager = new \Zend\Session\SessionManager();
                             $sessionManager->rememberMe(604800); // 7 days
@@ -140,20 +142,32 @@ class UserController extends AbstractActionController
             return $this->forward()->dispatch('Auth\Controller\User', ['action' => 'logout']);
         }
 
-        $form = new ChangePasswordForm();
-        $form->bind($user);
+        $form    = new ChangePasswordForm();
+        $error   = false;
         $message = '';
         $request = $this->getRequest();
+
         if ($request->isPost()) {
-            $form->setInputFilter($user->getInputFilter());
-            $form->setData($request->getPost());
+            $data = $request->getPost();
+
+            $form->setInputFilter(new ChangePasswordFilter());
+            $form->setData($data);
 
             if ($form->isValid()) {
-                $this->em->flush();
-                $message = 'I tuoi dati sono stati salvati correttamente';
+
+                if (md5($data['current'] . $user->salt) == $user->password) {
+                    $user->password = md5($data['password'] . $user->salt);
+                    $this->em->persist($user);
+                    $this->em->flush();
+                    $message = 'La password è stata aggiornata con successo';
+                } else {
+                    $error   = true;
+                    $message = 'Password non valida';
+                }
             }
         }
 
-        return ['form' => $form, 'message' => $message];
+        return ['error' => $error, 'form' => $form, 'message' => $message];
     }
+
 }

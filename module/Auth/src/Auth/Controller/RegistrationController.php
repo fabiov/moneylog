@@ -6,7 +6,7 @@ use Application\Entity\Setting;
 use Application\Entity\User;
 use Auth\Form\ForgottenPasswordFilter;
 use Auth\Form\ForgottenPasswordForm;
-use Auth\Form\RegistrationFilter;
+use Auth\Form\Filter\RegistrationFilter;
 use Auth\Form\RegistrationForm;
 use Auth\Model\UserTable;
 use Doctrine\ORM\EntityManager;
