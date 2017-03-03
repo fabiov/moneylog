@@ -7,6 +7,11 @@ use Doctrine\ORM\EntityRepository;
 class MovimentRepository extends EntityRepository
 {
 
+    /**
+     * @param $accountId
+     * @param \DateTime|string|null $date
+     * @return mixed
+     */
     public function getBalance($accountId, $date = null)
     {
         $qb = $this->getEntityManager()

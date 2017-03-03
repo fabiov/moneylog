@@ -57,7 +57,7 @@ class RecapController extends AbstractActionController
 
         $payDay         = $this->em->find('Application\Entity\Setting', $this->user->id)->payDay;
         $stored         = $this->accantonatoTable->getSum($this->user->id) - $this->spesaTable->getSum($this->user->id);
-        $accounts       = $this->em->getRepository('Application\Entity\Account')->getTotals($this->user->id, true);
+        $accounts       = $this->em->getRepository('Application\Entity\Account')->getTotals($this->user->id, true, new \DateTime());
         $variables      = array();
         $donutSpends    = array();
         $donutAccounts  = array();

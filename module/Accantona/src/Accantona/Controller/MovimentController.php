@@ -60,10 +60,13 @@ class MovimentController extends AbstractActionController
         return array('item' => $item, 'form' => $form);
     }
 
+    /**
+     * @return \Zend\Http\Response|ViewModel
+     */
     public function accountAction()
     {
         $accountId      = $this->params()->fromRoute('id', 0);
-        $dateMax        = $this->params()->fromQuery('dateMax', date('Y-m-d'));
+        $dateMax        = $this->params()->fromQuery('dateMax');
         $dateMin        = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
         $description    = $this->params()->fromQuery('description');
 
@@ -76,6 +79,7 @@ class MovimentController extends AbstractActionController
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
+        /* @var \Application\Repository\MovimentRepository $movimentRepository */
         $movimentRepository = $this->em->getRepository('Application\Entity\Moviment');
         return new ViewModel(array(
             'account'       => $account,
@@ -88,7 +92,8 @@ class MovimentController extends AbstractActionController
                 'dateMin'       => $dateMin,
                 'description'   => $description,
             ]),
-            'balanceEnd'    => $movimentRepository->getBalance($accountId),
+            'balanceAvailable'    => $movimentRepository->getBalance($accountId, new \DateTime()),
+            'balanceAccount'      => $movimentRepository->getBalance($accountId),
         ));
     }
 
