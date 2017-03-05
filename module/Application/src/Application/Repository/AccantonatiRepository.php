@@ -11,22 +11,17 @@ class AccantonatiRepository extends EntityRepository
 
     public function getBalance($userId)
     {
-        // SELECT COALESCE(SUM(importo), 0) - (SELECT COALESCE(SUM(importo), 0) FROM spese WHERE userId=1) FROM accantonati WHERE userId=1;
-        $qbA = $this->getEntityManager()
+        $em = $this->getEntityManager();
+        // SELECT COALESCE(SUM(importo), 0) - (SELECT COALESCE(SUM(importo), 0)
+        // FROM spese WHERE userId=1) FROM accantonati WHERE userId=1;
+        $qb = $em
             ->createQueryBuilder()
             ->select('COALESCE(SUM(a.importo), 0) AS total')
             ->from('Application\Entity\Accantonati', 'a')
             ->where('a.userId=:userId')
             ->setParameter(':userId', $userId);
 
-        $qbS = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->select('COALESCE(SUM(s.importo), 0) AS total')
-            ->from('Application\Entity\Spese', 's')
-            ->where('s.userId=:userId')
-            ->setParameter(':userId', $userId);
-
-        return $qbA->getQuery()->getSingleScalarResult() - $qbS->getQuery()->getSingleScalarResult();
+        return $qb->getQuery()->getSingleScalarResult() + $em->getRepository('Application\Entity\Moviment')->getTotalExpense($userId);
     }
 
     /**

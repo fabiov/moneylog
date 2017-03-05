@@ -24,8 +24,12 @@ $this->bindBalance('.balance');
                         </thead>
                         <tbody>
                         <?php foreach ($rows as $row) : ?>
-                            <?php $dataChart[] = array($row['name'], (float) $row['total']); ?>
-                            <?php $total += $row['total']; ?>
+                            <?php
+                            if ($row['total'] > 0) {
+                                $dataChart[] = array($row['name'], (float) $row['total']);
+                            }
+                            $total += $row['total'];
+                            ?>
                             <tr>
                                 <td class="name"><?php echo $this->escapeHtml($row['name']); ?></td>
                                 <td><?php echo $row['recap'] ? 'Sì' : 'No'; ?></td>

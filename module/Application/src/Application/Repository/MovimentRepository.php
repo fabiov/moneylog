@@ -55,6 +55,10 @@ class MovimentRepository extends EntityRepository
             $qb->andWhere('m.date <= :dateMax');
             $cleanParams['dateMax'] = $params['dateMax'];
         }
+        if (!empty($params['category'])) {
+            $qb->andWhere('m.category = :category');
+            $cleanParams['category'] = $params['category'];
+        }
         if (!empty($params['description'])) {
             $qb->andWhere('m.description LIKE :description');
             $cleanParams['description'] = '%' . $params['description'] . '%';
@@ -63,4 +67,20 @@ class MovimentRepository extends EntityRepository
         return $qb->setParameters($cleanParams)->orderBy('m.date', 'DESC')->getQuery()->getResult();
     }
 
+    /**
+     * @param int $userId
+     * @return mixed
+     */
+    public function getTotalExpense($userId)
+    {
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('COALESCE(SUM(m.amount), 0) AS amount')
+            ->from('Application\Entity\Moviment', 'm')
+            ->innerJoin('m.category', 'c')
+            ->where('c.userId=:userId')
+            ->setParameter(':userId', $userId);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }

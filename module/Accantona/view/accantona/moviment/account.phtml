@@ -31,17 +31,28 @@ $morrisData = array();
             <div class="panel-body">
                 <div class="row">
                     <form>
-                        <div class="col-lg-3 col-md-6">
+                        <div class="col-lg-2 col-md-6">
                             <label>Dal</label>
-                            <input class="form-control" name="dateMin" type="date" value="<?php echo $dateMin; ?>"/>
+                            <input class="form-control" name="dateMin" type="date" value="<?php echo $searchParams['dateMin']; ?>"/>
+                        </div>
+                        <div class="col-lg-2 col-md-6">
+                            <label>Al</label>
+                            <input class="form-control" name="dateMax" type="date" value="<?php echo $searchParams['dateMax']; ?>"/>
                         </div>
                         <div class="col-lg-3 col-md-6">
-                            <label>Al</label>
-                            <input class="form-control" name="dateMax" type="date" value="<?php echo $dateMax; ?>"/>
-                        </div>
-                        <div class="col-lg-4 col-md-12">
                             <label>Descrizione</label>
-                            <input name="description" type="text" class="form-control" placeholder="Descrizione" value="<?php echo $description; ?>">
+                            <input name="description" type="text" class="form-control" placeholder="Descrizione" value="<?php echo $searchParams['description']; ?>">
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <label>Categoria</label>
+                            <select class="form-control" name="category">
+                                <option></option>
+                                <?php foreach ($categories as $category): ?>
+                                    <option value="<?php echo $category->id; ?>"<?php if ($category->id == $searchParams['category']) echo ' selected="selected"'?>>
+                                        <?php echo $category->descrizione; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="col-lg-2 col-md-12">
                             <label>&nbsp;</label>
@@ -63,6 +74,7 @@ $morrisData = array();
                             <th>Data</th>
                             <th>Importo</th>
                             <th>Descrizione</th>
+                            <th>Categoria</th>
                             <th>Azioni</th>
                         </tr>
                     </thead>
@@ -80,6 +92,7 @@ $morrisData = array();
                             <td class="date"><?php echo $this->dateForma($row->date); ?></td>
                             <td class="text-right amount"><?php echo $this->currencyForma($row->amount); ?></td>
                             <td class="description"><?php echo $row->description; ?></td>
+                            <td class="description"><?php echo $row->category ? $row->category->descrizione : ''; ?></td>
                             <td class="text-right">
                                 <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -140,7 +153,7 @@ usort($morrisData, function ($a, $b) {
                 {"orderable": false, "targets": -1}     //azioni
             ],
             "language":{
-                "url": "/vendor/datatables-plugins/i18n/Italian.json"
+                "url": "/js/data-table-Italian.json"
             },
             "order": [
                 [0, "desc"]
@@ -175,7 +188,7 @@ $i = '<i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>';
 $balanceHref = $this->url('accantonaAccount', array('action' => 'balance', 'id' => $account->id));
 $this->floatingButtons()
     ->addRawItem("<span data-href=\"$balanceHref\" data-mfb-label=\"Conguaglia\" class=\"balance mfb-component__button--child\">$i</span>")
-    ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'add', 'id' => $account->id)), 'label' => 'Aggiungi transazione', 'icon' => 'plus'))
+    ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'add', 'id' => $account->id)), 'label' => 'Nuovo movimento', 'icon' => 'plus'))
     ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'move', 'id' => $account->id)), 'label' => 'Giroconto', 'icon' => 'transfer'));
 
 $this->bindBalance('.balance');
