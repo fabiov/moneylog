@@ -46,7 +46,7 @@ class RecapController extends AbstractActionController
             ->getAverages($this->user->id, new \DateTime('-30 MONTH'));
 
         usort($avgPerCategory, function ($a, $b) {
-            return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? 1 : - 1);
+            return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? -1 : 1);
         });
 
         $totalExpense   = $this->em->getRepository('Application\Entity\Moviment')->getTotalExpense($this->user->id);
@@ -60,7 +60,9 @@ class RecapController extends AbstractActionController
         $monthBudget    = "-$stored";
 
         foreach ($avgPerCategory as $category) {
-            $donutSpends[] = array('label' => $category['description'], 'value' => $category['average']);
+            if ($category['average'] < 0) {
+                $donutSpends[] = array('label' => $category['description'], 'value' => abs($category['average']));
+            }
         }
 
         foreach ($accounts as $account) {
