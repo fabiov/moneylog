@@ -26,8 +26,7 @@
                             al prossimo stipendio.
                         </p>
                         <p>
-                            Clicca <a href="<?php echo $this->url('accantonaAccount'); ?>">qui</a> per crearne o
-                            impostarne uno.
+                            Clicca <a href="<?php echo $this->url('accantonaAccount'); ?>">qui</a> per crearne o impostarne uno.
                         </p>
                     </div>
                 <?php endif; ?>
@@ -101,8 +100,11 @@
                             <td><?php echo $this->escapeHtml($row['description']); ?></td>
                             <td class="text-right">
                                 <?php
-                                $sum += $row['average'];
-                                echo $this->currencyForma($row['average']);
+                                if ($row['average'] < 0) {
+                                    $average = abs($row['average']);
+                                    $sum += $average;
+                                    echo $this->currencyForma($average);
+                                }
                                 ?>
                             </td>
                         </tr>

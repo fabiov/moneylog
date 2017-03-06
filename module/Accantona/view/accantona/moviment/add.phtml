@@ -1,33 +1,28 @@
-<?php echo $this->pageHeader('Nuova transazione'); ?>
-<?php echo $this->form()->openTag($this->form); ?>
-
-    <?php $element = $form->get('date'); ?>
-    <?php $errors = $this->formElementErrors($element); ?>
-    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
-        <?php echo $this->formLabel($element); ?>
-        <?php echo $this->formInput($element); ?>
-        <?php echo $errors; ?>
+<?php echo $this->pageHeader('Nuovo movimento'); ?>
+<div class="row">
+    <div class="col-lg-4">
     </div>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                Inserisci il nuovo movimento
+            </div>
+            <div class="panel panel-body">
+                <?php echo $this->form()->openTag($this->form); ?>
 
-    <?php $element = $form->get('amount'); ?>
-    <?php $errors = $this->formElementErrors($element); ?>
-    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
-        <?php echo $this->formLabel($element); ?>
-        <?php echo $this->formInput($element); ?>
-        <?php echo $errors; ?>
+                    <?php echo $this->sbaFormRow($form->get('date')); ?>
+                    <?php echo $this->sbaFormRow($form->get('amount')); ?>
+                    <?php echo $this->sbaFormRow($form->get('description')); ?>
+                    <?php echo $this->sbaFormRow($form->get('category')); ?>
+
+                    <div class="text-right">
+                        <a class="btn btn-default" href="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $this->sourceAccount->id)) ?>">Annulla</a>
+                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-save"></span> Aggiungi movimento</button>
+                    </div>
+                <?php echo $this->form()->closeTag(); ?>
+            </div>
+        </div>
     </div>
-
-    <?php $element = $form->get('description'); ?>
-    <?php $errors = $this->formElementErrors($element); ?>
-    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
-        <?php echo $this->formLabel($element); ?>
-        <?php echo $this->formInput($element); ?>
-        <?php echo $errors; ?>
+    <div class="col-lg-4">
     </div>
-
-    <div class="text-right">
-        <a class="btn btn-default" href="<?= $this->url('accantonaMoviment', array('action' => 'account', 'id' => $this->sourceAccount->id)) ?>">Annulla</a>
-        <button type="submit" class="btn btn-primary">Aggiungi transazione</button>
-    </div>
-
-<?php echo $this->form()->closeTag(); ?>
+</div>

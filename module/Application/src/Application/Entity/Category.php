@@ -1,18 +1,13 @@
 <?php
 namespace Application\Entity;
 
-use Composer\Command\DumpAutoloadCommand;
 use Doctrine\ORM\Mapping as ORM;
-use Zend\Debug\Debug;
 use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
 /**
- * Setting.
- *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Application\Repository\CategoryRepository")
  * @ORM\Table(name="Category")
  * @property int $id
  * @property int $userId

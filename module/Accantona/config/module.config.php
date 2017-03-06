@@ -5,12 +5,11 @@ return array(
         'factories' => array(
             'Accantona\Controller\Recap' => function($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
-                /* @var Zend\ServiceManager\ServiceManager $sm */
+                /* @var Zend\ServiceManager\ServiceManager $sl */
                 $sl = $controllerManager->getServiceLocator();
                 return new \Accantona\Controller\RecapController(
                     $sl->get('doctrine.entitymanager.orm_default'),
                     $sl->get('Accantona\Model\AccantonatoTable'),
-                    $sl->get('Accantona\Model\SpesaTable'),
                     $sl->get('Accantona\Model\VariabileTable'),
                     $sl->get('Zend\Authentication\AuthenticationService')->getIdentity()
                 );

@@ -2,14 +2,33 @@
 
 namespace Accantona\Form;
 
+use Doctrine\ORM\EntityManager;
 use Zend\Form\Form;
 
 class MovimentForm extends Form
 {
 
-    public function __construct($name = 'moviment')
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    /**
+     * @var int
+     */
+    private $userId;
+
+    /**
+     * MovimentForm constructor.
+     * @param string $name
+     * @param EntityManager $em
+     */
+    public function __construct($name = 'moviment', EntityManager $em, $userId)
     {
         parent::__construct($name);
+
+        $this->em     = $em;
+        $this->userId = $userId;
 
         $this->add(array(
             'attributes' => array('class' => 'form-control', 'value' => date('Y-m-d')),
@@ -37,6 +56,22 @@ class MovimentForm extends Form
             'required' => true,
             'type' => 'Text',
         ));
+        $this->add(array(
+            'name'     => 'category',
+            'options'  => ['label' => 'Categoria', 'value_options' => $this->getCategoriesOptions()],
+            'required' => false,
+            'type'     => 'Select',
+        ));
     }
 
+    private function getCategoriesOptions()
+    {
+        $rs = $this->em->getRepository('Application\Entity\Category')
+            ->findBy(['userId' => $this->userId], ['descrizione' => 'ASC']);
+        $options = [0 => ''];
+        foreach ($rs as $row) {
+            $options[$row->id] = $row->descrizione;
+        }
+        return $options;
+    }
 }

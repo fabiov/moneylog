@@ -41,15 +41,18 @@ class MovimentController extends AbstractActionController
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
-        $form = new MovimentForm();
+        $form = new MovimentForm('moviment', $this->em, $this->user->id);
         $form->bind($item);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
+            $data = $request->getPost();
             $form->setInputFilter($item->getInputFilter());
-            $form->setData($request->getPost());
+            $form->setData($data);
 
             if ($form->isValid()) {
+                $item->category = $this->em->getRepository('Application\Entity\Category')
+                    ->findOneBy(['id' => $data['category'], 'userId' => $this->user->id]);
                 $this->em->flush();
 
                 return $this->redirect()
@@ -60,12 +63,20 @@ class MovimentController extends AbstractActionController
         return array('item' => $item, 'form' => $form);
     }
 
+    /**
+     * @return \Zend\Http\Response|ViewModel
+     */
     public function accountAction()
     {
-        $accountId      = $this->params()->fromRoute('id', 0);
-        $dateMax        = $this->params()->fromQuery('dateMax', date('Y-m-d'));
-        $dateMin        = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
-        $description    = $this->params()->fromQuery('description');
+        $accountId   = $this->params()->fromRoute('id', 0);
+
+        $searchParams = [
+            'accountId'   => $accountId,
+            'category'    => $this->params()->fromQuery('category'),
+            'dateMax'     => $this->params()->fromQuery('dateMax'),
+            'dateMin'     => $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months'))),
+            'description' => $this->params()->fromQuery('description'),
+        ];
 
         $account = $this->em->getRepository('Application\Entity\Account')->findOneBy([
             'id'        => $accountId,
@@ -76,19 +87,18 @@ class MovimentController extends AbstractActionController
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
+        $categories = $this->em->getRepository('Application\Entity\Category')
+            ->findBy(['status' => 1, 'userId' => $this->user->id], ['descrizione' => 'ASC']);
+
+        /* @var \Application\Repository\MovimentRepository $movimentRepository */
         $movimentRepository = $this->em->getRepository('Application\Entity\Moviment');
         return new ViewModel(array(
-            'account'       => $account,
-            'dateMax'       => $dateMax,
-            'dateMin'       => $dateMin,
-            'description'   => $description,
-            'rows'          => $movimentRepository->search([
-                'accountId'     => $accountId,
-                'dateMax'       => $dateMax,
-                'dateMin'       => $dateMin,
-                'description'   => $description,
-            ]),
-            'balanceEnd'    => $movimentRepository->getBalance($accountId),
+            'account'          => $account,
+            'balanceAccount'   => $movimentRepository->getBalance($accountId),
+            'balanceAvailable' => $movimentRepository->getBalance($accountId, new \DateTime()),
+            'categories'       => $categories,
+            'rows'             => $movimentRepository->search($searchParams),
+            'searchParams'     => $searchParams,
         ));
     }
 
@@ -184,7 +194,7 @@ class MovimentController extends AbstractActionController
         }
 
         $request = $this->getRequest();
-        $form = new MovimentForm();
+        $form = new MovimentForm('moviment', $this->em, $this->user->id);
         if ($request->isPost()) {
 
             $moviment = new Moviment();
@@ -193,6 +203,10 @@ class MovimentController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
+
+                $data['category'] = $this->em->getRepository('Application\Entity\Category')
+                    ->findOneBy(['id' => $data['category'], 'userId' => $this->user->id]);
+
                 $moviment->exchangeArray($data);
                 $moviment->account = $account;
 

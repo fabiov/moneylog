@@ -1,6 +1,7 @@
 <?php
 namespace Application\Entity;
 
+use Accantona\Form\Filter\MovimentFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
@@ -58,6 +59,12 @@ class Moviment implements InputFilterAwareInterface
     protected $account;
 
     /**
+     * @ORM\OneToOne(targetEntity="Category")
+     * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
+     */
+    protected $category;
+
+    /**
      * Magic getter to expose protected properties.
      *
      * @param string $property
@@ -102,6 +109,9 @@ class Moviment implements InputFilterAwareInterface
         if (isset($data['accountId'])) {
             $this->accountId = $data['accountId'];
         }
+        if (array_key_exists('category', $data)) {
+            $this->category = $data['category'];
+        }
         $this->date        = isset($data['date'])        ? new \DateTime($data['date']) : null;
         $this->amount      = isset($data['amount'])      ? $data['amount']              : null;
         $this->description = isset($data['description']) ? $data['description']         : null;
@@ -124,33 +134,8 @@ class Moviment implements InputFilterAwareInterface
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-
-            $inputFilter->add(array(
-                'name'     => 'date',
-                'required' => true,
-                'filters'  => array(),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'amount',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'description',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-            ));
-
-            $this->inputFilter = $inputFilter;
+            $this->inputFilter = new MovimentFilter();
         }
         return $this->inputFilter;
     }
-
 }
