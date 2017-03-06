@@ -50,10 +50,11 @@ return array(
                     'edit' => 'user',
                     'delete' => 'user',
                 ),
-                'Auth\Controller\Index' => array(
-                    'index'     => 'guest',
-                    'login'     => 'guest',
-                    'logout'    => 'guest',
+                'Auth\Controller\User' => array(
+                    'change-password' => 'user',
+                    'login'           => 'guest',
+                    'logout'          => 'guest',
+                    'update'          => 'user',
                 ),
                 'Auth\Controller\Registration' => array(
                     'confirm-email'             => 'guest',

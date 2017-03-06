@@ -22,7 +22,13 @@ class AccountRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getTotals($userId, $onlyRecap = false)
+    /**
+     * @param $userId
+     * @param bool $onlyRecap
+     * @param \DateTime|null|string $date
+     * @return array
+     */
+    public function getTotals($userId, $onlyRecap = false, $date = null)
     {
         $qb =  $this->getEntityManager()
         ->createQueryBuilder()
@@ -31,6 +37,11 @@ class AccountRepository extends EntityRepository
         ->leftJoin('a.moviments', 'm')
         ->where('a.userId=:userId')
         ->setParameter(':userId', $userId);
+
+        if ($date) {
+            $qb->andWhere('m.date<=:date')
+                ->setParameter(':date', $date instanceof \DateTime ? $date->format('Y-m-d') : $date);
+        }
 
         if ($onlyRecap) {
             $qb->andWhere('a.recap=1');

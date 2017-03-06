@@ -1,7 +1,6 @@
 <?php
-namespace Auth\Form;
+namespace Auth\Form\Filter;
 
-use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
 
 class RegistrationFilter extends InputFilter

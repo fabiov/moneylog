@@ -6,76 +6,80 @@ $this->bindBalance('.balance');
 ?>
 <?php echo $this->pageHeader('Conti'); ?>
 <div class="row">
+    <div class="col-lg-12">
     <?php if ($rows): ?>
-        <div class="col-lg-7">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Lista conti
-                </div>
-                <div class="panel-body">
-                    <table class="table table-striped table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Includi nel riepilogo</th>
-                                <th class="text-right">Saldo</th>
-                                <th class="text-right">Operazioni</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($rows as $row) : ?>
-                            <?php $dataChart[] = array($row['name'], (float) $row['total']); ?>
-                            <?php $total += $row['total']; ?>
-                            <tr>
-                                <td class="name"><?php echo $this->escapeHtml($row['name']); ?></td>
-                                <td><?php echo $row['recap'] ? 'Sì' : 'No'; ?></td>
-                                <td class="text-right total"><?php echo number_format($row['total'], 2, ',', ''); ?></td>
-                                <td class="text-right">
-                                    <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-transfer" title="Giroconto: sposta i soldi da un conto ad un'altro"></span>
-                                    </a>
-                                    <span data-href="<?php echo $this->url('accantonaAccount', array('action' => 'balance', 'id' => $row['id'])); ?>" class="btn btn-default balance">
-                                        <span class="glyphicon glyphicon-equalizer" title="Il conguaglio adegua il conto all'importo indicato"></span>
-                                    </span>
-                                    <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $row['id'])); ?>" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-list" aria-hidden="true" title="Movimenti"></span>
-                                    </a>
-                                    <a href="<?php echo $this->url('accantonaAccount', array('action' => 'edit', 'id' => $row['id'])); ?>" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Modifica"></span>
-                                    </a>
-                                    <span data-href="<?php echo $this->url('accantonaAccount', array('action' => 'delete', 'id' => $row['id'])); ?>" class="btn btn-default delete-item">
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true" title="Elimina"></span>
-                                    </span>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td><strong>Totale</strong></td>
-                                <td></td>
-                                <td class="text-right"><strong><?php echo number_format($total, 2, ',', ''); ?></strong></td>
-                                <td></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Lista conti
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Includi nel riepilogo</th>
+                            <th class="text-right">Saldo</th>
+                            <th class="text-right">Operazioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($rows as $row) : ?>
+                        <?php
+                        if ($row['total'] > 0) {
+                            $dataChart[] = array($row['name'], (float) $row['total']);
+                        }
+                        $total += $row['total'];
+                        ?>
+                        <tr>
+                            <td class="name"><?php echo $this->escapeHtml($row['name']); ?></td>
+                            <td><?php echo $row['recap'] ? 'Sì' : 'No'; ?></td>
+                            <td class="text-right total"><?php echo number_format($row['total'], 2, ',', ''); ?></td>
+                            <td class="text-right">
+                                <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-transfer" title="Giroconto: sposta i soldi da un conto ad un'altro"></span>
+                                </a>
+                                <span data-href="<?php echo $this->url('accantonaAccount', array('action' => 'balance', 'id' => $row['id'])); ?>" class="btn btn-default balance">
+                                    <span class="glyphicon glyphicon-equalizer" title="Il conguaglio adegua il conto all'importo indicato"></span>
+                                </span>
+                                <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $row['id'])); ?>" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-list" aria-hidden="true" title="Movimenti"></span>
+                                </a>
+                                <a href="<?php echo $this->url('accantonaAccount', array('action' => 'edit', 'id' => $row['id'])); ?>" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Modifica"></span>
+                                </a>
+                                <span data-href="<?php echo $this->url('accantonaAccount', array('action' => 'delete', 'id' => $row['id'])); ?>" class="btn btn-default delete-item">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true" title="Elimina"></span>
+                                </span>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Totale</strong></td>
+                            <td></td>
+                            <td class="text-right"><strong><?php echo number_format($total, 2, ',', ''); ?></strong></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
-        <?php if ($dataChart): ?>
-            <div class="col-lg-5">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Ripartizione conti</div>
-                    <div id="donut-accounts"></div>
-                </div>
-            </div>
-        <?php endif; ?>
     <?php else: ?>
-        <div>
-            <i>Nessun conto definito, clicca sul tasto Aggiungi per crearne uno.</i>
-        </div>
+        <i>Nessun conto definito, clicca sul tasto Aggiungi per crearne uno.</i>
     <?php endif; ?>
+    </div>
 </div>
+<?php if ($dataChart): ?>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Ripartizione conti</div>
+            <div id="donut-accounts"></div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
 <script type="text/javascript">
     $(document).on("click", ".delete-item", function(e) {
         var button = $(this);

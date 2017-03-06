@@ -2,19 +2,12 @@
 namespace Accantona\Controller;
 
 use Accantona\Model\AccantonatoTable;
-use Accantona\Model\SpesaTable;
 use Accantona\Model\VariabileTable;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class RecapController extends AbstractActionController
 {
-
-    /**
-     * @var SpesaTable $spesaTable
-     */
-    private $spesaTable;
-
     /**
      * @var VariabileTable
      */
@@ -31,16 +24,15 @@ class RecapController extends AbstractActionController
     private $user;
 
     /**
-     * @var DoctrineORMEntityManager
+     * @var \Doctrine\ORM\EntityManager
      */
     private $em;
 
     public function __construct(
-        $em, AccantonatoTable $accantonatoTable, SpesaTable$spesaTable, VariabileTable $variabileTable, \stdClass $user
+        $em, AccantonatoTable $accantonatoTable, VariabileTable $variabileTable, \stdClass $user
     ) {
         $this->em               = $em;
         $this->accantonatoTable = $accantonatoTable;
-        $this->spesaTable       = $spesaTable;
         $this->variabileTable   = $variabileTable;
         $this->user             = $user;
     }
@@ -50,14 +42,17 @@ class RecapController extends AbstractActionController
      */
     public function indexAction()
     {
-        $avgPerCategory = $this->spesaTable->getAvgPerCategories($this->user->id);
+        $avgPerCategory = $this->em->getRepository('Application\Entity\Category')
+            ->getAverages($this->user->id, new \DateTime('-30 MONTH'));
+
         usort($avgPerCategory, function ($a, $b) {
-            return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? 1 : - 1);
+            return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? -1 : 1);
         });
 
+        $totalExpense   = $this->em->getRepository('Application\Entity\Moviment')->getTotalExpense($this->user->id);
         $payDay         = $this->em->find('Application\Entity\Setting', $this->user->id)->payDay;
-        $stored         = $this->accantonatoTable->getSum($this->user->id) - $this->spesaTable->getSum($this->user->id);
-        $accounts       = $this->em->getRepository('Application\Entity\Account')->getTotals($this->user->id, true);
+        $stored         = $this->accantonatoTable->getSum($this->user->id) + $totalExpense;
+        $accounts       = $this->em->getRepository('Application\Entity\Account')->getTotals($this->user->id, true, new \DateTime());
         $variables      = array();
         $donutSpends    = array();
         $donutAccounts  = array();
@@ -65,7 +60,9 @@ class RecapController extends AbstractActionController
         $monthBudget    = "-$stored";
 
         foreach ($avgPerCategory as $category) {
-            $donutSpends[] = array('label' => $category['description'], 'value' => $category['average']);
+            if ($category['average'] < 0) {
+                $donutSpends[] = array('label' => $category['description'], 'value' => abs($category['average']));
+            }
         }
 
         foreach ($accounts as $account) {
