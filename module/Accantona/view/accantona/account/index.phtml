@@ -33,7 +33,7 @@ $this->bindBalance('.balance');
                         <tr>
                             <td class="name"><?php echo $this->escapeHtml($row['name']); ?></td>
                             <td><?php echo $row['recap'] ? 'Sì' : 'No'; ?></td>
-                            <td class="text-right total"><?php echo number_format($row['total'], 2, ',', ''); ?></td>
+                            <td class="text-right total"><?php echo $this->currencyForma($row['total']); ?></td>
                             <td class="text-right">
                                 <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
                                     <span class="glyphicon glyphicon-transfer" title="Giroconto: sposta i soldi da un conto ad un'altro"></span>
@@ -58,7 +58,7 @@ $this->bindBalance('.balance');
                         <tr>
                             <td><strong>Totale</strong></td>
                             <td></td>
-                            <td class="text-right"><strong><?php echo number_format($total, 2, ',', ''); ?></strong></td>
+                            <td class="text-right"><strong><?php echo $this->currencyForma($total); ?></strong></td>
                             <td></td>
                         </tr>
                     </tfoot>
