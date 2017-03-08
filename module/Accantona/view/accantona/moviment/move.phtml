@@ -1,10 +1,4 @@
-<?php
-$title = 'Giroconto';
-$this->headTitle($title);
-//$this->form->setAttribute('action', $this->url('accantonaAccount', array('action' => 'edit', 'id' => $this->id)));
-//$this->form->prepare();
-?>
-<?php echo $this->pageHeader($title); ?>
+<?php echo $this->pageHeader('Giroconto'); ?>
 <h2>Preleva da <?php echo $this->sourceAccount->name; ?></h2>
 <?php echo $this->form()->openTag($this->form); ?>
 
