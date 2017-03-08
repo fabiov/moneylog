@@ -196,7 +196,10 @@ Morris.Line({
     "ykeys": ['balance'],
     "labels": ['Saldo'],
     "xLabelFormat": function (x) {
-        return x.getDate() + '/' + (x.getMonth() + 1) + '/' + x.getFullYear();
+        var d = x.getDate();
+        var m = x.getMonth() + 1;
+        var y = x.getFullYear();
+        return (d > 9 ? d : '0' + d) + '/' + (m > 9 ? m : '0' + m) + '/' + y;
     },
     "yLabelFormat": function (x) {
         var parts = x.toString().split(".");
