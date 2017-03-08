@@ -68,13 +68,13 @@ class MovimentController extends AbstractActionController
      */
     public function accountAction()
     {
-        $accountId   = $this->params()->fromRoute('id', 0);
-
+        $accountId    = $this->params()->fromRoute('id', 0);
+        $dateMin      = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
         $searchParams = [
             'accountId'   => $accountId,
             'category'    => $this->params()->fromQuery('category'),
             'dateMax'     => $this->params()->fromQuery('dateMax'),
-            'dateMin'     => $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months'))),
+            'dateMin'     => $dateMin,
             'description' => $this->params()->fromQuery('description'),
         ];
 
@@ -92,11 +92,34 @@ class MovimentController extends AbstractActionController
 
         /* @var \Application\Repository\MovimentRepository $movimentRepository */
         $movimentRepository = $this->em->getRepository('Application\Entity\Moviment');
+        $rows               = $movimentRepository->search($searchParams);
+
+        $previewsDate    = date('Y-m-d', strtotime("$dateMin -1 day"));
+        $previewsBalance = $movimentRepository->getBalance($accountId, $previewsDate);
+        $balances        = [$previewsDate => $previewsBalance];
+
+        foreach (array_reverse($rows) as $moviment) {
+            $date = $moviment->date->format('Y-m-d');
+
+            if (isset($balances[$date])) {
+                $balances[$date] += $moviment->amount;
+            } else {
+                $balances[$date] = $moviment->amount + $balances[$previewsDate];
+                $previewsDate = $date;
+            }
+        }
+
+        $dataLineChart = [];
+        foreach ($balances as $date => $balance) {
+            $dataLineChart[] = ['date' => $date, 'balance' => $balance];
+        }
+
         return new ViewModel(array(
             'account'          => $account,
             'balanceAccount'   => $movimentRepository->getBalance($accountId),
             'balanceAvailable' => $movimentRepository->getBalance($accountId, new \DateTime()),
             'categories'       => $categories,
+            'dataLineChart'    => $dataLineChart,
             'rows'             => $movimentRepository->search($searchParams),
             'searchParams'     => $searchParams,
         ));
