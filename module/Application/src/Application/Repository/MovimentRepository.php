@@ -27,7 +27,7 @@ class MovimentRepository extends EntityRepository
         }
 
         $result = $qb->getQuery()->getOneOrNullResult();
-        return $result['balance'];
+        return (float) $result['balance'];
     }
 
     /**
