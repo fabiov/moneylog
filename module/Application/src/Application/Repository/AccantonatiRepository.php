@@ -12,8 +12,6 @@ class AccantonatiRepository extends EntityRepository
     public function getBalance($userId)
     {
         $em = $this->getEntityManager();
-        // SELECT COALESCE(SUM(importo), 0) - (SELECT COALESCE(SUM(importo), 0)
-        // FROM spese WHERE userId=1) FROM accantonati WHERE userId=1;
         $qb = $em
             ->createQueryBuilder()
             ->select('COALESCE(SUM(a.importo), 0) AS total')
