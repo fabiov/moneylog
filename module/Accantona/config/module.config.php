@@ -14,16 +14,6 @@ return array(
                     $sl->get('Zend\Authentication\AuthenticationService')->getIdentity()
                 );
             },
-            'Accantona\Controller\Spesa' => function ($controllerManager) {
-                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
-                /* @var Zend\ServiceManager\ServiceManager $sm */
-                $sl = $controllerManager->getServiceLocator();
-                return new \Accantona\Controller\SpesaController(
-                    $sl->get('Accantona\Model\SpesaTable'),
-                    $sl->get('Zend\Authentication\AuthenticationService')->getIdentity(),
-                    $sl->get('doctrine.entitymanager.orm_default')
-                );
-            },
             'Accantona\Controller\Settings' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 /* @var Zend\ServiceManager\ServiceManager $sm */
@@ -76,14 +66,6 @@ return array(
     // The following section is new and should be added to your file
     'router' => array(
         'routes' => array(
-            'accantona_spesa' => array(
-                'type'    => 'segment',
-                'options' => array(
-                    'route'    => '/spesa[/:action][/:id]',
-                    'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
-                    'defaults' => array('controller' => 'Accantona\Controller\Spesa', 'action' => 'index'),
-                ),
-            ),
             'accantona_categoria' => array(
                 'type' => 'segment',
                 'options' => array(

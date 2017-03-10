@@ -104,14 +104,13 @@ class Category implements InputFilterAwareInterface
     }
 
     /**
-     * Set input filter
-     *
-     * @param  InputFilterInterface $inputFilter
-     * @return InputFilterAwareInterface
+     * @param InputFilterInterface $inputFilter
+     * @return $this
      */
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        throw new \Exception("Not used");
+        $this->inputFilter = $inputFilter;
+        return $this;
     }
 
     /**
@@ -138,4 +137,19 @@ class Category implements InputFilterAwareInterface
         return $this->inputFilter;
     }
 
+    /**
+     * @return string
+     */
+    public function getDescrizione()
+    {
+        return $this->descrizione;
+    }
+
+    /**
+     * @param string $descrizione
+     */
+    public function setDescrizione($descrizione)
+    {
+        $this->descrizione = $descrizione;
+    }
 }

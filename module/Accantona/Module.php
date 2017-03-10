@@ -7,10 +7,6 @@ namespace Accantona;
 
 use Accantona\Model\Accantonato;
 use Accantona\Model\AccantonatoTable;
-
-use Accantona\Model\Spesa;
-use Accantona\Model\SpesaTable;
-
 use Accantona\Model\Categoria;
 use Accantona\Model\CategoriaTable;
 
@@ -49,17 +45,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     {
         return array(
             'factories' => array(
-                'Accantona\Model\SpesaTable' => function($sm) {
-                    $tableGateway = $sm->get('SpesaTableGateway');
-                    $table = new SpesaTable($tableGateway);
-                    return $table;
-                },
-                'SpesaTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Spesa());
-                    return new TableGateway('spese', $dbAdapter, null, $resultSetPrototype);
-                },
                 'Accantona\Model\VariabileTable' => function($sm) {
                     $tableGateway = $sm->get('VariabileTableGateway');
                     $table = new VariabileTable($tableGateway);

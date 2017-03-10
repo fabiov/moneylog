@@ -19,6 +19,7 @@ use Zend\InputFilter\InputFilter;
  *
  * Relations:
  * @property \Application\Entity\Account $account
+ * @property \Application\Entity\Category $category
  */
 class Moviment implements InputFilterAwareInterface
 {

@@ -7,7 +7,6 @@ use Zend\Form\Form;
 
 class MovimentForm extends Form
 {
-
     /**
      * @var EntityManager
      */
@@ -56,22 +55,19 @@ class MovimentForm extends Form
             'required' => true,
             'type' => 'Text',
         ));
-        $this->add(array(
-            'name'     => 'category',
-            'options'  => ['label' => 'Categoria', 'value_options' => $this->getCategoriesOptions()],
-            'required' => false,
-            'type'     => 'Select',
-        ));
-    }
-
-    private function getCategoriesOptions()
-    {
-        $rs = $this->em->getRepository('Application\Entity\Category')
-            ->findBy(['userId' => $this->userId], ['descrizione' => 'ASC']);
-        $options = [0 => ''];
-        foreach ($rs as $row) {
-            $options[$row->id] = $row->descrizione;
-        }
-        return $options;
+        $this->add([
+            'name' => 'category',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'options' => [
+                'find_method'    => [
+                    'name'   => 'findBy',
+                    'params' => ['criteria' => ['userId' => $userId], 'orderBy'  => ['descrizione' => 'ASC']]
+                ],
+                'label'          => 'Categoria',
+                'object_manager' => $this->em,
+                'target_class'   => 'Application\Entity\Category',
+                'property'       => 'descrizione',
+            ],
+        ]);
     }
 }

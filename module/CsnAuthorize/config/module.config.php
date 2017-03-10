@@ -12,12 +12,6 @@ return array(
                     'add' => 'user',
                     'edit' => 'user',
                 ),
-                'Accantona\Controller\Spesa' => array(
-                    'add' => 'user',
-                    'index' => 'user',
-                    'edit' => 'user',
-                    'delete' => 'user',
-                ),
                 'Accantona\Controller\Categoria' => array(
                     'add' => 'user',
                     'index' => 'user',
