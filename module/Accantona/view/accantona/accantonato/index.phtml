@@ -16,15 +16,15 @@
                     <form>
                         <div class="col-lg-3 col-md-6">
                             <label>Dal</label>
-                            <input class="form-control" name="dateMin" type="date" value="<?php echo $dateMin; ?>"/>
+                            <input class="form-control" name="dateMin" type="date" value="<?php echo $searchParams['dateMin']; ?>"/>
                         </div>
                         <div class="col-lg-3 col-md-6">
                             <label>Al</label>
-                            <input class="form-control" name="dateMax" type="date" value="<?php echo $dateMax; ?>"/>
+                            <input class="form-control" name="dateMax" type="date" value="<?php echo $searchParams['dateMax']; ?>"/>
                         </div>
                         <div class="col-lg-4 col-md-12">
                             <label>Descrizione</label>
-                            <input name="description" type="text" class="form-control" placeholder="Descrizione" value="<?php echo $description; ?>">
+                            <input name="description" type="text" class="form-control" placeholder="Descrizione" value="<?php echo $searchParams['description']; ?>">
                         </div>
                         <div class="col-lg-2 col-md-12">
                             <label>&nbsp;</label>
@@ -52,14 +52,14 @@
                     <tbody>
                         <?php foreach ($rows as $row): ?>
                         <tr>
-                            <td><?php echo $this->dateForma($row->valuta); ?></td>
-                            <td class="text-right"><?php echo $this->currencyForma($row->importo); ?></td>
-                            <td><?php echo $row->descrizione; ?></td>
-                            <td>
-                                <a href="<?php echo $this->url('accantona_accantonato', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
+                            <td class="date"><?php echo $this->dateForma($row->valuta); ?></td>
+                            <td class="amount text-right"><?php echo $this->currencyForma($row->importo); ?></td>
+                            <td class="description"><?php echo $row->descrizione; ?></td>
+                            <td class="text-right">
+                                <a href="<?php echo $this->url('accantona_accantonato', ['action' => 'edit', 'id' => $row->id], ['query' => $searchParams]); ?>" class="btn btn-default" title="Modifica">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                 </a>
-                                <span data-href="<?php echo $this->url('accantona_accantonato', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default delete-item" title="Elimina">
+                                <span data-href="<?php echo $this->url('accantona_accantonato', ['action' => 'delete', 'id' => $row->id], ['query' => $searchParams]); ?>" class="btn btn-default delete-item" title="Elimina">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                 </span>
                             </td>
@@ -95,7 +95,7 @@
                 {"orderable": false, "targets": -1}     //azioni
             ],
             "language":{
-                "url": "/vendor/datatables-plugins/i18n/Italian.json"
+                "url": "/js/data-table-Italian.json"
             },
             "order": [
                 [0, "desc"]
