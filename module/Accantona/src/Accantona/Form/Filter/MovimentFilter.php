@@ -25,7 +25,7 @@ class MovimentFilter extends InputFilter
         $this->add(array(
             'filters'  => [['name' => 'Int']],
             'name'     => 'category',
-            'required' => true,
+            'required' => false,
         ));
     }
 }

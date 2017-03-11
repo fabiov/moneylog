@@ -56,18 +56,22 @@ class MovimentForm extends Form
             'type' => 'Text',
         ));
         $this->add([
-            'name' => 'category',
-            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
-            'options' => [
-                'find_method'    => [
+            'name'     => 'category',
+            'options'  => [
+                'disable_inarray_validator' => true,
+                'display_empty_item'        => true,
+                'find_method'               => [
                     'name'   => 'findBy',
                     'params' => ['criteria' => ['userId' => $userId], 'orderBy'  => ['descrizione' => 'ASC']]
                 ],
-                'label'          => 'Categoria',
-                'object_manager' => $this->em,
-                'target_class'   => 'Application\Entity\Category',
-                'property'       => 'descrizione',
+                'label'                     => 'Categoria',
+                'object_manager'            => $this->em,
+                'target_class'              => 'Application\Entity\Category',
+                'property'                  => 'descrizione',
             ],
+            'required' => false,
+            'type'     => 'DoctrineModule\Form\Element\ObjectSelect',
         ]);
+        $this->get('category')->setDisableInArrayValidator(true);
     }
 }
