@@ -94,10 +94,10 @@ $morrisData = array();
                             <td class="description"><?php echo $row->description; ?></td>
                             <td class="description"><?php echo $row->category ? $row->category->descrizione : ''; ?></td>
                             <td class="text-right">
-                                <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
+                                <a href="<?php echo $this->url('accantonaMoviment', ['action' => 'edit', 'id' => $row->id], ['query' => $searchParams]); ?>" class="btn btn-default" title="Modifica">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                 </a>
-                                <span data-href="<?php echo $this->url('accantonaMoviment', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default delete-item" title="Elimina">
+                                <span data-href="<?php echo $this->url('accantonaMoviment', ['action' => 'delete', 'id' => $row->id], ['query' => $searchParams]); ?>" class="btn btn-default delete-item" title="Elimina">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                 </span>
                             </td>

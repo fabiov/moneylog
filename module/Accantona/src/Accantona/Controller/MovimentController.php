@@ -45,6 +45,7 @@ class MovimentController extends AbstractActionController
         $form->bind($item);
 
         $request = $this->getRequest();
+        $searchParams = $this->params()->fromQuery();
         if ($request->isPost()) {
             $data = $request->getPost();
             $form->setInputFilter($item->getInputFilter());
@@ -55,12 +56,13 @@ class MovimentController extends AbstractActionController
                     ->findOneBy(['id' => $data['category'], 'userId' => $this->user->id]);
                 $this->em->flush();
 
-                return $this->redirect()
-                    ->toRoute('accantonaMoviment', array('action' => 'account', 'id' => $item->accountId));
+                return $this->redirect()->toRoute(
+                    'accantonaMoviment', ['action' => 'account', 'id' => $item->accountId], ['query' => $searchParams]
+                );
             }
         }
 
-        return array('item' => $item, 'form' => $form);
+        return ['item' => $item, 'form' => $form, 'searchParams' => $searchParams];
     }
 
     /**
@@ -136,7 +138,7 @@ class MovimentController extends AbstractActionController
             $this->em->remove($item);
             $this->em->flush();
         }
-        return $this->redirect()->toRoute('accantonaMoviment', array('action' => 'account', 'id' => $item->accountId));
+        return $this->redirect()->toRoute('accantonaMoviment', ['action' => 'account', 'id' => $item->accountId], ['query' => $this->params()->fromQuery()]);
     }
 
     public function moveAction()
