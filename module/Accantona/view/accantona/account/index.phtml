@@ -12,8 +12,8 @@ $this->bindBalance('.balance');
         <div class="panel-heading">
             Lista conti
         </div>
-        <div class="panel-body">
-            <table class="table table-striped table-bordered table-hover">
+        <div class="panel-body table-responsive">
+            <table class="table table-striped table-bordered table-hover" id="my-table">
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -100,6 +100,22 @@ $this->bindBalance('.balance');
                 document.body.appendChild(form);
                 form.submit();
             }
+        });
+    });
+    $(document).ready(function(){
+        $('#my-table').DataTable({
+            "columnDefs": [
+                {"targets": 2, "type": 'currency-it'},  // saldo
+                {"orderable": false, "targets": -1}     // azioni
+            ],
+            "language":{
+                "url": "/js/data-table-Italian.json"
+            },
+            "order": [
+                [0, "desc"]
+            ],
+            "responsive": true,
+            "searching": false
         });
     });
 </script>
