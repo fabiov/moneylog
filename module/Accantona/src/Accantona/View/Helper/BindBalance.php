@@ -11,10 +11,7 @@ class BindBalance extends AbstractHelper
         if (!preg_match('/^(\.|#)[a-z0-9]+$/i', $cssSelector)) {
             throw new \Exception("Invalid css selector '$cssSelector'");
         }
-
-        $this->view->inlineScript()->captureStart();
-        echo <<< eojs
-
+        $js = <<< eojs
 $('$cssSelector').click(function() {
     var button = $(this);
     bootbox.prompt("Inserisci l'importo del saldo:", function(result) {
@@ -35,7 +32,7 @@ $('$cssSelector').click(function() {
     });
 });
 eojs;
-        $this->view->inlineScript()->captureEnd();
+        $this->view->richInlineScript()->addGeneric($js);
     }
 
 }

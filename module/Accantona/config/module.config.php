@@ -126,8 +126,9 @@ return array(
     'view_helpers' => array(
         'invokables' => array(
             'bindBalance'       => 'Accantona\View\Helper\BindBalance',
-            'dateForma'         => 'Accantona\View\Helper\DateForma',
             'currencyForma'     => 'Accantona\View\Helper\CurrencyForma',
+            'dateForma'         => 'Accantona\View\Helper\DateForma',
+            'dataTable'         => 'Accantona\View\Helper\DataTable',
             'floatingButtons'   => 'Accantona\View\Helper\FloatingButtons',
             'morris'            => 'Accantona\View\Helper\Morris',
             'pageHeader'        => 'Accantona\View\Helper\PageHeader',

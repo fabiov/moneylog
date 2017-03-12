@@ -23,8 +23,7 @@ class Morris extends AbstractHelper
                 $d[] = array('label' => $i[$labelKey], 'value' => $i[$valueKey]);
             }
             $jsonData = json_encode($d);
-            $this->view->inlineScript()->captureStart();
-            echo <<< eojs
+            $js = <<< eojs
 Morris.Donut({
     "element": '$element',
     "data": $jsonData,
@@ -36,7 +35,7 @@ Morris.Donut({
     "colors": ['#0B62A4', '#337ab7', '#3980B5', '#679DC6', '#95BBD7', '#B0CCE1']
 });
 eojs;
-            $this->view->inlineScript()->captureEnd();
+            $this->view->richInlineScript()->addGeneric($js);
         }
     }
 
