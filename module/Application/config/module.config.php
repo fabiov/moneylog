@@ -142,7 +142,8 @@ return array(
 
     'view_helpers' => array(
         'invokables' => array(
-            'sbaFormRow' => 'Application\ViewHelper\SbaFormRow',
+            'richInlineScript' => 'Application\ViewHelper\RichInlineScript',
+            'sbaFormRow'       => 'Application\ViewHelper\SbaFormRow',
         ),
     ),
 );

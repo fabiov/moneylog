@@ -1,8 +1,6 @@
 <?php
 $total = 0;
 $dataChart = array();
-
-$this->bindBalance('.balance');
 ?>
 <?php echo $this->pageHeader('Conti'); ?>
 <div class="row">
@@ -80,8 +78,9 @@ $this->bindBalance('.balance');
 </div>
 <?php if ($dataChart): ?>
 <?php endif; ?>
-<script type="text/javascript">
-    $(document).on("click", ".delete-item", function(e) {
+<?php
+$js = <<< js
+$(document).on("click", ".delete-item", function(e) {
         var button = $(this);
 
         var html = '<h3>Cancellare il conto selezionato?</h3>' +
@@ -102,24 +101,14 @@ $this->bindBalance('.balance');
             }
         });
     });
-    $(document).ready(function(){
-        $('#my-table').DataTable({
-            "columnDefs": [
-                {"targets": 2, "type": 'currency-it'},  // saldo
-                {"orderable": false, "targets": -1}     // azioni
-            ],
-            "language":{
-                "url": "/js/data-table-Italian.json"
-            },
-            "order": [
-                [0, "desc"]
-            ],
-            "responsive": true,
-            "searching": false
-        });
-    });
-</script>
-<?php
+js;
+
+$this->richInlineScript()->addGeneric($js);
+$this->bindBalance('.balance');
+$this->dataTable('#my-table', ['columnDefs' => [
+    ["targets" =>  2, "type" => "currency-it"],  // saldo
+    ["targets" => -1, "orderable" => false]     // azioni
+]]);
 $this->morris()->donut('donut-accounts', $dataChart, 0, 1);
 $this->floatingButtons()->addAnchorItem(array(
     'href' => $this->url('accantonaAccount', array('action' => 'add')),
