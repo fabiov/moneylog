@@ -1,36 +1,42 @@
 <?php
-$title = 'Modifica categorie';
-$this->headTitle($title);
 $this->form->setAttribute('action', $this->url('accantona_categoria', array('action' => 'edit', 'id' => $this->id)));
 $this->form->prepare();
 ?>
-<?php echo $this->pageHeader($title); ?>
-<?php echo $this->form()->openTag($this->form); ?>
+<?php echo $this->pageHeader('Modifica categorie'); ?>
+<div class="row">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Modifica categoria di spesa
+            </div>
+            <div class="panel-body">
+                <?php echo $this->form()->openTag($form); ?>
 
-    <?php echo $this->formHidden($this->form->get('id')); ?>
+                    <?php echo $this->formHidden($form->get('id')); ?>
+                    <?php echo $this->sbaFormRow($form->get('descrizione')); ?>
 
-    <?php $element = $form->get('descrizione'); ?>
-    <?php $errors = $this->formElementErrors($element); ?>
-    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
-        <?php echo $this->formLabel($element); ?>
-        <?php echo $this->formInput($element); ?>
-        <?php echo $errors; ?>
+                    <?php
+                    $element = $form->get('status');
+                    $element->setLabelAttributes(array('for' => 'categotyStatus'));
+                    $errors = $this->formElementErrors($element);
+                    ?>
+                    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+                        <?php $errors = $this->formElementErrors($element); ?>
+                        <div class="checkbox <?php if ($errors) echo 'has-error'; ?>">
+                            <label><?php echo $this->formCheckbox($element); ?> Attivo</label>
+                        </div>
+                        <?php echo $errors; ?>
+                    </div>
+
+                    <div class="text-right">
+                        <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Salva">
+                            <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Salva
+                        </button>
+                    </div>
+                <?php echo $this->form()->closeTag(); ?>
+            </div>
+        </div>
     </div>
-
-    <?php
-    $element = $form->get('status');
-    $element->setLabelAttributes(array('for' => 'categotyStatus'));
-    ?>
-    <?php $errors = $this->formElementErrors($element); ?>
-    <div class="checkbox <?php if ($errors) echo 'has-error'; ?>">
-        <!-- ?php echo $this->formLabel($element); ? -->
-        <label><?php echo $this->formCheckbox($element); ?> Attivo</label>
-        <?php echo $errors; ?>
-    </div>
-
-    <div class="text-right">
-        <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Salva">
-            <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Salva
-        </button>
-    </div>
-<?php echo $this->form()->closeTag(); ?>
+    <div class="col-lg-4"></div>
+</div>
