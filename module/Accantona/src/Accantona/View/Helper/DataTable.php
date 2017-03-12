@@ -22,6 +22,6 @@ class DataTable extends AbstractHelper
             'responsive' => true,
             'searching'  => false,
         ], $options));
-        $this->view->richInlineScript()->addOnDocumentReady("$('$selector').DataTable($json);");
+        $this->view->richInlineScript()->addGeneric("$('$selector').DataTable($json);");
     }
 }
