@@ -28,6 +28,9 @@ $morrisData = array();
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
+            <div class="panel-heading">
+                Cerca
+            </div>
             <div class="panel-body">
                 <div class="row">
                     <form>
@@ -67,6 +70,9 @@ $morrisData = array();
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
+            <div class="panel-heading">
+                Lista movimenti
+            </div>
             <div class="panel-body table-responsive">
                 <table class="table table-striped table-bordered table-hover responsive" id="my-table">
                     <thead>
@@ -94,10 +100,10 @@ $morrisData = array();
                             <td class="description"><?php echo $row->description; ?></td>
                             <td class="description"><?php echo $row->category ? $row->category->descrizione : ''; ?></td>
                             <td class="text-right">
-                                <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
+                                <a href="<?php echo $this->url('accantonaMoviment', ['action' => 'edit', 'id' => $row->id], ['query' => $searchParams]); ?>" class="btn btn-default" title="Modifica">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                 </a>
-                                <span data-href="<?php echo $this->url('accantonaMoviment', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default delete-item" title="Elimina">
+                                <span data-href="<?php echo $this->url('accantonaMoviment', ['action' => 'delete', 'id' => $row->id], ['query' => $searchParams]); ?>" class="btn btn-default delete-item" title="Elimina">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                 </span>
                             </td>
@@ -112,14 +118,24 @@ $morrisData = array();
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
-            <div id="morris" style="height: 188px;"></div>
+            <div class="panel-heading">
+                Movimenti nel mese
+            </div>
+            <div class="panel-body">
+                <div id="morris" style="height: 188px;"></div>
+            </div>
         </div>
     </div>
 </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <div id="balance-chart" style="height: 188px;"></div>
+                <div class="panel-heading">
+                    Andamento del saldo
+                </div>
+                <div class="panel-body">
+                    <div id="balance-chart" style="height: 188px;"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -171,6 +187,16 @@ usort($morrisData, function ($a, $b) {
     });
 </script>
 <?php $this->inlineScript()->captureStart(); ?>
+Number.prototype.formatMoney = function(c, d, t){
+    var n = this,
+    c = isNaN(c = Math.abs(c)) ? 2 : c,
+    d = d == undefined ? "." : d,
+    t = t == undefined ? "," : t,
+    s = n < 0 ? "-" : "",
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+    j = (j = i.length) > 3 ? j % 3 : 0;
+    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
 Morris.Bar({
     element: 'morris',
     data: <?php echo json_encode($morrisData); ?>,
@@ -184,12 +210,17 @@ Morris.Bar({
         return d[2] + '/' + d[1] + '/' + d[0];
     },
     "yLabelFormat": function (x) {
-        var parts = x.toString().split(".");
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        return parts.join(",") + ' €';
+        return x.formatMoney(2, ',', '.') + ' €';
     }
 });
 Morris.Line({
+    "dateFormat": function(unixTime) {
+        var x = new Date(unixTime);
+        var d = x.getDate();
+        var m = x.getMonth() + 1;
+        var y = x.getFullYear();
+        return (d > 9 ? d : '0' + d) + '/' + (m > 9 ? m : '0' + m) + '/' + y;
+    },
     "element": "balance-chart",
     "data": <?php echo json_encode($dataLineChart); ?>,
     "xkey": 'date',
@@ -202,9 +233,7 @@ Morris.Line({
         return (d > 9 ? d : '0' + d) + '/' + (m > 9 ? m : '0' + m) + '/' + y;
     },
     "yLabelFormat": function (x) {
-        var parts = x.toString().split(".");
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        return parts.join(",") + ' €';
+        return x.formatMoney(2, ',', '.') + ' €';
     }
 });
 <?php $this->inlineScript()->captureEnd();?>
