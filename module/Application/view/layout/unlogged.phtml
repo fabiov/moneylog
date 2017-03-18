@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="it">
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
-
-        <?php echo $this->headTitle('EasyWallet')->setSeparator('|')->setAutoEscape(false); ?>
-
-        <!-- Bootstrap Core CSS -->
-        <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- MetisMenu CSS -->
-        <link href="/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <?php
+        echo $this->headTitle('EasyWallet')->setSeparator('|')->setAutoEscape(false);
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/wallet_32x28.png'));
+        ?>
+        <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" /><!-- Bootstrap Core CSS -->
+        <link href="/vendor/metisMenu/metisMenu.min.css" rel="stylesheet" /><!-- MetisMenu CSS -->
 
         <!-- Custom CSS -->
         <link href="/dist/css/sb-admin-2.css" rel="stylesheet">
