@@ -1,12 +1,9 @@
 <?php echo $this->pageHeader('Modifica movimento'); ?>
 <div class="row">
-    <div class="col-lg-4">
-    </div>
+    <div class="col-lg-4"></div>
     <div class="col-lg-4">
         <div class="panel panel-default">
-            <div class="panel panel-heading">
-                Inserisci il nuovo movimento
-            </div>
+            <div class="panel panel-heading">Modifica movimento</div>
             <div class="panel panel-body">
                 <?php $this->form->setAttribute('action', $this->url('accantonaMoviment', ['action' => 'edit', 'id' => $this->item->id], ['query' => $searchParams])); ?>
                 <?php $this->form->prepare(); ?>
@@ -25,6 +22,5 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-4">
-    </div>
+    <div class="col-lg-4"></div>
 </div>
