@@ -110,6 +110,12 @@ class UserController extends AbstractActionController
                             $sessionManager = new \Zend\Session\SessionManager();
                             $sessionManager->rememberMe(604800); // 7 days
                         }
+
+                        /* @var User $user */
+                        $user = $this->em->find('Application\Entity\User', $identity->id);
+                        $user->setLastLogin(new \DateTime());
+                        $this->em->flush();
+
                         return $this->redirect()->toRoute('accantona_recap');
                         break;
                     case Result::FAILURE_IDENTITY_NOT_FOUND:

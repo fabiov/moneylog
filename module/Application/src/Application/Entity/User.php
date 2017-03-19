@@ -74,6 +74,24 @@ class User implements InputFilterAwareInterface
     private $registrationToken;
 
     /**
+     * @ORM\Column(name="lastLogin", type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    private $lastLogin;
+
+    /**
+     * @ORM\Column(name="created", type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    private $created;
+
+    /**
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    private $updated;
+
+    /**
      * Magic getter to expose protected properties.
      *
      * @param string $property
@@ -187,4 +205,37 @@ class User implements InputFilterAwareInterface
         return $this->inputFilter;
     }
 
+    /**
+     * @param \DateTime $date
+     * @return $this
+     */
+    public function setLastLogin(\DateTime $date)
+    {
+        $this->lastLogin = $date;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLastLogin()
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
 }
