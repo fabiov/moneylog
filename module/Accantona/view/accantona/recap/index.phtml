@@ -2,10 +2,41 @@
 <?php echo $this->pageHeader('Dashboard'); ?>
 <div class="row">
     <?php
-    echo $this->widgetText(['color' => 'yellow',  'col-lg' => '3', 'col-md' => '6', 'fa' => 'eur',      'label' => 'Budget mensile residuo',    'text' => $this->currencyForma($monthBudget)]);
-    echo $this->widgetText(['color' => 'primary', 'col-lg' => '3', 'col-md' => '6', 'fa' => 'calendar', 'label' => 'Giorni residui',            'text' => $remainingDays]);
-    echo $this->widgetText(['color' => 'green',   'col-lg' => '3', 'col-md' => '6', 'fa' => 'eur',      'label' => 'Budget giornaliero oggi',   'text' => $this->currencyForma($monthBudget / $remainingDays)]);
-    echo $this->widgetText(['color' => 'green',   'col-lg' => '3', 'col-md' => '6', 'fa' => 'eur',      'label' => 'Budget giornaliero domani', 'text' => $remainingDays > 1 ? $this->currencyForma($monthBudget / ($remainingDays - 1)) : 'n/a']);
+    echo $this->widgetText([
+        'color' => 'yellow',
+        'col-lg' => $remainingDays ? 3 : 12,
+        'col-md' => $remainingDays ? 6 : 12,
+        'fa' => 'eur',
+        'label' => 'Budget residuo',
+        'text' => $this->currencyForma($monthBudget),
+    ]);
+
+    if ($remainingDays) {
+        echo $this->widgetText([
+            'color' => 'primary',
+            'col-lg' => 3,
+            'col-md' => 6,
+            'fa' => 'calendar',
+            'label' => 'Giorni residui',
+            'text' => $remainingDays,
+        ]);
+        echo $this->widgetText([
+            'color' => 'green',
+            'col-lg' => 3,
+            'col-md' => 6,
+            'fa' => 'eur',
+            'label' => 'Budget giornaliero oggi',
+            'text' => $this->currencyForma($monthBudget / $remainingDays),
+        ]);
+        echo $this->widgetText([
+            'color' => 'green',
+            'col-lg' => 3,
+            'col-md' => 6,
+            'fa' => 'eur',
+            'label' => 'Budget giornaliero domani',
+            'text' => $remainingDays > 1 ? $this->currencyForma($monthBudget / ($remainingDays - 1)) : 'n/a',
+        ]);
+    }
     ?>
 </div>
 <div class="row">
@@ -54,12 +85,14 @@
                                     <span class="hide-on-edit"><?php echo $this->currencyForma($variables['risparmio']); ?></span>
                                 </td>
                             </tr>
+                            <?php if ($stored > 0): ?>
                             <tr>
                                 <td>Accantonati</td>
                                 <td class="text-right">
                                     <?php echo '- ' . $this->currencyForma($stored); ?>
                                 </td>
                             </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                     <div class="text-right">
