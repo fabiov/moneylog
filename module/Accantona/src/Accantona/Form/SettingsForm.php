@@ -22,7 +22,7 @@ class SettingsForm extends Form
                 'class' => 'form-control',
                 'label' => 'Salary day',
                 'max'   => 28,
-                'min'   => 1,
+                'min'   => 0,
                 'step'  => 1,
                 'value' => 27,
             ),

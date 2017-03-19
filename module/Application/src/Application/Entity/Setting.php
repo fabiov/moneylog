@@ -29,7 +29,7 @@ class Setting implements InputFilterAwareInterface
     /**
      * @ORM\Column(name="payDay", type="integer", options={"unsigned"=true})
      */
-    protected $payDay = 27;
+    protected $payDay = 0;
 
     /**
      * Magic getter to expose protected properties.
