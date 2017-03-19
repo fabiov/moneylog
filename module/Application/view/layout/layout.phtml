@@ -49,7 +49,12 @@
         <![endif]-->
 
         <!-- jQuery -->
-        <script src="/vendor/jquery/jquery.min.js"></script>
+        <script src="/vendor/jquery/jquery.min.js" type="text/javascript"></script>
+
+        <!-- jQuery ui -->
+        <script src="/js/jquery-ui-1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+        <script href="/js/jquery-ui-1.11.4/datepicker-it.js" type="text/javascript"></script>
+        <link href="/js/jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet" />
 
         <!-- google charts -->
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -58,6 +63,7 @@
         <link href="/js/jquery.cookiebar/jquery.cookiebar.css" media="screen" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="/js/jquery.cookiebar/jquery.cookiebar.js"></script>
 
+        <script src="/js/modernizr-custom.js" type="text/javascript"></script>
         <!-- begin google analitics code -->
         <script type="text/javascript">
             $(document).ready(function(){
@@ -174,5 +180,8 @@
         <script src="/vendor/datatables-plugins/sorting/date-eu.js" type="text/javascript"></script>
         <script src="/vendor/datatables-plugins/sorting/currency-it.js" type="text/javascript"></script>
         <?php echo $this->richInlineScript(); ?>
+        <script type="text/javascript">
+            if (!Modernizr.inputtypes.date) {$('input[type=date]').attr('placeholder', 'aaaa-mm-gg').datepicker({prevText:"Precedente",nextText:"Successivo",monthNames:["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno", "Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"],dayNamesMin:["Do","Lu","Ma","Me","Gi","Ve","Sa"],dateFormat:"yy-mm-dd",firstDay:1});}
+        </script>
     </body>
 </html>

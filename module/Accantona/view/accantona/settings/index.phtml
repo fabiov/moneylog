@@ -1,26 +1,25 @@
-<style type="text/css">
-    .form-setting {
-        max-width: 330px;
-        padding: 15px;
-        margin: 0 auto;
-    }
-</style>
-<?php echo $this->pageHeader('Settings'); ?>
-<form class="form-setting" method="post" action="<?php echo $this->url(); ?>">
+<?php echo $this->pageHeader('Impostazioni'); ?>
+<div class="row">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Modifica Impostazioni</div>
+            <div class="panel-body">
+                <?php $this->form->setAttribute('action', $this->url()); ?>
+                <?php $this->form->prepare(); ?>
+                <?php echo $this->form()->openTag($this->form); ?>
 
-    <?php if ($message): ?>
-        <div class="row alert alert-success" role="alert"><?php echo $message; ?></div>
-    <?php endif; ?>
-
-    <?php $element = $form->get('payDay'); ?>
-    <?php $errors = $this->formElementErrors($element); ?>
-    <div class="row form-group <?php if ($errors) echo 'has-error'; ?>">
-        <?php echo $this->formLabel($element); ?>
-        <?php echo $this->formInput($element); ?>
-        <?php echo $errors; ?>
+                <?php echo $this->sbaFormRow($form->get('payDay')); ?>
+                <div class="text-right">
+                    <input class="form-control btn-primary" type="submit" value="Salva" />
+                </div>
+                <?php echo $this->form()->closeTag(); ?>
+                <?php if ($message): ?>
+                    <br />
+                    <div class="alert alert-success"><?php echo $message; ?></div>
+                <?php endif; ?>
+            </div>
+        </div>
     </div>
-
-    <div class="row form-group">
-        <input class="form-control btn-primary" type="submit" value="Salva" />
-    </div>
-</form>
+    <div class="col-lg-4"></div>
+</div>

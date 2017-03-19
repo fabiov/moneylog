@@ -1,33 +1,44 @@
 <?php echo $this->pageHeader('Categorie di spesa'); ?>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Descrizione</th>
-            <th>Attivo</th>
-            <th>&nbsp;</th>
-        </tr>
-    </thead>
-    <?php foreach ($rows as $row) : ?>
-    <tr>
-        <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
-        <td><?php echo $row->status ? 'Sì' : 'No'; ?></td>
-        <td class="text-right">
-            <a href="<?php echo $this->url('accantona_categoria', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
-                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-            </a>
-            <!-- a href="<?php echo $this->url('accantona_categoria', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
-                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-            </a -->
-        </td>
-    </tr>
-    <?php endforeach; ?>
-    <tfoot>
-        <tr>
-            <td class="text-right" colspan="3">
-                <a href="<?php echo $this->url('accantona_categoria', array('action' => 'add')); ?>" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Aggiungi
-                </a>
-            </td>
-        </tr>
-    </tfoot>
-</table>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Lista categories
+            </div>
+            <div class="panel-body table-responsive">
+                <table class="table table-striped table-bordered table-hover" id="my-table">
+                    <thead>
+                        <tr>
+                            <th>Descrizione</th>
+                            <th>Attivo</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <?php foreach ($rows as $row) : ?>
+                    <tr>
+                        <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
+                        <td><?php echo $row->status ? 'Sì' : 'No'; ?></td>
+                        <td class="text-right">
+                            <a href="<?php echo $this->url('accantona_categoria', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            </a>
+                            <!-- a href="<?php echo $this->url('accantona_categoria', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </a -->
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+$this->dataTable('#my-table', ['columnDefs' => [
+    ["targets" => -1, "orderable" => false]     // azioni
+]]);
+$this->floatingButtons()->addAnchorItem(array(
+    'href' => $this->url('accantona_categoria', array('action' => 'add')),
+    'label' => 'Aggiungi una categoria',
+    'icon' => 'plus'
+));

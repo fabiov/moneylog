@@ -115,6 +115,7 @@ $morrisData = array();
         </div>
     </div>
 </div>
+<?php if ($rows): ?>
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
@@ -122,23 +123,24 @@ $morrisData = array();
                 Movimenti nel mese
             </div>
             <div class="panel-body">
-                <div id="morris" style="height: 188px;"></div>
+                <div id="morris" style="height:200px;"></div>
             </div>
         </div>
     </div>
 </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Andamento del saldo
-                </div>
-                <div class="panel-body">
-                    <div id="balance-chart" style="height: 188px;"></div>
-                </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Andamento del saldo
+            </div>
+            <div class="panel-body">
+                <div id="balance-chart" style="height:200px;"></div>
             </div>
         </div>
     </div>
+</div>
+<?php endif; ?>
 <?php
 // prepare data for barchar
 foreach ($chartData as $strDate => $row) {
@@ -186,6 +188,7 @@ usort($morrisData, function ($a, $b) {
         });
     });
 </script>
+<?php if ($rows): ?>
 <?php $this->inlineScript()->captureStart(); ?>
 Number.prototype.formatMoney = function(c, d, t){
     var n = this,
@@ -237,6 +240,7 @@ Morris.Line({
     }
 });
 <?php $this->inlineScript()->captureEnd();?>
+<?php endif;?>
 <?php
 $i = '<i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>';
 $balanceHref = $this->url('accantonaAccount', array('action' => 'balance', 'id' => $account->id));

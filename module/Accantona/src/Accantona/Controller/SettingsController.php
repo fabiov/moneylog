@@ -41,7 +41,7 @@ class SettingsController extends AbstractActionController
             if ($form->isValid()) {
                 $setting->userId = $this->user->id;
                 $this->em->flush();
-                $message = 'You successfully saved settings.';
+                $message = 'Impostazioni salvate correttamente.';
             }
         }
         return array('form' => $form, 'message' => $message);

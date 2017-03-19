@@ -81,6 +81,7 @@ class AccantonatoController extends AbstractActionController
         $form->bind($accantonati);
 
         $request = $this->getRequest();
+        $searchParams = $this->params()->fromQuery();
         if ($request->isPost()) {
             $form->setInputFilter($accantonati->getInputFilter());
             $form->setData($request->getPost());
@@ -88,10 +89,10 @@ class AccantonatoController extends AbstractActionController
             if ($form->isValid()) {
                 $this->em->flush();
                 return $this->redirect()
-                    ->toRoute('accantona_accantonato', [], ['query' => $this->params()->fromQuery()]);
+                    ->toRoute('accantona_accantonato', [], ['query' => $searchParams]);
             }
         }
-        return array('id' => $id, 'form' => $form);
+        return array('id' => $id, 'form' => $form, 'searchParams' => $searchParams);
     }
 
     public function deleteAction()

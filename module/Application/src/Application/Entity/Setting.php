@@ -29,7 +29,7 @@ class Setting implements InputFilterAwareInterface
     /**
      * @ORM\Column(name="payDay", type="integer", options={"unsigned"=true})
      */
-    protected $payDay = 27;
+    protected $payDay = 0;
 
     /**
      * Magic getter to expose protected properties.
@@ -93,16 +93,13 @@ class Setting implements InputFilterAwareInterface
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-            $inputFilter->add(array(
-                'name' => 'payDay',
+            $this->inputFilter = new InputFilter();
+            $this->inputFilter->add(array(
+                'filters'  => array(array('name' => 'Zend\Filter\ToInt')),
+                'name'     => 'payDay',
                 'required' => true,
-                'filters' => array(array('name' => 'Zend\Filter\Int'))
             ));
-
-            $this->inputFilter = $inputFilter;
         }
         return $this->inputFilter;
     }
-
 }

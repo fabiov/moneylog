@@ -76,12 +76,17 @@ class RecapController extends AbstractActionController
             $variables[$variable->nome] = $variable->valore;
         }
 
+        if ($payDay) {
+            $remainingDays = $currentDay < $payDay ? $payDay - $currentDay : date('t') - $currentDay + $payDay;
+        } else {
+            $remainingDays = 0;
+        }
         return new ViewModel(array(
             'stored'            => $stored,
             'accounts'          => $accounts,
             'variables'         => $variables,
             'monthBudget'       => $monthBudget,
-            'remainingDays'     => $currentDay < $payDay ? $payDay - $currentDay : date('t') - $currentDay + $payDay,
+            'remainingDays'     => $remainingDays,
             'avgPerCategory'    => $avgPerCategory,
             'donutSpends'       => $donutSpends,
             'donutAccounts'     => $donutAccounts,
