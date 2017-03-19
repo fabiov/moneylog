@@ -85,14 +85,12 @@
                                     <span class="hide-on-edit"><?php echo $this->currencyForma($variables['risparmio']); ?></span>
                                 </td>
                             </tr>
-                            <?php if ($stored > 0): ?>
                             <tr>
                                 <td>Accantonati</td>
                                 <td class="text-right">
                                     <?php echo '- ' . $this->currencyForma($stored); ?>
                                 </td>
                             </tr>
-                            <?php endif; ?>
                         </tbody>
                     </table>
                     <div class="text-right">
