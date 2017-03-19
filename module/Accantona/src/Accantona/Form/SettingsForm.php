@@ -1,7 +1,6 @@
 <?php
 namespace Accantona\Form;
 
-use Zend\Form\Element;
 use Zend\Form\Form;
 
 class SettingsForm extends Form
@@ -20,14 +19,14 @@ class SettingsForm extends Form
             'required' => true,
             'type' => 'Number',
             'attributes' => array(
-                'label' => 'Salary day',
-                'min'  => 1,
-                'max'  => 28,
-                'step' => 1,
                 'class' => 'form-control',
+                'label' => 'Salary day',
+                'max'   => 28,
+                'min'   => 1,
+                'step'  => 1,
                 'value' => 27,
             ),
-            'options' => array('label' => 'Salary day'),
+            'options' => array('label' => 'Giorno di paga'),
         ));
         $this->add(array(
             'name' => 'submit',
@@ -38,5 +37,4 @@ class SettingsForm extends Form
             ),
         ));
     }
-
 }
