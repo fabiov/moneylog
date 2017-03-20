@@ -229,14 +229,26 @@ class MovimentController extends AbstractActionController
 
             if ($form->isValid()) {
 
-                $data['category'] = $this->em->getRepository('Application\Entity\Category')
+                $repetitionNumber = (int) $data['repetitionNumber'];
+                $repetitionNumber = !empty($data['repetition']) && in_array($data['repetitionPeriod'], ['month', 'week']) && $repetitionNumber > 0 && $repetitionNumber < 13
+                                  ? $repetitionNumber : 1;
+
+                $category = $this->em->getRepository('Application\Entity\Category')
                     ->findOneBy(['id' => $data['category'], 'userId' => $this->user->id]);
 
-                $moviment->exchangeArray($data);
-                $moviment->account = $account;
+                for ($i = 0; $i < $repetitionNumber; $i++) {
+                    $moviment = new Moviment();
+                    $moviment->exchangeArray([
+                        'date'          => date('Y-m-d', strtotime("{$data['date']} +$i {$data['repetitionPeriod']}")),
+                        'amount'        => $data['amount'],
+                        'description'   => $data['description'],
+                        'category'      => $category,
+                    ]);
+                    $moviment->account = $account;
 
-                $this->em->persist($moviment);
-                $this->em->flush();
+                    $this->em->persist($moviment);
+                    $this->em->flush();
+                }
 
                 return $this->redirect()
                     ->toRoute('accantonaMoviment', array('action' => 'account', 'id' => $accountId));
