@@ -61,50 +61,18 @@
                         </p>
                     </div>
                 <?php endif; ?>
-                <form action="<?php echo $this->url('accantona_recap', array('action' => 'edit')); ?>" method="post">
-                    <table class="table">
-                        <thead><tr><th>Descrizione</th><th class="text-right">Valore</th></tr></thead>
-                        <tbody>
-
-                            <?php foreach ($accounts as $account): ?>
-                                <tr>
-                                    <td>
-                                        <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $account['id'])); ?>"><?php echo $account['name']; ?></a>
-                                    </td>
-                                    <td class="text-right" style="min-width:130px;">
-                                        <?php echo $this->currencyForma($account['total']); ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-
-                            <tr>
-                                <td>Risparmio</td>
-                                <td class="text-right" style="min-width:130px;">
-                                    -
-                                    <input class="form-control show-on-edit text-right" disabled="disabled" name="risparmio" step="0.01" style="display:none;width:100px;" type="number" value="<?php echo number_format($variables['risparmio'], 2, '.', ''); ?>" />
-                                    <span class="hide-on-edit"><?php echo $this->currencyForma($variables['risparmio']); ?></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Accantonati</td>
-                                <td class="text-right">
-                                    <?php echo '- ' . $this->currencyForma($stored); ?>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="text-right">
-                        <button id="edit" type="button" class="btn btn-default hide-on-edit" aria-label="Modifica">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modifica
-                        </button>
-                        <button id="cancel" type="button" class="btn btn-default show-on-edit" aria-label="Salva" style="display: none;">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Annulla
-                        </button>
-                        <button id="save" type="submit" class="btn btn-default show-on-edit" aria-label="Salva" style="display: none;">
-                            <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Salva
-                        </button>
-                    </div>
-                </form>
+                <table class="table">
+                    <thead><tr><th>Descrizione</th><th class="text-right">Valore</th></tr></thead>
+                    <tbody>
+                        <?php foreach ($accounts as $account): ?>
+                        <tr>
+                            <td><a href="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $account['id'])); ?>"><?php echo $account['name']; ?></a></td>
+                            <td class="text-right" style="min-width:130px;"><?php echo $this->currencyForma($account['total']); ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <tr><td>Accantonati</td><td class="text-right"><?php echo '- ' . $this->currencyForma($stored); ?></td></tr>
+                    </tbody>
+                </table>
                 <div id="donut-accounts"></div>
             </div>
         </div>
@@ -168,19 +136,6 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $('#edit').click(function () {
-        $('.hide-on-edit').hide();
-        $('.show-on-edit').prop('disabled', false).show().css('display', 'inline');
-    });
-    $('#cancel').click(function () {
-        $('.hide-on-edit').show();
-        $('.show-on-edit').prop('disabled', true).hide();
-    });
-    $('#save').click(function () {
-        $('form').submit();
-    });
-</script>
 <?php
 if ($this->donutSpends) {
     $this->morris()->donut('donut-spends', $this->donutSpends);

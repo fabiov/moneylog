@@ -9,13 +9,8 @@ use Accantona\Model\Accantonato;
 use Accantona\Model\AccantonatoTable;
 use Accantona\Model\Categoria;
 use Accantona\Model\CategoriaTable;
-
-use Accantona\Model\Variabile;
-use Accantona\Model\VariabileTable;
-
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
-
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 
@@ -45,17 +40,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     {
         return array(
             'factories' => array(
-                'Accantona\Model\VariabileTable' => function($sm) {
-                    $tableGateway = $sm->get('VariabileTableGateway');
-                    $table = new VariabileTable($tableGateway);
-                    return $table;
-                },
-                'VariabileTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Variabile());
-                    return new TableGateway('variabili', $dbAdapter, null, $resultSetPrototype);
-                },
                 'Accantona\Model\AccantonatoTable' => function($sm) {
                     $tableGateway = $sm->get('AccantonatoTableGateway');
                     $table = new AccantonatoTable($tableGateway);
