@@ -96,18 +96,18 @@ class AccountController extends AbstractActionController
         if ($request->isPost()) {
 
             /* @var Account $account */
-            $account = $this->getEntityManager()->find('Application\Entity\Account', $id);
-            if ($account && $account->userId == $this->user->id) {
-
-                /* @var EntityManager $em */
-                $em = $this->getEntityManager();
-                $em->createQueryBuilder()
+            $account = $this->em->getRepository('Application\Entity\Account')->findOneBy([
+                'id'     => $id,
+                'userId' => $this->user->id
+            ]);
+            if ($account) {
+                $this->em->createQueryBuilder()
                     ->delete('Application\Entity\Moviment', 'm')
                     ->where('m.account=:account')
                     ->setParameter('account', $account)
                     ->getQuery()->execute();
-                $em->remove($account);
-                $em->flush();
+                $this->em->remove($account);
+                $this->em->flush();
             }
         }
         // Redirect to list of accounts
