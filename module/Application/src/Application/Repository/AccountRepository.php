@@ -47,7 +47,7 @@ class AccountRepository extends EntityRepository
             $qb->andWhere('a.recap=1');
         }
 
-        return $qb->orderBy('a.name', 'ASC')->groupBy('a.id')->getQuery()->getResult();
+        return $qb->orderBy('total', 'DESC')->groupBy('a.id')->getQuery()->getResult();
     }
 
 }

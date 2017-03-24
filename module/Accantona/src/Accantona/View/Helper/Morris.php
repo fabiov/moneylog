@@ -32,7 +32,16 @@ Morris.Donut({
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         return '€ ' + parts.join(',');
     },
-    "colors": ['#0B62A4', '#337ab7', '#3980B5', '#679DC6', '#95BBD7', '#B0CCE1']
+    "colors": [
+        '#6d9e00', // verde scuro
+        '#7fb800', // verde 
+        '#91d100', // verde chiaro
+        '#ebc400', // arancione chiaro
+        '#eb9d00', // arancione
+        '#e67300', // arancione scuro
+        '#d22300', // rosso
+        '#b80000'  // rosso scuro
+    ]
 });
 eojs;
             $this->view->richInlineScript()->addGeneric($js);
