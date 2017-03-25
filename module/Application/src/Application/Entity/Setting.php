@@ -14,6 +14,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @ORM\Table(name="Setting")
  * @property int $userId
  * @property int $payDay
+ * @property int $monthsRetrospective
  */
 class Setting implements InputFilterAwareInterface
 {
@@ -27,9 +28,14 @@ class Setting implements InputFilterAwareInterface
     protected $userId;
 
     /**
-     * @ORM\Column(name="payDay", type="integer", options={"unsigned"=true})
+     * @ORM\Column(name="payDay", type="integer", nullable=false, options={"unsigned"=true})
      */
     protected $payDay = 0;
+
+    /**
+     * @ORM\Column(name="monthsRetrospective", type="integer", nullable=false, options={"unsigned"=true})
+     */
+    protected $monthsRetrospective = 12;
 
     /**
      * Magic getter to expose protected properties.
