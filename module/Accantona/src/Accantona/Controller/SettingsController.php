@@ -31,7 +31,6 @@ class SettingsController extends AbstractActionController
 
         $form = new SettingsForm();
         $form->bind($setting);
-        $form->get('submit')->setAttribute('value', 'Save');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
