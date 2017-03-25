@@ -9,8 +9,8 @@
                 <?php $this->form->prepare(); ?>
                 <?php echo $this->form()->openTag($this->form); ?>
 
-                <?php echo $this->sbaFormRow($form->get('payDay')); ?>
-                <?php echo $this->sbaFormRow($form->get('monthsRetrospective')); ?>
+                <?php echo $this->sbaFormRow($form->get('payDay'), 'Se impostato, viene visualizzato nel cruscotto il calcolo dei giorni mancanti al prossimo stipendio e il budget medio giornaliero fino al prossimo stipendio.'); ?>
+                <?php echo $this->sbaFormRow($form->get('monthsRetrospective'), 'Numero di mesi utilizzatto per la statistica della media delle spese.'); ?>
 
                 <div class="text-right">
                     <input class="form-control btn-primary" type="submit" value="Salva" />
