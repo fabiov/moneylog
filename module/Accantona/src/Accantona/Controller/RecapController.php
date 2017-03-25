@@ -2,6 +2,7 @@
 namespace Accantona\Controller;
 
 use Accantona\Model\AccantonatoTable;
+use Application\Entity\Setting;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -35,15 +36,16 @@ class RecapController extends AbstractActionController
      */
     public function indexAction()
     {
+        /* @var Setting $settings */
+        $settings = $this->em->find('Application\Entity\Setting', $this->user->id);
         $avgPerCategory = $this->em->getRepository('Application\Entity\Category')
-            ->getAverages($this->user->id, new \DateTime('-30 MONTH'));
+            ->getAverages($this->user->id, new \DateTime('-' . $settings->monthsRetrospective . ' MONTH'));
 
         usort($avgPerCategory, function ($a, $b) {
             return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? -1 : 1);
         });
 
         $totalExpense   = $this->em->getRepository('Application\Entity\Moviment')->getTotalExpense($this->user->id);
-        $payDay         = $this->em->find('Application\Entity\Setting', $this->user->id)->payDay;
         $stored         = $this->accantonatoTable->getSum($this->user->id) + $totalExpense;
         $accounts       = $this->em->getRepository('Application\Entity\Account')->getTotals($this->user->id, true, new \DateTime());
         $donutSpends    = array();
@@ -62,8 +64,9 @@ class RecapController extends AbstractActionController
             $monthBudget += $account['total'];
         }
 
-        if ($payDay) {
-            $remainingDays = $currentDay < $payDay ? $payDay - $currentDay : date('t') - $currentDay + $payDay;
+        if ($settings->payDay) {
+            $remainingDays = $currentDay < $settings->payDay
+                           ? $settings->payDay - $currentDay : date('t') - $currentDay + $settings->payDay;
         } else {
             $remainingDays = 0;
         }
