@@ -10,7 +10,6 @@ return array(
                 return new \Accantona\Controller\RecapController(
                     $sl->get('doctrine.entitymanager.orm_default'),
                     $sl->get('Accantona\Model\AccantonatoTable'),
-                    $sl->get('Accantona\Model\VariabileTable'),
                     $sl->get('Zend\Authentication\AuthenticationService')->getIdentity()
                 );
             },

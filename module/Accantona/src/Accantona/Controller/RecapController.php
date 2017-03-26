@@ -2,17 +2,12 @@
 namespace Accantona\Controller;
 
 use Accantona\Model\AccantonatoTable;
-use Accantona\Model\VariabileTable;
+use Application\Entity\Setting;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class RecapController extends AbstractActionController
 {
-    /**
-     * @var VariabileTable
-     */
-    private $variabileTable;
-
     /**
      * @var AccantonatoTable
      */
@@ -29,11 +24,10 @@ class RecapController extends AbstractActionController
     private $em;
 
     public function __construct(
-        $em, AccantonatoTable $accantonatoTable, VariabileTable $variabileTable, \stdClass $user
+        $em, AccantonatoTable $accantonatoTable, \stdClass $user
     ) {
         $this->em               = $em;
         $this->accantonatoTable = $accantonatoTable;
-        $this->variabileTable   = $variabileTable;
         $this->user             = $user;
     }
 
@@ -42,18 +36,18 @@ class RecapController extends AbstractActionController
      */
     public function indexAction()
     {
+        /* @var Setting $settings */
+        $settings = $this->em->find('Application\Entity\Setting', $this->user->id);
         $avgPerCategory = $this->em->getRepository('Application\Entity\Category')
-            ->getAverages($this->user->id, new \DateTime('-30 MONTH'));
+            ->getAverages($this->user->id, new \DateTime('-' . $settings->monthsRetrospective . ' MONTH'));
 
         usort($avgPerCategory, function ($a, $b) {
             return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? -1 : 1);
         });
 
         $totalExpense   = $this->em->getRepository('Application\Entity\Moviment')->getTotalExpense($this->user->id);
-        $payDay         = $this->em->find('Application\Entity\Setting', $this->user->id)->payDay;
         $stored         = $this->accantonatoTable->getSum($this->user->id) + $totalExpense;
         $accounts       = $this->em->getRepository('Application\Entity\Account')->getTotals($this->user->id, true, new \DateTime());
-        $variables      = array();
         $donutSpends    = array();
         $donutAccounts  = array();
         $currentDay     = date('j');
@@ -70,39 +64,20 @@ class RecapController extends AbstractActionController
             $monthBudget += $account['total'];
         }
 
-        $rs = $this->variabileTable->fetchAll(array('userId' => $this->user->id));
-        foreach ($rs as $variable) {
-            $monthBudget += $variable->valore * $variable->segno;
-            $variables[$variable->nome] = $variable->valore;
-        }
-
-        if ($payDay) {
-            $remainingDays = $currentDay < $payDay ? $payDay - $currentDay : date('t') - $currentDay + $payDay;
+        if ($settings->payDay) {
+            $remainingDays = $currentDay < $settings->payDay
+                           ? $settings->payDay - $currentDay : date('t') - $currentDay + $settings->payDay;
         } else {
             $remainingDays = 0;
         }
-        return new ViewModel(array(
-            'stored'            => $stored,
-            'accounts'          => $accounts,
-            'variables'         => $variables,
-            'monthBudget'       => $monthBudget,
-            'remainingDays'     => $remainingDays,
-            'avgPerCategory'    => $avgPerCategory,
-            'donutSpends'       => $donutSpends,
-            'donutAccounts'     => $donutAccounts,
-        ));
-    }
-
-    public function editAction()
-    {
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            // risparmio
-            $val = $this->params()->fromPost('risparmio');
-            if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $val)) {
-                $this->variabileTable->updateByName('risparmio', $val, $this->id);
-            }
-        }
-        return $this->redirect()->toRoute('accantona_recap', array('action' => 'index'));
+        return new ViewModel([
+            'accounts'       => $accounts,
+            'avgPerCategory' => $avgPerCategory,
+            'donutAccounts'  => $donutAccounts,
+            'donutSpends'    => $donutSpends,
+            'monthBudget'    => $monthBudget,
+            'remainingDays'  => $remainingDays,
+            'stored'         => $stored,
+        ]);
     }
 }

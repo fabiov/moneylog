@@ -14,6 +14,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @ORM\Table(name="Setting")
  * @property int $userId
  * @property int $payDay
+ * @property int $monthsRetrospective
  */
 class Setting implements InputFilterAwareInterface
 {
@@ -27,9 +28,14 @@ class Setting implements InputFilterAwareInterface
     protected $userId;
 
     /**
-     * @ORM\Column(name="payDay", type="integer", options={"unsigned"=true})
+     * @ORM\Column(name="payDay", type="integer", nullable=false, options={"unsigned"=true})
      */
     protected $payDay = 0;
+
+    /**
+     * @ORM\Column(name="monthsRetrospective", type="integer", nullable=false, options={"unsigned"=true})
+     */
+    protected $monthsRetrospective = 12;
 
     /**
      * Magic getter to expose protected properties.
@@ -71,8 +77,9 @@ class Setting implements InputFilterAwareInterface
      */
     public function exchangeArray($data = array())
     {
-        $this->userId = isset($data['userId']) ? $data['userId'] : null;
-        $this->payDay = isset($data['payDay']) ? $data['payDay'] : null;
+        $this->userId              = isset($data['userId']) ? $data['userId'] : null;
+        $this->payDay              = isset($data['payDay']) ? $data['payDay'] : null;
+        $this->monthsRetrospective = isset($data['monthsRetrospective']) ? $data['monthsRetrospective'] : null;
         return $this;
     }
 
@@ -84,7 +91,8 @@ class Setting implements InputFilterAwareInterface
      */
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        throw new \Exception("Not used");
+        $this->inputFilter = $inputFilter;
+        return $this;
     }
 
     /**
@@ -95,8 +103,13 @@ class Setting implements InputFilterAwareInterface
         if (!$this->inputFilter) {
             $this->inputFilter = new InputFilter();
             $this->inputFilter->add(array(
-                'filters'  => array(array('name' => 'Zend\Filter\ToInt')),
+                'filters'  => [['name' => 'Zend\Filter\ToInt']],
                 'name'     => 'payDay',
+                'required' => true,
+            ));
+            $this->inputFilter->add(array(
+                'filters'  => [['name' => 'Zend\Filter\ToInt']],
+                'name'     => 'monthsRetrospective',
                 'required' => true,
             ));
         }

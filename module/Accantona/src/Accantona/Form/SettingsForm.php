@@ -11,30 +11,21 @@ class SettingsForm extends Form
         // we want to ignore the name passed
         parent::__construct('settingForm');
 
-        $this->add(array(
-            'filters'  => array(
-                array('name' => 'Zend\Filter\StringTrim'),
-            ),
-            'name' => 'payDay',
-            'required' => true,
-            'type' => 'Number',
-            'attributes' => array(
-                'class' => 'form-control',
-                'label' => 'Salary day',
-                'max'   => 28,
-                'min'   => 0,
-                'step'  => 1,
-                'value' => 27,
-            ),
-            'options' => array('label' => 'Giorno di paga'),
-        ));
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'Submit',
-            'attributes' => array(
-                'value' => 'Save',
-                'id' => 'submitbutton',
-            ),
-        ));
+        $this->add([
+            'attributes' => ['class' => 'form-control', 'max' => 28, 'min' => 0, 'step' => 1, 'value' => 27],
+            'filters'    => [['name' => 'Zend\Filter\StringTrim']],
+            'name'       => 'payDay',
+            'options'    => ['label' => 'Giorno di paga'],
+            'required'   => true,
+            'type'       => 'Number',
+        ]);
+        $this->add([
+            'attributes' => ['class' => 'form-control', 'max'   => 48, 'min'   => 2, 'step'  => 1, 'value' => 12],
+            'filters'    => [['name' => 'Zend\Filter\StringTrim']],
+            'name'       => 'monthsRetrospective',
+            'options'    => ['label' => 'Mesi di retrospettiva'],
+            'required'   => true,
+            'type'       => 'Number',
+        ]);
     }
 }

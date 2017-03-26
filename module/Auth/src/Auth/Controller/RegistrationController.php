@@ -1,7 +1,6 @@
 <?php
 namespace Auth\Controller;
 
-use Accantona\Model\VariabileTable;
 use Application\Entity\Setting;
 use Application\Entity\User;
 use Auth\Form\ForgottenPasswordFilter;
@@ -98,9 +97,6 @@ class RegistrationController extends AbstractActionController
             $setting->userId = $user->id;
             $this->em->persist($setting);
             $this->em->flush();
-
-            $this->getVariableTable()->createUserVariables($user->id);
-
         } catch(\Exception $e) {
             $viewModel->setTemplate('auth/registration/confirm-email-error.phtml');
         }
@@ -191,13 +187,8 @@ class RegistrationController extends AbstractActionController
     }
 
     /**
-     * @return VariabileTable
+     * @param $user
      */
-    public function getVariableTable()
-    {
-        return $this->sm->get('Accantona\Model\VariabileTable');
-    }
-
     public function sendConfirmationEmail($user)
     {
         $body = "Please, click the link to confirm your registration. "
