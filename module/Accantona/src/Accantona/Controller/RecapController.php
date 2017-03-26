@@ -51,7 +51,7 @@ class RecapController extends AbstractActionController
         $donutSpends    = array();
         $donutAccounts  = array();
         $currentDay     = date('j');
-        $monthBudget    = "-$stored";
+        $monthBudget    = $stored > 0 ? 0 - $stored : 0;
 
         foreach ($avgPerCategory as $category) {
             if ($category['average'] < 0) {

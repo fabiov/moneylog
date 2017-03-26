@@ -140,6 +140,7 @@ return array(
 
     'view_helpers' => array(
         'invokables' => array(
+            'helpTooltip'      => 'Application\ViewHelper\HelpTooltip',
             'richInlineScript' => 'Application\ViewHelper\RichInlineScript',
             'sbaFormRow'       => 'Application\ViewHelper\SbaFormRow',
         ),

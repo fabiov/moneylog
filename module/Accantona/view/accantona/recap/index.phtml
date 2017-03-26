@@ -1,40 +1,40 @@
 <?php $sum = 0; ?>
-<?php echo $this->pageHeader('Dashboard'); ?>
+<?php echo $this->pageHeader('Cruscotto'); ?>
 <div class="row">
     <?php
     echo $this->widgetText([
-        'color' => 'yellow',
+        'color'  => 'yellow',
         'col-lg' => $remainingDays ? 3 : 12,
         'col-md' => $remainingDays ? 6 : 12,
-        'fa' => 'eur',
-        'label' => 'Budget residuo',
-        'text' => $this->currencyForma($monthBudget),
+        'fa'     => 'eur',
+        'label'  => 'Budget residuo',
+        'text'   => $this->currencyForma($monthBudget),
     ]);
 
     if ($remainingDays) {
         echo $this->widgetText([
-            'color' => 'primary',
+            'color'  => 'primary',
             'col-lg' => 3,
             'col-md' => 6,
-            'fa' => 'calendar',
-            'label' => 'Giorni residui',
-            'text' => $remainingDays,
+            'fa'     => 'calendar',
+            'label'  => 'Giorni residui',
+            'text'   => $remainingDays,
         ]);
         echo $this->widgetText([
-            'color' => 'green',
+            'color'  => 'green',
             'col-lg' => 3,
             'col-md' => 6,
-            'fa' => 'eur',
-            'label' => 'Budget giornaliero oggi',
-            'text' => $this->currencyForma($monthBudget / $remainingDays),
+            'fa'     => 'eur',
+            'label'  => 'Budget giornaliero oggi',
+            'text'   => $this->currencyForma($monthBudget / $remainingDays),
         ]);
         echo $this->widgetText([
-            'color' => 'green',
+            'color'  => 'green',
             'col-lg' => 3,
             'col-md' => 6,
-            'fa' => 'eur',
-            'label' => 'Budget giornaliero domani',
-            'text' => $remainingDays > 1 ? $this->currencyForma($monthBudget / ($remainingDays - 1)) : 'n/a',
+            'fa'     => 'eur',
+            'label'  => 'Budget giornaliero domani',
+            'text'   => $remainingDays > 1 ? $this->currencyForma($monthBudget / ($remainingDays - 1)) : 'Non disponibile',
         ]);
     }
     ?>
@@ -70,7 +70,16 @@
                             <td class="text-right" style="min-width:130px;"><?php echo $this->currencyForma($account['total']); ?></td>
                         </tr>
                         <?php endforeach; ?>
-                        <tr><td>Accantonati</td><td class="text-right"><?php echo '- ' . $this->currencyForma($stored); ?></td></tr>
+                        <tr>
+                            <td><a href="<?php echo $this->url('accantona_accantonato'); ?>">Accantonati</a></td>
+                            <td class="text-right">
+                                <?php if ($stored > 0): ?>
+                                    <?php echo '- ' . $this->currencyForma($stored); ?>
+                                <?php else: ?>
+                                    <em>Non disponibile</em> <?php echo $this->helpTooltip('L\'accantonamento è una quota che viene destinata a coprire le spese.'); ?>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <div id="donut-accounts"></div>
