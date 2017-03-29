@@ -1,9 +1,9 @@
 <?php
 namespace Accantona\Controller;
 
+use Accantona\Form\SettingsForm;
 use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
-use Accantona\Form\SettingsForm;
 
 class SettingsController extends AbstractActionController
 {
