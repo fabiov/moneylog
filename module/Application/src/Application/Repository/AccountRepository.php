@@ -49,5 +49,4 @@ class AccountRepository extends EntityRepository
 
         return $qb->orderBy('total', 'DESC')->groupBy('a.id')->getQuery()->getResult();
     }
-
 }

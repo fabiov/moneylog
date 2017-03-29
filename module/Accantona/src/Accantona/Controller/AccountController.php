@@ -55,7 +55,24 @@ class AccountController extends AbstractActionController
     public function indexAction()
     {
         $accountRepository = $this->em->getRepository('Application\Entity\Account');
-        return new ViewModel(array('rows' => $accountRepository->getTotals($this->user->id, false)));
+
+        $accountAvailable = $accountRepository->getTotals($this->user->id, false, new \DateTime());
+        $accountBalances  = $accountRepository->getTotals($this->user->id, false);
+
+        $data = [];
+        foreach ($accountAvailable as $i) {
+            $data[$i['id']] = [
+                'id'        => $i['id'],
+                'name'      => $i['name'],
+                'recap'     => $i['recap'],
+                'available' => $i['total'],
+            ];
+        }
+        foreach ($accountBalances as $i) {
+            $data[$i['id']]['balance'] = $i['total'];
+        }
+
+        return new ViewModel(['rows' => $data]);
     }
 
     public function editAction()

@@ -1,6 +1,7 @@
 <?php
-$total = 0;
-$dataChart = array();
+$dataChart      = [];
+$totalAvailable = 0;
+$totalBalance   = 0;
 ?>
 <?php echo $this->pageHeader('Conti'); ?>
 <div class="row">
@@ -16,22 +17,29 @@ $dataChart = array();
                         <tr>
                             <th>Nome</th>
                             <th>Includi nel riepilogo</th>
-                            <th class="text-right">Saldo</th>
+                            <th class="text-right">Saldo disponibile</th>
+                            <th class="text-right">Saldo contabile</th>
                             <th class="text-right">Operazioni</th>
                         </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($rows as $row) : ?>
                         <?php
-                        if ($row['total'] > 0) {
-                            $dataChart[] = array($row['name'], (float) $row['total']);
+                        if ($row['available'] > 0) {
+                            $dataChart[] = array($row['name'], (float) $row['available']);
                         }
-                        $total += $row['total'];
+                        $totalAvailable += $row['available'];
+                        $totalBalance   += $row['balance'];
                         ?>
                         <tr>
-                            <td class="name"><?php echo $this->escapeHtml($row['name']); ?></td>
+                            <td class="name">
+                                <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $row['id'])); ?>">
+                                    <?php echo $this->escapeHtml($row['name']); ?>
+                                </a>
+                            </td>
                             <td><?php echo $row['recap'] ? 'Sì' : 'No'; ?></td>
-                            <td class="text-right total"><?php echo $this->currencyForma($row['total']); ?></td>
+                            <td class="text-right total"><?php echo $this->currencyForma($row['available']); ?></td>
+                            <td class="text-right total"><?php echo $this->currencyForma($row['balance']); ?></td>
                             <td class="text-right">
                                 <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
                                     <span class="glyphicon glyphicon-transfer" title="Giroconto: sposta i soldi da un conto ad un'altro"></span>
@@ -39,9 +47,6 @@ $dataChart = array();
                                 <span data-href="<?php echo $this->url('accantonaAccount', array('action' => 'balance', 'id' => $row['id'])); ?>" class="btn btn-default balance">
                                     <span class="glyphicon glyphicon-equalizer" title="Il conguaglio adegua il conto all'importo indicato"></span>
                                 </span>
-                                <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $row['id'])); ?>" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-list" aria-hidden="true" title="Movimenti"></span>
-                                </a>
                                 <a href="<?php echo $this->url('accantonaAccount', array('action' => 'edit', 'id' => $row['id'])); ?>" class="btn btn-default">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Modifica"></span>
                                 </a>
@@ -56,7 +61,8 @@ $dataChart = array();
                         <tr>
                             <td><strong>Totale</strong></td>
                             <td></td>
-                            <td class="text-right"><strong><?php echo $this->currencyForma($total); ?></strong></td>
+                            <td class="text-right"><strong><?php echo $this->currencyForma($totalAvailable); ?></strong></td>
+                            <td class="text-right"><strong><?php echo $this->currencyForma($totalBalance); ?></strong></td>
                             <td></td>
                         </tr>
                     </tfoot>
