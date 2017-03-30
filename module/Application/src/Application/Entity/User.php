@@ -20,6 +20,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @property int $status
  * @property string $role
  * @property string $registrationToken
+ * @property Setting $setting
  */
 class User implements InputFilterAwareInterface
 {
@@ -90,6 +91,14 @@ class User implements InputFilterAwareInterface
      * @var \DateTime
      */
     private $updated;
+
+    /**
+     * One user has One settings.
+     *
+     * @ORM\OneToOne(targetEntity="Setting")
+     * @ORM\JoinColumn(name="id", referencedColumnName="userId")
+     */
+    private $setting;
 
     /**
      * Magic getter to expose protected properties.

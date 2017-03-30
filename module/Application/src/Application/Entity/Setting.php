@@ -15,6 +15,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @property int $userId
  * @property int $payDay
  * @property int $monthsRetrospective
+ * @property int $stored
  */
 class Setting implements InputFilterAwareInterface
 {
@@ -85,7 +86,6 @@ class Setting implements InputFilterAwareInterface
         $this->stored = (boolean) $stored;
         return $this;
     }
-
 
     /**
      * Convert the object to an array.

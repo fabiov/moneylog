@@ -13,6 +13,7 @@ use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
 use Zend\Db\Adapter\Adapter;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
 
 class UserController extends AbstractActionController
@@ -33,15 +34,16 @@ class UserController extends AbstractActionController
     private $user;
 
     /**
-     * IndexController constructor.
+     * UserController constructor.
      * @param Adapter $dbAdapter
+     * @param $user
+     * @param $em
      */
     public function __construct(Adapter $dbAdapter, $user, $em)
     {
         $this->dbAdapter = $dbAdapter;
         $this->em        = $em;
         $this->user      = $user;
-
     }
 
     public function updateAction()
@@ -116,6 +118,16 @@ class UserController extends AbstractActionController
                         $user->setLastLogin(new \DateTime());
                         $this->em->flush();
 
+                        // save user info in session
+                        $userData = new Container('user_data');
+                        $userData->name     = $user->name;
+                        $userData->surname  = $user->surname;
+                        $userData->settings = [
+                            'payDay'              => $user->setting->payDay,
+                            'monthsRetrospective' => $user->setting->monthsRetrospective,
+                            'stored'              => $user->setting->stored,
+                        ];
+
                         return $this->redirect()->toRoute('accantona_recap');
                         break;
                     case Result::FAILURE_IDENTITY_NOT_FOUND:
@@ -177,5 +189,4 @@ class UserController extends AbstractActionController
 
         return ['error' => $error, 'form' => $form, 'message' => $message];
     }
-
 }
