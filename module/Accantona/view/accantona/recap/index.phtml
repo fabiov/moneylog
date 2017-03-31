@@ -70,6 +70,7 @@
                             <td class="text-right" style="min-width:130px;"><?php echo $this->currencyForma($account['total']); ?></td>
                         </tr>
                         <?php endforeach; ?>
+                        <?php if ($this->userData()->hasStored()): ?>
                         <tr>
                             <td><a href="<?php echo $this->url('accantona_accantonato'); ?>">Accantonati</a></td>
                             <td class="text-right">
@@ -80,6 +81,7 @@
                                 <?php endif; ?>
                             </td>
                         </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
                 <div id="donut-accounts"></div>

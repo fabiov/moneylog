@@ -15,6 +15,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @property int $userId
  * @property int $payDay
  * @property int $monthsRetrospective
+ * @property int $stored
  */
 class Setting implements InputFilterAwareInterface
 {
@@ -24,18 +25,27 @@ class Setting implements InputFilterAwareInterface
     /**
      * @ORM\Id
      * @ORM\Column(name="userId", type="integer", options={"unsigned"=true});
+     * @var int
      */
     protected $userId;
 
     /**
      * @ORM\Column(name="payDay", type="integer", nullable=false, options={"unsigned"=true})
+     * @var int
      */
     protected $payDay = 0;
 
     /**
      * @ORM\Column(name="monthsRetrospective", type="integer", nullable=false, options={"unsigned"=true})
+     * @var int
      */
     protected $monthsRetrospective = 12;
+
+    /**
+     * @ORM\Column(name="stored", type="boolean", nullable=false)
+     * @var boolean
+     */
+    protected $stored = false;
 
     /**
      * Magic getter to expose protected properties.
@@ -60,6 +70,24 @@ class Setting implements InputFilterAwareInterface
     }
 
     /**
+     * @return boolean
+     */
+    public function hasStored()
+    {
+        return $this->stored;
+    }
+
+    /**
+     * @param boolean $stored
+     * @return $this
+     */
+    public function setStored($stored)
+    {
+        $this->stored = (boolean) $stored;
+        return $this;
+    }
+
+    /**
      * Convert the object to an array.
      *
      * @return array
@@ -75,11 +103,15 @@ class Setting implements InputFilterAwareInterface
      * @param array $data
      * @return Setting
      */
-    public function exchangeArray($data = array())
+    public function exchangeArray(array $data)
     {
-        $this->userId              = isset($data['userId']) ? $data['userId'] : null;
-        $this->payDay              = isset($data['payDay']) ? $data['payDay'] : null;
+        $this->userId              = isset($data['userId'])              ? $data['userId']              : null;
+        $this->payDay              = isset($data['payDay'])              ? $data['payDay']              : null;
         $this->monthsRetrospective = isset($data['monthsRetrospective']) ? $data['monthsRetrospective'] : null;
+
+        if (array_key_exists('stored', $data)) {
+            $this->setStored($data['stored']);
+        }
         return $this;
     }
 
@@ -110,6 +142,11 @@ class Setting implements InputFilterAwareInterface
             $this->inputFilter->add(array(
                 'filters'  => [['name' => 'Zend\Filter\ToInt']],
                 'name'     => 'monthsRetrospective',
+                'required' => true,
+            ));
+            $this->inputFilter->add(array(
+                'filters'  => [['name' => 'Zend\Filter\ToInt']],
+                'name'     => 'stored',
                 'required' => true,
             ));
         }

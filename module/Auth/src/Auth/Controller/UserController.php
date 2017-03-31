@@ -13,6 +13,7 @@ use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
 use Zend\Db\Adapter\Adapter;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
 
 class UserController extends AbstractActionController
@@ -33,15 +34,23 @@ class UserController extends AbstractActionController
     private $user;
 
     /**
-     * IndexController constructor.
-     * @param Adapter $dbAdapter
+     * @var \stdClass
      */
-    public function __construct(Adapter $dbAdapter, $user, $em)
+    private $userData;
+
+    /**
+     * UserController constructor.
+     * @param Adapter $dbAdapter
+     * @param $user
+     * @param $em
+     * @param $userData
+     */
+    public function __construct(Adapter $dbAdapter, $user, $em, $userData)
     {
         $this->dbAdapter = $dbAdapter;
         $this->em        = $em;
         $this->user      = $user;
-
+        $this->userData  = $userData;
     }
 
     public function updateAction()
@@ -62,6 +71,7 @@ class UserController extends AbstractActionController
 
             if ($form->isValid()) {
                 $this->em->flush();
+                $this->userData->setName($user->name)->setSurname($user->surname);
                 $message = 'I tuoi dati sono stati salvati correttamente';
             }
         }
@@ -115,6 +125,12 @@ class UserController extends AbstractActionController
                         $user = $this->em->find('Application\Entity\User', $identity->id);
                         $user->setLastLogin(new \DateTime());
                         $this->em->flush();
+
+                        // save user info in session
+                        $this->userData
+                            ->setName($user->name)
+                            ->setSurname($user->surname)
+                            ->setSettings($user->setting);
 
                         return $this->redirect()->toRoute('accantona_recap');
                         break;
@@ -177,5 +193,4 @@ class UserController extends AbstractActionController
 
         return ['error' => $error, 'form' => $form, 'message' => $message];
     }
-
 }
