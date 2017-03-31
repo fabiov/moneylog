@@ -13,7 +13,6 @@ use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
 use Zend\Db\Adapter\Adapter;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
 
 class UserController extends AbstractActionController
