@@ -2,6 +2,7 @@
 namespace Accantona\Controller;
 
 use Accantona\Form\SettingsForm;
+use Auth\Service\UserData;
 use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
 
@@ -18,10 +19,16 @@ class SettingsController extends AbstractActionController
      */
     private $user;
 
-    public function __construct(EntityManager $em, \stdClass $user)
+    /**
+     * @var UserData
+     */
+    private $userData;
+
+    public function __construct(EntityManager $em, \stdClass $user, UserData $userData)
     {
-        $this->em   = $em;
-        $this->user = $user;
+        $this->em       = $em;
+        $this->user     = $user;
+        $this->userData = $userData;
     }
 
     public function indexAction()
@@ -40,6 +47,8 @@ class SettingsController extends AbstractActionController
             if ($form->isValid()) {
                 $setting->userId = $this->user->id;
                 $this->em->flush();
+
+                $this->userData->setSettings($setting);
                 $message = 'Impostazioni salvate correttamente.';
             }
         }

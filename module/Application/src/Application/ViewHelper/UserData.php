@@ -1,11 +1,13 @@
 <?php
 namespace Application\ViewHelper;
 
-use Zend\Session\Container;
 use Zend\View\Helper\AbstractHelper;
 
 class UserData extends AbstractHelper
 {
+    /**
+     * @var \Auth\Service\UserData
+     */
     private $data;
 
     /**
@@ -15,7 +17,7 @@ class UserData extends AbstractHelper
     {
 
         if (!$this->data) {
-            $this->data = new Container('user_data');
+            $this->data = new \Auth\Service\UserData('user_data');
         }
         return $this;
     }
@@ -25,7 +27,7 @@ class UserData extends AbstractHelper
      */
     public function getFullName()
     {
-        return $this->data->name . ' ' . $this->data->surname;
+        return $this->data->getName() . ' ' . $this->data->getSurname();
     }
 
     /**
@@ -33,6 +35,6 @@ class UserData extends AbstractHelper
      */
     public function hasStored()
     {
-        return (bool) $this->data->stored;
+        return (bool) $this->data->getSettings()['stored'];
     }
 }

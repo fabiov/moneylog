@@ -34,16 +34,23 @@ class UserController extends AbstractActionController
     private $user;
 
     /**
+     * @var \stdClass
+     */
+    private $userData;
+
+    /**
      * UserController constructor.
      * @param Adapter $dbAdapter
      * @param $user
      * @param $em
+     * @param $userData
      */
-    public function __construct(Adapter $dbAdapter, $user, $em)
+    public function __construct(Adapter $dbAdapter, $user, $em, $userData)
     {
         $this->dbAdapter = $dbAdapter;
         $this->em        = $em;
         $this->user      = $user;
+        $this->userData  = $userData;
     }
 
     public function updateAction()
@@ -64,6 +71,7 @@ class UserController extends AbstractActionController
 
             if ($form->isValid()) {
                 $this->em->flush();
+                $this->userData->setName($user->name)->setSurname($user->surname);
                 $message = 'I tuoi dati sono stati salvati correttamente';
             }
         }
@@ -119,14 +127,10 @@ class UserController extends AbstractActionController
                         $this->em->flush();
 
                         // save user info in session
-                        $userData = new Container('user_data');
-                        $userData->name     = $user->name;
-                        $userData->surname  = $user->surname;
-                        $userData->settings = [
-                            'payDay'              => $user->setting->payDay,
-                            'monthsRetrospective' => $user->setting->monthsRetrospective,
-                            'stored'              => $user->setting->stored,
-                        ];
+                        $this->userData
+                            ->setName($user->name)
+                            ->setSurname($user->surname)
+                            ->setSettings($user->setting);
 
                         return $this->redirect()->toRoute('accantona_recap');
                         break;
