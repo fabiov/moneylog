@@ -25,11 +25,11 @@ $totalBalance   = 0;
                     <tbody>
                     <?php foreach ($rows as $row) : ?>
                         <?php
-                        if ($row['available'] > 0) {
+                        if (!empty($row['available']) && $row['available'] > 0) {
                             $dataChart[] = array($row['name'], (float) $row['available']);
                         }
-                        $totalAvailable += $row['available'];
-                        $totalBalance   += $row['balance'];
+                        $totalAvailable += isset($row['available']) ? $row['available'] : 0;
+                        $totalBalance   += isset($row['balance'])   ? $row['balance']   : 0;
                         ?>
                         <tr>
                             <td class="name">
@@ -38,8 +38,8 @@ $totalBalance   = 0;
                                 </a>
                             </td>
                             <td><?php echo $row['recap'] ? 'Sì' : 'No'; ?></td>
-                            <td class="text-right total"><?php echo $this->currencyForma($row['available']); ?></td>
-                            <td class="text-right total"><?php echo $this->currencyForma($row['balance']); ?></td>
+                            <td class="text-right total"><?php if (isset($row['available'])) echo $this->currencyForma($row['available']); ?></td>
+                            <td class="text-right total"><?php if (isset($row['balance'])) echo $this->currencyForma($row['balance']); ?></td>
                             <td class="text-right">
                                 <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
                                     <span class="glyphicon glyphicon-transfer" title="Giroconto: sposta i soldi da un conto ad un'altro"></span>

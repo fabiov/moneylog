@@ -54,24 +54,26 @@ class AccountController extends AbstractActionController
 
     public function indexAction()
     {
+        $data              = [];
         $accountRepository = $this->em->getRepository('Application\Entity\Account');
 
+        // i dati in un record set potrebbero non essere nell'altro e vice versa
+
         $accountAvailable = $accountRepository->getTotals($this->user->id, false, new \DateTime());
-        $accountBalances  = $accountRepository->getTotals($this->user->id, false);
-
-        $data = [];
         foreach ($accountAvailable as $i) {
-            $data[$i['id']] = [
-                'id'        => $i['id'],
-                'name'      => $i['name'],
-                'recap'     => $i['recap'],
-                'available' => $i['total'],
-            ];
-        }
-        foreach ($accountBalances as $i) {
-            $data[$i['id']]['balance'] = $i['total'];
+            $data[$i['id']]['id']        = $i['id'];
+            $data[$i['id']]['name']      = $i['name'];
+            $data[$i['id']]['recap']     = $i['recap'];
+            $data[$i['id']]['available'] = $i['total'];
         }
 
+        $accountBalances  = $accountRepository->getTotals($this->user->id, false);
+        foreach ($accountBalances as $i) {
+            $data[$i['id']]['id']        = $i['id'];
+            $data[$i['id']]['name']      = $i['name'];
+            $data[$i['id']]['recap']     = $i['recap'];
+            $data[$i['id']]['balance']   = $i['total'];
+        }
         return new ViewModel(['rows' => $data]);
     }
 
