@@ -1,5 +1,5 @@
 <?php
-return array(
+return [
     'controllers' => array(
         'factories' => array(
             'Auth\Controller\User' => function ($controllerManager) {
@@ -9,7 +9,8 @@ return array(
                 return new Auth\Controller\UserController(
                     $sm->get('Zend\Db\Adapter\Adapter'),
                     $sm->get('Zend\Authentication\AuthenticationService')->getIdentity(),
-                    $sm->get('doctrine.entitymanager.orm_default')
+                    $sm->get('doctrine.entitymanager.orm_default'),
+                    $sm->get('user_data')
                 );
             },
             'Auth\Controller\Registration' => function ($controllerManager) {
@@ -63,11 +64,13 @@ return array(
     'service_manager' => array(
         // added for Authentication and Authorization. Without this each time we have to create a new instance.
         // This code should be moved to a module to allow Doctrine to overwrite it
-        'aliases' => array( // !!! aliases not alias
+        'aliases' => [
+            'Auth\Service\UserData'                     => 'user_data',
             'Zend\Authentication\AuthenticationService' => 'my_auth_service',
-        ),
-        'invokables' => array(
+        ],
+        'invokables' => [
             'my_auth_service' => 'Zend\Authentication\AuthenticationService',
-        ),
+            'user_data'       => 'Auth\Service\UserData',
+        ],
     ),
-);
+];

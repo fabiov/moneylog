@@ -113,7 +113,7 @@
                     <!-- /.dropdown -->
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-user fa-fw"></i> <?php echo $identity->name . ' ' . $identity->surname; ?> <i class="fa fa-caret-down"></i>
+                            <i class="fa fa-user fa-fw"></i> <?php echo $this->userData()->getFullName(); ?> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-user">
                             <li><a href="<?php echo $this->url('auth/default', array('action' => 'update')); ?>"><i class="fa fa-edit fa-fw"></i> Utente</a></li>
@@ -133,7 +133,9 @@
                             <li><a href="<?php echo $this->url('accantona_recap'); ?>"><i class="fa fa-dashboard fa-fw"></i> Cruscotto</a></li>
                             <li><a href="<?php echo $this->url('accantona_categoria'); ?>"><i class="fa fa-table fa-fw"></i> <?php echo $this->translate('Categorie'); ?></a></li>
                             <li><a href="<?php echo $this->url('accantonaAccount'); ?>"><i class="fa fa-table fa-fw"></i> <?php echo $this->translate('Conti'); ?></a></li>
+                            <?php if ($this->userData()->hasStored()): ?>
                             <li><a href="<?php echo $this->url('accantona_accantonato'); ?>"><i class="fa fa-table fa-fw"></i> <?php echo $this->translate('Accantonati'); ?></a></li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                     <!-- /.sidebar-collapse -->

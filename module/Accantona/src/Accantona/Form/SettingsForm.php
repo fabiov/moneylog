@@ -12,7 +12,7 @@ class SettingsForm extends Form
         parent::__construct('settingForm');
 
         $this->add([
-            'attributes' => ['class' => 'form-control', 'max' => 28, 'min' => 0, 'step' => 1, 'value' => 27],
+            'attributes' => ['max' => 28, 'min' => 0, 'step' => 1, 'value' => 27],
             'filters'    => [['name' => 'Zend\Filter\StringTrim']],
             'name'       => 'payDay',
             'options'    => ['label' => 'Giorno di paga'],
@@ -20,12 +20,24 @@ class SettingsForm extends Form
             'type'       => 'Number',
         ]);
         $this->add([
-            'attributes' => ['class' => 'form-control', 'max'   => 48, 'min'   => 2, 'step'  => 1, 'value' => 12],
+            'attributes' => ['max'   => 48, 'min' => 2, 'step'  => 1, 'value' => 12],
             'filters'    => [['name' => 'Zend\Filter\StringTrim']],
             'name'       => 'monthsRetrospective',
             'options'    => ['label' => 'Mesi di retrospettiva'],
             'required'   => true,
             'type'       => 'Number',
+        ]);
+        $this->add([
+            'filters'    => [['name' => 'Zend\Filter\StringTrim']],
+            'name'       => 'stored',
+            'options'    => [
+                'checked_value'      => 1,
+                'label'              => 'Abilita accantonamento',
+                'unchecked_value'    => 0,
+                'use_hidden_element' => true,
+            ],
+            'required'   => true,
+            'type'       => 'Checkbox',
         ]);
     }
 }

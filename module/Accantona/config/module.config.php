@@ -19,7 +19,8 @@ return array(
                 $sl = $controllerManager->getServiceLocator();
                 return new \Accantona\Controller\SettingsController(
                     $sl->get('doctrine.entitymanager.orm_default'),
-                    $sl->get('Zend\Authentication\AuthenticationService')->getIdentity()
+                    $sl->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $sl->get('user_data')
                 );
             },
             'Accantona\Controller\Account' => function ($controllerManager) {

@@ -7,19 +7,9 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-return array(
+return [
     'router' => array(
         'routes' => array(
-//            'home' => array(
-//                'type' => 'Zend\Mvc\Router\Http\Literal',
-//                'options' => array(
-//                    'route'    => '/',
-//                    'defaults' => array(
-//                        'controller' => 'Accantona\Controller\Recap',
-//                        'action'     => 'index',
-//                    ),
-//                ),
-//            ),
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -140,8 +130,10 @@ return array(
 
     'view_helpers' => array(
         'invokables' => array(
+            'helpTooltip'      => 'Application\ViewHelper\HelpTooltip',
             'richInlineScript' => 'Application\ViewHelper\RichInlineScript',
             'sbaFormRow'       => 'Application\ViewHelper\SbaFormRow',
+            'userData'         => 'Application\ViewHelper\UserData',
         ),
     ),
-);
+];
