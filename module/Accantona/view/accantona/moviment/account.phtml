@@ -88,11 +88,11 @@ $morrisData = array();
                         <?php foreach ($rows as $row): ?>
                             <?php
                             $strDate = $row->date->format('Y-m-d');
-                            if (isset($chartData[$strDate])) {
-                                $chartData[$strDate] += $row->amount;
-                            } else {
-                                $chartData[$strDate] = $row->amount;
+                            if (!isset($chartData[$strDate])) {
+                                $chartData[$strDate] = ['in' => 0, 'out' => 0];
                             }
+                            $row->amount > 0 ? $chartData[$strDate]['in']  += $row->amount
+                                             : $chartData[$strDate]['out'] += $row->amount;
                             ?>
                         <tr>
                             <td class="date"><?php echo $this->dateForma($row->date); ?></td>
@@ -144,14 +144,14 @@ $morrisData = array();
 <?php
 // prepare data for barchar
 foreach ($chartData as $strDate => $row) {
-    $morrisData[] = array('x' => $strDate, 'y' => $row);
+    $morrisData[] = ['x' => $strDate, 'in' => $row['in'], 'out' => abs($row['out'])];
 }
 usort($morrisData, function ($a, $b) {
     if ($a['x'] == $b['x']) {
         return 0;
     }
     return $a['x'] < $b['x'] ? -1 : 1;
-})
+});
 ?>
 <script type="text/javascript">
     $(document).on("click", ".delete-item", function(e) {
@@ -201,12 +201,13 @@ Number.prototype.formatMoney = function(c, d, t){
     return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
 Morris.Bar({
-    element: 'morris',
+    barColors: ['#d9534f', '#5cb85c'],
     data: <?php echo json_encode($morrisData); ?>,
-    xkey: 'x',
-    ykeys: 'y',
-    labels: ['Importo'],
+    element: 'morris',
     hideHover: "auto",
+    labels: ['In uscita', 'In entrata'],
+    xkey: 'x',
+    ykeys: ['out', 'in'],
     resize: true,
     "xLabelFormat": function (x) {
         var d = x.label.split('-');
