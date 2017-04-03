@@ -88,7 +88,7 @@ $totalBalance   = 0;
     <?php endif; ?>
 </div>
 <?php
-echo $this->balanceModalForm();
+echo $this->balanceModalForm(0, 'accantonaAccount');
 $js = <<< js
 $(document).on("click", ".delete-item", function(e) {
     var button = $(this);

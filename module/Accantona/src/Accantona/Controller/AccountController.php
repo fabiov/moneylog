@@ -141,6 +141,7 @@ class AccountController extends AbstractActionController
         // check if the user is account owner
         $amount      = (float) $this->getRequest()->getPost('amount');
         $description = $this->getRequest()->getPost('description', 'Conguaglio');
+        $routeName   = $this->getRequest()->getPost('forward');
         $id          = (int) $this->params()->fromRoute('id', 0);
 
         $account = $this->em->getRepository('Application\Entity\Account')
@@ -165,6 +166,12 @@ class AccountController extends AbstractActionController
             $this->em->flush();
         }
 
-        return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+        switch ($routeName) {
+            case 'accantonaMoviment':
+                return $this->redirect()->toRoute('accantonaMoviment', ['action' => 'account', 'id' => $id]);
+            case 'accantonaAccount':
+            default:
+                return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
+        }
     }
 }

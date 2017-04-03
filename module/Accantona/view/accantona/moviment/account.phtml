@@ -20,8 +20,8 @@ $morrisData = array();
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
-            <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '6', 'fa' => 'eur', 'label' => 'Saldo contabile', 'text' => $this->currencyForma($this->balanceAccount)]); ?>
             <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '6', 'fa' => 'eur', 'label' => 'Saldo disponibile', 'text' => $this->currencyForma($this->balanceAvailable)]); ?>
+            <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '6', 'fa' => 'eur', 'label' => 'Saldo contabile', 'text' => $this->currencyForma($this->balanceAccount)]); ?>
         </div>
     </div>
 </div>
@@ -142,7 +142,7 @@ $morrisData = array();
 </div>
 <?php endif; ?>
 <?php
-echo $this->balanceModalForm($account->id);
+echo $this->balanceModalForm($account->id, 'accantonaMoviment');
 // prepare data for barchar
 foreach ($chartData as $strDate => $row) {
     $morrisData[] = ['x' => $strDate, 'in' => $row['in'], 'out' => abs($row['out'])];
