@@ -44,7 +44,12 @@ $totalBalance   = 0;
                                 <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
                                     <span class="glyphicon glyphicon-transfer" title="Giroconto: sposta i soldi da un conto ad un'altro"></span>
                                 </a>
-                                <span data-href="<?php echo $this->url('accantonaAccount', array('action' => 'balance', 'id' => $row['id'])); ?>" class="btn btn-default balance">
+                                <span
+                                    class="btn btn-default balance"
+                                    data-href="<?php echo $this->url('accantonaAccount', array('action' => 'balance', 'id' => $row['id'])); ?>"
+                                    data-target="#modal-balance"
+                                    data-toggle="modal"
+                                >
                                     <span class="glyphicon glyphicon-equalizer" title="Il conguaglio adegua il conto all'importo indicato"></span>
                                 </span>
                                 <a href="<?php echo $this->url('accantonaAccount', array('action' => 'edit', 'id' => $row['id'])); ?>" class="btn btn-default">
@@ -82,42 +87,44 @@ $totalBalance   = 0;
     </div>
     <?php endif; ?>
 </div>
-<?php if ($dataChart): ?>
-<?php endif; ?>
 <?php
+echo $this->balanceModalForm();
 $js = <<< js
 $(document).on("click", ".delete-item", function(e) {
-        var button = $(this);
+    var button = $(this);
 
-        var html = '<h3>Cancellare il conto selezionato?</h3>' +
-            '<dl class="dl-horizontal">' +
-            '<dt>Nome</dt><dd>'  + button.parents('tr').find('.name').html() + '</dd>' +
-            '<dt>Saldo</dt><dd>'  + button.parents('tr').find('.total').html() + '</dd>' +
-            '</dl>' +
-            '<div class="alert alert-danger">' +
-            '<strong>Attenzione!</strong> Eliminando il conto saranno cancellati tutti i movimenti associati e non sarà più possibile recuperarli.' +
-            '</div>';
-        bootbox.confirm(html, function(result) {
-            if (result) {
-                var form = document.createElement("form");
-                form.setAttribute("method", 'post');
-                form.setAttribute("action", button.data('href'));
-                document.body.appendChild(form);
-                form.submit();
-            }
-        });
+    var html = '<h3>Cancellare il conto selezionato?</h3>' +
+        '<dl class="dl-horizontal">' +
+        '<dt>Nome</dt><dd>'  + button.parents('tr').find('.name').html() + '</dd>' +
+        '<dt>Saldo</dt><dd>'  + button.parents('tr').find('.total').html() + '</dd>' +
+        '</dl>' +
+        '<div class="alert alert-danger">' +
+        '<strong>Attenzione!</strong> Eliminando il conto saranno cancellati tutti i movimenti associati e non sarà più possibile recuperarli.' +
+        '</div>';
+    bootbox.confirm(html, function(result) {
+        if (result) {
+            var form = document.createElement("form");
+            form.setAttribute("method", 'post');
+            form.setAttribute("action", button.data('href'));
+            document.body.appendChild(form);
+            form.submit();
+        }
     });
+});
+$('[data-target="#modal-balance"]').click(function() {
+    $('#balance-form').attr('action', this.getAttribute('data-href'));
+    console.log(this.getAttribute('data-href')); 
+});
 js;
 
 $this->richInlineScript()->addGeneric($js);
-$this->bindBalance('.balance');
 $this->dataTable('#my-table', ['columnDefs' => [
     ["targets" =>  2, "type" => "currency-it"], // saldo
     ["targets" => -1, "orderable" => false]     // azioni
 ]]);
 $this->morris()->donut('donut-accounts', $dataChart, 0, 1);
-$this->floatingButtons()->addAnchorItem(array(
-    'href' => $this->url('accantonaAccount', array('action' => 'add')),
+$this->floatingButtons()->addAnchorItem([
+    'href'  => $this->url('accantonaAccount', ['action' => 'add']),
+    'icon'  => 'plus',
     'label' => 'Aggiungi un conto',
-    'icon' => 'plus'
-));
+]);
