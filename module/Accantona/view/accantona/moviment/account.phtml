@@ -20,8 +20,8 @@ $morrisData = array();
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
-            <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '6', 'fa' => 'eur', 'label' => 'Saldo contabile', 'text' => $this->currencyForma($this->balanceAccount)]); ?>
             <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '6', 'fa' => 'eur', 'label' => 'Saldo disponibile', 'text' => $this->currencyForma($this->balanceAvailable)]); ?>
+            <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '6', 'fa' => 'eur', 'label' => 'Saldo contabile', 'text' => $this->currencyForma($this->balanceAccount)]); ?>
         </div>
     </div>
 </div>
@@ -142,6 +142,7 @@ $morrisData = array();
 </div>
 <?php endif; ?>
 <?php
+echo $this->balanceModalForm($account->id, 'accantonaMoviment');
 // prepare data for barchar
 foreach ($chartData as $strDate => $row) {
     $morrisData[] = ['x' => $strDate, 'in' => $row['in'], 'out' => abs($row['out'])];
@@ -230,6 +231,7 @@ Morris.Line({
     "xkey": 'date',
     "ykeys": ['balance'],
     "labels": ['Saldo'],
+    "resize": true,
     "xLabelFormat": function (x) {
         var d = x.getDate();
         var m = x.getMonth() + 1;
@@ -244,10 +246,7 @@ Morris.Line({
 <?php endif;?>
 <?php
 $i = '<i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>';
-$balanceHref = $this->url('accantonaAccount', array('action' => 'balance', 'id' => $account->id));
 $this->floatingButtons()
-    ->addRawItem("<span data-href=\"$balanceHref\" data-mfb-label=\"Conguaglia\" class=\"balance mfb-component__button--child\">$i</span>")
+    ->addRawItem("<span class=\"balance mfb-component__button--child\" data-toggle=\"modal\" data-target=\"#modal-balance\">$i</span>")
     ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'add', 'id' => $account->id)), 'label' => 'Nuovo movimento', 'icon' => 'plus'))
     ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'move', 'id' => $account->id)), 'label' => 'Giroconto', 'icon' => 'transfer'));
-
-$this->bindBalance('.balance');
