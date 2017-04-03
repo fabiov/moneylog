@@ -148,19 +148,14 @@ class AccountController extends AbstractActionController
             ->findOneBy(['id' => $id, 'userId' => $this->user->id]);
 
         if ($account && $amount) {
-            /* @var \Doctrine\ORM\QueryBuilder $qb */
-            $qb = $this->em
-                ->createQueryBuilder()
-                ->select('COALESCE(SUM(m.amount), 0) AS total')
-                ->from('Application\Entity\Moviment', 'm')
-                ->where('m.accountId=:accountId')
-                ->setParameter(':accountId', $id);
-            $r = $qb->getQuery()->getOneOrNullResult();
+
+            $currentBalance = $this->em->getRepository('Application\Entity\Moviment')
+                ->getBalance($id, new \DateTime());
 
             $moviment              = new Moviment();
             $moviment->account     = $account;
             $moviment->date        = new \DateTime();
-            $moviment->amount      = $amount - $r['total'];
+            $moviment->amount      = $amount - $currentBalance;
             $moviment->description = $description;
             $this->em->persist($moviment);
             $this->em->flush();
