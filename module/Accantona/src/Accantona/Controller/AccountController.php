@@ -133,36 +133,40 @@ class AccountController extends AbstractActionController
         return $this->redirect()->toRoute('accantonaAccount');
     }
 
+    /**
+     * @return \Zend\Http\Response
+     */
     public function balanceAction()
     {
         // check if the user is account owner
-        $amount = $this->params()->fromQuery('amount');
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $amount      = (float) $this->getRequest()->getPost('amount');
+        $description = $this->getRequest()->getPost('description', 'Conguaglio');
+        $routeName   = $this->getRequest()->getPost('forward');
+        $id          = (int) $this->params()->fromRoute('id', 0);
 
         $account = $this->em->getRepository('Application\Entity\Account')
-            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
+            ->findOneBy(['id' => $id, 'userId' => $this->user->id]);
 
-        if (!$account || !preg_match('/^[\-\+]?\d+(,\d+)?$/', $amount)) {
-            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+        if ($account && $amount) {
+
+            $currentBalance = $this->em->getRepository('Application\Entity\Moviment')
+                ->getBalance($id, new \DateTime());
+
+            $moviment              = new Moviment();
+            $moviment->account     = $account;
+            $moviment->date        = new \DateTime();
+            $moviment->amount      = $amount - $currentBalance;
+            $moviment->description = $description;
+            $this->em->persist($moviment);
+            $this->em->flush();
         }
 
-        /* @var \Doctrine\ORM\QueryBuilder $qb */
-        $qb = $this->em
-            ->createQueryBuilder()
-            ->select('COALESCE(SUM(m.amount), 0) AS total')
-            ->from('Application\Entity\Moviment', 'm')
-            ->where('m.accountId=:accountId')
-            ->setParameter(':accountId', $id);
-        $r = $qb->getQuery()->getOneOrNullResult();
-
-        $moviment = new Moviment();
-        $moviment->account = $account;
-        $moviment->date = new \DateTime();
-        $moviment->amount = str_replace(',', '.', $amount) - $r['total'];
-        $moviment->description = 'Conguaglio';
-        $this->em->persist($moviment);
-        $this->em->flush();
-
-        return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+        switch ($routeName) {
+            case 'accantonaMoviment':
+                return $this->redirect()->toRoute('accantonaMoviment', ['action' => 'account', 'id' => $id]);
+            case 'accantonaAccount':
+            default:
+                return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
+        }
     }
 }

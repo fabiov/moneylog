@@ -20,8 +20,8 @@ $morrisData = array();
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
-            <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '6', 'fa' => 'eur', 'label' => 'Saldo contabile', 'text' => $this->currencyForma($this->balanceAccount)]); ?>
             <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '6', 'fa' => 'eur', 'label' => 'Saldo disponibile', 'text' => $this->currencyForma($this->balanceAvailable)]); ?>
+            <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '6', 'fa' => 'eur', 'label' => 'Saldo contabile', 'text' => $this->currencyForma($this->balanceAccount)]); ?>
         </div>
     </div>
 </div>
@@ -88,11 +88,11 @@ $morrisData = array();
                         <?php foreach ($rows as $row): ?>
                             <?php
                             $strDate = $row->date->format('Y-m-d');
-                            if (isset($chartData[$strDate])) {
-                                $chartData[$strDate] += $row->amount;
-                            } else {
-                                $chartData[$strDate] = $row->amount;
+                            if (!isset($chartData[$strDate])) {
+                                $chartData[$strDate] = ['in' => 0, 'out' => 0];
                             }
+                            $row->amount > 0 ? $chartData[$strDate]['in']  += $row->amount
+                                             : $chartData[$strDate]['out'] += $row->amount;
                             ?>
                         <tr>
                             <td class="date"><?php echo $this->dateForma($row->date); ?></td>
@@ -142,16 +142,17 @@ $morrisData = array();
 </div>
 <?php endif; ?>
 <?php
+echo $this->balanceModalForm($account->id, 'accantonaMoviment');
 // prepare data for barchar
 foreach ($chartData as $strDate => $row) {
-    $morrisData[] = array('x' => $strDate, 'y' => $row);
+    $morrisData[] = ['x' => $strDate, 'in' => $row['in'], 'out' => abs($row['out'])];
 }
 usort($morrisData, function ($a, $b) {
     if ($a['x'] == $b['x']) {
         return 0;
     }
     return $a['x'] < $b['x'] ? -1 : 1;
-})
+});
 ?>
 <script type="text/javascript">
     $(document).on("click", ".delete-item", function(e) {
@@ -201,12 +202,13 @@ Number.prototype.formatMoney = function(c, d, t){
     return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
 Morris.Bar({
-    element: 'morris',
+    barColors: ['#d9534f', '#5cb85c'],
     data: <?php echo json_encode($morrisData); ?>,
-    xkey: 'x',
-    ykeys: 'y',
-    labels: ['Importo'],
+    element: 'morris',
     hideHover: "auto",
+    labels: ['In uscita', 'In entrata'],
+    xkey: 'x',
+    ykeys: ['out', 'in'],
     resize: true,
     "xLabelFormat": function (x) {
         var d = x.label.split('-');
@@ -229,6 +231,7 @@ Morris.Line({
     "xkey": 'date',
     "ykeys": ['balance'],
     "labels": ['Saldo'],
+    "resize": true,
     "xLabelFormat": function (x) {
         var d = x.getDate();
         var m = x.getMonth() + 1;
@@ -243,10 +246,7 @@ Morris.Line({
 <?php endif;?>
 <?php
 $i = '<i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>';
-$balanceHref = $this->url('accantonaAccount', array('action' => 'balance', 'id' => $account->id));
 $this->floatingButtons()
-    ->addRawItem("<span data-href=\"$balanceHref\" data-mfb-label=\"Conguaglia\" class=\"balance mfb-component__button--child\">$i</span>")
+    ->addRawItem("<span class=\"balance mfb-component__button--child\" data-toggle=\"modal\" data-target=\"#modal-balance\">$i</span>")
     ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'add', 'id' => $account->id)), 'label' => 'Nuovo movimento', 'icon' => 'plus'))
     ->addAnchorItem(array('href' => $this->url('accantonaMoviment', array('action' => 'move', 'id' => $account->id)), 'label' => 'Giroconto', 'icon' => 'transfer'));
-
-$this->bindBalance('.balance');
