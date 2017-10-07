@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "26ebf504015f36f2abfbb05fd7bc0691",
+    "content-hash": "dac28eb88a4e24e0721447a7a0e9cd9d",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -480,16 +480,16 @@
         },
         {
             "name": "doctrine/doctrine-orm-module",
-            "version": "0.10.0",
+            "version": "0.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineORMModule.git",
-                "reference": "50808eb795d00aac6a551023b1bb379de054f9b5"
+                "reference": "9557d828152d87177cb35c68bbc93b7d7e51f6e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineORMModule/zipball/50808eb795d00aac6a551023b1bb379de054f9b5",
-                "reference": "50808eb795d00aac6a551023b1bb379de054f9b5",
+                "url": "https://api.github.com/repos/doctrine/DoctrineORMModule/zipball/9557d828152d87177cb35c68bbc93b7d7e51f6e8",
+                "reference": "9557d828152d87177cb35c68bbc93b7d7e51f6e8",
                 "shasum": ""
             },
             "require": {
@@ -498,17 +498,25 @@
                 "doctrine/orm": ">=2.5,<2.7",
                 "php": "^5.5 || ^7.0",
                 "symfony/console": "~2.5|~3.0",
-                "zendframework/zend-mvc": "~2.3",
-                "zendframework/zend-servicemanager": "~2.3",
-                "zendframework/zend-stdlib": "~2.3"
+                "zendframework/zend-hydrator": "^1.1",
+                "zendframework/zend-mvc": "^2.5.2",
+                "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
+                "zendframework/zend-stdlib": "^2.7.6"
             },
             "require-dev": {
                 "doctrine/data-fixtures": "1.0.*",
                 "doctrine/migrations": "1.0.*@dev",
                 "phpunit/phpunit": "~4.0",
                 "squizlabs/php_codesniffer": "~2",
-                "zendframework/zend-developer-tools": "*",
-                "zendframework/zendframework": "~2.3"
+                "zendframework/zend-code": "^2.5.2",
+                "zendframework/zend-config": "^2.6",
+                "zendframework/zend-console": "^2.6",
+                "zendframework/zend-developer-tools": "^1.0",
+                "zendframework/zend-i18n": "^2.6",
+                "zendframework/zend-log": "^2.5.2",
+                "zendframework/zend-modulemanager": "^2.6.1",
+                "zendframework/zend-serializer": "^2.6",
+                "zendframework/zend-view": "^2.5.2"
             },
             "suggest": {
                 "doctrine/migrations": "doctrine migrations if you want to keep your schema definitions versioned",
@@ -554,7 +562,7 @@
                 "orm",
                 "zf2"
             ],
-            "time": "2016-03-22T00:43:08+00:00"
+            "time": "2016-07-03T15:07:24+00:00"
         },
         {
             "name": "doctrine/inflector",
