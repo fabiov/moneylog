@@ -216,7 +216,7 @@ class RegistrationController extends AbstractActionController
         $str = 'La tua password su  %s è stata cambiata. La tua nuova password è: %s';
         $message = new Message();
         $message->addTo($userEmail)
-                ->addFrom('support@easywallet.it')
+                ->addFrom('support@venol.it')
                 ->setSubject('La tua password è stata cambiata!')
                 ->setBody(sprintf($str, $this->getRequest()->getServer('HTTP_ORIGIN'), $password));
         $this->sm->get('mail.transport')->send($message);
