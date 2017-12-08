@@ -42,7 +42,7 @@ class Setting implements InputFilterAwareInterface
     protected $monthsRetrospective = 12;
 
     /**
-     * @ORM\Column(name="stored", type="boolean", nullable=false)
+     * @ORM\Column(name="`stored`", type="boolean", nullable=false)
      * @var boolean
      */
     protected $stored = false;
