@@ -32,7 +32,10 @@ class RecapController extends AbstractActionController
     }
 
     /**
-     * @return ViewModel
+     * @return array|ViewModel
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
      */
     public function indexAction()
     {
