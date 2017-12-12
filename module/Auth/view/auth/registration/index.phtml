@@ -61,13 +61,13 @@ $this->form->prepare();
         <?= $errors; ?>
     </div>
 
-    <?php $element = $form->get('captcha'); ?>
-    <?php $errors = $this->formElementErrors($element); ?>
-    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
-        <?= $this->formLabel($element); ?>
-        <?= $this->formCaptcha($element->setAttribute('class', 'form-control')); ?>
-        <?= $errors; ?>
-    </div>
+    <?php /*$element = $form->get('captcha');*/ ?>
+    <?php /*$errors = $this->formElementErrors($element);*/ ?>
+    <!-- div class="form-group <?php if ($errors) echo 'has-error'; ?>" -->
+        <?php /*echo $this->formLabel($element);*/ ?>
+        <?php /*echo $this->formCaptcha($element->setAttribute('class', 'form-control'));*/ ?>
+        <?php /*echo $errors;*/ ?>
+    <!-- /div -->
 
     <?= $this->formSubmit($this->form->get('submit')); ?>
 <?= $this->form()->closeTag(); ?>

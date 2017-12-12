@@ -15,7 +15,7 @@ return [
         ],
     ],
     'router' => [
-        'routes' => array(
+        'routes' => [
             'home' => [
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => [
@@ -57,7 +57,7 @@ return [
                     'defaults' => ['controller' => 'Application\Controller\Page', 'action' => 'privacyPolicy'],
                 ],
             ],
-        ),
+        ],
     ],
     'service_manager' => [
         'abstract_factories' => array(

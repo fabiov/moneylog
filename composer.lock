@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6b75b843cd2cccdd7d70e5777324242",
+    "content-hash": "45eae985c21d7a6ea62885a1c9d8a25e",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -5484,49 +5484,6 @@
                 "zf2"
             ],
             "time": "2016-01-27T18:00:44+00:00"
-        },
-        {
-            "name": "zendframework/zendservice-recaptcha",
-            "version": "2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/ZendService_ReCaptcha.git",
-                "reference": "4324cca8502d9f47b3b43a18acdd3fdbeb965536"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/ZendService_ReCaptcha/zipball/4324cca8502d9f47b3b43a18acdd3fdbeb965536",
-                "reference": "4324cca8502d9f47b3b43a18acdd3fdbeb965536",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "zendframework/zend-http": ">=2.0.0",
-                "zendframework/zend-uri": ">=2.0.0",
-                "zendframework/zend-version": ">=2.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "ZendService": "library/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "OOP wrapper for the ReCaptcha web service",
-            "homepage": "http://packages.zendframework.com/",
-            "keywords": [
-                "recaptcha",
-                "zf2"
-            ],
-            "time": "2012-09-24T15:18:29+00:00"
         },
         {
             "name": "zendframework/zendxml",
