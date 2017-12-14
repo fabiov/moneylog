@@ -17,7 +17,7 @@ return [
     'router' => [
         'routes' => [
             'home' => [
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'Zend\Router\Http\Literal',
                 'options' => [
                     'route'    => '/',
                     'defaults' => ['controller' => 'Auth\Controller\User', 'action' => 'login'],

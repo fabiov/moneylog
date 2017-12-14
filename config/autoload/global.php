@@ -12,8 +12,8 @@
  */
 
 // set main configurations
-return array(
-    'db' => array(
+return [
+    'db' => [
         'driver' => 'Pdo',
 //        'dsn' => 'mysql:dbname=accantona-prod;host=localhost',
 //        'driver_options' => array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''),
@@ -21,8 +21,8 @@ return array(
 //        'password' => 'root',
 //        'driver'   => 'Pdo_Sqlite',
 //        'database' => __DIR__ . '/../../data/accantona.sqlite',
-    ),
-    'service_manager' => array(
-        'factories' => array('Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory'),
-    ),
-);
+    ],
+    'service_manager' => [
+        'factories' => ['Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory'],
+    ],
+];

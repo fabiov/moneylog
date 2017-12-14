@@ -1,33 +1,55 @@
 <?php
 return [
     // This should be an array of module namespaces used in the application.
-    'modules' => array(
+    'modules' => [
+        'Zend\Db',
+        'Zend\Log',
+        'Zend\Mail',
+        'Zend\Mvc\Console',
+        'Zend\Mvc\I18n',
+        'Zend\I18n',
+        'Zend\Navigation',
+        'Zend\Serializer',
+        'Zend\ServiceManager\Di',
+        'Zend\Mvc\Plugin\Prg',
+        'Zend\Mvc\Plugin\Identity',
+        'Zend\Mvc\Plugin\FlashMessenger',
+        'Zend\Mvc\Plugin\FilePrg',
+        'Zend\Session',
+        'Zend\Cache',
+        'Zend\Form',
+        'Zend\InputFilter',
+        'Zend\Filter',
+        'Zend\Paginator',
+        'Zend\Hydrator',
+        'Zend\Router',
+        'Zend\Validator',
         'Accantona',
-        'Album',
+//        'Album',
         'Application',
         'Auth',
         'CsnAuthorize',
         'DoctrineModule',
         'DoctrineORMModule',
-    ),
+    ],
 
     // These are various options for the listeners attached to the ModuleManager
-    'module_listener_options' => array(
+    'module_listener_options' => [
         // This should be an array of paths in which modules reside.
         // If a string key is provided, the listener will consider that a module
         // namespace, the value of that key the specific path to that module's
         // Module class.
-        'module_paths' => array(
+        'module_paths' => [
             './module',
             './vendor',
-        ),
+        ],
 
         // An array of paths from which to glob configuration files after
         // modules are loaded. These effectively override configuration
         // provided by modules themselves. Paths may use GLOB_BRACE notation.
-        'config_glob_paths' => array(
+        'config_glob_paths' => [
             'config/autoload/{,*.}{global,local}.php',
-        ),
+        ],
 
         // Whether or not to enable a configuration cache.
         // If enabled, the merged configuration will be cached and used in
@@ -52,7 +74,7 @@ return [
         // Enabled by default, prevents usage of modules that depend on other modules
         // that weren't loaded.
         // 'check_dependencies' => true,
-    ),
+    ],
 
     // Used to create an own service manager. May contain one or more child arrays.
     //'service_listener_options' => array(
