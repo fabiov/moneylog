@@ -14,7 +14,7 @@
 return [
     'db' => [
         'driver'         => 'Pdo',
-        'driver_options' => [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''],
+        'driver_options' => [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"],
         'dsn'            => 'mysql:dbname=easywallet_dev;host=localhost',
         'password'       => 'root',
         'username'       => 'root',
@@ -27,13 +27,14 @@ return [
                     'dbname'   => 'easywallet_dev',
                     'host'     => 'localhost',
                     'password' => 'root',
-                    'port'     => 3306,
+                    'port'     => '3306',
                     'user'     => 'root',
                 ]
             ]
         ]
     ],
     'mail' => [
+        'sender'    => ['address' => 'easywallet@venol.it', 'name' => 'EasyWallet'],
         'transport' => [
             'options' => [
 
@@ -44,10 +45,10 @@ return [
 
                 // configurazione STMP register con ssl
 //                'connection_class'  => 'login',
-//                'connection_config' => ['password' => 'xxx', 'ssl' => 'ssl', 'username' => 'catchall@venol.it'],
+//                'connection_config' => ['password' => '', 'ssl' => 'ssl', 'username' => 'catchall@venol.it'],
 //                'host'              => 'authsmtp.securemail.pro',
 //                'name'              => 'authsmtp.securemail.pro',
-//                'port'              => 465,
+//                'port'              => '465',
             ],
         ],
     ],

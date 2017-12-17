@@ -8,63 +8,58 @@
  */
 
 return [
-    'router' => array(
-        'routes' => array(
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
+    'controllers' => [
+        'invokables' => [
+            'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Page'  => 'Application\Controller\PageController',
+        ],
+    ],
+    'router' => [
+        'routes' => [
+            'home' => [
+                'type' => 'Zend\Router\Http\Literal',
+                'options' => [
                     'route'    => '/',
-                    'defaults' => array(
-                        'controller' => 'Auth\Controller\User',
-                        'action'     => 'login',
-                    ),
-                ),
-            ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
+                    'defaults' => ['controller' => 'Auth\Controller\User', 'action' => 'login'],
+                ],
+            ],
+            // The following is a route to simplify getting started creating new controllers and actions without needing
+            // to create a new module.
+            // Simply drop new controllers in, and you can access them using the path /application/:controller/:action
             'application' => array(
                 'type'    => 'Literal',
-                'options' => array(
+                'options' => [
                     'route'    => '/application',
-                    'defaults' => array(
+                    'defaults' => [
                         '__NAMESPACE__' => 'Application\Controller',
                         'controller'    => 'Index',
                         'action'        => 'index',
-                    ),
-                ),
+                    ],
+                ],
                 'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
+                'child_routes' => [
+                    'default' => [
                         'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
-                    ),
-                ),
+                        'options' => [
+                            'defaults'    => [],
+                            'constraints' => [
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*', 'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                            ],
+                            'route'       => '/[:controller[/:action]]',
+                        ],
+                    ],
+                ],
             ),
-            'privacy-policy' => array(
+            'privacy_policy' => [
                 'type' => 'Literal',
-                'options' => array(
-                    'route' => '/privacy-policy',
-                    'defaults' => array(
-                        'controller' => 'PhlySimplePage\Controller\Page',
-                        'template'   => 'application/pages/privacy-policy',
-                        // optionally set a specific layout for this page
-                        'layout'     => 'layout/unlogged',
-                    ),
-                ),
-            ),
-        ),
-    ),
-    'service_manager' => array(
+                'options' => [
+                    'route'    => '/privacy-policy',
+                    'defaults' => ['controller' => 'Application\Controller\Page', 'action' => 'privacyPolicy'],
+                ],
+            ],
+        ],
+    ],
+    'service_manager' => [
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
@@ -72,8 +67,8 @@ return [
         'aliases' => array(
             'translator' => 'MvcTranslator',
         ),
-    ),
-    'translator' => array(
+    ],
+    'translator' => [
         'locale' => 'it_IT',
         'translation_file_patterns' => array(
             array(
@@ -82,13 +77,8 @@ return [
                 'pattern'  => '%s.mo',
             ),
         ),
-    ),
-    'controllers' => array(
-        'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
-        ),
-    ),
-    'view_manager' => array(
+    ],
+    'view_manager' => [
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
@@ -100,16 +90,16 @@ return [
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ),
-        'template_path_stack' => array(
-            __DIR__ . '/../view',
-        ),
-    ),
+        'template_path_stack' => [
+            'application' => __DIR__ . '/../view'
+        ],
+    ],
+
     // Placeholder for console routes
     'console' => array(
-        'router' => array(
-            'routes' => array(
-            ),
-        ),
+        'router' => [
+            'routes' => [],
+        ],
     ),
 
     // Doctrine config
@@ -118,22 +108,19 @@ return [
             'application_entities' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(__DIR__ . '/../src/Application/Entity')
+                'paths' => [__DIR__ . '/../src/Application/Entity'],
             ),
             'orm_default' => array(
-                'drivers' => array(
-                    'Application\Entity' => 'application_entities',
-                ),
+                'drivers' => ['Application\Entity' => 'application_entities'],
             ),
         )
     ),
-
-    'view_helpers' => array(
-        'invokables' => array(
+    'view_helpers' => [
+        'invokables' => [
             'helpTooltip'      => 'Application\ViewHelper\HelpTooltip',
             'richInlineScript' => 'Application\ViewHelper\RichInlineScript',
             'sbaFormRow'       => 'Application\ViewHelper\SbaFormRow',
             'userData'         => 'Application\ViewHelper\UserData',
-        ),
-    ),
+        ],
+    ],
 ];

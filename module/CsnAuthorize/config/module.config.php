@@ -57,9 +57,9 @@ return array(
                     'password-change-success'   => 'guest',
                     'registration-success'      => 'guest',
                 ),
-                'PhlySimplePage\Controller\Page' => array(
-                    'all' => 'guest',
-                ),
+                'Application\Controller\Page' => [
+                    'all' => 'guest'
+                ],
             ),
         ),
     ),

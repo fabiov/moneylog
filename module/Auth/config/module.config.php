@@ -1,31 +1,27 @@
 <?php
 return [
-    'controllers' => array(
+    'controllers' => [
         'factories' => array(
             'Auth\Controller\User' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
-                /* @var Zend\ServiceManager\ServiceManager $sm */
-                $sm = $controllerManager->getServiceLocator();
                 return new Auth\Controller\UserController(
-                    $sm->get('Zend\Db\Adapter\Adapter'),
-                    $sm->get('Zend\Authentication\AuthenticationService')->getIdentity(),
-                    $sm->get('doctrine.entitymanager.orm_default'),
-                    $sm->get('user_data')
+                    $controllerManager->get('Zend\Db\Adapter\Adapter'),
+                    $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $controllerManager->get('doctrine.entitymanager.orm_default'),
+                    $controllerManager->get('user_data')
                 );
             },
             'Auth\Controller\Registration' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
-                /* @var Zend\ServiceManager\ServiceManager $sm */
-                $sm = $controllerManager->getServiceLocator();
                 return new Auth\Controller\RegistrationController(
-                    $sm->get('doctrine.entitymanager.orm_default'),
-                    $sm,
-                    $sm->get('Auth\Model\UserTable')
+                    $controllerManager->get('doctrine.entitymanager.orm_default'),
+                    $controllerManager,
+                    $controllerManager->get('Auth\Model\UserTable')
                 );
             },
         ),
-    ),
-    'router' => array(
+    ],
+    'router' => [
         'routes' => array(
             'auth' => array(
                 'type' => 'Literal',
@@ -54,23 +50,23 @@ return [
                 ),
             ),
         ),
-    ),
-    'view_manager' => array(
+    ],
+    'view_manager' => [
         'template_path_stack' => array(
             'auth' => __DIR__ . '/../view'
         ),
         'display_exceptions' => true,
-    ),
-    'service_manager' => array(
+    ],
+    'service_manager' => [
         // added for Authentication and Authorization. Without this each time we have to create a new instance.
         // This code should be moved to a module to allow Doctrine to overwrite it
         'aliases' => [
-            'Auth\Service\UserData'                     => 'user_data',
-            'Zend\Authentication\AuthenticationService' => 'my_auth_service',
+//            'Auth\Service\UserData'                     => 'user_data',
+//            'Zend\Authentication\AuthenticationService' => 'my_auth_service',
         ],
         'invokables' => [
             'my_auth_service' => 'Zend\Authentication\AuthenticationService',
             'user_data'       => 'Auth\Service\UserData',
         ],
-    ),
+    ],
 ];

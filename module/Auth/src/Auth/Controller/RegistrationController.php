@@ -213,10 +213,12 @@ class RegistrationController extends AbstractActionController
      */
     public function sendPasswordByEmail($userEmail, $password)
     {
+        $config = $this->sm->get('Config');
+
         $str = 'La tua password su  %s è stata cambiata. La tua nuova password è: %s';
         $message = new Message();
         $message->addTo($userEmail)
-                ->addFrom('support@venol.it')
+                ->addFrom($config['mail']['sender']['address'], $config['mail']['sender']['name'])
                 ->setSubject('La tua password è stata cambiata!')
                 ->setBody(sprintf($str, $this->getRequest()->getServer('HTTP_ORIGIN'), $password));
         $this->sm->get('mail.transport')->send($message);
