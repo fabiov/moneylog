@@ -14,6 +14,7 @@ use Zend\Authentication\Result;
 use Zend\Db\Adapter\Adapter;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Authentication\Storage\Session as SessionStorage;
 
 class UserController extends AbstractActionController
 {
@@ -80,10 +81,16 @@ class UserController extends AbstractActionController
 
     /**
      * @return \Zend\Http\Response|ViewModel
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws \Zend\Authentication\Exception\ExceptionInterface
      */
     public function loginAction()
     {
         $auth = new AuthenticationService();
+        $auth->setStorage(new SessionStorage());
+
         if ($auth->hasIdentity()) {
             return $this->redirect()->toRoute('accantona_recap');
         }

@@ -6,8 +6,9 @@ apt-get update
 debconf-set-selections <<< 'mysql-server-5.7 mysql-server/root_password password wk9ncVSkXX8pwGff'
 debconf-set-selections <<< 'mysql-server-5.7 mysql-server/root_password_again password wk9ncVSkXX8pwGff'
 apt-get -y install mysql-server-5.7
-mysql -uroot -pwk9ncVSkXX8pwGff -e "CREATE DATABASE easywallet_dev DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
+mysql -uroot -pwk9ncVSkXX8pwGff -e "CREATE DATABASE easywallet DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
 
+apt-get install -y unzip
 apt-get install -y apache2
 apt-get install -y php7.1 php7.1-mysql php7.1-intl php-xml php7.1-mbstring #php5-xdebug
 
