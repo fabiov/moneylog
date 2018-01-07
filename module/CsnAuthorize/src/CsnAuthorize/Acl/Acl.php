@@ -1,42 +1,19 @@
 <?php
-/**
- * File for Acl Class
- *
- * @category  User
- * @package   User_Acl
- * @author    Marco Neumann <webcoder_at_binware_dot_org>
- * @copyright Copyright (c) 2011, Marco Neumann
- * @license   http://binware.org/license/index/type:new-bsd New BSD License
- * http://p0l0.binware.org/index.php/2012/02/18/zend-framework-2-authentication-acl-using-eventmanager/
- */
-
-/**
- * @namespace
- */
 namespace CsnAuthorize\Acl;
-// namespace User\Acl;
+
+use Zend\Permissions\Acl\Acl as ZendAcl;
+use Zend\Permissions\Acl\Role\GenericRole as Role;
+use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 
 /**
- * @uses Zend\Acl\Acl
- * @uses Zend\Acl\Role\GenericRole
- * @uses Zend\Acl\Resource\GenericResource
- */
-use Zend\Permissions\Acl\Acl as ZendAcl,
-    Zend\Permissions\Acl\Role\GenericRole as Role,
-    Zend\Permissions\Acl\Resource\GenericResource as Resource;
-// use Zend\Acl\Acl as ZendAcl,
-//    Zend\Acl\Role\GenericRole as Role,
-//    Zend\Acl\Resource\GenericResource as Resource;
-
-/**
- * Class to handle Acl
+ * Class Acl to handle Access Control List, loading ACL defined in a config
  *
- * This class is for loading ACL defined in a config
- *
+ * @author Marco Neumann <webcoder_at_binware_dot_org>
  * @category User
- * @package  User_Acl
  * @copyright Copyright (c) 2011, Marco Neumann
- * @license   http://binware.org/license/index/type:new-bsd New BSD License
+ * @license http://binware.org/license/index/type:new-bsd New BSD License
+ * @package CsnAuthorize\Acl
+ * @see http://p0l0.binware.org/index.php/2012/02/18/zend-framework-2-authentication-acl-using-eventmanager/
  */
 class Acl extends ZendAcl
 {
@@ -64,15 +41,14 @@ class Acl extends ZendAcl
             $roles[self::DEFAULT_ROLE] = '';
         }
 
-        $this->_addRoles($roles)
-             ->_addResources($config['acl']['resources']);
+        $this->_addRoles($roles)->_addResources($config['acl']['resources']);
     }
 
     /**
      * Adds Roles to ACL
      *
-     * @param array $roles
-     * @return User\Acl
+     * @param $roles
+     * @return $this
      */
     protected function _addRoles($roles)
     {
@@ -95,7 +71,7 @@ class Acl extends ZendAcl
      * Adds Resources to ACL
      *
      * @param $resources
-     * @return User\Acl
+     * @return $this
      * @throws \Exception
      */
     protected function _addResources($resources)

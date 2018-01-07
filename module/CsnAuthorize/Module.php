@@ -41,6 +41,8 @@ class Module
         $application = $e->getApplication();
         $routeMatch = $e->getRouteMatch();
         $sm = $application->getServiceManager();
+
+        /* @var $auth \Zend\Authentication\AuthenticationService */
         $auth = $sm->get('Zend\Authentication\AuthenticationService');
         $config = $sm->get('Config');
         $acl = new Acl($config);
