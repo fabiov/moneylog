@@ -51,22 +51,23 @@ return [
             ),
         ),
     ],
-    'view_manager' => [
-        'template_path_stack' => array(
-            'auth' => __DIR__ . '/../view'
-        ),
-        'display_exceptions' => true,
-    ],
     'service_manager' => [
         // added for Authentication and Authorization. Without this each time we have to create a new instance.
         // This code should be moved to a module to allow Doctrine to overwrite it
-        'aliases' => [
-//            'Auth\Service\UserData'                     => 'user_data',
-//            'Zend\Authentication\AuthenticationService' => 'my_auth_service',
+        'aliases' => [],
+        'factories' => [
+            \Auth\Service\AuthAdapter::class => function ($controllerManager) {
+                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                return new Auth\Service\AuthAdapter($controllerManager->get('doctrine.entitymanager.orm_default'));
+            },
         ],
         'invokables' => [
             'my_auth_service' => 'Zend\Authentication\AuthenticationService',
             'user_data'       => 'Auth\Service\UserData',
         ],
+    ],
+    'view_manager' => [
+        'display_exceptions'  => true,
+        'template_path_stack' => ['auth' => __DIR__ . '/../view'],
     ],
 ];
