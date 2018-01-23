@@ -24,6 +24,8 @@ use Zend\InputFilter\InputFilterInterface;
  */
 class User implements InputFilterAwareInterface
 {
+    const STATUS_NOT_CONFIRMED = 0;
+    const STATUS_CONFIRMED = 1;
 
     protected $inputFilter;
 
@@ -246,5 +248,59 @@ class User implements InputFilterAwareInterface
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     * @return User
+     */
+    public function setPassword(string $password): User
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalt(): string
+    {
+        return $this->salt;
+    }
+
+    /**
+     * @param string $salt
+     * @return User
+     */
+    public function setSalt(string $salt): User
+    {
+        $this->salt = $salt;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     * @return User
+     */
+    public function setStatus(int $status): User
+    {
+        $this->status = $status;
+        return $this;
     }
 }
