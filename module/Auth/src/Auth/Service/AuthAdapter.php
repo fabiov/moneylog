@@ -90,7 +90,13 @@ class AuthAdapter implements AdapterInterface
         // it with the password hash stored in database.
         if ($user->getPassword() === md5($this->password . $user->getSalt())) {
             // Great! The password hash matches. Return user identity (email) to be saved in session for later use.
-            return new Result(Result::SUCCESS, $this->email, ['Authenticated successfully.']);
+            return new Result(Result::SUCCESS, [
+                'id'      => $user->getId(),
+                'name'    => $user->getName(),
+                'surname' => $user->getSurname(),
+                'email'   => $user->getEmail(),
+                'role'    => $user->getRole(),
+            ], ['Authenticated successfully.']);
         }
 
         // If password check didn't pass return 'Invalid Credential' failure status.

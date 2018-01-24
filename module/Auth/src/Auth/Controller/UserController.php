@@ -8,20 +8,19 @@ use Auth\Form\Filter\ChangePasswordFilter;
 use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
 use Auth\Model\Auth;
-use Zend\Authentication\Adapter\DbTable as AuthAdapter;
+use Auth\Service\AuthAdapter;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
-use Zend\Db\Adapter\Adapter;
+use Zend\Authentication\Storage\Session as SessionStorage;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Authentication\Storage\Session as SessionStorage;
 
 class UserController extends AbstractActionController
 {
     /**
-     * @var Adapter
+     * @var AuthAdapter
      */
-    private $dbAdapter;
+    private $adapter;
 
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -40,17 +39,17 @@ class UserController extends AbstractActionController
 
     /**
      * UserController constructor.
-     * @param Adapter $dbAdapter
+     * @param AuthAdapter $adapter
      * @param $user
      * @param $em
      * @param $userData
      */
-    public function __construct(Adapter $dbAdapter, $user, $em, $userData)
+    public function __construct(AuthAdapter $adapter, $user, $em, $userData)
     {
-        $this->dbAdapter = $dbAdapter;
-        $this->em        = $em;
-        $this->user      = $user;
-        $this->userData  = $userData;
+        $this->adapter  = $adapter;
+        $this->em       = $em;
+        $this->user     = $user;
+        $this->userData = $userData;
     }
 
     public function updateAction()
@@ -105,22 +104,13 @@ class UserController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $authAdapter = new AuthAdapter(
-                    $this->dbAdapter,
-                    'User', // there is a method setTableName to do the same
-                    'email',
-                    'password', // there is a method setCredentialColumn to do the same
-                    "MD5(CONCAT(?, salt)) AND status=1" // setCredentialTreatment(parametrized string) 'MD5(?)'
-                );
-                $authAdapter->setIdentity($data['email'])->setCredential($data['password']);
-
                 // You can set the service here but will be loaded only if this action called.
-                $result = $auth->authenticate($authAdapter);
+                $result = $this->adapter->setEmail($data['email'])->setPassword($data['password'])->authenticate();
 
                 switch ($result->getCode()) {
                     case Result::SUCCESS:
                         $storage = $auth->getStorage();
-                        $identity = $authAdapter->getResultRowObject(null, ['password', 'registrationToken', 'salt']);
+                        $identity = (object) $result->getIdentity();
                         $storage->write($identity);
                         if ($data['rememberme']) {
                             $sessionManager = new \Zend\Session\SessionManager();

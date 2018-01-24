@@ -5,7 +5,7 @@ return [
             'Auth\Controller\User' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 return new Auth\Controller\UserController(
-                    $controllerManager->get('Zend\Db\Adapter\Adapter'),
+                    $controllerManager->get(\Auth\Service\AuthAdapter::class),
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager->get('user_data')
