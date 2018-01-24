@@ -44,24 +44,30 @@ class AuthAdapter implements AdapterInterface
      * Sets user email.
      *
      * @param string $email
+     * @return $this
      */
-    public function setEmail($email)
+    public function setEmail(string $email)
     {
         $this->email = $email;
+        return $this;
     }
 
     /**
      * Sets password.
      *
      * @param string $password
+     * @return $this
      */
-    public function setPassword($password)
+    public function setPassword(string $password)
     {
         $this->password = (string) $password;
+        return $this;
     }
 
     /**
      * Performs an authentication attempt.
+     *
+     * @return Result
      */
     public function authenticate(): Result
     {
