@@ -68,6 +68,7 @@ class AuthAdapter implements AdapterInterface
      * Performs an authentication attempt.
      *
      * @return Result
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function authenticate(): Result
     {
@@ -81,7 +82,7 @@ class AuthAdapter implements AdapterInterface
         }
 
         // If the user with such email exists, we need to check if it is confirmed.
-        // Do not allow not confimed users to log in.
+        // Do not allow not confirmed users to log in.
         if ($user->getStatus() == User::STATUS_NOT_CONFIRMED) {
             return new Result(Result::FAILURE, null, ['User not confirmed.']);
         }
@@ -89,8 +90,12 @@ class AuthAdapter implements AdapterInterface
         // Now we need to calculate hash based on user-entered password and compare
         // it with the password hash stored in database.
         if ($user->getPassword() === md5($this->password . $user->getSalt())) {
+
+            $user->setLastLogin(new \DateTime());
+            $this->entityManager->flush();
+
             // Great! The password hash matches. Return user identity (email) to be saved in session for later use.
-            return new Result(Result::SUCCESS, [
+            return new Result(Result::SUCCESS, (object) [
                 'id'      => $user->getId(),
                 'name'    => $user->getName(),
                 'surname' => $user->getSurname(),

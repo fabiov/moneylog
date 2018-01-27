@@ -8,22 +8,17 @@ use Auth\Form\Filter\ChangePasswordFilter;
 use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
 use Auth\Model\Auth;
-use Auth\Service\AuthAdapter;
-use Zend\Authentication\AuthenticationService;
+use Auth\Model\UserTable;
+use Auth\Service\AuthManager;
+use Doctrine\ORM\EntityManager;
 use Zend\Authentication\Result;
-use Zend\Authentication\Storage\Session as SessionStorage;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class UserController extends AbstractActionController
 {
     /**
-     * @var AuthAdapter
-     */
-    private $adapter;
-
-    /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $em;
 
@@ -38,26 +33,33 @@ class UserController extends AbstractActionController
     private $userData;
 
     /**
+     * Auth manager.
+     * @var AuthManager
+     */
+    private $authManager;
+
+    /**
      * UserController constructor.
-     * @param AuthAdapter $adapter
+     *
      * @param $user
      * @param $em
      * @param $userData
+     * @param $authManager
      */
-    public function __construct(AuthAdapter $adapter, $user, $em, $userData)
+    public function __construct($user, EntityManager $em, UserTable $userData, AuthManager $authManager)
     {
-        $this->adapter  = $adapter;
-        $this->em       = $em;
-        $this->user     = $user;
-        $this->userData = $userData;
+        $this->authManager = $authManager;
+        $this->em          = $em;
+        $this->user        = $user;
+        $this->userData    = $userData;
     }
 
     public function updateAction()
     {
         /* @var User $user*/
-        $user = $this->em->find('Application\Entity\User', $this->user->id)->setInputFilter(new UserFilter());
+        $user = $this->em->find(\Application\Entity\User::class, $this->user->id)->setInputFilter(new UserFilter());
         if (!$user) {
-            return $this->forward()->dispatch('Auth\Controller\User', ['action' => 'logout']);
+            return $this->forward()->dispatch(\Auth\Controller\User::class, ['action' => 'logout']);
         }
 
         $form = new UserForm();
@@ -80,17 +82,11 @@ class UserController extends AbstractActionController
 
     /**
      * @return \Zend\Http\Response|ViewModel
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
-     * @throws \Zend\Authentication\Exception\ExceptionInterface
+     * @throws \Exception
      */
     public function loginAction()
     {
-        $auth = new AuthenticationService();
-        $auth->setStorage(new SessionStorage());
-
-        if ($auth->hasIdentity()) {
+        if ($this->user) {
             return $this->redirect()->toRoute('accantona_recap');
         }
         $form = new AuthForm();
@@ -104,30 +100,11 @@ class UserController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                // You can set the service here but will be loaded only if this action called.
-                $result = $this->adapter->setEmail($data['email'])->setPassword($data['password'])->authenticate();
+                // Perform login attempt.
+                $result = $this->authManager->login($data['email'], $data['password'], $data['rememberme']);
 
                 switch ($result->getCode()) {
                     case Result::SUCCESS:
-                        $storage = $auth->getStorage();
-                        $identity = (object) $result->getIdentity();
-                        $storage->write($identity);
-                        if ($data['rememberme']) {
-                            $sessionManager = new \Zend\Session\SessionManager();
-                            $sessionManager->rememberMe(604800); // 7 days
-                        }
-
-                        /* @var User $user */
-                        $user = $this->em->find('Application\Entity\User', $identity->id);
-                        $user->setLastLogin(new \DateTime());
-                        $this->em->flush();
-
-                        // save user info in session
-                        $this->userData
-                            ->setName($user->name)
-                            ->setSurname($user->surname)
-                            ->setSettings($user->setting);
-
                         return $this->redirect()->toRoute('accantona_recap');
                         break;
                     case Result::FAILURE_IDENTITY_NOT_FOUND:
@@ -142,13 +119,13 @@ class UserController extends AbstractActionController
         return new ViewModel(array('form' => $form, 'messages' => $messages));
     }
 
+    /**
+     * @return \Zend\Http\Response
+     * @throws \Exception
+     */
     public function logoutAction()
     {
-        $auth = new AuthenticationService();
-        $auth->clearIdentity();
-        $sessionManager = new \Zend\Session\SessionManager();
-        $sessionManager->forgetMe();
-
+        $this->authManager->logout();
         return $this->redirect()->toRoute('auth/default', array('action' => 'login'));
     }
 
