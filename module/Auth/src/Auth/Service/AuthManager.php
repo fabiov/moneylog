@@ -43,9 +43,9 @@ class AuthManager
     public function login($email, $password, $rememberMe)
     {
         // Check if user has already logged in. If so, do not allow to log in twice.
-        if ($this->authService->getIdentity() != null) {
+//        if ($this->authService->getIdentity() != null) {
 //            throw new \Exception('Already logged in');
-        }
+//        }
 
         // Authenticate with login/password.
         $this->authService->getAdapter()->setEmail($email)->setPassword($password);
