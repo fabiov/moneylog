@@ -43,7 +43,8 @@ class Module
         $sm = $application->getServiceManager();
 
         /* @var $auth \Zend\Authentication\AuthenticationService */
-        $auth = $sm->get('Zend\Authentication\AuthenticationService');
+        $auth = $sm->get(\Zend\Authentication\AuthenticationService::class);
+
         $config = $sm->get('Config');
         $acl = new Acl($config);
 
