@@ -9,8 +9,9 @@ class MovimentRepository extends EntityRepository
 
     /**
      * @param $accountId
-     * @param \DateTime|string|null $date
-     * @return mixed
+     * @param null $date
+     * @return float
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getBalance($accountId, $date = null)
     {
@@ -63,13 +64,23 @@ class MovimentRepository extends EntityRepository
             $qb->andWhere('m.description LIKE :description');
             $cleanParams['description'] = '%' . $params['description'] . '%';
         }
+        if (is_numeric($params['amountMin'])) {
+            $qb->andWhere('m.amount >= :amountMin');
+            $cleanParams['amountMin'] = (float) $params['amountMin'];
+        }
+        if (is_numeric($params['amountMax'])) {
+            $qb->andWhere('m.amount <= :amountMax');
+            $cleanParams['amountMax'] = (float) $params['amountMax'];
+        }
 
         return $qb->setParameters($cleanParams)->orderBy('m.date', 'DESC')->getQuery()->getResult();
     }
 
     /**
-     * @param int $userId
+     * @param $userId
      * @return mixed
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getTotalExpense($userId)
     {

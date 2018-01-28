@@ -163,7 +163,7 @@ class AccountController extends AbstractActionController
 
         switch ($routeName) {
             case 'accantonaMoviment':
-                return $this->redirect()->toRoute('accantonaMoviment', ['action' => 'account', 'id' => $id]);
+                return $this->redirect()->toRoute('accantonaMovement', ['action' => 'account', 'id' => $id]);
             case 'accantonaAccount':
             default:
                 return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);

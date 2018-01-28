@@ -2,7 +2,7 @@
 
 return [
     'controllers' => [
-        'factories' => array(
+        'factories' => [
             'Accantona\Controller\Recap' => function($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 return new \Accantona\Controller\RecapController(
@@ -41,14 +41,14 @@ return [
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
-            'Accantona\Controller\Moviment' => function ($controllerManager) {
+            'Accantona\Controller\Movement' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
-                return new \Accantona\Controller\MovimentController(
+                return new \Accantona\Controller\MovementController(
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
-        ),
+        ],
     ],
 
     // The following section is new and should be added to your file
@@ -94,12 +94,12 @@ return [
                     'defaults' => array('controller' => 'Accantona\Controller\Account', 'action' => 'index'),
                 ),
             ),
-            'accantonaMoviment' => array(
+            'accantonaMovement' => array(
                 'type' => 'segment',
                 'options' => array(
                     'route' => '/moviment[/:action][/:id]',
                     'constraints' => array('action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'),
-                    'defaults' => array('controller' => 'Accantona\Controller\Moviment', 'action' => 'index'),
+                    'defaults' => array('controller' => 'Accantona\Controller\Movement', 'action' => 'index'),
                 ),
             ),
         ),
@@ -113,15 +113,16 @@ return [
 
     'view_helpers' => [
         'invokables' => array(
-            'balanceModalForm'  => 'Accantona\View\Helper\BalanceModalForm',
-            'currencyForma'     => 'Accantona\View\Helper\CurrencyForma',
-            'dataTable'         => 'Accantona\View\Helper\DataTable',
-            'dateForma'         => 'Accantona\View\Helper\DateForma',
-            'floatingButtons'   => 'Accantona\View\Helper\FloatingButtons',
-            'morris'            => 'Accantona\View\Helper\Morris',
-            'pageHeader'        => 'Accantona\View\Helper\PageHeader',
-            'widgetSelect'      => 'Accantona\View\Helper\WidgetSelect',
-            'widgetText'        => 'Accantona\View\Helper\WidgetText',
+            'balanceModalForm'  => Accantona\View\Helper\BalanceModalForm::class,
+            'currencyForma'     => Accantona\View\Helper\CurrencyForma::class,
+            'dataTable'         => Accantona\View\Helper\DataTable::class,
+            'dateForma'         => Accantona\View\Helper\DateForma::class,
+            'floatingButtons'   => Accantona\View\Helper\FloatingButtons::class,
+            'morris'            => Accantona\View\Helper\Morris::class,
+            'pageHeader'        => Accantona\View\Helper\PageHeader::class,
+            'synopsisFilters'   => Accantona\View\Helper\SynopsisFilters::class,
+            'widgetSelect'      => Accantona\View\Helper\WidgetSelect::class,
+            'widgetText'        => Accantona\View\Helper\WidgetText::class,
         ),
     ],
 ];
