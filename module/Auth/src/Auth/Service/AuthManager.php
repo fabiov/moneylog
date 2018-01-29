@@ -3,7 +3,6 @@ namespace Auth\Service;
 
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
-use Zend\Debug\Debug;
 use Zend\Session\SessionManager;
 
 class AuthManager

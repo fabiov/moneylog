@@ -37,7 +37,7 @@ class UserController extends AbstractActionController
      *
      * @param $user
      * @param $em
-     * @param $authManager
+     * @param AuthManager $authManager
      */
     public function __construct($user, EntityManager $em, AuthManager $authManager)
     {
