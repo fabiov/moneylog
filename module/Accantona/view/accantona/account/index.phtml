@@ -33,7 +33,7 @@ $totalBalance   = 0;
                         ?>
                         <tr>
                             <td class="name">
-                                <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'account', 'id' => $row['id'])); ?>">
+                                <a href="<?php echo $this->url('accantonaMovement', array('action' => 'account', 'id' => $row['id'])); ?>">
                                     <?php echo $this->escapeHtml($row['name']); ?>
                                 </a>
                             </td>
@@ -41,7 +41,7 @@ $totalBalance   = 0;
                             <td class="text-right total"><?php if (isset($row['available'])) echo $this->currencyForma($row['available']); ?></td>
                             <td class="text-right total"><?php if (isset($row['balance'])) echo $this->currencyForma($row['balance']); ?></td>
                             <td class="text-right">
-                                <a href="<?php echo $this->url('accantonaMoviment', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
+                                <a href="<?php echo $this->url('accantonaMovement', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
                                     <span class="glyphicon glyphicon-transfer" title="Giroconto: sposta i soldi da un conto ad un'altro"></span>
                                 </a>
                                 <span

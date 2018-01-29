@@ -15,7 +15,7 @@ return [
 //        'Zend\Mvc\Plugin\Identity',
         'Zend\Mvc\Plugin\FlashMessenger',
 //        'Zend\Mvc\Plugin\FilePrg',
-//        'Zend\Session',
+        'Zend\Session',
 //        'Zend\Cache',
         'Zend\Form',
 //        'Zend\InputFilter',

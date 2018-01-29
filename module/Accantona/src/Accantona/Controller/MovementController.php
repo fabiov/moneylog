@@ -11,9 +11,8 @@ use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class MovimentController extends AbstractActionController
+class MovementController extends AbstractActionController
 {
-
     /**
      * @var \stdClass
      */
@@ -57,7 +56,7 @@ class MovimentController extends AbstractActionController
                 $this->em->flush();
 
                 return $this->redirect()->toRoute(
-                    'accantonaMoviment', ['action' => 'account', 'id' => $item->accountId], ['query' => $searchParams]
+                    'accantonaMovement', ['action' => 'account', 'id' => $item->accountId], ['query' => $searchParams]
                 );
             }
         }
@@ -74,13 +73,15 @@ class MovimentController extends AbstractActionController
         $dateMin      = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
         $searchParams = [
             'accountId'   => $accountId,
+            'amountMax'   => $this->params()->fromQuery('amountMax'),
+            'amountMin'   => $this->params()->fromQuery('amountMin'),
             'category'    => $this->params()->fromQuery('category'),
             'dateMax'     => $this->params()->fromQuery('dateMax'),
             'dateMin'     => $dateMin,
             'description' => $this->params()->fromQuery('description'),
         ];
 
-        $account = $this->em->getRepository('Application\Entity\Account')->findOneBy([
+        $account = $this->em->getRepository(\Application\Entity\Account::class)->findOneBy([
             'id'        => $accountId,
             'userId'    => $this->user->id,
         ]);
@@ -89,11 +90,11 @@ class MovimentController extends AbstractActionController
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
-        $categories = $this->em->getRepository('Application\Entity\Category')
+        $categories = $this->em->getRepository(\Application\Entity\Category::class)
             ->findBy(['status' => 1, 'userId' => $this->user->id], ['descrizione' => 'ASC']);
 
         /* @var \Application\Repository\MovimentRepository $movimentRepository */
-        $movimentRepository = $this->em->getRepository('Application\Entity\Moviment');
+        $movimentRepository = $this->em->getRepository(\Application\Entity\Moviment::class);
         $rows               = $movimentRepository->search($searchParams);
 
         $previewsDate    = date('Y-m-d', strtotime("$dateMin -1 day"));
@@ -138,7 +139,7 @@ class MovimentController extends AbstractActionController
             $this->em->remove($item);
             $this->em->flush();
         }
-        return $this->redirect()->toRoute('accantonaMoviment', ['action' => 'account', 'id' => $item->accountId], ['query' => $this->params()->fromQuery()]);
+        return $this->redirect()->toRoute('accantonaMovement', ['action' => 'account', 'id' => $item->accountId], ['query' => $this->params()->fromQuery()]);
     }
 
     public function moveAction()
@@ -222,9 +223,9 @@ class MovimentController extends AbstractActionController
         $form = new MovimentForm('moviment', $this->em, $this->user->id);
         if ($request->isPost()) {
 
-            $moviment = new Moviment();
+            $movement = new Moviment();
             $data = $request->getPost();
-            $form->setInputFilter($moviment->getInputFilter());
+            $form->setInputFilter($movement->getInputFilter());
             $form->setData($data);
 
             if ($form->isValid()) {
@@ -237,21 +238,21 @@ class MovimentController extends AbstractActionController
                     ->findOneBy(['id' => $data['category'], 'userId' => $this->user->id]);
 
                 for ($i = 0; $i < $repetitionNumber; $i++) {
-                    $moviment = new Moviment();
-                    $moviment->exchangeArray([
+                    $movement = new Moviment();
+                    $movement->exchangeArray([
                         'date'          => date('Y-m-d', strtotime("{$data['date']} +$i {$data['repetitionPeriod']}")),
                         'amount'        => $data['amount'],
                         'description'   => $data['description'],
                         'category'      => $category,
                     ]);
-                    $moviment->account = $account;
+                    $movement->account = $account;
 
-                    $this->em->persist($moviment);
+                    $this->em->persist($movement);
                     $this->em->flush();
                 }
 
                 return $this->redirect()
-                    ->toRoute('accantonaMoviment', array('action' => 'account', 'id' => $accountId));
+                    ->toRoute('accantonaMovement', array('action' => 'account', 'id' => $accountId));
             }
         }
 

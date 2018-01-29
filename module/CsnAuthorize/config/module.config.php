@@ -35,7 +35,7 @@ return array(
                     'index' => 'user',
                     'moviment' => 'user',
                 ),
-                'Accantona\Controller\Moviment' => array(
+                'Accantona\Controller\Movement' => array(
                     'account' => 'user',
                     'add' => 'user',
                     'move' => 'user',

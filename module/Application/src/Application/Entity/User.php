@@ -24,6 +24,8 @@ use Zend\InputFilter\InputFilterInterface;
  */
 class User implements InputFilterAwareInterface
 {
+    const STATUS_NOT_CONFIRMED = 0;
+    const STATUS_CONFIRMED = 1;
 
     protected $inputFilter;
 
@@ -215,6 +217,96 @@ class User implements InputFilterAwareInterface
     }
 
     /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return User
+     */
+    public function setId(int $id): User
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     * @return User
+     */
+    public function setEmail(string $email): User
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return User
+     */
+    public function setName(string $name): User
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    /**
+     * @param string $surname
+     * @return User
+     */
+    public function setSurname(string $surname): User
+    {
+        $this->surname = $surname;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param string $role
+     * @return User
+     */
+    public function setRole(string $role): User
+    {
+        $this->role = $role;
+        return $this;
+    }
+
+    /**
      * @param \DateTime $date
      * @return $this
      */
@@ -246,5 +338,59 @@ class User implements InputFilterAwareInterface
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     * @return User
+     */
+    public function setPassword(string $password): User
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalt(): string
+    {
+        return $this->salt;
+    }
+
+    /**
+     * @param string $salt
+     * @return User
+     */
+    public function setSalt(string $salt): User
+    {
+        $this->salt = $salt;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     * @return User
+     */
+    public function setStatus(int $status): User
+    {
+        $this->status = $status;
+        return $this;
     }
 }
