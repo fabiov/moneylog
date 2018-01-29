@@ -6,7 +6,6 @@ return [
                 return new Auth\Controller\UserController(
                     $controllerManager->get(Zend\Authentication\AuthenticationService::class)->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
-                    $controllerManager->get(Auth\Model\UserTable::class),
                     $controllerManager->get(Auth\Service\AuthManager::class)
                 );
             },

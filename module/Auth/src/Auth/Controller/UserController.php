@@ -8,7 +8,6 @@ use Auth\Form\Filter\ChangePasswordFilter;
 use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
 use Auth\Model\Auth;
-use Auth\Model\UserTable;
 use Auth\Service\AuthManager;
 use Doctrine\ORM\EntityManager;
 use Zend\Authentication\Result;
@@ -28,11 +27,6 @@ class UserController extends AbstractActionController
     private $user;
 
     /**
-     * @var \stdClass
-     */
-    private $userData;
-
-    /**
      * Auth manager.
      * @var AuthManager
      */
@@ -43,15 +37,13 @@ class UserController extends AbstractActionController
      *
      * @param $user
      * @param $em
-     * @param $userData
      * @param $authManager
      */
-    public function __construct($user, EntityManager $em, UserTable $userData, AuthManager $authManager)
+    public function __construct($user, EntityManager $em, AuthManager $authManager)
     {
         $this->authManager = $authManager;
         $this->em          = $em;
         $this->user        = $user;
-        $this->userData    = $userData;
     }
 
     public function updateAction()
@@ -71,8 +63,10 @@ class UserController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                $data = $form->getData();
+                $user->setName($data->getName())->setSurname($data->getSurname());
+                $this->em->persist($user);
                 $this->em->flush();
-                $this->userData->setName($user->name)->setSurname($user->surname);
                 $message = 'I tuoi dati sono stati salvati correttamente';
             }
         }
