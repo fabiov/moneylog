@@ -101,6 +101,7 @@ class AuthAdapter implements AdapterInterface
                 'surname' => $user->getSurname(),
                 'email'   => $user->getEmail(),
                 'role'    => $user->getRole(),
+                'setting' => $user->getSetting(),
             ], ['Authenticated successfully.']);
         }
 

@@ -393,4 +393,22 @@ class User implements InputFilterAwareInterface
         $this->status = $status;
         return $this;
     }
+
+    /**
+     * @return Setting
+     */
+    public function getSetting(): Setting
+    {
+        return $this->setting;
+    }
+
+    /**
+     * @param Setting $setting
+     * @return User
+     */
+    public function setSetting(Setting $setting): User
+    {
+        $this->setting = $setting;
+        return $this;
+    }
 }

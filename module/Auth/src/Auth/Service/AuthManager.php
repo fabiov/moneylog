@@ -18,15 +18,22 @@ class AuthManager
     private $sessionManager;
 
     /**
+     * @var UserData
+     */
+    private $userData;
+
+    /**
      * AuthManager constructor.
      *
      * @param AuthenticationService $authenticationService
      * @param SessionManager $sessionManager
+     * @param UserData $userData
      */
-    public function __construct(AuthenticationService $authenticationService, SessionManager $sessionManager)
+    public function __construct(AuthenticationService $authenticationService, SessionManager $sessionManager, UserData $userData)
     {
         $this->authService    = $authenticationService;
         $this->sessionManager = $sessionManager;
+        $this->userData       = $userData;
     }
 
     /**
@@ -50,12 +57,20 @@ class AuthManager
         $this->authService->getAdapter()->setEmail($email)->setPassword($password);
         $result = $this->authService->authenticate();
 
-
         // If user wants to "remember him", we will make session to expire in one month.
         // By default session expires in 1 hour (as specified in our config/global.php file).
         if ($result->getCode() == Result::SUCCESS && $rememberMe) {
-            // Session cookie will expire in 1 week.
-            $this->sessionManager->rememberMe(3600 * 24 * 7);
+
+            $identity = $result->getIdentity();
+
+            $this->userData->setName($identity->name);
+            $this->userData->setSurname($identity->surname);
+            $this->userData->setSettings($identity->setting);
+
+            if ($rememberMe) {
+                // Session cookie will expire in 1 week.
+                $this->sessionManager->rememberMe(3600 * 24 * 7);
+            }
         }
 
         return $result;

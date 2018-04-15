@@ -55,7 +55,8 @@ return [
             Auth\Service\AuthManager::class => function (Interop\Container\ContainerInterface $container) {
                 return new Auth\Service\AuthManager(
                     $container->get(Zend\Authentication\AuthenticationService::class),
-                    $container->get(Zend\Session\SessionManager::class)
+                    $container->get(Zend\Session\SessionManager::class),
+                    $container->get(\Auth\Service\UserData::class)
                 );
             },
             Zend\Authentication\AuthenticationService::class => \Auth\Service\Factory\AuthenticationServiceFactory::class,
