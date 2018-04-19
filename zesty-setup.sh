@@ -9,7 +9,7 @@ apt-get -y install mysql-server-5.7
 mysql -uroot -proot -e "CREATE DATABASE easywallet_dev DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
 
 apt-get install -y apache2
-apt-get install -y php7.0 php7.0-mysql php7.0-intl php-xml php7.0-mbstring #php5-xdebug
+apt-get install -y php7.0 php7.0-mysql php7.0-intl php-xml php7.0-mbstring
 
 chown -R www-data:www-data /var/www/easywallet
 
@@ -46,3 +46,18 @@ swapon /swapfile
 if ! grep -q "swapfile" /etc/fstab; then
     echo "/swapfile none swap sw 0 0" >> /etc/fstab
 fi
+
+###############################
+# FOR DEVELOPMENT ENVIRONMENT #
+###############################
+
+#apt-get install php-xdebug
+
+#cat << EOF >> /etc/php/7.0/apache2/php.ini
+
+# Added for xdebug
+#xdebug.remote_enable=1
+#xdebug.remote_host=10.0.3.1
+#xdebug.remote_port=9000
+
+#EOF

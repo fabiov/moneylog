@@ -1,4 +1,5 @@
 .idea
+.notes
 .vagrant
 composer
 config/autoload/local.php
