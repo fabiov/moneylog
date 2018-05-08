@@ -66,6 +66,7 @@ class MovementController extends AbstractActionController
 
     /**
      * @return \Zend\Http\Response|ViewModel
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function accountAction()
     {
@@ -126,6 +127,64 @@ class MovementController extends AbstractActionController
             'rows'             => $movimentRepository->search($searchParams),
             'searchParams'     => $searchParams,
         ));
+    }
+
+    /**
+     * @return \Zend\Http\Response|ViewModel
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function exportAction()
+    {
+        $accountId    = $this->params()->fromRoute('id', 0);
+        $dateMin      = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
+        $searchParams = [
+            'accountId'   => $accountId,
+            'amountMax'   => $this->params()->fromQuery('amountMax'),
+            'amountMin'   => $this->params()->fromQuery('amountMin'),
+            'category'    => $this->params()->fromQuery('category'),
+            'dateMax'     => $this->params()->fromQuery('dateMax'),
+            'dateMin'     => $dateMin,
+            'description' => $this->params()->fromQuery('description'),
+        ];
+
+        $account = $this->em->getRepository(Account::class)->findOneBy([
+            'id'        => $accountId,
+            'userId'    => $this->user->id,
+        ]);
+
+        if (!$account) {
+            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+        }
+
+        /* @var \Application\Repository\MovimentRepository $movementRepository */
+        $movementRepository = $this->em->getRepository(Moviment::class);
+        $rows               = $movementRepository->search($searchParams);
+
+        $previewsDate    = date('Y-m-d', strtotime("$dateMin -1 day"));
+        $previewsBalance = $movementRepository->getBalance($accountId, $previewsDate);
+        $balances        = [$previewsDate => $previewsBalance];
+
+        foreach (array_reverse($rows) as $moviment) {
+            $date = $moviment->date->format('Y-m-d');
+
+            if (isset($balances[$date])) {
+                $balances[$date] += $moviment->amount;
+            } else {
+                $balances[$date] = $moviment->amount + $balances[$previewsDate];
+                $previewsDate = $date;
+            }
+        }
+
+        $dataLineChart = [];
+        foreach ($balances as $date => $balance) {
+            $dataLineChart[] = ['date' => $date, 'balance' => $balance];
+        }
+
+        return (new ViewModel([
+            'account'          => $account,
+            'dataLineChart'    => $dataLineChart,
+            'rows'             => $movementRepository->search($searchParams),
+        ]))->setTerminal(true);
     }
 
     public function deleteAction()
