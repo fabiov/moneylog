@@ -147,6 +147,7 @@ class MovementController extends AbstractActionController
             'description' => $this->params()->fromQuery('description'),
         ];
 
+        /* @var Account $account */
         $account = $this->em->getRepository(Account::class)->findOneBy([
             'id'        => $accountId,
             'userId'    => $this->user->id,
@@ -158,33 +159,13 @@ class MovementController extends AbstractActionController
 
         /* @var \Application\Repository\MovimentRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Moviment::class);
-        $rows               = $movementRepository->search($searchParams);
 
-        $previewsDate    = date('Y-m-d', strtotime("$dateMin -1 day"));
-        $previewsBalance = $movementRepository->getBalance($accountId, $previewsDate);
-        $balances        = [$previewsDate => $previewsBalance];
+        $this->getResponse()->getHeaders()
+            ->addHeaderLine('Content-Disposition: attachment; filename="export-' . strtolower($account->name) . '.csv"')
+            ->addHeaderLine('Content-Type: text/plain; charset=utf-8');
 
-        foreach (array_reverse($rows) as $moviment) {
-            $date = $moviment->date->format('Y-m-d');
 
-            if (isset($balances[$date])) {
-                $balances[$date] += $moviment->amount;
-            } else {
-                $balances[$date] = $moviment->amount + $balances[$previewsDate];
-                $previewsDate = $date;
-            }
-        }
-
-        $dataLineChart = [];
-        foreach ($balances as $date => $balance) {
-            $dataLineChart[] = ['date' => $date, 'balance' => $balance];
-        }
-
-        return (new ViewModel([
-            'account'          => $account,
-            'dataLineChart'    => $dataLineChart,
-            'rows'             => $movementRepository->search($searchParams),
-        ]))->setTerminal(true);
+        return (new ViewModel(['rows' => $movementRepository->search($searchParams)]))->setTerminal(true);
     }
 
     public function deleteAction()

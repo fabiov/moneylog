@@ -1,21 +1,18 @@
 <?php
 /* @var Zend\View\Renderer\PhpRenderer $this */
-?>
-<thead>
-    <tr>
-        <th>Data</th>
-        <th>Importo</th>
-        <th>Descrizione</th>
-        <th>Categoria</th>
-    </tr>
-</thead>
-<tbody>
-    <?php foreach ($rows as $row): ?>
-    <tr>
-        <td class="date"><?php echo $this->dateForma($row->date); ?></td>
-        <td class="text-right amount"><?php echo $this->currencyForma($row->amount); ?></td>
-        <td class="description"><?php echo $row->description; ?></td>
-        <td class="description"><?php echo $row->category ? $row->category->descrizione : ''; ?></td>
-    </tr>
-    <?php endforeach; ?>
-</tbody>
+
+echo implode(',', [
+    '"Data"',
+    '"Importo"',
+    '"Descrizione"',
+    '"Categoria"',
+]) . PHP_EOL;
+
+foreach ($rows as $row) {
+    echo '"' . implode('","', [
+        $this->dateForma($row->date),
+        number_format($row->amount, 2, ',', ''),
+        str_replace('"', '""', trim($row->description)),
+        $row->category ? str_replace('"', '""', $row->category->descrizione) : '',
+    ]) . '"' . PHP_EOL;
+}
