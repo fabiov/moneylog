@@ -1,66 +1,67 @@
 <?php
-return array(
-    'acl' => array(
-        'roles' => array(
+return [
+    'acl' => [
+        'roles' => [
             'guest' => null,
-            'user' => 'guest', // member extendes guest
-        ),
-        'resources' => array(
-            'allow' => array(
-                'Accantona\Controller\Recap' => array(
+            'user'  => 'guest', // member extendes guest
+        ],
+        'resources' => [
+            'allow' => [
+                'Accantona\Controller\Recap' => [
+                    'add'   => 'user',
+                    'edit'  => 'user',
                     'index' => 'user',
-                    'add' => 'user',
-                    'edit' => 'user',
-                ),
-                'Accantona\Controller\Categoria' => array(
-                    'add' => 'user',
+                ],
+                'Accantona\Controller\Categoria' => [
+                    'add'       => 'user',
+                    'delete'    => 'user',
+                    'edit'      => 'user',
+                    'index'     => 'user',
+                ],
+                'Accantona\Controller\Accantonato' => [
+                    'add'       => 'user',
+                    'delete'    => 'user',
+                    'edit'      => 'user',
+                    'index'     => 'user',
+                ],
+                'Accantona\Controller\Settings' => [
                     'index' => 'user',
-                    'edit' => 'user',
-                    'delete' => 'user',
-                ),
-                'Accantona\Controller\Accantonato' => array(
-                    'add' => 'user',
-                    'index' => 'user',
-                    'edit' => 'user',
-                    'delete' => 'user',
-                ),
-                'Accantona\Controller\Settings' => array(
-                    'index' => 'user',
-                ),
-                'Accantona\Controller\Account' => array(
-                    'add' => 'user',
-                    'balance' => 'user',
-                    'delete' => 'user',
-                    'edit' => 'user',
-                    'index' => 'user',
-                    'moviment' => 'user',
-                ),
-                'Accantona\Controller\Movement' => array(
-                    'account' => 'user',
-                    'add' => 'user',
-                    'move' => 'user',
-                    'moviment' => 'user',
-                    'index' => 'user',
-                    'edit' => 'user',
-                    'delete' => 'user',
-                ),
-                'Auth\Controller\User' => array(
+                ],
+                'Accantona\Controller\Account' => [
+                    'add'       => 'user',
+                    'balance'   => 'user',
+                    'delete'    => 'user',
+                    'edit'      => 'user',
+                    'index'     => 'user',
+                    'moviment'  => 'user',
+                ],
+                'Accantona\Controller\Movement' => [
+                    'account'   => 'user',
+                    'add'       => 'user',
+                    'delete'    => 'user',
+                    'edit'      => 'user',
+                    'export'    => 'user',
+                    'index'     => 'user',
+                    'move'      => 'user',
+                    'moviment'  => 'user',
+                ],
+                'Auth\Controller\User' => [
                     'change-password' => 'user',
                     'login'           => 'guest',
                     'logout'          => 'guest',
                     'update'          => 'user',
-                ),
-                'Auth\Controller\Registration' => array(
+                ],
+                'Auth\Controller\Registration' => [
                     'confirm-email'             => 'guest',
                     'forgotten-password'        => 'guest',
                     'index'                     => 'guest',
                     'password-change-success'   => 'guest',
                     'registration-success'      => 'guest',
-                ),
-                'Application\Controller\Page' => [
-                    'all' => 'guest'
                 ],
-            ),
-        ),
-    ),
-);
+                'Application\Controller\Page' => [
+                    'all' => 'guest',
+                ],
+            ],
+        ],
+    ],
+];

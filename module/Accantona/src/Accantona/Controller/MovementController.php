@@ -66,6 +66,7 @@ class MovementController extends AbstractActionController
 
     /**
      * @return \Zend\Http\Response|ViewModel
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function accountAction()
     {
@@ -126,6 +127,43 @@ class MovementController extends AbstractActionController
             'rows'             => $movimentRepository->search($searchParams),
             'searchParams'     => $searchParams,
         ));
+    }
+
+    /**
+     * @return \Zend\Http\Response|ViewModel
+     */
+    public function exportAction()
+    {
+        $accountId    = $this->params()->fromRoute('id', 0);
+        $dateMin      = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
+        $searchParams = [
+            'accountId'   => $accountId,
+            'amountMax'   => $this->params()->fromQuery('amountMax'),
+            'amountMin'   => $this->params()->fromQuery('amountMin'),
+            'category'    => $this->params()->fromQuery('category'),
+            'dateMax'     => $this->params()->fromQuery('dateMax'),
+            'dateMin'     => $dateMin,
+            'description' => $this->params()->fromQuery('description'),
+        ];
+
+        /* @var Account $account */
+        $account = $this->em->getRepository(Account::class)->findOneBy([
+            'id'        => $accountId,
+            'userId'    => $this->user->id,
+        ]);
+
+        if (!$account) {
+            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+        }
+
+        /* @var \Application\Repository\MovimentRepository $movementRepository */
+        $movementRepository = $this->em->getRepository(Moviment::class);
+
+        $this->getResponse()->getHeaders()
+            ->addHeaderLine('Content-Disposition: attachment; filename="export-' . strtolower($account->name) . '.csv"')
+            ->addHeaderLine('Content-Type: text/csv; charset=utf-8');
+
+        return (new ViewModel(['rows' => $movementRepository->search($searchParams)]))->setTerminal(true);
     }
 
     public function deleteAction()
