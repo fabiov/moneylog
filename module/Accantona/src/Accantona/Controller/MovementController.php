@@ -131,7 +131,6 @@ class MovementController extends AbstractActionController
 
     /**
      * @return \Zend\Http\Response|ViewModel
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function exportAction()
     {
@@ -162,8 +161,7 @@ class MovementController extends AbstractActionController
 
         $this->getResponse()->getHeaders()
             ->addHeaderLine('Content-Disposition: attachment; filename="export-' . strtolower($account->name) . '.csv"')
-            ->addHeaderLine('Content-Type: text/plain; charset=utf-8');
-
+            ->addHeaderLine('Content-Type: text/csv; charset=utf-8');
 
         return (new ViewModel(['rows' => $movementRepository->search($searchParams)]))->setTerminal(true);
     }
