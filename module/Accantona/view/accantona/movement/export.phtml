@@ -1,0 +1,18 @@
+<?php
+/* @var Zend\View\Renderer\PhpRenderer $this */
+
+echo implode(',', [
+    '"Data"',
+    '"Importo"',
+    '"Descrizione"',
+    '"Categoria"',
+]) . PHP_EOL;
+
+foreach ($rows as $row) {
+    echo '"' . implode('","', [
+        $this->dateForma($row->date),
+        number_format($row->amount, 2, ',', ''),
+        str_replace('"', '""', trim($row->description)),
+        $row->category ? str_replace('"', '""', $row->category->descrizione) : '',
+    ]) . '"' . PHP_EOL;
+}
