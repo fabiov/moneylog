@@ -6,25 +6,27 @@ apt-get update
 debconf-set-selections <<< 'mysql-server-5.7 mysql-server/root_password password root'
 debconf-set-selections <<< 'mysql-server-5.7 mysql-server/root_password_again password root'
 apt-get -y install mysql-server-5.7
-mysql -uroot -proot -e "CREATE DATABASE easywallet_dev DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
+mysql -uroot -proot -e "CREATE DATABASE moneylog DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
 
+apt-get install -y unzip
 apt-get install -y apache2
-apt-get install -y php7.0 php7.0-mysql php7.0-intl php-xml php7.0-mbstring
+apt-get install -y php7.1 php7.1-mysql php7.1-intl php-xml php7.1-mbstring
 
-chown -R www-data:www-data /var/www/easywallet
+mkdir /var/www/moneylog
 
-cat << EOF >  /etc/apache2/sites-available/easywallet_dev.conf
+chown -R www-data:www-data /var/www/moneylog
+
+cat << EOF >  /etc/apache2/sites-available/moneylog.conf
 <VirtualHost *:80>
-    ServerName dev.easywallet.it
+    ServerName moneylog.it
 
-    ServerAdmin webmaster@localhost
-    DocumentRoot /var/www/easywallet/public
-    SetEnv "APP_ENV" "development"
+    ServerAdmin info@moneylog.it
+    DocumentRoot /var/www/moneylog/public
 
-    ErrorLog /var/log/apache2/easywallet-error.log
-    CustomLog /var/log/apache2/easywallet-access.log combined
+    ErrorLog /var/log/apache2/moneylog-error.log
+    CustomLog /var/log/apache2/moneylog-access.log combined
 
-    <Directory /var/www/easywallet/public>
+    <Directory /var/www/moneylog/public>
         AllowOverride All
         Require all granted
     </Directory>
@@ -32,7 +34,7 @@ cat << EOF >  /etc/apache2/sites-available/easywallet_dev.conf
 </VirtualHost>
 EOF
 
-a2ensite easywallet_dev
+a2ensite moneylog
 a2enmod rewrite
 service apache2 restart
 
