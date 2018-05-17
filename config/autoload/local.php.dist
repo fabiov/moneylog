@@ -10,12 +10,11 @@
  * in ZendSkeletonApplication. This is a good practice, as it prevents sensitive
  * credentials from accidentally being committed into version control.
  */
-
 return [
     'db' => [
         'driver'         => 'Pdo',
         'driver_options' => [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"],
-        'dsn'            => 'mysql:dbname=easywallet_dev;host=localhost',
+        'dsn'            => 'mysql:dbname=moneylog;host=localhost',
         'password'       => 'root',
         'username'       => 'root',
     ],
@@ -24,7 +23,7 @@ return [
             'orm_default' => [
                 'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
                 'params' => [
-                    'dbname'   => 'easywallet_dev',
+                    'dbname'   => 'moneylog',
                     'host'     => 'localhost',
                     'password' => 'root',
                     'port'     => '3306',
@@ -34,7 +33,7 @@ return [
         ]
     ],
     'mail' => [
-        'sender'    => ['address' => 'easywallet@venol.it', 'name' => 'EasyWallet'],
+        'sender'    => ['address' => 'info@moneylog.it', 'name' => 'MoneyLog'],
         'transport' => [
             'options' => [
 

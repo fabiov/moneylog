@@ -10,7 +10,7 @@ mysql -uroot -proot -e "CREATE DATABASE moneylog DEFAULT CHARACTER SET utf8 DEFA
 
 apt-get install -y unzip
 apt-get install -y apache2
-apt-get install -y php7.0 php7.0-mysql php7.0-intl php-xml php7.0-mbstring
+apt-get install -y libapache2-mod-php7.0 php7.0 php7.0-mysql php7.0-intl php-xml php7.0-mbstring
 
 mkdir /var/www/moneylog
 
@@ -30,7 +30,6 @@ cat << EOF >  /etc/apache2/sites-available/moneylog.conf
         AllowOverride All
         Require all granted
     </Directory>
-
 </VirtualHost>
 EOF
 
