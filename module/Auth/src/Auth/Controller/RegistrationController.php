@@ -191,6 +191,7 @@ class RegistrationController extends AbstractActionController
      */
     public function sendConfirmationEmail($user)
     {
+        $config = $this->sm->get('Config');
         $body = "Please, click the link to confirm your registration. "
               . $this->getRequest()->getServer('HTTP_ORIGIN')
               . $this->url()->fromRoute('auth/default', array(
