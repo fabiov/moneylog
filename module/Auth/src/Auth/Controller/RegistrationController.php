@@ -201,7 +201,7 @@ class RegistrationController extends AbstractActionController
 
         $message = new Message();
         $message->addTo($user->email)
-                ->addFrom('registrazione@easywallet.it', 'Registrazione EasyWallet')
+                ->addFrom($config['mail']['sender']['address'], $config['mail']['sender']['name'])
                 ->setSubject('Conferma registrazione')
                 ->setBody($body);
         $this->sm->get('mail.transport')->send($message);

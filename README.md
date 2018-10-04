@@ -1,4 +1,4 @@
-# EasyWallet
+# MoneyLog
 
 ## Introduction
 
