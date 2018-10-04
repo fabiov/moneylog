@@ -1,9 +1,9 @@
 {
-    "name": "venol/easywallet",
-    "description": "EasyWallet",
+    "name": "moneylog",
+    "description": "MoneyLog",
     "license": "BSD-3-Clause",
     "keywords": ["framework", "zf"],
-    "homepage": "http://easywallet.it",
+    "homepage": "http://moneylog.it",
     "require": {
         "php": ">=7.0",
         "zendframework/zendframework": "^3.0",
