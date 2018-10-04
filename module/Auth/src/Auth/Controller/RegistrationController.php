@@ -191,6 +191,7 @@ class RegistrationController extends AbstractActionController
      */
     public function sendConfirmationEmail($user)
     {
+        $config = $this->sm->get('Config');
         $body = "Please, click the link to confirm your registration. "
               . $this->getRequest()->getServer('HTTP_ORIGIN')
               . $this->url()->fromRoute('auth/default', array(
@@ -201,7 +202,7 @@ class RegistrationController extends AbstractActionController
 
         $message = new Message();
         $message->addTo($user->email)
-                ->addFrom('registrazione@easywallet.it', 'Registrazione MoneyLog')
+                ->addFrom($config['mail']['sender']['address'], $config['mail']['sender']['name'])
                 ->setSubject('Conferma registrazione')
                 ->setBody($body);
         $this->sm->get('mail.transport')->send($message);
