@@ -72,12 +72,13 @@ class MovementController extends AbstractActionController
     {
         $accountId    = $this->params()->fromRoute('id', 0);
         $dateMin      = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
+        $dateMax      = $this->params()->fromQuery('dateMax', date('Y-m-d'));
         $searchParams = [
             'accountId'   => $accountId,
             'amountMax'   => $this->params()->fromQuery('amountMax'),
             'amountMin'   => $this->params()->fromQuery('amountMin'),
             'category'    => $this->params()->fromQuery('category'),
-            'dateMax'     => $this->params()->fromQuery('dateMax'),
+            'dateMax'     => $dateMax,
             'dateMin'     => $dateMin,
             'description' => $this->params()->fromQuery('description'),
         ];
