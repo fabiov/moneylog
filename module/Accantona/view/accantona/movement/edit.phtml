@@ -3,7 +3,7 @@
     <div class="col-lg-4"></div>
     <div class="col-lg-4">
         <div class="panel panel-default">
-            <div class="panel-heading">Modifica movimento</div>
+            <div class="panel-heading">Modifica movimento in <?php echo $item->account->name; ?></div>
             <div class="panel-body">
                 <?php $this->form->setAttribute('action', $this->url('accantonaMovement', ['action' => 'edit', 'id' => $this->item->id], ['query' => $searchParams])); ?>
                 <?php $this->form->prepare(); ?>
