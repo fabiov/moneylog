@@ -62,7 +62,7 @@ class FloatingButtons extends AbstractHelper
 <ul class="mfb-component--br mfb-slidein" data-mfb-toggle="hover" data-mfb-state="closed">
     <li class="mfb-component__wrap">
         <a class="mfb-component__button--main">
-            <i class="mfb-component__main-icon--resting glyphicon glyphicon-plus"></i>
+            <i class="mfb-component__main-icon--resting glyphicon glyphicon-option-vertical"></i>
             <i class="mfb-component__main-icon--active glyphicon glyphicon-remove"></i>
         </a>
         <ul class="mfb-component__list">$items</ul>
