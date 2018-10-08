@@ -16,27 +16,31 @@ class SynopsisFilters extends AbstractHelper
      */
     public function __invoke(array $filters, array $categories)
     {
-        $text = '';
-        if ($filters['dateMin']) {
-            $text .= 'dal <strong>' . date('d/m/Y', strtotime($filters['dateMin'])) . '</strong>';
-        }
-        if ($filters['dateMax']) {
-            $text .= ' al <strong>' . date('d/m/Y', strtotime($filters['dateMax'])) . '</strong>';
-        }
-        $text .= ', ';
+        $piaces = [];
 
-        if ($filters['amountMin']) {
-            $text .= 'da <strong>' . $filters['amountMin'] . '€</strong>';
+        if ($filters['dateMin'] || $filters['dateMax']) {
+            $piaces['date'] = '';
+            if ($filters['dateMin']) {
+                $piaces['date'] .= 'dal <strong>' . date('d/m/Y', strtotime($filters['dateMin'])) . '</strong>';
+            }
+            if ($filters['dateMax']) {
+                $piaces['date'] .= ' al <strong>' . date('d/m/Y', strtotime($filters['dateMax'])) . '</strong>';
+            }
         }
-        if ($filters['amountMax']) {
-            $text .= ' a <strong>' . $filters['amountMax'] . '€</strong>';
+
+        if ($filters['amountMin'] || $filters['amountMax']) {
+            $piaces['amount'] = '';
+            if ($filters['amountMin']) {
+                $piaces['amount'] .= 'da <strong>' . $filters['amountMin'] . '€</strong>';
+            }
+            if ($filters['amountMax']) {
+                $piaces['amount'] .= ' a <strong>' . $filters['amountMax'] . '€</strong>';
+            }
         }
-        $text .= ', ';
 
         if ($filters['description']) {
-            $text .= ' descrizione <strong>' . $filters['description'] . '</strong>';
+            $piaces['description'] = 'descrizione <strong>' . $filters['description'] . '</strong>';
         }
-        $text .= ', ';
 
         if ($filters['category']) {
 
@@ -47,9 +51,9 @@ class SynopsisFilters extends AbstractHelper
                 }
             }
 
-            $text .= ' categoria <strong>' . $category . '</strong>';
+            $piaces['category'] = 'categoria <strong>' . $category . '</strong>';
         }
 
-        return trim($text, ', ') ? : '<strong>Motra tutto</strong>';
+        return $piaces ? implode(', ', $piaces) : '<strong>Motra tutto</strong>';
     }
 }
