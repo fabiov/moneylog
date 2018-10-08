@@ -1,0 +1,32 @@
+<?php echo $this->form()->openTag($this->form); ?>
+
+    <?php echo $this->sbaFormRow($form->get('date')); ?>
+    <?php echo $this->sbaFormRow($form->get('amount')); ?>
+    <?php echo $this->sbaFormRow($form->get('description')); ?>
+    <?php echo $this->sbaFormRow($form->get('category')); ?>
+
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input name="repetition" type="checkbox" value="1" onchange="$('#repeat-data').slideToggle(200);">Ripeti
+            </label>
+        </div>
+        <div class="form-inline" id="repeat-data" style="display:none;">
+            Ripeti ogni
+            <select class="form-control" name="repetitionPeriod">
+                <option value="month">Mese</option>
+                <option value="week">Settimana</option>
+            </select>
+            per <input class="form-control" name="repetitionNumber" type="number" step="1" min="2" max="12" value="2"> volte
+        </div>
+    </div>
+
+    <div class="text-right">
+        <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', array('action' => 'account', 'id' => $this->sourceAccount->id)) ?>">
+            Annulla
+        </a>
+        <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-floppy-save"></span> Aggiungi
+        </button>
+    </div>
+<?php echo $this->form()->closeTag(); ?>
