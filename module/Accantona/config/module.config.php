@@ -7,7 +7,6 @@ return [
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 return new \Accantona\Controller\RecapController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
-                    $controllerManager->get('Accantona\Model\AccantonatoTable'),
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity()
                 );
             },

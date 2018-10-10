@@ -54,4 +54,21 @@ class AccantonatiRepository extends EntityRepository
 
         return $qb->setParameters($cleanParams)->orderBy('a.valuta', 'DESC')->getQuery()->getResult();
     }
+
+    /**
+     * @param int $userId
+     * @return float
+     */
+    public function getSum($userId) 
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder()
+                 ->select('COALESCE(SUM(a.importo), 0) AS total')
+                 ->from('Application\Entity\Accantonati', 'a')
+                 ->where('a.userId=:userId')
+                 ->setParameter(':userId', $userId);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    
+    }
 }

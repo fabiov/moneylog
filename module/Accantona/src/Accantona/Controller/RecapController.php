@@ -1,18 +1,15 @@
 <?php
 namespace Accantona\Controller;
 
-use Accantona\Model\AccantonatoTable;
+use Application\Entity\Accantonati;
+use Application\Entity\Account;
+use Application\Entity\Moviment;
 use Application\Entity\Setting;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class RecapController extends AbstractActionController
 {
-    /**
-     * @var AccantonatoTable
-     */
-    private $accantonatoTable;
-
     /**
      * @var \stdClass
      */
@@ -23,12 +20,9 @@ class RecapController extends AbstractActionController
      */
     private $em;
 
-    public function __construct(
-        $em, AccantonatoTable $accantonatoTable, \stdClass $user
-    ) {
-        $this->em               = $em;
-        $this->accantonatoTable = $accantonatoTable;
-        $this->user             = $user;
+    public function __construct($em, \stdClass $user) {
+        $this->em   = $em;
+        $this->user = $user;
     }
 
     /**
@@ -48,9 +42,9 @@ class RecapController extends AbstractActionController
             return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? -1 : 1);
         });
 
-        $totalExpense   = $this->em->getRepository('Application\Entity\Moviment')->getTotalExpense($this->user->id);
-        $stored         = $this->accantonatoTable->getSum($this->user->id) + $totalExpense;
-        $accounts       = $this->em->getRepository('Application\Entity\Account')->getTotals($this->user->id, true, new \DateTime());
+        $totalExpense   = $this->em->getRepository(Moviment::class)->getTotalExpense($this->user->id);
+        $stored         = $this->em->getRepository(Accantonati::class)->getSum($this->user->id) + $totalExpense;
+        $accounts       = $this->em->getRepository(Account::class)->getTotals($this->user->id, true, new \DateTime());
         $donutSpends    = array();
         $donutAccounts  = array();
         $currentDay     = date('j');
