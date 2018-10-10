@@ -2,12 +2,13 @@
 
 namespace Accantona\Controller;
 
+use Accantona\Form\CategoriaForm;
+use Accantona\Model\Categoria;
 use Accantona\Model\CategoriaTable;
+use Application\Entity\Category;
 use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Accantona\Model\Categoria;
-use Accantona\Form\CategoriaForm;
 
 class CategoriaController extends AbstractActionController
 {
@@ -40,7 +41,7 @@ class CategoriaController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $category = new Categoria();
+            $category = new Category();
             $form->setInputFilter($category->getInputFilter());
             $form->setData($request->getPost());
 
@@ -48,7 +49,8 @@ class CategoriaController extends AbstractActionController
                 $data = $form->getData();
                 $data['userId'] = $this->user->id;
                 $category->exchangeArray($data);
-                $this->categoriaTable->save($category);
+                $this->em->persist($category);
+                $this->em->flush();
 
                 // Redirect to list of categories
                 return $this->redirect()->toRoute('accantona_categoria');
