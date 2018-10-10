@@ -1,10 +1,7 @@
 <?php
-
 namespace Accantona\Controller;
 
 use Accantona\Form\CategoriaForm;
-use Accantona\Model\Categoria;
-use Accantona\Model\CategoriaTable;
 use Application\Entity\Category;
 use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -12,11 +9,6 @@ use Zend\View\Model\ViewModel;
 
 class CategoriaController extends AbstractActionController
 {
-    /**
-     * @var CategoriaTable
-     */
-    private $categoriaTable;
-
     /**
      * @var \stdClass
      */
@@ -27,9 +19,8 @@ class CategoriaController extends AbstractActionController
      */
     private $em;
 
-    public function __construct(CategoriaTable $categoriaTable, \stdClass $user, EntityManager $em)
+    public function __construct(\stdClass $user, EntityManager $em)
     {
-        $this->categoriaTable   = $categoriaTable;
         $this->user             = $user;
         $this->em               = $em;
     }
@@ -105,13 +96,12 @@ class CategoriaController extends AbstractActionController
             $del = $request->getPost('del', 'No');
 
             if ($del == 'Yes') {
-                $this->categoriaTable->deleteByAttributes(array('id' => $id, 'userId' => $this->user->id));
             }
 
             // Redirect to list of categories
             return $this->redirect()->toRoute('accantona_categoria');
         }
 
-        return array('id' => $id, 'category' => $this->categoriaTable->getCategoria($id));
+        return array('id' => $id, 'category' => null);
     }
 }

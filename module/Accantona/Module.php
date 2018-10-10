@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author fabio.ventura
  */
@@ -7,8 +6,6 @@ namespace Accantona;
 
 use Accantona\Model\Accantonato;
 use Accantona\Model\AccantonatoTable;
-use Accantona\Model\Categoria;
-use Accantona\Model\CategoriaTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
@@ -50,17 +47,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Accantonato());
                     return new TableGateway('accantonati', $dbAdapter, null, $resultSetPrototype);
-                },
-                'Accantona\Model\CategoriaTable' => function($sm) {
-                    $tableGateway = $sm->get('CategoriaTableGateway');
-                    $table = new CategoriaTable($tableGateway);
-                    return $table;
-                },
-                'CategoriaTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Categoria());
-                    return new TableGateway('Category', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

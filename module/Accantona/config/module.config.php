@@ -36,7 +36,6 @@ return [
             'Accantona\Controller\Categoria' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 return new \Accantona\Controller\CategoriaController(
-                    $controllerManager->get('Accantona\Model\CategoriaTable'),
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
