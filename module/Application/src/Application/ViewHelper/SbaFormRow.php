@@ -27,12 +27,12 @@ class SbaFormRow extends AbstractHelper
 
 
         if ($element instanceof Element\Select) {
-            $element->setAttribute('class', 'form-control');
+            $element->setAttribute('class', self::addFormControllCssClass($element));
             $input = $this->view->formSelect($element);
         } elseif ($element instanceof Element\Checkbox) {
             $input = $this->view->formCheckbox($element);
         } else {
-            $element->setAttribute('class', 'form-control');
+            $element->setAttribute('class', self::addFormControllCssClass($element));
             $input = $this->view->formInput($element);
         }
 
@@ -42,5 +42,15 @@ class SbaFormRow extends AbstractHelper
             . $input
             . $errors
             . '</div>';
+    }
+
+    /**
+     * @param Element $element
+     * @return string
+     */
+    private static function addFormControllCssClass(Element $element)
+    {
+        $str = $element->getAttribute('class');
+        return preg_match('/(^| )form-control( |$)/', $str) ? $str : "$str form-control";
     }
 }
