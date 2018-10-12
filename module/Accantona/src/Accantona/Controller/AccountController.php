@@ -6,7 +6,6 @@ use Accantona\Form\AccountForm;
 use Application\Entity\Account;
 use Application\Entity\Moviment;
 use Doctrine\ORM\EntityManager;
-use Zend\Debug\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -49,7 +48,7 @@ class AccountController extends AbstractActionController
                 return $this->redirect()->toRoute('accantonaAccount');
             }
         }
-        return array('form' => $form);
+        return ['form' => $form];
     }
 
     public function indexAction()
@@ -135,6 +134,7 @@ class AccountController extends AbstractActionController
 
     /**
      * @return \Zend\Http\Response
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function balanceAction()
     {

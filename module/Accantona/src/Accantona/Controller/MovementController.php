@@ -247,7 +247,17 @@ class MovementController extends AbstractActionController
         return array('sourceAccount' => $sourceAccount, 'form' => $form);
     }
 
-    public function addAction()
+    public function expenseAction()
+    {
+        return $this->addMovement($this->params('action'));
+    }
+
+    public function incomeAction()
+    {
+        return $this->addMovement($this->params('action'));
+    }
+
+    private function addMovement($action)
     {
         $accountId = (int) $this->params()->fromRoute('id');
 
@@ -270,8 +280,8 @@ class MovementController extends AbstractActionController
             if ($form->isValid()) {
 
                 $repetitionNumber = (int) $data['repetitionNumber'];
-                $repetitionNumber = !empty($data['repetition']) && in_array($data['repetitionPeriod'], ['month', 'week']) && $repetitionNumber > 0 && $repetitionNumber < 13
-                                  ? $repetitionNumber : 1;
+                $repetitionNumber = !empty($data['repetition']) && in_array($data['repetitionPeriod'], ['month', 'week']) &&
+                                    $repetitionNumber > 0 && $repetitionNumber < 13 ? $repetitionNumber : 1;
 
                 $category = $this->em->getRepository('Application\Entity\Category')
                     ->findOneBy(['id' => $data['category'], 'userId' => $this->user->id]);
@@ -280,7 +290,7 @@ class MovementController extends AbstractActionController
                     $movement = new Moviment();
                     $movement->exchangeArray([
                         'date'          => date('Y-m-d', strtotime("{$data['date']} +$i {$data['repetitionPeriod']}")),
-                        'amount'        => $data['amount'],
+                        'amount'        => $data['amount'] * ($action === 'expense' ? -1 : 1),
                         'description'   => $data['description'],
                         'category'      => $category,
                     ]);
@@ -290,11 +300,10 @@ class MovementController extends AbstractActionController
                     $this->em->flush();
                 }
 
-                return $this->redirect()
-                    ->toRoute('accantonaMovement', array('action' => 'account', 'id' => $accountId));
+                return $this->redirect()->toRoute('accantonaMovement', ['action' => 'account', 'id' => $accountId]);
             }
         }
 
-        return array('sourceAccount' => $account, 'form' => $form);
+        return ['sourceAccount' => $account, 'form' => $form];
     }
 }
