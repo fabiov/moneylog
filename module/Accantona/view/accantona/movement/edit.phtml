@@ -1,24 +1,13 @@
-<?php echo $this->pageHeader('Modifica movimento'); ?>
+<?php echo $this->pageHeader(sprintf('Modifica %s', $isIn ? 'entrata' : 'spesa')); ?>
 <div class="row">
     <div class="col-lg-4"></div>
     <div class="col-lg-4">
         <div class="panel panel-default">
-            <div class="panel-heading">Modifica movimento in <?php echo $item->account->name; ?></div>
+            <div class="panel-heading">Modifica <?php echo $isIn ? 'entrata' : 'spesa'; ?> in <?php echo $item->account->name; ?></div>
             <div class="panel-body">
                 <?php $this->form->setAttribute('action', $this->url('accantonaMovement', ['action' => 'edit', 'id' => $this->item->id], ['query' => $searchParams])); ?>
                 <?php $this->form->prepare(); ?>
-                <?php echo $this->form()->openTag($this->form); ?>
-
-                    <?php echo $this->sbaFormRow($form->get('date')); ?>
-                    <?php echo $this->sbaFormRow($form->get('amount')); ?>
-                    <?php echo $this->sbaFormRow($form->get('description')); ?>
-                    <?php echo $this->sbaFormRow($form->get('category')); ?>
-
-                    <div class="text-right">
-                        <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $this->item->accountId], ['query' => $searchParams]) ?>">Annulla</a>
-                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-save"></span> Salva</button>
-                    </div>
-                <?php echo $this->form()->closeTag(); ?>
+                <?php echo $this->partial('accantona/movement/partials/movement', ['form' => $this->form, 'accountId' => $this->item->accountId, 'isRepeatable' => false]); ?>
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@ namespace Accantona\Controller;
 use Accantona\Form\MoveForm;
 use Accantona\Form\MovimentForm;
 use Application\Entity\Account;
+use Application\Entity\Category;
 use Application\Entity\Moviment;
 use Application\Repository\AccountRepository;
 use Doctrine\ORM\EntityManager;
@@ -34,7 +35,11 @@ class MovementController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         /* @var \Application\Entity\Moviment $item */
-        $item = $this->em->getRepository('Application\Entity\Moviment')->findOneBy(array('id' => $id));
+        $item = $this->em->getRepository(Moviment::class)->findOneBy(['id' => $id]);
+
+        $isIn = $item->amount > 0;
+        $item->amount = abs($item->amount);
+
 
         if (!$item || $item->account->userId != $this->user->id) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
@@ -51,8 +56,10 @@ class MovementController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-                $item->category = $this->em->getRepository('Application\Entity\Category')
-                    ->findOneBy(['id' => $data['category'], 'userId' => $this->user->id]);
+                $item->amount = $item->amount * ($isIn ? Moviment::IN : Moviment::OUT);
+                $item->category = $this->em->getRepository(Category::class)->findOneBy([
+                    'id' => $data['category'], 'userId' => $this->user->id
+                ]);
                 $this->em->flush();
 
                 return $this->redirect()->toRoute(
@@ -61,7 +68,7 @@ class MovementController extends AbstractActionController
             }
         }
 
-        return ['item' => $item, 'form' => $form, 'searchParams' => $searchParams];
+        return ['item' => $item, 'isIn' => $isIn, 'form' => $form, 'searchParams' => $searchParams];
     }
 
     /**
