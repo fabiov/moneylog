@@ -8,7 +8,7 @@
                 Aggiungi spesa in <?php echo $sourceAccount->name; ?>
             </div>
             <div class="panel-body">
-                <?php echo $this->partial('accantona/movement/partials/movement'); ?>
+                <?php echo $this->partial('accantona/movement/partials/movement', ['form' => $this->form, 'accountId' => $this->sourceAccount->id, 'isRepeatable' => true]); ?>
             </div>
         </div>
     </div>

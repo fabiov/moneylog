@@ -5,6 +5,7 @@
     <?php echo $this->sbaFormRow($form->get('description')); ?>
     <?php echo $this->sbaFormRow($form->get('category')); ?>
 
+    <?php if ($this->isRepeatable): ?>
     <div class="form-group">
         <div class="checkbox">
             <label>
@@ -20,9 +21,10 @@
             per <input class="form-control" name="repetitionNumber" type="number" step="1" min="2" max="12" value="2"> volte
         </div>
     </div>
+    <?php endif; ?>
 
     <div class="text-right">
-        <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $this->sourceAccount->id]) ?>">
+        <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $this->accountId]); ?>">
             Annulla
         </a>
         <button type="submit" class="btn btn-primary">
