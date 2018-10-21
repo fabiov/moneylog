@@ -23,6 +23,8 @@ use Zend\InputFilter\InputFilter;
  */
 class Moviment implements InputFilterAwareInterface
 {
+    const IN = 1;
+    const OUT = -1;
 
     protected $inputFilter;
 
@@ -127,6 +129,7 @@ class Moviment implements InputFilterAwareInterface
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         $this->inputFilter = $inputFilter;
+        return $this;
     }
 
     /**

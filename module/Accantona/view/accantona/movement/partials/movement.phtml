@@ -22,11 +22,11 @@
     </div>
 
     <div class="text-right">
-        <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', array('action' => 'account', 'id' => $this->sourceAccount->id)) ?>">
+        <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $this->sourceAccount->id]) ?>">
             Annulla
         </a>
         <button type="submit" class="btn btn-primary">
-            <span class="glyphicon glyphicon-floppy-save"></span> Aggiungi
+            <span class="glyphicon glyphicon-floppy-save"></span> Conferma
         </button>
     </div>
 <?php echo $this->form()->closeTag(); ?>
