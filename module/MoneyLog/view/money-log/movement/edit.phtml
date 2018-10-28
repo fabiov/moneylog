@@ -1,0 +1,15 @@
+<?php echo $this->pageHeader(sprintf('Modifica %s', $isIn ? 'entrata' : 'spesa')); ?>
+<div class="row">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Modifica <?php echo $isIn ? 'entrata' : 'spesa'; ?> in <?php echo $item->account->name; ?></div>
+            <div class="panel-body">
+                <?php $this->form->setAttribute('action', $this->url('accantonaMovement', ['action' => 'edit', 'id' => $this->item->id], ['query' => $searchParams])); ?>
+                <?php $this->form->prepare(); ?>
+                <?php echo $this->partial('money-log/movement/partials/movement', ['form' => $this->form, 'accountId' => $this->item->accountId, 'isRepeatable' => false]); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4"></div>
+</div>

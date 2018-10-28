@@ -7,27 +7,27 @@ return [
         ],
         'resources' => [
             'allow' => [
-                'Accantona\Controller\Recap' => [
+                'MoneyLog\Controller\Recap' => [
                     'add'   => 'user',
                     'edit'  => 'user',
                     'index' => 'user',
                 ],
-                'Accantona\Controller\Categoria' => [
+                'MoneyLog\Controller\Categoria' => [
                     'add'       => 'user',
                     'delete'    => 'user',
                     'edit'      => 'user',
                     'index'     => 'user',
                 ],
-                'Accantona\Controller\Accantonato' => [
+                'MoneyLog\Controller\Accantonato' => [
                     'add'       => 'user',
                     'delete'    => 'user',
                     'edit'      => 'user',
                     'index'     => 'user',
                 ],
-                'Accantona\Controller\Settings' => [
+                'MoneyLog\Controller\Settings' => [
                     'index' => 'user',
                 ],
-                'Accantona\Controller\Account' => [
+                'MoneyLog\Controller\Account' => [
                     'add'       => 'user',
                     'balance'   => 'user',
                     'delete'    => 'user',
@@ -35,7 +35,7 @@ return [
                     'index'     => 'user',
                     'moviment'  => 'user',
                 ],
-                'Accantona\Controller\Movement' => [
+                'MoneyLog\Controller\Movement' => [
                     'account'   => 'user',
                     'delete'    => 'user',
                     'edit'      => 'user',

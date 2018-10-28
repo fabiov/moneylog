@@ -1,0 +1,171 @@
+<?php
+namespace MoneyLog\Controller;
+
+use Application\Entity\Account;
+use Application\Entity\Moviment;
+use Doctrine\ORM\EntityManager;
+use MoneyLog\Form\AccountForm;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
+
+class AccountController extends AbstractActionController
+{
+
+    /**
+     * @var \stdClass
+     */
+    private $user;
+
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    public function __construct(\stdClass $user, EntityManager $em)
+    {
+        $this->user = $user;
+        $this->em   = $em;
+    }
+
+    public function addAction()
+    {
+        $form = new AccountForm();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+
+            $account = new Account();
+            $form->setInputFilter($account->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $data['userId'] = $this->user->id;
+                $account->exchangeArray($data);
+                $this->em->persist($account);
+                $this->em->flush();
+
+                return $this->redirect()->toRoute('accantonaAccount');
+            }
+        }
+        return ['form' => $form];
+    }
+
+    public function indexAction()
+    {
+        $data              = [];
+        $accountRepository = $this->em->getRepository('Application\Entity\Account');
+
+        // i dati in un record set potrebbero non essere nell'altro e vice versa
+
+        $accountAvailable = $accountRepository->getTotals($this->user->id, false, new \DateTime());
+        foreach ($accountAvailable as $i) {
+            $data[$i['id']]['id']        = $i['id'];
+            $data[$i['id']]['name']      = $i['name'];
+            $data[$i['id']]['recap']     = $i['recap'];
+            $data[$i['id']]['available'] = $i['total'];
+        }
+
+        $accountBalances  = $accountRepository->getTotals($this->user->id, false);
+        foreach ($accountBalances as $i) {
+            $data[$i['id']]['id']        = $i['id'];
+            $data[$i['id']]['name']      = $i['name'];
+            $data[$i['id']]['recap']     = $i['recap'];
+            $data[$i['id']]['balance']   = $i['total'];
+        }
+        return new ViewModel(['rows' => $data]);
+    }
+
+    public function editAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $account = $this->em->getRepository('Application\Entity\Account')
+            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
+
+        if (!$account) {
+            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+        }
+
+        $form = new AccountForm();
+        $form->bind($account);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($account->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $this->em->flush();
+                return $this->redirect()->toRoute('accantonaAccount'); // Redirect to list
+            }
+        }
+        return array('id' => $id, 'form' => $form);
+    }
+
+    public function deleteAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('accantona_categoria');
+        }
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+
+            /* @var Account $account */
+            $account = $this->em->getRepository('Application\Entity\Account')->findOneBy([
+                'id'     => $id,
+                'userId' => $this->user->id
+            ]);
+            if ($account) {
+                $this->em->createQueryBuilder()
+                    ->delete('Application\Entity\Moviment', 'm')
+                    ->where('m.account=:account')
+                    ->setParameter('account', $account)
+                    ->getQuery()->execute();
+                $this->em->remove($account);
+                $this->em->flush();
+            }
+        }
+        // Redirect to list of accounts
+        return $this->redirect()->toRoute('accantonaAccount');
+    }
+
+    /**
+     * @return \Zend\Http\Response
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function balanceAction()
+    {
+        // check if the user is account owner
+        $amount      = (float) $this->getRequest()->getPost('amount');
+        $description = $this->getRequest()->getPost('description', 'Conguaglio');
+        $routeName   = $this->getRequest()->getPost('forward');
+        $id          = (int) $this->params()->fromRoute('id', 0);
+
+        $account = $this->em->getRepository('Application\Entity\Account')
+            ->findOneBy(['id' => $id, 'userId' => $this->user->id]);
+
+        if ($account && $amount) {
+
+            $currentBalance = $this->em->getRepository('Application\Entity\Moviment')
+                ->getBalance($id, new \DateTime());
+
+            $moviment              = new Moviment();
+            $moviment->account     = $account;
+            $moviment->date        = new \DateTime();
+            $moviment->amount      = $amount - $currentBalance;
+            $moviment->description = $description;
+            $this->em->persist($moviment);
+            $this->em->flush();
+        }
+
+        switch ($routeName) {
+            case 'accantonaMoviment':
+                return $this->redirect()->toRoute('accantonaMovement', ['action' => 'account', 'id' => $id]);
+            case 'accantonaAccount':
+            default:
+                return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
+        }
+    }
+}

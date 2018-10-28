@@ -1,7 +1,7 @@
 <?php
 namespace Application\Entity;
 
-use Accantona\Form\Filter\MovimentFilter;
+use MoneyLog\Form\Filter\MovimentFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
