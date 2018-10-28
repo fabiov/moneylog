@@ -1,9 +1,7 @@
 <?php
+namespace Authorize;
 
-namespace CsnAuthorize;
-
-use CsnAuthorize\Acl\Acl;
-use Zend\Debug\Debug;
+use Authorize\Acl\Acl;
 
 class Module
 {
@@ -14,13 +12,11 @@ class Module
 
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ),
-            ),
-        );
+        return [
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__],
+            ],
+        ];
     }
 
     // FOR Authorization
@@ -28,7 +24,7 @@ class Module
     {
         $application = $e->getApplication();
         $em = $application->getEventManager();
-        $em->attach('route', array($this, 'onRoute'), -100);
+        $em->attach('route', [$this, 'onRoute'], -100);
     }
 
     /**
@@ -72,5 +68,4 @@ class Module
             exit;
         }
     }
-
 }

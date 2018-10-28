@@ -1,5 +1,5 @@
 <?php
-namespace CsnAuthorize\Acl;
+namespace Authorize\Acl;
 
 use Zend\Permissions\Acl\Acl as ZendAcl;
 use Zend\Permissions\Acl\Role\GenericRole as Role;
@@ -12,7 +12,6 @@ use Zend\Permissions\Acl\Resource\GenericResource as Resource;
  * @category User
  * @copyright Copyright (c) 2011, Marco Neumann
  * @license http://binware.org/license/index/type:new-bsd New BSD License
- * @package CsnAuthorize\Acl
  * @see http://p0l0.binware.org/index.php/2012/02/18/zend-framework-2-authentication-acl-using-eventmanager/
  */
 class Acl extends ZendAcl

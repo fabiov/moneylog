@@ -2,6 +2,7 @@
 return [
     // This should be an array of module namespaces used in the application.
     'modules' => [
+        'Authorize',
         'MoneyLog',
         'Zend\I18n',
 //        'Zend\Db',
@@ -9,10 +10,10 @@ return [
 //        'Zend\Mail',
 //        'Zend\Mvc\Console',
 //        'Zend\Mvc\I18n',
+//        'Zend\Mvc\Plugin\Prg',
 //        'Zend\Navigation',
 //        'Zend\Serializer',
 //        'Zend\ServiceManager\Di',
-//        'Zend\Mvc\Plugin\Prg',
 //        'Zend\Mvc\Plugin\Identity',
         'Zend\Mvc\Plugin\FlashMessenger',
 //        'Zend\Mvc\Plugin\FilePrg',
@@ -28,7 +29,6 @@ return [
 //        'Album',
         'Application',
         'Auth',
-        'CsnAuthorize',
         'DoctrineModule',
         'DoctrineORMModule',
     ],
