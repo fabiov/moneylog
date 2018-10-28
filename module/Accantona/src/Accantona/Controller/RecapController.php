@@ -45,19 +45,19 @@ class RecapController extends AbstractActionController
         $totalExpense   = $this->em->getRepository(Moviment::class)->getTotalExpense($this->user->id);
         $stored         = $this->em->getRepository(Accantonati::class)->getSum($this->user->id) + $totalExpense;
         $accounts       = $this->em->getRepository(Account::class)->getTotals($this->user->id, true, new \DateTime());
-        $donutSpends    = array();
-        $donutAccounts  = array();
+        $donutSpends    = [];
+        $donutAccounts  = [];
         $currentDay     = date('j');
         $monthBudget    = $stored > 0 ? 0 - $stored : 0;
 
         foreach ($avgPerCategory as $category) {
             if ($category['average'] < 0) {
-                $donutSpends[] = array('label' => $category['description'], 'value' => abs($category['average']));
+                $donutSpends[] = ['label' => $category['description'], 'value' => abs($category['average'])];
             }
         }
 
         foreach ($accounts as $account) {
-            $donutAccounts[] = array('label' => $account['name'], 'value' => $account['total']);
+            $donutAccounts[] = ['label' => $account['name'], 'value' => $account['total']];
             $monthBudget += $account['total'];
         }
 
