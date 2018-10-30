@@ -20,7 +20,7 @@ class CategoryRepository extends EntityRepository
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('SUM(m.amount) AS amount, MIN(m.date) AS first_date, c.id, c.descrizione')
-            ->from('Application\Entity\Moviment', 'm')
+            ->from('Application\Entity\Movement', 'm')
             ->innerJoin('m.category', 'c')
             ->where('c.userId=:userId')
             ->andWhere('c.status=:status')

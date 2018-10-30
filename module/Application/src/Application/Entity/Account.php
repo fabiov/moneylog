@@ -57,13 +57,13 @@ class Account implements InputFilterAwareInterface
     protected $updated;
 
     /**
-     * @ORM\OneToMany(targetEntity="Moviment", mappedBy="account")
+     * @ORM\OneToMany(targetEntity="Movement", mappedBy="account")
      */
-    protected $moviments;
+    protected $movements;
 
     public function __construct()
     {
-        $this->moviments = new ArrayCollection();
+        $this->movements = new ArrayCollection();
     }
 
     /**

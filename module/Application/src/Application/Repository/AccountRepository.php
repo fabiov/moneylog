@@ -34,7 +34,7 @@ class AccountRepository extends EntityRepository
         ->createQueryBuilder()
         ->select('a.id', 'a.name', 'a.recap', 'COALESCE(SUM(m.amount), 0) AS total')
         ->from('Application\Entity\Account', 'a')
-        ->leftJoin('a.moviments', 'm')
+        ->leftJoin('a.movements', 'm')
         ->where('a.userId=:userId')
         ->setParameter(':userId', $userId);
 

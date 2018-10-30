@@ -2,7 +2,7 @@
 
 namespace Application\Repository;
 
-use Doctrine\Common\Util\Debug;
+use Application\Entity\Movement;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 
@@ -19,7 +19,7 @@ class AccantonatiRepository extends EntityRepository
             ->where('a.userId=:userId')
             ->setParameter(':userId', $userId);
 
-        return $qb->getQuery()->getSingleScalarResult() + $em->getRepository('Application\Entity\Moviment')->getTotalExpense($userId);
+        return $qb->getQuery()->getSingleScalarResult() + $em->getRepository(Movement::class)->getTotalExpense($userId);
     }
 
     /**
@@ -56,8 +56,10 @@ class AccantonatiRepository extends EntityRepository
     }
 
     /**
-     * @param int $userId
+     * @param $userId
      * @return float
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getSum($userId) 
     {
