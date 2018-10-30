@@ -4,7 +4,7 @@ namespace MoneyLog\Form;
 use Doctrine\ORM\EntityManager;
 use Zend\Form\Form;
 
-class MovimentForm extends Form
+class MovementForm extends Form
 {
     /**
      * @var EntityManager
@@ -17,11 +17,11 @@ class MovimentForm extends Form
     private $userId;
 
     /**
-     * MovimentForm constructor.
+     * MovementForm constructor.
      * @param string $name
      * @param EntityManager $em
      */
-    public function __construct($name = 'moviment', EntityManager $em, $userId)
+    public function __construct($name = 'movement', EntityManager $em, $userId)
     {
         parent::__construct($name);
 

@@ -4,11 +4,11 @@ namespace MoneyLog\Controller;
 
 use Application\Entity\Account;
 use Application\Entity\Category;
-use Application\Entity\Moviment;
+use Application\Entity\Movement;
 use Application\Repository\AccountRepository;
 use Doctrine\ORM\EntityManager;
 use MoneyLog\Form\MoveForm;
-use MoneyLog\Form\MovimentForm;
+use MoneyLog\Form\MovementForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -34,8 +34,8 @@ class MovementController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        /* @var \Application\Entity\Moviment $item */
-        $item = $this->em->getRepository(Moviment::class)->findOneBy(['id' => $id]);
+        /* @var Movement $item */
+        $item = $this->em->getRepository(Movement::class)->findOneBy(['id' => $id]);
 
         $isIn = $item->amount > 0;
         $item->amount = abs($item->amount);
@@ -45,7 +45,7 @@ class MovementController extends AbstractActionController
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
-        $form = new MovimentForm('moviment', $this->em, $this->user->id);
+        $form = new MovementForm('movement', $this->em, $this->user->id);
         $form->bind($item);
 
         $request = $this->getRequest();
@@ -56,7 +56,7 @@ class MovementController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-                $item->amount = $item->amount * ($isIn ? Moviment::IN : Moviment::OUT);
+                $item->amount = $item->amount * ($isIn ? Movement::IN : Movement::OUT);
                 $item->category = $this->em->getRepository(Category::class)->findOneBy([
                     'id' => $data['category'], 'userId' => $this->user->id
                 ]);
@@ -102,21 +102,21 @@ class MovementController extends AbstractActionController
         $categories = $this->em->getRepository(\Application\Entity\Category::class)
             ->findBy(['status' => 1, 'userId' => $this->user->id], ['descrizione' => 'ASC']);
 
-        /* @var \Application\Repository\MovimentRepository $movimentRepository */
-        $movimentRepository = $this->em->getRepository(\Application\Entity\Moviment::class);
-        $rows               = $movimentRepository->search($searchParams);
+        /* @var \Application\Repository\MovementRepository $movementRepository */
+        $movementRepository = $this->em->getRepository(Movement::class);
+        $rows               = $movementRepository->search($searchParams);
 
         $previewsDate    = date('Y-m-d', strtotime("$dateMin -1 day"));
-        $previewsBalance = $movimentRepository->getBalance($accountId, $previewsDate);
+        $previewsBalance = $movementRepository->getBalance($accountId, $previewsDate);
         $balances        = [$previewsDate => $previewsBalance];
 
-        foreach (array_reverse($rows) as $moviment) {
-            $date = $moviment->date->format('Y-m-d');
+        foreach (array_reverse($rows) as $movement) {
+            $date = $movement->date->format('Y-m-d');
 
             if (isset($balances[$date])) {
-                $balances[$date] += $moviment->amount;
+                $balances[$date] += $movement->amount;
             } else {
-                $balances[$date] = $moviment->amount + $balances[$previewsDate];
+                $balances[$date] = $movement->amount + $balances[$previewsDate];
                 $previewsDate = $date;
             }
         }
@@ -128,11 +128,11 @@ class MovementController extends AbstractActionController
 
         return new ViewModel(array(
             'account'          => $account,
-            'balanceAccount'   => $movimentRepository->getBalance($accountId),
-            'balanceAvailable' => $movimentRepository->getBalance($accountId, new \DateTime()),
+            'balanceAccount'   => $movementRepository->getBalance($accountId),
+            'balanceAvailable' => $movementRepository->getBalance($accountId, new \DateTime()),
             'categories'       => $categories,
             'dataLineChart'    => $dataLineChart,
-            'rows'             => $movimentRepository->search($searchParams),
+            'rows'             => $movementRepository->search($searchParams),
             'searchParams'     => $searchParams,
         ));
     }
@@ -164,8 +164,8 @@ class MovementController extends AbstractActionController
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
-        /* @var \Application\Repository\MovimentRepository $movementRepository */
-        $movementRepository = $this->em->getRepository(Moviment::class);
+        /* @var \Application\Repository\MovementRepository $movementRepository */
+        $movementRepository = $this->em->getRepository(Movement::class);
 
         $this->getResponse()->getHeaders()
             ->addHeaderLine('Content-Disposition: attachment; filename="export-' . strtolower($account->name) . '.csv"')
@@ -178,8 +178,8 @@ class MovementController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        /* @var $item \Application\Entity\Moviment */
-        $item = $this->em->getRepository('Application\Entity\Moviment')->findOneBy(array('id' => $id));
+        /* @var $item \Application\Entity\Movement */
+        $item = $this->em->getRepository('Application\Entity\Movement')->findOneBy(array('id' => $id));
 
         if ($item && $item->account->userId == $this->user->id) {
             $this->em->remove($item);
@@ -226,7 +226,7 @@ class MovementController extends AbstractActionController
                     return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
                 }
 
-                $outcoming = new Moviment();
+                $outcoming = new Movement();
                 $outcoming->exchangeArray(array(
                     'date'        => $data['date'],
                     'amount'      => $data['amount'] * -1,
@@ -235,7 +235,7 @@ class MovementController extends AbstractActionController
                 $outcoming->account = $sourceAccount;
                 $this->em->persist($outcoming);
 
-                $incoming = new Moviment();
+                $incoming = new Movement();
                 $incoming->exchangeArray(array(
                     'accountId'   => $targetAccount->id,
                     'date'        => $data['date'],
@@ -276,10 +276,10 @@ class MovementController extends AbstractActionController
         }
 
         $request = $this->getRequest();
-        $form = new MovimentForm('moviment', $this->em, $this->user->id);
+        $form = new MovementForm('movement', $this->em, $this->user->id);
         if ($request->isPost()) {
 
-            $movement = new Moviment();
+            $movement = new Movement();
             $data = $request->getPost();
             $form->setInputFilter($movement->getInputFilter());
             $form->setData($data);
@@ -294,7 +294,7 @@ class MovementController extends AbstractActionController
                     ->findOneBy(['id' => $data['category'], 'userId' => $this->user->id]);
 
                 for ($i = 0; $i < $repetitionNumber; $i++) {
-                    $movement = new Moviment();
+                    $movement = new Movement();
                     $movement->exchangeArray([
                         'date'          => date('Y-m-d', strtotime("{$data['date']} +$i {$data['repetitionPeriod']}")),
                         'amount'        => $data['amount'] * ($action === 'expense' ? -1 : 1),

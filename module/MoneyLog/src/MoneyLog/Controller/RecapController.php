@@ -3,7 +3,7 @@ namespace MoneyLog\Controller;
 
 use Application\Entity\Accantonati;
 use Application\Entity\Account;
-use Application\Entity\Moviment;
+use Application\Entity\Movement;
 use Application\Entity\Setting;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -42,7 +42,7 @@ class RecapController extends AbstractActionController
             return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? -1 : 1);
         });
 
-        $totalExpense   = $this->em->getRepository(Moviment::class)->getTotalExpense($this->user->id);
+        $totalExpense   = $this->em->getRepository(Movement::class)->getTotalExpense($this->user->id);
         $stored         = $this->em->getRepository(Accantonati::class)->getSum($this->user->id) + $totalExpense;
         $accounts       = $this->em->getRepository(Account::class)->getTotals($this->user->id, true, new \DateTime());
         $donutSpends    = [];

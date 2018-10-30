@@ -1,7 +1,7 @@
 <?php
 namespace Application\Entity;
 
-use MoneyLog\Form\Filter\MovimentFilter;
+use MoneyLog\Form\Filter\MovementFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
@@ -9,8 +9,8 @@ use Zend\InputFilter\InputFilter;
 
 /**
  *
- * @ORM\Entity(repositoryClass="Application\Repository\MovimentRepository")
- * @ORM\Table(name="Moviment")
+ * @ORM\Entity(repositoryClass="Application\Repository\MovementRepository")
+ * @ORM\Table(name="Movement")
  * @property int $id
  * @property int $accountId
  * @property DateTime $date
@@ -21,7 +21,7 @@ use Zend\InputFilter\InputFilter;
  * @property \Application\Entity\Account $account
  * @property \Application\Entity\Category $category
  */
-class Moviment implements InputFilterAwareInterface
+class Movement implements InputFilterAwareInterface
 {
     const IN = 1;
     const OUT = -1;
@@ -56,7 +56,7 @@ class Moviment implements InputFilterAwareInterface
     protected $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Account", inversedBy="moviments")
+     * @ORM\ManyToOne(targetEntity="Account", inversedBy="movements")
      * @ORM\JoinColumn(name="accountId", referencedColumnName="id")
      */
     protected $account;
@@ -138,7 +138,7 @@ class Moviment implements InputFilterAwareInterface
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
-            $this->inputFilter = new MovimentFilter();
+            $this->inputFilter = new MovementFilter();
         }
         return $this->inputFilter;
     }

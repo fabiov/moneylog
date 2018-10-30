@@ -3,7 +3,7 @@ namespace MoneyLog\Form\Filter;
 
 use Zend\InputFilter\InputFilter;
 
-class MovimentFilter extends InputFilter
+class MovementFilter extends InputFilter
 {
     public function __construct()
     {

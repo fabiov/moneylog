@@ -33,7 +33,7 @@ return [
                     'delete'    => 'user',
                     'edit'      => 'user',
                     'index'     => 'user',
-                    'moviment'  => 'user',
+                    'movement'  => 'user',
                 ],
                 'MoneyLog\Controller\Movement' => [
                     'account'   => 'user',
@@ -44,7 +44,7 @@ return [
                     'income'    => 'user',
                     'index'     => 'user',
                     'move'      => 'user',
-                    'moviment'  => 'user',
+                    'movement'  => 'user',
                 ],
                 'Auth\Controller\User' => [
                     'change-password' => 'user',

@@ -93,7 +93,7 @@ return [
             'accantonaMovement'     => [
                 'type'      => 'segment',
                 'options'   => [
-                    'route'         => '/moviment[/:action][/:id]',
+                    'route'         => '/movement[/:action][/:id]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
                     'defaults'      => ['controller' => MoneyLog\Controller\Movement::class, 'action' => 'index'],
                 ],

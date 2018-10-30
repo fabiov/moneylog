@@ -2,7 +2,7 @@
 namespace MoneyLog\Controller;
 
 use Application\Entity\Account;
-use Application\Entity\Moviment;
+use Application\Entity\Movement;
 use Doctrine\ORM\EntityManager;
 use MoneyLog\Form\AccountForm;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -119,7 +119,7 @@ class AccountController extends AbstractActionController
             ]);
             if ($account) {
                 $this->em->createQueryBuilder()
-                    ->delete('Application\Entity\Moviment', 'm')
+                    ->delete('Application\Entity\Movement', 'm')
                     ->where('m.account=:account')
                     ->setParameter('account', $account)
                     ->getQuery()->execute();
@@ -148,20 +148,20 @@ class AccountController extends AbstractActionController
 
         if ($account && $amount) {
 
-            $currentBalance = $this->em->getRepository('Application\Entity\Moviment')
+            $currentBalance = $this->em->getRepository(Movement::class)
                 ->getBalance($id, new \DateTime());
 
-            $moviment              = new Moviment();
-            $moviment->account     = $account;
-            $moviment->date        = new \DateTime();
-            $moviment->amount      = $amount - $currentBalance;
-            $moviment->description = $description;
-            $this->em->persist($moviment);
+            $movement              = new Movement();
+            $movement->account     = $account;
+            $movement->date        = new \DateTime();
+            $movement->amount      = $amount - $currentBalance;
+            $movement->description = $description;
+            $this->em->persist($movement);
             $this->em->flush();
         }
 
         switch ($routeName) {
-            case 'accantonaMoviment':
+            case 'accantonaMovement':
                 return $this->redirect()->toRoute('accantonaMovement', ['action' => 'account', 'id' => $id]);
             case 'accantonaAccount':
             default:

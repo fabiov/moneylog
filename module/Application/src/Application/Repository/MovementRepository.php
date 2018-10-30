@@ -2,9 +2,10 @@
 
 namespace Application\Repository;
 
+use Application\Entity\Movement;
 use Doctrine\ORM\EntityRepository;
 
-class MovimentRepository extends EntityRepository
+class MovementRepository extends EntityRepository
 {
 
     /**
@@ -18,7 +19,7 @@ class MovimentRepository extends EntityRepository
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('COALESCE(SUM(m.amount), 0) AS balance')
-            ->from('Application\Entity\Moviment', 'm')
+            ->from(Movement::class, 'm')
             ->where('m.accountId=:accountId')
             ->setParameter(':accountId', $accountId);
 
@@ -41,7 +42,7 @@ class MovimentRepository extends EntityRepository
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('m')
-            ->from('Application\Entity\Moviment', 'm')
+            ->from('Application\Entity\Movement', 'm')
             ->where('1=1');
 
         if (!empty($params['accountId'])) {
@@ -87,7 +88,7 @@ class MovimentRepository extends EntityRepository
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('COALESCE(SUM(m.amount), 0) AS amount')
-            ->from('Application\Entity\Moviment', 'm')
+            ->from(Movement::class, 'm')
             ->innerJoin('m.category', 'c')
             ->where('c.userId=:userId')
             ->setParameter(':userId', $userId);
