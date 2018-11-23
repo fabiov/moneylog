@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-apt-get update
+apt update
+apt updrade
 
 # install mysql 5.7
 debconf-set-selections <<< 'mysql-server-5.7 mysql-server/root_password password root'
