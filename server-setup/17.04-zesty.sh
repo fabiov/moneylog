@@ -9,9 +9,10 @@ debconf-set-selections <<< 'mysql-server-5.7 mysql-server/root_password_again pa
 apt-get -y install mysql-server-5.7
 mysql -uroot -proot -e "CREATE DATABASE moneylog DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
 
-apt-get install -y unzip
-apt-get install -y apache2
-apt-get install -y libapache2-mod-php7.0 php7.0 php7.0-mysql php7.0-intl php-xml php7.0-mbstring
+apt install git-core
+apt install -y unzip
+apt install -y apache2
+apt install -y libapache2-mod-php7.0 php7.0 php7.0-mysql php7.0-intl php-xml php7.0-mbstring
 
 mkdir /var/www/moneylog
 
