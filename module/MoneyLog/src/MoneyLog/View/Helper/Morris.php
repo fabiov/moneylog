@@ -26,14 +26,16 @@ class Morris extends AbstractHelper
                 $d[] = ['label' => $i[$labelKey], 'value' => $i[$valueKey]];
             }
             $colors = [
+                '#2e6da4', // blu
+                '#3d8b3d', // verde
                 '#6d9e00', // verde scuro
                 '#7fb800', // verde
                 '#91d100', // verde chiaro
-                '#ebc400', // arancione chiaro
-                '#eb9d00', // arancione
-                '#e67300', // arancione scuro
-                '#d22300', // rosso
                 '#b80000', // rosso scuro
+                '#d22300', // rosso
+                '#e67300', // arancione scuro
+                '#eb9d00', // arancione
+                '#ebc400', // arancione chiaro
             ];
             $jsonData = json_encode($d);
             $jsonColors = json_encode(array_splice($colors, 0, count($data)));
