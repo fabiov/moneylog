@@ -37,9 +37,8 @@ class MovementController extends AbstractActionController
         /* @var Movement $item */
         $item = $this->em->getRepository(Movement::class)->findOneBy(['id' => $id]);
 
-        $isIn = $item->amount > 0;
+        $type = $item->amount > 0;
         $item->amount = abs($item->amount);
-
 
         if (!$item || $item->account->userId != $this->user->id) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
@@ -47,6 +46,7 @@ class MovementController extends AbstractActionController
 
         $form = new MovementForm('movement', $this->em, $this->user->id);
         $form->bind($item);
+        $form->get('type')->setValue($type);
 
         $request = $this->getRequest();
         $searchParams = $this->params()->fromQuery();
@@ -56,7 +56,7 @@ class MovementController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-                $item->amount = $item->amount * ($isIn ? Movement::IN : Movement::OUT);
+                $item->amount = $item->amount * $type;
                 $item->category = $this->em->getRepository(Category::class)->findOneBy([
                     'id' => $data['category'], 'userId' => $this->user->id
                 ]);
@@ -68,7 +68,7 @@ class MovementController extends AbstractActionController
             }
         }
 
-        return ['item' => $item, 'isIn' => $isIn, 'form' => $form, 'searchParams' => $searchParams];
+        return ['item' => $item, 'form' => $form, 'searchParams' => $searchParams];
     }
 
     /**
@@ -254,17 +254,7 @@ class MovementController extends AbstractActionController
         return array('sourceAccount' => $sourceAccount, 'form' => $form);
     }
 
-    public function expenseAction()
-    {
-        return $this->addMovement($this->params('action'));
-    }
-
-    public function incomeAction()
-    {
-        return $this->addMovement($this->params('action'));
-    }
-
-    private function addMovement($action)
+    public function addAction()
     {
         $accountId = (int) $this->params()->fromRoute('id');
 
@@ -287,7 +277,8 @@ class MovementController extends AbstractActionController
             if ($form->isValid()) {
 
                 $repetitionNumber = (int) $data['repetitionNumber'];
-                $repetitionNumber = !empty($data['repetition']) && in_array($data['repetitionPeriod'], ['month', 'week']) &&
+                $repetitionNumber = !empty($data['repetition']) && 
+                                    in_array($data['repetitionPeriod'], ['month', 'week']) &&
                                     $repetitionNumber > 0 && $repetitionNumber < 13 ? $repetitionNumber : 1;
 
                 $category = $this->em->getRepository('Application\Entity\Category')
@@ -297,7 +288,7 @@ class MovementController extends AbstractActionController
                     $movement = new Movement();
                     $movement->exchangeArray([
                         'date'          => date('Y-m-d', strtotime("{$data['date']} +$i {$data['repetitionPeriod']}")),
-                        'amount'        => $data['amount'] * ($action === 'expense' ? -1 : 1),
+                        'amount'        => $data['amount'] * $data['type'],
                         'description'   => $data['description'],
                         'category'      => $category,
                     ]);

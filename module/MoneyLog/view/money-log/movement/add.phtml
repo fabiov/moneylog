@@ -1,11 +1,11 @@
-<?php echo $this->pageHeader('Aggiungi entrata'); ?>
+<?php echo $this->pageHeader('Aggiungi movimento'); ?>
 <div class="row">
     <div class="col-lg-4">
     </div>
     <div class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Aggiungi entrata in <?php echo $sourceAccount->name; ?>
+                Aggiungi movimento in <?php echo $sourceAccount->name; ?>
             </div>
             <div class="panel-body">
                 <?php echo $this->partial('money-log/movement/partials/movement', ['form' => $this->form, 'accountId' => $this->sourceAccount->id, 'isRepeatable' => true]); ?>

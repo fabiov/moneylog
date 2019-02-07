@@ -37,11 +37,10 @@ return [
                 ],
                 'MoneyLog\Controller\Movement' => [
                     'account'   => 'user',
+                    'add'       => 'user',
                     'delete'    => 'user',
                     'edit'      => 'user',
-                    'expense'   => 'user',
                     'export'    => 'user',
-                    'income'    => 'user',
                     'index'     => 'user',
                     'move'      => 'user',
                     'movement'  => 'user',

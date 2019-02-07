@@ -290,7 +290,6 @@ Morris.Line({
 <?php
 $i = '<i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>';
 $this->floatingButtons()
-    ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'expense', 'id' => $account->id]), 'label' => 'Uscita',    'icon' => 'minus'])
-    ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'income',  'id' => $account->id]), 'label' => 'Entrata',   'icon' => 'plus'])
-    ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'move',    'id' => $account->id]), 'label' => 'Giroconto', 'icon' => 'transfer'])
-    ->addRawItem("<span class=\"balance mfb-component__button--child\" data-mfb-label=\"Conguaglio\" data-toggle=\"modal\" data-target=\"#modal-balance\">$i</span>");
+    ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'add', 'id' => $account->id]), 'label' => 'Nuovo movimento', 'icon' => 'plus'])
+    ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'move', 'id' => $account->id]), 'label' => 'Giroconto', 'icon' => 'transfer'])
+    ->addRawItem("<span class=\"balance mfb-component__button--child\" data-toggle=\"modal\" data-target=\"#modal-balance\">$i</span>");
