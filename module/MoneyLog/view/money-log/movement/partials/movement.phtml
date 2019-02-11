@@ -25,7 +25,7 @@
     <?php endif; ?>
 
     <div class="text-right">
-        <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $this->accountId]); ?>">
+        <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $this->accountId], ['query' => $searchParams]); ?>">
             Annulla
         </a>
         <button type="submit" class="btn btn-primary">

@@ -8,7 +8,9 @@
                 Aggiungi movimento in <?php echo $sourceAccount->name; ?>
             </div>
             <div class="panel-body">
-                <?php echo $this->partial('money-log/movement/partials/movement', ['form' => $this->form, 'accountId' => $this->sourceAccount->id, 'isRepeatable' => true]); ?>
+                <?php echo $this->partial('money-log/movement/partials/movement', [
+                    'form' => $this->form, 'accountId' => $this->sourceAccount->id, 'isRepeatable' => true, 'searchParams' => $searchParams
+                ]); ?>
             </div>
         </div>
     </div>

@@ -7,7 +7,7 @@
             <div class="panel-body">
                 <?php $this->form->setAttribute('action', $this->url('accantonaMovement', ['action' => 'edit', 'id' => $this->item->id], ['query' => $searchParams])); ?>
                 <?php $this->form->prepare(); ?>
-                <?php echo $this->partial('money-log/movement/partials/movement', ['form' => $this->form, 'accountId' => $this->item->accountId, 'isRepeatable' => false]); ?>
+                <?php echo $this->partial('money-log/movement/partials/movement', ['form' => $this->form, 'accountId' => $this->item->accountId, 'isRepeatable' => false, 'searchParams' => $searchParams]); ?>
             </div>
         </div>
     </div>

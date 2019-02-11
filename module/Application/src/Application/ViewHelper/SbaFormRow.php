@@ -1,7 +1,6 @@
 <?php
 namespace Application\ViewHelper;
 
-use Zend\Debug\Debug;
 use Zend\Escaper\Escaper;
 use Zend\Form\Element;
 use Zend\View\Helper\AbstractHelper;
