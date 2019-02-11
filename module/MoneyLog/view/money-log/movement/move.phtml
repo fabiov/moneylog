@@ -13,7 +13,9 @@
                     <?php echo $this->sbaFormRow($form->get('targetAccountId')); ?>
 
                     <div class="text-right">
-                        <a class="btn btn-default" href="<?= $this->url('accantonaMovement', array('action' => 'account', 'id' => $this->sourceAccount->id)) ?>">Annulla</a>
+                        <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $this->sourceAccount->id], ['query' => $searchParams]) ?>">
+                            Annulla
+                        </a>
                         <button type="submit" class="btn btn-primary">Sposta</button>
                     </div>
                 <?php echo $this->form()->closeTag(); ?>

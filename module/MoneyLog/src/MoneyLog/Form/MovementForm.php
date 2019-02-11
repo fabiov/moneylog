@@ -1,6 +1,7 @@
 <?php
 namespace MoneyLog\Form;
 
+use Application\Entity\Movement;
 use Doctrine\ORM\EntityManager;
 use Zend\Form\Form;
 
@@ -28,6 +29,18 @@ class MovementForm extends Form
         $this->em     = $em;
         $this->userId = $userId;
 
+        $this->add([
+            'name'     => 'type',
+            'options'  => [
+                'disable_inarray_validator' => false,
+                'display_empty_item'        => false,
+                'label'                     => 'Tipo',
+                'property'                  => 'descrizione',
+                'value_options'             => ['-1' => 'Uscita', '1' => 'Entrata'],
+            ],
+            'required' => true,
+            'type'     => \Zend\Form\Element\Select::class,
+        ]);
         $this->add([
             'attributes'    => ['class' => 'form-control', 'value' => date('Y-m-d')],
             'name'          => 'date',

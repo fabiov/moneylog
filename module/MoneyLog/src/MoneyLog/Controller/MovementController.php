@@ -37,9 +37,8 @@ class MovementController extends AbstractActionController
         /* @var Movement $item */
         $item = $this->em->getRepository(Movement::class)->findOneBy(['id' => $id]);
 
-        $isIn = $item->amount > 0;
+        $type = $item->amount < 0 ? -1 : 1;
         $item->amount = abs($item->amount);
-
 
         if (!$item || $item->account->userId != $this->user->id) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
@@ -47,6 +46,7 @@ class MovementController extends AbstractActionController
 
         $form = new MovementForm('movement', $this->em, $this->user->id);
         $form->bind($item);
+        $form->get('type')->setValue($type);
 
         $request = $this->getRequest();
         $searchParams = $this->params()->fromQuery();
@@ -56,7 +56,7 @@ class MovementController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-                $item->amount = $item->amount * ($isIn ? Movement::IN : Movement::OUT);
+                $item->amount = $item->amount * $data['type'];
                 $item->category = $this->em->getRepository(Category::class)->findOneBy([
                     'id' => $data['category'], 'userId' => $this->user->id
                 ]);
@@ -68,7 +68,7 @@ class MovementController extends AbstractActionController
             }
         }
 
-        return ['item' => $item, 'isIn' => $isIn, 'form' => $form, 'searchParams' => $searchParams];
+        return ['item' => $item, 'form' => $form, 'searchParams' => $searchParams];
     }
 
     /**
@@ -191,6 +191,7 @@ class MovementController extends AbstractActionController
     public function moveAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
+        $searchParams = $this->params()->fromQuery();
 
         /* @var AccountRepository $accountRepo */
         $accountRepo = $this->em->getRepository('Application\Entity\Account');
@@ -247,26 +248,21 @@ class MovementController extends AbstractActionController
 
                 $this->em->flush();
 
-                return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+                $routeParams = ['action' => 'account', 'id' => $sourceAccount->id];
+                return $this->redirect()->toRoute('accantonaMovement', $routeParams, ['query' => $searchParams]);
             }
         }
 
-        return array('sourceAccount' => $sourceAccount, 'form' => $form);
+        $routeParams = ['action' => 'move', 'id' => $id];
+        $routeOptions = ['query' => $searchParams];
+        $form->setAttribute('action', $this->url()->fromRoute('accantonaMovement', $routeParams, $routeOptions));
+        return ['sourceAccount' => $sourceAccount, 'form' => $form, 'searchParams' => $searchParams];
     }
 
-    public function expenseAction()
-    {
-        return $this->addMovement($this->params('action'));
-    }
-
-    public function incomeAction()
-    {
-        return $this->addMovement($this->params('action'));
-    }
-
-    private function addMovement($action)
+    public function addAction()
     {
         $accountId = (int) $this->params()->fromRoute('id');
+        $searchParams = $this->params()->fromQuery();
 
         /* @var $account Account */
         $account = $this->em->getRepository('Application\Entity\Account')->find($accountId);
@@ -278,7 +274,6 @@ class MovementController extends AbstractActionController
         $request = $this->getRequest();
         $form = new MovementForm('movement', $this->em, $this->user->id);
         if ($request->isPost()) {
-
             $movement = new Movement();
             $data = $request->getPost();
             $form->setInputFilter($movement->getInputFilter());
@@ -287,7 +282,8 @@ class MovementController extends AbstractActionController
             if ($form->isValid()) {
 
                 $repetitionNumber = (int) $data['repetitionNumber'];
-                $repetitionNumber = !empty($data['repetition']) && in_array($data['repetitionPeriod'], ['month', 'week']) &&
+                $repetitionNumber = !empty($data['repetition']) && 
+                                    in_array($data['repetitionPeriod'], ['month', 'week']) &&
                                     $repetitionNumber > 0 && $repetitionNumber < 13 ? $repetitionNumber : 1;
 
                 $category = $this->em->getRepository('Application\Entity\Category')
@@ -297,7 +293,7 @@ class MovementController extends AbstractActionController
                     $movement = new Movement();
                     $movement->exchangeArray([
                         'date'          => date('Y-m-d', strtotime("{$data['date']} +$i {$data['repetitionPeriod']}")),
-                        'amount'        => $data['amount'] * ($action === 'expense' ? -1 : 1),
+                        'amount'        => $data['amount'] * $data['type'],
                         'description'   => $data['description'],
                         'category'      => $category,
                     ]);
@@ -307,10 +303,17 @@ class MovementController extends AbstractActionController
                     $this->em->flush();
                 }
 
-                return $this->redirect()->toRoute('accantonaMovement', ['action' => 'account', 'id' => $accountId]);
+                return $this->redirect()->toRoute('accantonaMovement', [
+                    'action' => 'account', 
+                    'id'    => $accountId
+                ], ['query' => $searchParams]);
             }
         }
 
-        return ['sourceAccount' => $account, 'form' => $form];
+        $form->setAttribute('action', $this->url()->fromRoute('accantonaMovement', [
+            'action' => 'add', 
+            'id'     => $account->id
+        ], ['query' => $searchParams]));
+        return ['sourceAccount' => $account, 'form' => $form, 'searchParams' => $searchParams];
     }
 }
