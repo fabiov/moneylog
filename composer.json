@@ -8,7 +8,8 @@
         "php": ">=7.0",
         "zendframework/zendframework": "^3.0",
         "doctrine/doctrine-orm-module": "^1.0",
-        "zendframework/zend-router": "^3.0"
+        "zendframework/zend-router": "^3.0",
+        "doctrine/migrations": "^1.5"
     },
     "require-dev": {
         "zendframework/zend-component-installer": "^1.1"

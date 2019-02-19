@@ -10,15 +10,15 @@ use Zend\InputFilter\InputFilterInterface;
 /**
  * Setting.
  *
- * @ORM\Entity(repositoryClass="Application\Repository\AccantonatiRepository")
- * @ORM\Table(name="accantonati")
+ * @ORM\Entity(repositoryClass="Application\Repository\AsideRepository")
+ * @ORM\Table(name="aside")
  * @property int $id
  * @property int $userid
  * @property \DateTime $valuta
  * @property float $importo
  * @property string $descrizione
  */
-class accantonati implements InputFilterAwareInterface
+class Aside implements InputFilterAwareInterface
 {
 
     protected $inputFilter;
