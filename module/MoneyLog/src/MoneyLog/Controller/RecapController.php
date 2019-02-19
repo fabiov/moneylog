@@ -1,7 +1,7 @@
 <?php
 namespace MoneyLog\Controller;
 
-use Application\Entity\Accantonati;
+use Application\Entity\Aside;
 use Application\Entity\Account;
 use Application\Entity\Movement;
 use Application\Entity\Setting;
@@ -43,7 +43,7 @@ class RecapController extends AbstractActionController
         });
 
         $totalExpense   = $this->em->getRepository(Movement::class)->getTotalExpense($this->user->id);
-        $stored         = $this->em->getRepository(Accantonati::class)->getSum($this->user->id) + $totalExpense;
+        $stored         = $this->em->getRepository(Aside::class)->getSum($this->user->id) + $totalExpense;
         $accounts       = $this->em->getRepository(Account::class)->getTotals($this->user->id, true, new \DateTime());
         $donutSpends    = [];
         $donutAccounts  = [];

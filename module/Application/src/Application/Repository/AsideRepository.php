@@ -2,11 +2,12 @@
 
 namespace Application\Repository;
 
+use Application\Entity\Aside;
 use Application\Entity\Movement;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 
-class AccantonatiRepository extends EntityRepository
+class AsideRepository extends EntityRepository
 {
 
     public function getBalance($userId)
@@ -15,7 +16,7 @@ class AccantonatiRepository extends EntityRepository
         $qb = $em
             ->createQueryBuilder()
             ->select('COALESCE(SUM(a.importo), 0) AS total')
-            ->from('Application\Entity\Accantonati', 'a')
+            ->from(Aside::class, 'a')
             ->where('a.userId=:userId')
             ->setParameter(':userId', $userId);
 
@@ -32,7 +33,7 @@ class AccantonatiRepository extends EntityRepository
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('a')
-            ->from('Application\Entity\Accantonati', 'a')
+            ->from(Aside::class, 'a')
             ->where('1=1');
 
         if (!empty($params['userId'])) {
@@ -66,11 +67,10 @@ class AccantonatiRepository extends EntityRepository
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder()
                  ->select('COALESCE(SUM(a.importo), 0) AS total')
-                 ->from('Application\Entity\Accantonati', 'a')
+                 ->from(Aside::class, 'a')
                  ->where('a.userId=:userId')
                  ->setParameter(':userId', $userId);
 
         return $qb->getQuery()->getSingleScalarResult();
-    
     }
 }
