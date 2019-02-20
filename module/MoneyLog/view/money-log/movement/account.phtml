@@ -35,7 +35,7 @@ $morrisData = array();
                 <div class="row">
                     <div class="col-lg-12">
                         <?php echo $this->synopsisFilters($searchParams, $categories); ?>
-                        <a class="btn btn-default btn-circle pull-right" id="monthsFilterToggle"><i class="fa fa-plus"></i></a>
+                        <a class="btn btn-default btn-circle pull-right" id="monthsFilterToggle"><i class="fa fa-chevron-down"></i></a>
                     </div>
                 </div>
                 <form class="collapse" id="collapseFilters">
@@ -74,21 +74,28 @@ $morrisData = array();
                                 <input class="form-control" name="dateMax" type="date" value="<?php echo $searchParams['dateMax']; ?>"/>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-6">
+                        <div class="col-lg-3 col-md-6">
                             <div class="form-group">
                                 <label>Importo minimo</label>
                                 <input class="form-control" name="amountMin" type="number" step="0.01" value="<?php echo $searchParams['amountMin']; ?>"/>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-6">
+                        <div class="col-lg-3 col-md-6">
                             <div class="form-group">
                                 <label>Impoto massimo</label>
                                 <input class="form-control" name="amountMax" type="number" step="0.01" value="<?php echo $searchParams['amountMax']; ?>"/>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-12">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
                             <div class="form-group">
-                                <label>&nbsp;</label>
+                                <button type="button" class="form-control btn btn-danger" value="Azzera" id="remove-filters"><i class="fa fa-remove"></i> Rimuovi filtri</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
                                 <button type="submit" class="form-control btn btn-primary" value="cerca"><i class="fa fa-search"></i> Cerca</button>
                             </div>
                         </div>
@@ -222,14 +229,16 @@ usort($morrisData, function ($a, $b) {
     });
 
     $('#monthsFilterToggle').click(function () {
-
-        if ($(this).find('i').hasClass('fa-plus')) {
-            $(this).find('i').removeClass('fa-plus').addClass('fa-minus');
+        if ($(this).find('i').hasClass('fa-chevron-down')) {
+            $(this).find('i').removeClass('fa-chevron-down').addClass('fa-chevron-up');
             $('#collapseFilters').slideDown();
         } else {
-            $(this).find('i').removeClass('fa-minus').addClass('fa-plus');
+            $(this).find('i').removeClass('fa-up').addClass('fa-chevron-down');
             $('#collapseFilters').slideUp();
         }
+    });
+    $('#remove-filters').click(function () {
+        $('#collapseFilters input, #collapseFilters select').val('');
     });
 </script>
 <?php if ($rows): ?>
