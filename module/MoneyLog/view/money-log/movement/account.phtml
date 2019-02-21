@@ -20,8 +20,8 @@ $morrisData = array();
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
-            <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '6', 'fa' => 'eur', 'label' => 'Saldo disponibile', 'text' => $this->currencyForma($this->balanceAvailable)]); ?>
-            <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '6', 'fa' => 'eur', 'label' => 'Saldo contabile', 'text' => $this->currencyForma($this->balanceAccount)]); ?>
+            <?php echo $this->widgetText(['color' => 'green', 'col-lg' => 6, 'col-md' => 6, 'fa' => 'eur', 'label' => 'Saldo disponibile', 'text' => $this->currencyForma($this->balanceAvailable)]); ?>
+            <?php echo $this->widgetText(['color' => 'green', 'col-lg' => 6, 'col-md' => 6, 'fa' => 'eur', 'label' => 'Saldo contabile', 'text' => $this->currencyForma($this->balanceAccount)]); ?>
         </div>
     </div>
 </div>
@@ -40,13 +40,13 @@ $morrisData = array();
                 </div>
                 <form class="collapse" id="collapseFilters">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label>Descrizione</label>
                                 <input name="description" type="text" class="form-control" placeholder="Descrizione" value="<?php echo $searchParams['description']; ?>">
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label>Categoria</label>
                                 <select class="form-control" name="category">
@@ -90,14 +90,10 @@ $morrisData = array();
 
                     <div class="row">
                         <div class="col-lg-6 col-md-6">
-                            <div class="form-group">
-                                <button type="button" class="form-control btn btn-danger" value="Azzera" id="remove-filters"><i class="fa fa-remove"></i> Rimuovi filtri</button>
-                            </div>
+                            <button type="button" class="form-control btn btn-danger" value="Azzera" id="remove-filters"><i class="fa fa-remove"></i> Rimuovi filtri</button>
                         </div>
                         <div class="col-lg-6 col-md-6">
-                            <div class="form-group">
-                                <button type="submit" class="form-control btn btn-primary" value="cerca"><i class="fa fa-search"></i> Cerca</button>
-                            </div>
+                            <button type="submit" class="form-control btn btn-primary" value="cerca"><i class="fa fa-search"></i> Cerca</button>
                         </div>
                     </div>
 
