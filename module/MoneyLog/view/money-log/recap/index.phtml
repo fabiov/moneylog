@@ -106,11 +106,12 @@
 
                     <tbody>
                     <?php foreach ($avgPerCategory as $row) : ?>
+                        <?php if ($row['status'] == \Application\Entity\Category::STATUS_ACTIVE): ?>
                         <tr>
                             <td><?php echo $this->escapeHtml($row['description']); ?></td>
                             <td class="text-right">
                                 <?php
-                                if ($row['average'] < 0) {
+                                if ($row['average'] <= 0) {
                                     $average = abs($row['average']);
                                     $sum += $average;
                                     echo $this->currencyForma($average);
@@ -118,6 +119,7 @@
                                 ?>
                             </td>
                         </tr>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                     </tbody>
                     <tfoot>

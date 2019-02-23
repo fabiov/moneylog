@@ -3,6 +3,7 @@ namespace MoneyLog\Controller;
 
 use Application\Entity\Aside;
 use Application\Entity\Account;
+use Application\Entity\Category;
 use Application\Entity\Movement;
 use Application\Entity\Setting;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -34,13 +35,11 @@ class RecapController extends AbstractActionController
     public function indexAction()
     {
         /* @var Setting $settings */
-        $settings = $this->em->find('Application\Entity\Setting', $this->user->id);
-        $avgPerCategory = $this->em->getRepository('Application\Entity\Category')
-            ->getAverages($this->user->id, new \DateTime('-' . $settings->monthsRetrospective . ' MONTH'));
+        $settings = $this->em->find(Setting::class, $this->user->id);
+        $avgPerCategory = $this->em->getRepository(Category::class)
+                ->getAverages($this->user->id, new \DateTime('-' . $settings->monthsRetrospective . ' MONTH'));
 
-        usort($avgPerCategory, function ($a, $b) {
-            return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? -1 : 1);
-        });
+        usort($avgPerCategory, function ($a, $b) { return ($a['average'] ?? 0) <=> ($b['average'] ?? 0); });
 
         $totalExpense   = $this->em->getRepository(Movement::class)->getTotalExpense($this->user->id);
         $stored         = $this->em->getRepository(Aside::class)->getSum($this->user->id) + $totalExpense;
