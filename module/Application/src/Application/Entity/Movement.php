@@ -10,7 +10,7 @@ use Zend\InputFilter\InputFilter;
 /**
  *
  * @ORM\Entity(repositoryClass="Application\Repository\MovementRepository")
- * @ORM\Table(name="Movement")
+ * @ORM\Table(name="movement")
  * @property int $id
  * @property int $accountId
  * @property DateTime $date

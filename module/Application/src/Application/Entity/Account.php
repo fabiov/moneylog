@@ -11,7 +11,7 @@ use Zend\InputFilter\InputFilter;
  * Setting.
  *
  * @ORM\Entity(repositoryClass="Application\Repository\AccountRepository")
- * @ORM\Table(name="Account")
+ * @ORM\Table(name="account")
  * @property int $id
  * @property int $userId
  * @property string $name
