@@ -40,10 +40,22 @@
     ?>
 </div>
 <div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Panoramica mensile spese</h4>
+            </div>
+            <div class="panel-body">
+                <div id="monthly-overview" style="height:200px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2>Budget</h2>
+                <h3>Budget</h3>
             </div>
             <div class="panel-body">
                 <?php if (!$accounts): ?>
@@ -92,7 +104,7 @@
     <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2>Spese per categoria</h2>
+                <h3>Spese per categoria</h3>
             </div>
             <div class="panel-body">
                 <?php if ($avgPerCategory): ?>
@@ -149,6 +161,30 @@
         </div>
     </div>
 </div>
+<?php $this->inlineScript()->captureStart(); ?>
+Morris.Bar({
+    data: <?php echo json_encode(array_map(function ($item) {
+        return ['date' => $item['date'], 'amount' => abs($item['amount'])];
+    }, array_values($monthlyOverviewData))); ?>,
+    element: 'monthly-overview',
+    hideHover: "auto",
+    labels: ['Importo'],
+    xkey: 'date',
+    ykeys: ['amount'],
+    resize: true,
+    "yLabelFormat": function formatMoney(n) {
+        var c = isNaN(c = Math.abs(c)) ? 2 : c,
+          d = ',',
+          t = '.',
+          s = n < 0 ? '-' : '',
+          i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+          j = (j = i.length) > 3 ? j % 3 : 0;
+
+        return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+    }
+});
+<?php $this->inlineScript()->captureEnd(); ?>
+
 <?php
 if ($this->donutSpends) {
     $this->morris()->donut('donut-spends', $this->donutSpends);

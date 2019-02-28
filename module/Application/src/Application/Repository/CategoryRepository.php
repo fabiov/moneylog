@@ -18,9 +18,9 @@ class CategoryRepository extends EntityRepository
     public function getAverages(int $userId, \DateTime $since)
     {
         $oldest = $this->oldestMovements($userId);
-        
+
         $qb = $this->getEntityManager()
-            ->createQueryBuilder()                
+            ->createQueryBuilder()
             ->select('SUM(m.amount) AS amount, MIN(m.date) AS first_date, c.id')
             ->from(Category::class, 'c', 'c.id')
             ->innerJoin(Movement::class, 'm', 'WITH', 'c.id=m.category')
@@ -34,11 +34,11 @@ class CategoryRepository extends EntityRepository
 
         $data = [];
         foreach ($oldest as $categoryId => $row) {
-            
+
             $avarage = null;
             if (isset($rs[$categoryId])) {
-            
-                $date = $row['date'] < $rs[$categoryId]['first_date'] 
+
+                $date = $row['date'] < $rs[$categoryId]['first_date']
                       ? $since->format('Y-m-d') : $rs[$categoryId]['first_date'];
                 list($y, $m, $d) = explode('-', $date);
 
@@ -58,7 +58,7 @@ class CategoryRepository extends EntityRepository
         }
         return $data;
     }
-    
+
     /**
      * Get the averages for categories
      *
@@ -71,7 +71,7 @@ class CategoryRepository extends EntityRepository
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('c.id, c.descrizione, MIN(m.date) AS date, c.status')
-            ->from(Category::class, 'c', 'c.id')
+            ->from(Category::class, 'c', 'c.id', 'm.date')
             ->leftJoin(Movement::class, 'm', 'WITH', 'c.id=m.category')
             ->where("c.userId=$userId")
             ->groupBy('c.id');
