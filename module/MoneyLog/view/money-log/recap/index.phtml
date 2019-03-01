@@ -58,14 +58,40 @@
                 <h3>Budget</h3>
             </div>
             <div class="panel-body">
-                <?php if (!$accounts): ?>
+                <?php if ($accounts): ?>
+                    <table class="table">
+                        <thead><tr><th>Descrizione</th><th class="text-right">Valore</th></tr></thead>
+                        <tbody>
+                            <?php foreach ($accounts as $account): ?>
+                            <tr>
+                                <td>
+                                    <a href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $account['id']]); ?>"><?php echo $account['name']; ?></a>
+                                </td>
+                                <td class="text-right" style="min-width:130px;"><?php echo $this->currencyForma($account['total']); ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php if ($this->userData()->hasStored()): ?>
+                            <tr>
+                                <td><a href="<?php echo $this->url('accantona_accantonato'); ?>">Accantonati</a></td>
+                                <td class="text-right">
+                                    <?php if ($stored > 0): ?>
+                                        <?php echo '- ' . $this->currencyForma($stored); ?>
+                                    <?php else: ?>
+                                        <em>Non disponibile</em> <?php echo $this->helpTooltip('L\'accantonamento è una quota che viene destinata a coprire le spese.'); ?>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
                     <div class="alert alert-warning" role="alert">
                         <p>
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Non hai ipostato alcun conto nel riepilogo.
                         </p>
                         <p>
-                            Impostando i conti nel riepilogo (es. Contanti, Conto corrente, ecc.) ti verranno siggeriti i budget giornalieri e il residuo spendibile fino
+                            Impostando i conti nel riepilogo (es. Contanti, Conto corrente, ecc.) ti verranno suggeriti i budget giornalieri e il residuo spendibile fino
                             al prossimo stipendio.
                         </p>
                         <p>
@@ -73,29 +99,6 @@
                         </p>
                     </div>
                 <?php endif; ?>
-                <table class="table">
-                    <thead><tr><th>Descrizione</th><th class="text-right">Valore</th></tr></thead>
-                    <tbody>
-                        <?php foreach ($accounts as $account): ?>
-                        <tr>
-                            <td><a href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $account['id']]); ?>"><?php echo $account['name']; ?></a></td>
-                            <td class="text-right" style="min-width:130px;"><?php echo $this->currencyForma($account['total']); ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                        <?php if ($this->userData()->hasStored()): ?>
-                        <tr>
-                            <td><a href="<?php echo $this->url('accantona_accantonato'); ?>">Accantonati</a></td>
-                            <td class="text-right">
-                                <?php if ($stored > 0): ?>
-                                    <?php echo '- ' . $this->currencyForma($stored); ?>
-                                <?php else: ?>
-                                    <em>Non disponibile</em> <?php echo $this->helpTooltip('L\'accantonamento è una quota che viene destinata a coprire le spese.'); ?>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
                 <div id="donut-accounts"></div>
             </div>
         </div>
