@@ -8,7 +8,7 @@ use Zend\InputFilter\InputFilterInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\CategoryRepository")
- * @ORM\Table(name="Category")
+ * @ORM\Table(name="category")
  * @property int $id
  * @property int $userId
  * @property string $descrizione

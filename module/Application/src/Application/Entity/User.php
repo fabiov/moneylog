@@ -10,7 +10,7 @@ use Zend\InputFilter\InputFilterInterface;
  * User.
  *
  * @ORM\Entity
- * @ORM\Table(name="User")
+ * @ORM\Table(name="user")
  * @property int $id
  * @property string $email
  * @property string $name

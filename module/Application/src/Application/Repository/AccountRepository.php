@@ -28,15 +28,15 @@ class AccountRepository extends EntityRepository
      * @param \DateTime|null|string $date
      * @return array
      */
-    public function getTotals($userId, $onlyRecap = false, $date = null)
+    public function getTotals(int $userId, $onlyRecap = false, $date = null)
     {
-        $qb =  $this->getEntityManager()
-        ->createQueryBuilder()
-        ->select('a.id', 'a.name', 'a.recap', 'COALESCE(SUM(m.amount), 0) AS total')
-        ->from('Application\Entity\Account', 'a')
-        ->leftJoin('a.movements', 'm')
-        ->where('a.userId=:userId')
-        ->setParameter(':userId', $userId);
+        /* @var Doctrine\ORM\QueryBuilder */
+        $qb = $this->getEntityManager()
+                   ->createQueryBuilder()
+                   ->select('a.id', 'a.name', 'a.recap', 'COALESCE(SUM(m.amount), 0) AS total')
+                   ->from('Application\Entity\Account', 'a')
+                   ->leftJoin('a.movements', 'm')
+                   ->where("a.userId=$userId");
 
         if ($date) {
             $qb->andWhere('m.date<=:date')

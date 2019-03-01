@@ -3,6 +3,7 @@ namespace MoneyLog\Controller;
 
 use Application\Entity\Aside;
 use Application\Entity\Account;
+use Application\Entity\Category;
 use Application\Entity\Movement;
 use Application\Entity\Setting;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -33,18 +34,17 @@ class RecapController extends AbstractActionController
      */
     public function indexAction()
     {
+        $em = $this->em;
         /* @var Setting $settings */
-        $settings = $this->em->find('Application\Entity\Setting', $this->user->id);
-        $avgPerCategory = $this->em->getRepository('Application\Entity\Category')
-            ->getAverages($this->user->id, new \DateTime('-' . $settings->monthsRetrospective . ' MONTH'));
+        $settings = $em->find(Setting::class, $this->user->id);
+        $avgPerCategory = $em->getRepository(Category::class)
+                ->getAverages($this->user->id, new \DateTime('-' . $settings->monthsRetrospective . ' MONTH'));
 
-        usort($avgPerCategory, function ($a, $b) {
-            return $a['average'] == $b['average'] ? 0 : ($a['average'] < $b['average'] ? -1 : 1);
-        });
+        usort($avgPerCategory, function ($a, $b) { return ($a['average'] ?? 0) <=> ($b['average'] ?? 0); });
 
-        $totalExpense   = $this->em->getRepository(Movement::class)->getTotalExpense($this->user->id);
-        $stored         = $this->em->getRepository(Aside::class)->getSum($this->user->id) + $totalExpense;
-        $accounts       = $this->em->getRepository(Account::class)->getTotals($this->user->id, true, new \DateTime());
+        $totalExpense   = $em->getRepository(Movement::class)->getTotalExpense($this->user->id);
+        $stored         = $em->getRepository(Aside::class)->getSum($this->user->id) + $totalExpense;
+        $accounts       = $em->getRepository(Account::class)->getTotals($this->user->id, true, new \DateTime());
         $donutSpends    = [];
         $donutAccounts  = [];
         $currentDay     = date('j');
@@ -62,19 +62,41 @@ class RecapController extends AbstractActionController
         }
 
         if ($settings->payDay) {
-            $remainingDays = $currentDay < $settings->payDay
-                           ? $settings->payDay - $currentDay : date('t') - $currentDay + $settings->payDay;
+            if ($currentDay < $settings->payDay) {
+                $remainingDays = $settings->payDay - $currentDay;
+                $begin = date("Y-m-$settings->payDay", strtotime('last month'));
+            } else {
+                $remainingDays = date('t') - $currentDay + $settings->payDay;
+                $begin = date("Y-m-$settings->payDay");
+            }
+            $end = date('Y-m-d', strtotime(($remainingDays - 1) . ' day'));
         } else {
-            $remainingDays = 0;
+            $remainingDays  = 0;
+            $begin          = date('Y-m-01');
+            $end            = date('Y-m-t');
         }
-        return new ViewModel([
-            'accounts'       => $accounts,
-            'avgPerCategory' => $avgPerCategory,
-            'donutAccounts'  => $donutAccounts,
-            'donutSpends'    => $donutSpends,
-            'monthBudget'    => $monthBudget,
-            'remainingDays'  => $remainingDays,
-            'stored'         => $stored,
-        ]);
+
+        $beginFiller = \DateTime::createFromFormat('Y-m-d', $begin);
+        $endFiller   = \DateTime::createFromFormat('Y-m-d', $end);
+        $monthlyOverviewData = [];
+        for ($i = $beginFiller; $i <= $endFiller; $i->modify('+1 day')) {
+            $monthlyOverviewData[$i->format('Y-m-d')] = ['date' => $i->format('d/m/Y'), 'amount' => 0];
+        }
+        foreach ($em->getRepository(Movement::class)->getMovementByDay($this->user->id, $begin, $end) as $item) {
+            $monthlyOverviewData[$item['date']->format('Y-m-d')] = [
+                'date' => $item['date']->format('d/m/Y'), 'amount' => $item['amount']
+            ];
+        }
+
+        return [
+            'accounts'              => $accounts,
+            'avgPerCategory'        => $avgPerCategory,
+            'donutAccounts'         => $donutAccounts,
+            'donutSpends'           => $donutSpends,
+            'monthBudget'           => $monthBudget,
+            'monthlyOverviewData'   => $monthlyOverviewData,
+            'remainingDays'         => $remainingDays,
+            'stored'                => $stored,
+        ];
     }
 }

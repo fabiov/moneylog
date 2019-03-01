@@ -40,20 +40,58 @@
     ?>
 </div>
 <div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Panoramica mensile spese</h4>
+            </div>
+            <div class="panel-body">
+                <div id="monthly-overview" style="height:200px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2>Budget</h2>
+                <h3>Budget</h3>
             </div>
             <div class="panel-body">
-                <?php if (!$accounts): ?>
+                <?php if ($accounts): ?>
+                    <table class="table">
+                        <thead><tr><th>Descrizione</th><th class="text-right">Valore</th></tr></thead>
+                        <tbody>
+                            <?php foreach ($accounts as $account): ?>
+                            <tr>
+                                <td>
+                                    <a href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $account['id']]); ?>"><?php echo $account['name']; ?></a>
+                                </td>
+                                <td class="text-right" style="min-width:130px;"><?php echo $this->currencyForma($account['total']); ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php if ($this->userData()->hasStored()): ?>
+                            <tr>
+                                <td><a href="<?php echo $this->url('accantona_accantonato'); ?>">Accantonati</a></td>
+                                <td class="text-right">
+                                    <?php if ($stored > 0): ?>
+                                        <?php echo '- ' . $this->currencyForma($stored); ?>
+                                    <?php else: ?>
+                                        <em>Non disponibile</em> <?php echo $this->helpTooltip('L\'accantonamento è una quota che viene destinata a coprire le spese.'); ?>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
                     <div class="alert alert-warning" role="alert">
                         <p>
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             Non hai ipostato alcun conto nel riepilogo.
                         </p>
                         <p>
-                            Impostando i conti nel riepilogo (es. Contanti, Conto corrente, ecc.) ti verranno siggeriti i budget giornalieri e il residuo spendibile fino
+                            Impostando i conti nel riepilogo (es. Contanti, Conto corrente, ecc.) ti verranno suggeriti i budget giornalieri e il residuo spendibile fino
                             al prossimo stipendio.
                         </p>
                         <p>
@@ -61,29 +99,6 @@
                         </p>
                     </div>
                 <?php endif; ?>
-                <table class="table">
-                    <thead><tr><th>Descrizione</th><th class="text-right">Valore</th></tr></thead>
-                    <tbody>
-                        <?php foreach ($accounts as $account): ?>
-                        <tr>
-                            <td><a href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $account['id']]); ?>"><?php echo $account['name']; ?></a></td>
-                            <td class="text-right" style="min-width:130px;"><?php echo $this->currencyForma($account['total']); ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                        <?php if ($this->userData()->hasStored()): ?>
-                        <tr>
-                            <td><a href="<?php echo $this->url('accantona_accantonato'); ?>">Accantonati</a></td>
-                            <td class="text-right">
-                                <?php if ($stored > 0): ?>
-                                    <?php echo '- ' . $this->currencyForma($stored); ?>
-                                <?php else: ?>
-                                    <em>Non disponibile</em> <?php echo $this->helpTooltip('L\'accantonamento è una quota che viene destinata a coprire le spese.'); ?>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
                 <div id="donut-accounts"></div>
             </div>
         </div>
@@ -92,7 +107,7 @@
     <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2>Spese per categoria</h2>
+                <h3>Spese per categoria</h3>
             </div>
             <div class="panel-body">
                 <?php if ($avgPerCategory): ?>
@@ -106,11 +121,12 @@
 
                     <tbody>
                     <?php foreach ($avgPerCategory as $row) : ?>
+                        <?php if ($row['status'] == \Application\Entity\Category::STATUS_ACTIVE): ?>
                         <tr>
                             <td><?php echo $this->escapeHtml($row['description']); ?></td>
                             <td class="text-right">
                                 <?php
-                                if ($row['average'] < 0) {
+                                if ($row['average'] <= 0) {
                                     $average = abs($row['average']);
                                     $sum += $average;
                                     echo $this->currencyForma($average);
@@ -118,6 +134,7 @@
                                 ?>
                             </td>
                         </tr>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                     </tbody>
                     <tfoot>
@@ -147,6 +164,30 @@
         </div>
     </div>
 </div>
+<?php $this->inlineScript()->captureStart(); ?>
+Morris.Bar({
+    data: <?php echo json_encode(array_map(function ($item) {
+        return ['date' => $item['date'], 'amount' => abs($item['amount'])];
+    }, array_values($monthlyOverviewData))); ?>,
+    element: 'monthly-overview',
+    hideHover: "auto",
+    labels: ['Importo'],
+    xkey: 'date',
+    ykeys: ['amount'],
+    resize: true,
+    "yLabelFormat": function formatMoney(n) {
+        var c = isNaN(c = Math.abs(c)) ? 2 : c,
+          d = ',',
+          t = '.',
+          s = n < 0 ? '-' : '',
+          i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+          j = (j = i.length) > 3 ? j % 3 : 0;
+
+        return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+    }
+});
+<?php $this->inlineScript()->captureEnd(); ?>
+
 <?php
 if ($this->donutSpends) {
     $this->morris()->donut('donut-spends', $this->donutSpends);

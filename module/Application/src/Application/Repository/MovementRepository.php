@@ -95,4 +95,21 @@ class MovementRepository extends EntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+
+    public function getMovementByDay(int $userId, string $minDate, string $maxDate) {
+        // SELECT date, SUM(amount) AS amount FROM movement INNER JOIN account ON movement.accountId=account.id
+        // WHERE userId=1 AND recap=1 AND date >= '2019-02-10' AND date<='2019-02-25' GROUP BY date
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('m.date, SUM(m.amount) AS amount')
+            ->from(Movement::class, 'm')
+            ->innerJoin('m.account', 'a')
+            ->where("a.userId=$userId AND m.amount < 0 AND a.recap=1 AND m.date BETWEEN :minDate AND :maxDate")
+            ->setParameter(':minDate', $minDate)
+            ->setParameter(':maxDate', $maxDate)
+            ->groupBy('m.date')
+            ->orderBy('m.date');
+
+        return $qb->getQuery()->getResult();
+    }
 }

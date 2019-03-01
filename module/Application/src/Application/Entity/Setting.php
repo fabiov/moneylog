@@ -11,7 +11,7 @@ use Zend\InputFilter\InputFilterInterface;
  * Setting.
  *
  * @ORM\Entity
- * @ORM\Table(name="Setting")
+ * @ORM\Table(name="setting")
  * @property int $userId
  * @property int $payDay
  * @property int $monthsRetrospective
