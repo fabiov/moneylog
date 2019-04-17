@@ -7,7 +7,7 @@
         'col-lg' => $remainingDays ? 3 : 12,
         'col-md' => $remainingDays ? 6 : 12,
         'fa'     => 'eur',
-        'label'  => 'Budget residuo',
+        'label'  => 'Rimasti da spendere',
         'text'   => $this->currencyForma($monthBudget),
     ]);
 
@@ -25,7 +25,7 @@
             'col-lg' => 3,
             'col-md' => 6,
             'fa'     => 'eur',
-            'label'  => 'Budget giornaliero oggi',
+            'label'  => 'Rimasti al giorno',
             'text'   => $this->currencyForma($monthBudget / $remainingDays),
         ]);
         echo $this->widgetText([
@@ -33,7 +33,7 @@
             'col-lg' => 3,
             'col-md' => 6,
             'fa'     => 'eur',
-            'label'  => 'Budget giornaliero domani',
+            'label'  => 'Rimasti al giorno da domani',
             'text'   => $remainingDays > 1 ? $this->currencyForma($monthBudget / ($remainingDays - 1)) : 'Non disponibile',
         ]);
     }
