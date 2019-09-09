@@ -56,16 +56,27 @@ class Movement implements InputFilterAwareInterface
     protected $description;
 
     /**
+     * @ORM\Column(name="created", type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private $created;
+
+    /**
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Account", inversedBy="movements")
      * @ORM\JoinColumn(name="accountId", referencedColumnName="id")
      */
     protected $account;
 
     /**
-     * @ORM\OneToOne(targetEntity="Category")
-     * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
+     * Many movements have one category. This is the owning side.
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="movements")
+     * @ORM\JoinColumn(name="categoryId", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $category;
+    private $category;
 
     /**
      * Magic getter to expose protected properties.
@@ -102,7 +113,8 @@ class Movement implements InputFilterAwareInterface
     /**
      * Convert the object to an array.
      *
-     * @return array
+     * @param $data
+     * @throws \Exception
      */
     public function exchangeArray($data)
     {
