@@ -80,4 +80,22 @@ class CategoryRepository extends EntityRepository
         }
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @param int $categoryId
+     * @return float
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getSum(int $categoryId)
+    {
+        return (float) $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('SUM(m.amount)')
+            ->from(Category::class, 'c', 'c.id')
+            ->innerJoin(Movement::class, 'm', 'WITH', 'c.id=m.category')
+            ->where("c.id=$categoryId")
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

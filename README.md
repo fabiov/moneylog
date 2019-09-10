@@ -16,5 +16,6 @@ php vendor/bin/doctrine-module migrations:generate
 
 ## Migrate
 ```
+./vendor/bin/doctrine-module migrations:diff
 ./vendor/bin/doctrine-module migrations:migrate
 ```
