@@ -1,6 +1,7 @@
 <?php
 namespace MoneyLog\Controller;
 
+use Application\Entity\Aside;
 use Application\Entity\Category;
 use Doctrine\ORM\EntityManager;
 use MoneyLog\Form\CategoriaForm;
@@ -52,9 +53,9 @@ class CategoriaController extends AbstractActionController
 
     public function indexAction()
     {
-        return new ViewModel(array(
-            'rows' => $this->em->getRepository('Application\Entity\Category')->findBy(array('userId' => $this->user->id))
-        ));
+        return new ViewModel([
+            'rows' => $this->em->getRepository(Category::class)->findBy(['userId' => $this->user->id])
+        ]);
     }
 
     public function editAction()
@@ -86,22 +87,29 @@ class CategoriaController extends AbstractActionController
 
     public function deleteAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
-            return $this->redirect()->toRoute('accantona_categoria');
-        }
+        $id   = (int) $this->params()->fromRoute('id', 0);
+        $repo = $this->em->getRepository(Category::class);
 
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $del = $request->getPost('del', 'No');
+        /* @var $category Category */
+        $category = $repo->find($id);
+        if ($category && $category->userId == $this->user->id) {
+            $sum = $repo->getSum($id);
 
-            if ($del == 'Yes') {
+            $this->em->beginTransaction();
+            if ($sum) {
+                $aside = new Aside();
+                $aside->userId      = $this->user->id;
+                $aside->descrizione = 'Conguaglio rimozione categoria ' . $category->getDescrizione();
+                $aside->importo     = $sum;
+                $aside->valuta      = new \DateTime();
+                $this->em->persist($aside);
             }
-
-            // Redirect to list of categories
-            return $this->redirect()->toRoute('accantona_categoria');
+            $this->em->remove($category);
+            $this->em->flush();
+            $this->em->commit();
         }
 
-        return array('id' => $id, 'category' => null);
+        return $this->redirect()->toRoute('accantona_categoria'); // Redirect to list of categories
+
     }
 }

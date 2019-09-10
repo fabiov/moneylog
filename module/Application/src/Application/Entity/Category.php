@@ -1,6 +1,7 @@
 <?php
 namespace Application\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
@@ -47,14 +48,24 @@ class Category implements InputFilterAwareInterface
     protected $status = 1;
 
     /**
-     * @ORM\Column(name="created", type="datetime")
+     * @ORM\Column(name="created", type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
      */
     protected $created;
 
     /**
-     * @ORM\Column(name="updated", type="datetime")
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
      */
     protected $updated;
+
+    /**
+     * One category has many movements. This is the inverse side.
+     * @ORM\OneToMany(targetEntity="Movement", mappedBy="category")
+     */
+    private $movements;
+
+    public function __construct() {
+        $this->movements = new ArrayCollection();
+    }
 
     /**
      * Magic getter to expose protected properties.

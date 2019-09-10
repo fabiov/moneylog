@@ -16,15 +16,15 @@
                     </thead>
                     <?php foreach ($rows as $row) : ?>
                     <tr>
-                        <td><?php echo $this->escapeHtml($row->descrizione); ?></td>
-                        <td><?php echo $row->status ? 'Sì' : 'No'; ?></td>
+                        <td class="description"><?php echo $this->escapeHtml($row->getDescrizione()); ?></td>
+                        <td class="status"><?php echo $row->status ? 'Sì' : 'No'; ?></td>
                         <td class="text-right">
-                            <a href="<?php echo $this->url('accantona_categoria', array('action' => 'edit', 'id' => $row->id)); ?>" class="btn btn-default" title="Modifica">
+                            <a href="<?php echo $this->url('accantona_categoria', ['action' => 'edit', 'id' => $row->id]); ?>" class="btn btn-default btn-xs" title="Modifica">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                             </a>
-                            <!-- a href="<?php echo $this->url('accantona_categoria', array('action' => 'delete', 'id' => $row->id)); ?>" class="btn btn-default" aria-label="Edit">
+                            <span data-href="<?php echo $this->url('accantona_categoria', ['action' => 'delete', 'id' => $row->id]); ?>" class="btn btn-default btn-xs delete-item" title="Elimina">
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                            </a -->
+                            </span>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -33,6 +33,22 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).on("click", ".delete-item", function(e) {
+        var button = $(this);
+
+        var html = '<h3>Cancellare la categoria selezionata?</h3>' +
+            '<dl class="dl-horizontal">' +
+            '<dt>Descrizione</dt><dd>'  + button.parents('tr').find('.description').html() + '</dd>' +
+            '<dt>Attivo</dt><dd>'  + button.parents('tr').find('.status').html() + '</dd>' +
+            '</dl>';
+        bootbox.confirm(html, function(result) {
+            if (result) {
+                location.href =  button.data('href');
+            }
+        });
+    });
+</script>
 <?php
 $this->dataTable('#my-table', ['columnDefs' => [
     ["targets" => -1, "orderable" => false]     // azioni
