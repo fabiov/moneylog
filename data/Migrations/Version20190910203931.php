@@ -26,7 +26,6 @@ class Version20190910203931 extends AbstractMigration
             CHANGE password password CHAR(32) NOT NULL, 
             CHANGE status status INT UNSIGNED NOT NULL, 
             CHANGE role role VARCHAR(255) NOT NULL');
-        $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649BF396750 FOREIGN KEY (id) REFERENCES setting (userId)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649BF396750 ON user (id)');
         $this->addSql('ALTER TABLE user RENAME INDEX email TO email_idx');
     }
