@@ -7,10 +7,11 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
 
 /**
- * User.
+ * Class User
  *
  * @ORM\Entity
- * @ORM\Table(name="user")
+ * @ORM\Table(name = "user", uniqueConstraints = {@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
+ * @package Application\Entity
  * @property int $id
  * @property string $email
  * @property string $name
@@ -31,7 +32,7 @@ class User implements InputFilterAwareInterface
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer");
+     * @ORM\Column(type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
@@ -52,17 +53,17 @@ class User implements InputFilterAwareInterface
     protected $surname;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=32, options={"fixed" = true})
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=4, options={"fixed" = true})
      */
     private $salt;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned"=true})
      */
     private $status = 0;
 
@@ -72,7 +73,7 @@ class User implements InputFilterAwareInterface
     private $role;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=8, options={"fixed" = true})
      */
     private $registrationToken;
 
@@ -83,7 +84,7 @@ class User implements InputFilterAwareInterface
     private $lastLogin;
 
     /**
-     * @ORM\Column(name="created", type="datetime", nullable=true)
+     * @ORM\Column(name="created", type="datetime", nullable=true, options={"default"="CURRENT_TIMESTAMP"})
      * @var \DateTime
      */
     private $created;
@@ -101,6 +102,11 @@ class User implements InputFilterAwareInterface
      * @ORM\JoinColumn(name="id", referencedColumnName="userId")
      */
     private $setting;
+
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+    }
 
     /**
      * Magic getter to expose protected properties.

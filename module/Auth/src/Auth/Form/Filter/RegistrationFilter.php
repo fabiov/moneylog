@@ -15,9 +15,7 @@ class RegistrationFilter extends InputFilter
                 array(
                     'name' => 'Zend\Validator\Db\NoRecordExists',
                     'options' => array(
-                        'table' => 'User',
-                        'field' => 'email',
-                        'adapter' => $sm->get('Zend\Db\Adapter\Adapter'),
+                        'table' => 'user', 'field' => 'email', 'adapter' => $sm->get('Zend\Db\Adapter\Adapter')
                     ),
                 ),
             ),
