@@ -70,11 +70,14 @@ class MovementForm extends Form
                 'display_empty_item'        => true,
                 'find_method'               => [
                     'name'   => 'findBy',
-                    'params' => ['criteria' => ['userId' => $userId], 'orderBy'  => ['descrizione' => 'ASC']]
+                    'params' => [
+                        'criteria' => ['userId' => $userId, 'status' => \Application\Entity\Category::STATUS_ACTIVE], 
+                        'orderBy'  => ['descrizione' => 'ASC']
+                    ]
                 ],
                 'label'                     => 'Categoria',
                 'object_manager'            => $this->em,
-                'target_class'              => 'Application\Entity\Category',
+                'target_class'              => \Application\Entity\Category::class,
                 'property'                  => 'descrizione',
             ],
             'required' => false,
