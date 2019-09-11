@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true">
+    <testsuites>
+        <testsuite name="MoneyLog Test Suite">
+            <directory>./module/Application/test</directory>
+        </testsuite>
+        <testsuite name="Auth">
+            <directory>./module/Auth/test</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

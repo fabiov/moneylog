@@ -12,6 +12,12 @@
         "doctrine/migrations": "^1.5"
     },
     "require-dev": {
-        "zendframework/zend-component-installer": "^1.1"
+        "zendframework/zend-component-installer": "^1.1",
+        "zendframework/zend-test": "^3.3"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ApplicationTest\\": "module/Application/test/"
+        }
     }
 }
