@@ -17,8 +17,8 @@ services:
             DB_PASS: ${DB_PASS}
             DB_NAME: ${DB_NAME}
         volumes:
-            - ./app:/app:cached
-            - ./logs/web:/var/log/apache2
+            - .:/var/www/moneylog:cached
+            - ./docker/php-apache/logs:/var/log/apache2
         depends_on:
             - db
 
@@ -32,9 +32,8 @@ services:
         ports:
             - ${DB_PORT_EXPOSED}:3306
         volumes:
-            - ./db:/var/lib/mysql
-            # - ./docker/mariadb/init:/docker-entrypoint-initdb.d
-            - ./logs/db:/var/log/mysql
+            - ./docker/mysql/data:/var/lib/mysql
+            - ./docker/mysql/logs:/var/log/mysql
         environment:
             TZ: ${TIME_ZONE}
             MYSQL_ROOT_PASSWORD: ${DB_ROOTPASS}
