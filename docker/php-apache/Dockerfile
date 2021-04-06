@@ -21,7 +21,7 @@ RUN if [ "$XDEBUG" = "1" ] ; then pecl install xdebug-2.8.1 && docker-php-ext-en
 
 RUN a2enmod rewrite
 RUN a2enmod headers
-RUN a2enmod ssl
+#RUN a2enmod ssl
 RUN a2enmod include
 RUN a2enmod expires
 RUN a2enmod actions
@@ -33,4 +33,4 @@ RUN service apache2 restart
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.21
 
 # mom funzion perché non trova ancora la direvtory /var/www/moneylog
-# RUN composer install --working-dir=/var/www/moneylog
+#RUN composer install --working-dir=/var/www/html

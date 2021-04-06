@@ -17,7 +17,7 @@ services:
             DB_PASS: ${DB_PASS}
             DB_NAME: ${DB_NAME}
         volumes:
-            - .:/var/www/moneylog:cached
+            - .:/var/www/html
             - ./docker/php-apache/logs:/var/log/apache2
         depends_on:
             - db
