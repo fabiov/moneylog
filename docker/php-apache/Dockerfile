@@ -7,8 +7,8 @@ ARG XDEBUG
 COPY app.conf /etc/apache2/sites-available/000-default.conf
 
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
-    && sed -i -e "s/^ *post_max_size.*/post_max_size = 64MB/g" /usr/local/etc/php/php.ini \
-    && sed -i -e "s/^ *upload_max_filesize.*/upload_max_filesize = 64MB/g" /usr/local/etc/php/php.ini
+    && sed -i -e "s/^ *post_max_size.*/post_max_size = 65536/g" /usr/local/etc/php/php.ini \
+    && sed -i -e "s/^ *upload_max_filesize.*/upload_max_filesize = 65536/g" /usr/local/etc/php/php.ini
 
 RUN docker-php-ext-install pdo_mysql mysqli opcache
 
