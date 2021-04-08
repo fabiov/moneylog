@@ -9,7 +9,8 @@
         "zendframework/zendframework": "^3.0",
         "doctrine/doctrine-orm-module": "^1.0",
         "zendframework/zend-router": "^3.0",
-        "doctrine/migrations": "^1.5"
+        "doctrine/migrations": "^1.5",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "zendframework/zend-component-installer": "^1.1"

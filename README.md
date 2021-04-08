@@ -22,5 +22,5 @@ php vendor/bin/doctrine-module migrations:generate
 
 ## Connessione al database del container
 ```shell
-mysql -h localhost -P 3306 -u dbuser -pdbpass --protocol=tcp dbapp
+mysql -h localhost -P 3306 -u dbuser -pdbpass --protocol=tcp moneylog
 ```
