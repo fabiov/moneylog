@@ -1,7 +1,11 @@
 <?php
 /**
+ * @var Application\Entity\Account $account
  * @var Zend\View\Renderer\PhpRenderer $this
- * @var \Accantona\Form\AccantonatoForm $form
+ * @var array $categories
+ * @var array $dataLineChart
+ * @var array $rows
+ * @var array $searchParams
  */
 $chartData = array();
 $morrisData = array();
@@ -16,7 +20,7 @@ $morrisData = array();
         margin: 8px 0;
     }
 </style>
-<?php echo $this->pageHeader("Movimenti $account->name"); ?>
+<?php echo $this->pageHeader("Movimenti {$account->getName()}"); ?>
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
@@ -181,7 +185,7 @@ $morrisData = array();
 </div>
 <?php endif; ?>
 <?php
-echo $this->balanceModalForm($account->id, 'accantonaMovement');
+echo $this->balanceModalForm($account->getId(), 'accantonaMovement');
 // prepare data for barchar
 foreach ($chartData as $strDate => $row) {
     $morrisData[] = ['x' => $strDate, 'in' => $row['in'], 'out' => abs($row['out'])];
@@ -299,7 +303,7 @@ Morris.Line({
 <?php
 $i = '<i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>';
 $this->floatingButtons()
-    ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'add', 'id' => $account->id], ['query' => $searchParams]), 'label' => 'Nuovo movimento', 'icon' => 'plus'])
-    ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'move', 'id' => $account->id], ['query' => $searchParams]), 'label' => 'Giroconto', 'icon' => 'transfer'])
+    ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'add', 'id' => $account->getId()], ['query' => $searchParams]), 'label' => 'Nuovo movimento', 'icon' => 'plus'])
+    ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'move', 'id' => $account->getId()], ['query' => $searchParams]), 'label' => 'Giroconto', 'icon' => 'transfer'])
     ->addRawItem("<span class=\"balance mfb-component__button--child\" data-toggle=\"modal\" data-target=\"#modal-balance\">$i</span>")
-    ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'export', 'id' => $account->id], ['query' => $searchParams]), 'label' => 'Esporta', 'icon' => 'export']);
+    ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'export', 'id' => $account->getId()], ['query' => $searchParams]), 'label' => 'Esporta', 'icon' => 'export']);

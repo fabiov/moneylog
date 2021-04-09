@@ -5,14 +5,14 @@ return [
         'factories' => [
             'MoneyLog\Controller\Recap' => function($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
-                return new \MoneyLog\Controller\RecapController(
+                return new MoneyLog\Controller\RecapController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity()
                 );
             },
             'MoneyLog\Controller\Settings' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
-                return new \MoneyLog\Controller\SettingsController(
+                return new MoneyLog\Controller\SettingsController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('user_data')
@@ -20,28 +20,28 @@ return [
             },
             'MoneyLog\Controller\Account' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
-                return new \MoneyLog\Controller\AccountController(
+                return new MoneyLog\Controller\AccountController(
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
             'MoneyLog\Controller\Accantonato' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
-                return new \MoneyLog\Controller\AccantonatoController(
+                return new MoneyLog\Controller\AccantonatoController(
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
             'MoneyLog\Controller\Categoria' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
-                return new \MoneyLog\Controller\CategoriaController(
+                return new MoneyLog\Controller\CategoriaController(
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
             'MoneyLog\Controller\Movement' => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
-                return new \MoneyLog\Controller\MovementController(
+                return new MoneyLog\Controller\MovementController(
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );

@@ -1,9 +1,16 @@
-<?php echo $this->pageHeader('Giroconto'); ?>
+<?php
+/**
+ * @var \Application\Entity\Account $sourceAccount
+ * @var \Zend\Form\Form $form
+ * @var array $searchParams
+ */
+echo $this->pageHeader('Giroconto');
+?>
 <div class="row">
     <div class="col-lg-4"></div>
     <div class="col-lg-4">
         <div class="panel panel-default">
-            <div class="panel-heading">Preleva da <?php echo $this->sourceAccount->name; ?></div>
+            <div class="panel-heading">Preleva da <?php echo $sourceAccount->getName(); ?></div>
             <div class="panel-body">
                 <?php echo $this->form()->openTag($this->form); ?>
 
@@ -13,9 +20,7 @@
                     <?php echo $this->sbaFormRow($form->get('targetAccountId')); ?>
 
                     <div class="text-right">
-                        <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $this->sourceAccount->id], ['query' => $searchParams]) ?>">
-                            Annulla
-                        </a>
+                        <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $sourceAccount->getId()], ['query' => $searchParams]) ?>">Annulla</a>
                         <button type="submit" class="btn btn-primary">Sposta</button>
                     </div>
                 <?php echo $this->form()->closeTag(); ?>

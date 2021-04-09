@@ -1,16 +1,20 @@
-<?php echo $this->pageHeader('Aggiungi movimento'); ?>
+<?php
+/**
+ * @var \Application\Entity\Account $sourceAccount
+ * @var array $searchParams
+ */
+echo $this->pageHeader('Aggiungi movimento');
+?>
 <div class="row">
     <div class="col-lg-4">
     </div>
     <div class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Aggiungi movimento in <?php echo $sourceAccount->name; ?>
+                Aggiungi movimento in <?php echo $sourceAccount->getName(); ?>
             </div>
             <div class="panel-body">
-                <?php echo $this->partial('money-log/movement/partials/movement', [
-                    'form' => $this->form, 'accountId' => $this->sourceAccount->id, 'isRepeatable' => true, 'searchParams' => $searchParams
-                ]); ?>
+                <?php echo $this->partial('money-log/movement/partials/movement', ['form' => $this->form, 'accountId' => $sourceAccount->getId(), 'isRepeatable' => true, 'searchParams' => $searchParams]); ?>
             </div>
         </div>
     </div>

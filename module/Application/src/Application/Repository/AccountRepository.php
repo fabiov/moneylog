@@ -2,16 +2,22 @@
 
 namespace Application\Repository;
 
+use Application\Entity\Account;
 use Doctrine\ORM\EntityRepository;
 
 class AccountRepository extends EntityRepository
 {
 
+    /**
+     * @param $userId
+     * @param false $onlyRecap
+     * @return array<Account>
+     */
     public function getUserAccounts($userId, $onlyRecap = false)
     {
         $qb = $this->createQueryBuilder('a')
             ->select('a')
-            ->where('a.userId=:userId')
+            ->where('a.user=:userId')
             ->orderBy('a.name', 'ASC')
             ->setParameter(':userId', $userId);
 
@@ -23,7 +29,7 @@ class AccountRepository extends EntityRepository
     }
 
     /**
-     * @param $userId
+     * @param int $userId
      * @param bool $onlyRecap
      * @param \DateTime|null|string $date
      * @return array
@@ -33,10 +39,10 @@ class AccountRepository extends EntityRepository
         /* @var Doctrine\ORM\QueryBuilder */
         $qb = $this->getEntityManager()
                    ->createQueryBuilder()
-                   ->select('a.id', 'a.name', 'a.recap', 'COALESCE(SUM(m.amount), 0) AS total')
-                   ->from('Application\Entity\Account', 'a')
+                   ->select('a.id', 'a.name', 'a.recap', 'a.closed', 'COALESCE(SUM(m.amount), 0) AS total')
+                   ->from(Account::class, 'a')
                    ->leftJoin('a.movements', 'm')
-                   ->where("a.userId=$userId");
+                   ->where("a.user=$userId");
 
         if ($date) {
             $qb->andWhere('m.date<=:date')

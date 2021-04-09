@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Application\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,12 +15,6 @@ use Zend\InputFilter\InputFilter;
  *
  * @ORM\Entity(repositoryClass="Application\Repository\AccountRepository")
  * @ORM\Table(name="account")
- * @property int $id
- * @property int $userId
- * @property string $name
- * @property bool $recap
- * @property string $created
- * @property string $updated
  */
 class Account implements InputFilterAwareInterface
 {
@@ -28,33 +25,34 @@ class Account implements InputFilterAwareInterface
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
-    protected $id;
+    private $id;
 
     /**
-     * @ORM\Column(type="integer", options={"unsigned"=true})
+     * Many accounts have one user. This is the owning side.
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @var User
      */
-    protected $userId;
+    private $user;
 
     /**
      * @ORM\Column(type="string", length=255, unique=false, nullable=false)
+     * @var string
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
+     * @var int
      */
-    protected $recap = 0;
+    private $recap = 0;
 
     /**
-     * @ORM\Column(name="created", type="datetime")
+     * @ORM\Column(name="closed", type="boolean", nullable=false, options={"default": false})
      */
-    protected $created;
-
-    /**
-     * @ORM\Column(name="updated", type="datetime")
-     */
-    protected $updated;
+    protected $closed = false;
 
     /**
      * @ORM\OneToMany(targetEntity="Movement", mappedBy="account")
@@ -66,34 +64,27 @@ class Account implements InputFilterAwareInterface
         $this->movements = new ArrayCollection();
     }
 
-    /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
-    public function __get($property)
+    public function getId(): int
     {
-        return $this->$property;
+        return $this->id;
     }
 
-//    /**
-//     * Magic setter to save protected properties.
-//     *
-//     * @param string $property
-//     * @param mixed $value
-//     */
-//    public function __set($property, $value)
-//    {
-//        $this->$property = $value;
-//    }
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
-    /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
-    public function getArrayCopy()
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function isClosed(): bool
+    {
+        return $this->closed;
+    }
+
+    public function getArrayCopy(): array
     {
         return get_object_vars($this);
     }
@@ -104,16 +95,24 @@ class Account implements InputFilterAwareInterface
      * @param array $data
      * @return $this
      */
-    public function exchangeArray(array $data = array())
+    public function exchangeArray(array $data = []): Account
     {
-        if (isset($data['userId'])) {
-            $this->userId =  $data['userId'];
+        if (isset($data['user'])) {
+            $this->user = $data['user'];
         }
-        $this->name = isset($data['name']) ? $data['name'] : null;
+
+        if (isset($data['name'])) {
+            $this->name = $data['name'];
+        }
 
         if (isset($data['recap'])) {
-            $this->recap =  $data['recap'];
+            $this->recap = $data['recap'];
         }
+
+        if (isset($data['closed'])) {
+            $this->closed = (bool) $data['closed'];
+        }
+
         return $this;
     }
 
@@ -122,7 +121,6 @@ class Account implements InputFilterAwareInterface
      *
      * @param  InputFilterInterface $inputFilter
      * @throws \Exception
-     * @return InputFilterAwareInterface
      */
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
@@ -132,29 +130,7 @@ class Account implements InputFilterAwareInterface
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-//            $inputFilter->add(array(
-//                'name' => 'id',
-//                'required' => true,
-//                'filters' => array(array('name' => 'Int'))
-//            ));
-//            $inputFilter->add(array(
-//                'name'     => 'userId',
-//                'required' => true,
-//                'filters' => array(array('name' => 'Int'))
-//            ));
-//            $inputFilter->add(array(
-//                'name'     => 'settingId',
-//                'required' => true,
-//                'filters' => array(array('name' => 'Int'))
-//            ));
-//            $inputFilter->add(array(
-//                'name'     => 'value',
-//                'required' => true,
-//                'filters'  => array(array('name' => 'StringTrim')),
-//                'validators' => array(array('name' => 'StringLength', 'options' => array('encoding' => 'UTF-8'))),
-//            ));
-            $this->inputFilter = $inputFilter;
+            $this->inputFilter = new InputFilter();
         }
         return $this->inputFilter;
     }
