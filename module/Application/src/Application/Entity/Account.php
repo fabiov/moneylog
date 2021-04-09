@@ -52,9 +52,9 @@ class Account implements InputFilterAwareInterface
     protected $created;
 
     /**
-     * @ORM\Column(name="updated", type="datetime")
+     * @ORM\Column(name="closed", type="boolean", nullable=false, options={"default": false})
      */
-    protected $updated;
+    protected $closed = false;
 
     /**
      * @ORM\OneToMany(targetEntity="Movement", mappedBy="account")
@@ -122,7 +122,6 @@ class Account implements InputFilterAwareInterface
      *
      * @param  InputFilterInterface $inputFilter
      * @throws \Exception
-     * @return InputFilterAwareInterface
      */
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
