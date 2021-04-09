@@ -14,7 +14,8 @@
     },
     "require-dev": {
         "zendframework/zend-component-installer": "^1.1",
-        "zendframework/zend-test": "^3.3"
+        "zendframework/zend-test": "^3.3",
+        "phpstan/phpstan": "^0.12.83"
     },
     "autoload-dev": {
         "psr-4": {
