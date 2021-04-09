@@ -67,10 +67,13 @@ class AuthManager
             $this->userData->setSurname($identity->surname);
             $this->userData->setSettings($identity->setting);
 
-            if ($rememberMe) {
-                // Session cookie will expire in 1 week.
-                $this->sessionManager->rememberMe(3600 * 24 * 7);
-            }
+            // following code generate an exception
+            // Zend\Session\Exception\InvalidArgumentException
+            // 'session.cookie_lifetime' is not a valid sessions-related ini setting.
+//            if ($rememberMe) {
+//                // Session cookie will expire in 1 week.
+//                $this->sessionManager->rememberMe(3600 * 24 * 7);
+//            }
         }
 
         return $result;
