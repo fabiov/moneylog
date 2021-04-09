@@ -43,6 +43,7 @@ $totalBalance   = 0;
                             <td class="text-right total"><?php if (isset($row['available'])) echo $this->currencyForma($row['available']); ?></td>
                             <td class="text-right total"><?php if (isset($row['balance'])) echo $this->currencyForma($row['balance']); ?></td>
                             <td class="text-right">
+                                <?php if (!$row['closed']): ?>
                                 <a href="<?php echo $this->url('accantonaMovement', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
                                     <span class="glyphicon glyphicon-transfer" title="Giroconto: sposta i soldi da un conto ad un'altro"></span>
                                 </a>
@@ -52,6 +53,7 @@ $totalBalance   = 0;
                                       data-toggle="modal">
                                     <span class="glyphicon glyphicon-equalizer" title="Il conguaglio adegua il conto all'importo indicato"></span>
                                 </span>
+                                <?php endif; ?>
                                 <a href="<?php echo $this->url('accantonaAccount', array('action' => 'edit', 'id' => $row['id'])); ?>" class="btn btn-default">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Modifica"></span>
                                 </a>

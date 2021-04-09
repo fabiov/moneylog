@@ -12,12 +12,12 @@ use Zend\InputFilter\InputFilter;
  *
  * @ORM\Entity(repositoryClass="Application\Repository\AccountRepository")
  * @ORM\Table(name="account")
+ * @property bool $closed
+ * @property bool $recap
  * @property int $id
  * @property int $userId
- * @property string $name
- * @property bool $recap
  * @property string $created
- * @property string $updated
+ * @property string $name
  */
 class Account implements InputFilterAwareInterface
 {
@@ -78,6 +78,14 @@ class Account implements InputFilterAwareInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isClosed(): bool
+    {
+        return $this->closed;
+    }
+
+    /**
      * Convert the object to an array.
      *
      * @return array
@@ -93,7 +101,7 @@ class Account implements InputFilterAwareInterface
      * @param array $data
      * @return $this
      */
-    public function exchangeArray(array $data = [])
+    public function exchangeArray(array $data = []): Account
     {
         if (isset($data['userId'])) {
             $this->userId =  $data['userId'];

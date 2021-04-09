@@ -8,6 +8,11 @@ use Doctrine\ORM\EntityRepository;
 class AccountRepository extends EntityRepository
 {
 
+    /**
+     * @param $userId
+     * @param false $onlyRecap
+     * @return array<Account>
+     */
     public function getUserAccounts($userId, $onlyRecap = false)
     {
         $qb = $this->createQueryBuilder('a')
