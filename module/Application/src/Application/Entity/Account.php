@@ -77,17 +77,6 @@ class Account implements InputFilterAwareInterface
         return $this->$property;
     }
 
-//    /**
-//     * Magic setter to save protected properties.
-//     *
-//     * @param string $property
-//     * @param mixed $value
-//     */
-//    public function __set($property, $value)
-//    {
-//        $this->$property = $value;
-//    }
-
     /**
      * Convert the object to an array.
      *
@@ -104,16 +93,24 @@ class Account implements InputFilterAwareInterface
      * @param array $data
      * @return $this
      */
-    public function exchangeArray(array $data = array())
+    public function exchangeArray(array $data = [])
     {
         if (isset($data['userId'])) {
             $this->userId =  $data['userId'];
         }
-        $this->name = isset($data['name']) ? $data['name'] : null;
+
+        if (isset($data['name'])) {
+            $this->name = $data['name'];
+        }
 
         if (isset($data['recap'])) {
             $this->recap =  $data['recap'];
         }
+
+        if (isset($data['closed'])) {
+            $this->closed = (bool) $data['closed'];
+        }
+
         return $this;
     }
 

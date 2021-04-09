@@ -52,8 +52,8 @@ class AccountController extends AbstractActionController
 
     public function indexAction()
     {
-        $data              = [];
-        $accountRepository = $this->em->getRepository('Application\Entity\Account');
+        $data = [];
+        $accountRepository = $this->em->getRepository(Account::class);
 
         // i dati in un record set potrebbero non essere nell'altro e vice versa
 
@@ -61,6 +61,7 @@ class AccountController extends AbstractActionController
         foreach ($accountAvailable as $i) {
             $data[$i['id']]['id']        = $i['id'];
             $data[$i['id']]['name']      = $i['name'];
+            $data[$i['id']]['closed']    = $i['closed'];
             $data[$i['id']]['recap']     = $i['recap'];
             $data[$i['id']]['available'] = $i['total'];
         }
@@ -69,6 +70,7 @@ class AccountController extends AbstractActionController
         foreach ($accountBalances as $i) {
             $data[$i['id']]['id']        = $i['id'];
             $data[$i['id']]['name']      = $i['name'];
+            $data[$i['id']]['closed']    = $i['closed'];
             $data[$i['id']]['recap']     = $i['recap'];
             $data[$i['id']]['balance']   = $i['total'];
         }
@@ -79,8 +81,8 @@ class AccountController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        $account = $this->em->getRepository('Application\Entity\Account')
-            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
+        /** @var Account $account */
+        $account = $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'userId' => $this->user->id]);
 
         if (!$account) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
