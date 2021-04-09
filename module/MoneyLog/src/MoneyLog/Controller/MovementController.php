@@ -40,7 +40,7 @@ class MovementController extends AbstractActionController
         $type = $item->amount < 0 ? -1 : 1;
         $item->amount = abs($item->amount);
 
-        if (!$item || $item->account->getUserId() != $this->user->id) {
+        if (!$item || $item->account->getUser()->getId() != $this->user->id) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
@@ -90,10 +90,8 @@ class MovementController extends AbstractActionController
             'description' => $this->params()->fromQuery('description'),
         ];
 
-        $account = $this->em->getRepository(\Application\Entity\Account::class)->findOneBy([
-            'id'        => $accountId,
-            'userId'    => $this->user->id,
-        ]);
+        $criteria = ['id' => $accountId, 'user' => $this->user->id];
+        $account = $this->em->getRepository(Account::class)->findOneBy($criteria);
 
         if (!$account) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
@@ -182,7 +180,7 @@ class MovementController extends AbstractActionController
         /* @var $item \Application\Entity\Movement */
         $item = $this->em->getRepository('Application\Entity\Movement')->findOneBy(array('id' => $id));
 
-        if ($item && $item->account->getUserId() == $this->user->id) {
+        if ($item && $item->account->getUser()->getId() == $this->user->id) {
             $this->em->remove($item);
             $this->em->flush();
         }
@@ -205,7 +203,7 @@ class MovementController extends AbstractActionController
         /* @var $sourceAccount Account */
         $sourceAccount = $accountRepo->find($id);
 
-        if (!$sourceAccount || $sourceAccount->getUserId() != $this->user->id) {
+        if (!$sourceAccount || $sourceAccount->getUser()->getId() != $this->user->id) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
@@ -229,7 +227,7 @@ class MovementController extends AbstractActionController
                 /* @var Account $targetAccount */
                 $targetAccount = $accountRepo->find($data['targetAccountId']);
 
-                if (!$targetAccount || $targetAccount->getUserId() != $this->user->id) {
+                if (!$targetAccount || $targetAccount->getUser()->getId() != $this->user->id) {
                     return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
                 }
 
@@ -275,9 +273,9 @@ class MovementController extends AbstractActionController
         $searchParams = $this->params()->fromQuery();
 
         /* @var $account Account */
-        $account = $this->em->getRepository('Application\Entity\Account')->find($accountId);
+        $account = $this->em->getRepository(Account::class)->find($accountId);
 
-        if (!$account || $account->getUserId() != $this->user->id) {
+        if (!$account || $account->getUser()->getId() != $this->user->id) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 

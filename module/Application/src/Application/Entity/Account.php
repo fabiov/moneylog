@@ -30,10 +30,12 @@ class Account implements InputFilterAwareInterface
     private $id;
 
     /**
-     * @ORM\Column(type="integer", options={"unsigned"=true})
-     * @var int
+     * Many accounts have one user. This is the owning side.
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @var User
      */
-    private $userId;
+    private $user;
 
     /**
      * @ORM\Column(type="string", length=255, unique=false, nullable=false)
@@ -72,9 +74,9 @@ class Account implements InputFilterAwareInterface
         return $this->name;
     }
 
-    public function getUserId(): int
+    public function getUser(): User
     {
-        return $this->userId;
+        return $this->user;
     }
 
     public function isClosed(): bool
@@ -82,12 +84,7 @@ class Account implements InputFilterAwareInterface
         return $this->closed;
     }
 
-    /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
-    public function getArrayCopy()
+    public function getArrayCopy(): array
     {
         return get_object_vars($this);
     }
@@ -100,8 +97,8 @@ class Account implements InputFilterAwareInterface
      */
     public function exchangeArray(array $data = []): Account
     {
-        if (isset($data['userId'])) {
-            $this->userId =  $data['userId'];
+        if (isset($data['user'])) {
+            $this->user = $data['user'];
         }
 
         if (isset($data['name'])) {
@@ -109,7 +106,7 @@ class Account implements InputFilterAwareInterface
         }
 
         if (isset($data['recap'])) {
-            $this->recap =  $data['recap'];
+            $this->recap = $data['recap'];
         }
 
         if (isset($data['closed'])) {

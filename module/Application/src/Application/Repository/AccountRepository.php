@@ -17,7 +17,7 @@ class AccountRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('a')
             ->select('a')
-            ->where('a.userId=:userId')
+            ->where('a.user=:userId')
             ->orderBy('a.name', 'ASC')
             ->setParameter(':userId', $userId);
 
@@ -42,7 +42,7 @@ class AccountRepository extends EntityRepository
                    ->select('a.id', 'a.name', 'a.recap', 'a.closed', 'COALESCE(SUM(m.amount), 0) AS total')
                    ->from(Account::class, 'a')
                    ->leftJoin('a.movements', 'm')
-                   ->where("a.userId=$userId");
+                   ->where("a.user=$userId");
 
         if ($date) {
             $qb->andWhere('m.date<=:date')
