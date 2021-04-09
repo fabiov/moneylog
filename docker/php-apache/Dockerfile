@@ -13,9 +13,9 @@ RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
 RUN docker-php-ext-install pdo_mysql mysqli opcache
 
 RUN apt-get update \
-    && apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev unzip vim \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install gd
+    && apt-get install -y libfreetype6-dev libicu-dev libjpeg62-turbo-dev libpng-dev unzip vim \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && docker-php-ext-install gd \
+    && docker-php-ext-configure intl && docker-php-ext-install intl
 
 RUN if [ "$XDEBUG" = "1" ] ; then pecl install xdebug-2.8.1 && docker-php-ext-enable xdebug; else echo XDEBUG DISABLED; fi
 
