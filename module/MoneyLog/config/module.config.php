@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'controllers' => [
         'factories' => [
-            'MoneyLog\Controller\Recap' => function($controllerManager) {
+            MoneyLog\Controller\RecapController::class => function($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\RecapController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
@@ -63,7 +65,7 @@ return [
                 'options'   => [
                     'route'         => '/dashboard[/:action]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
-                    'defaults'      => ['controller' => MoneyLog\Controller\Recap::class, 'action' => 'index'],
+                    'defaults'      => ['controller' => MoneyLog\Controller\RecapController::class, 'action' => 'index'],
                 ],
             ],
             'accantona_accantonato' => [

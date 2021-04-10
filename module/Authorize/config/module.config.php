@@ -7,7 +7,7 @@ return [
         ],
         'resources' => [
             'allow' => [
-                'MoneyLog\Controller\Recap' => [
+                MoneyLog\Controller\RecapController::class => [
                     'add'   => 'user',
                     'edit'  => 'user',
                     'index' => 'user',
