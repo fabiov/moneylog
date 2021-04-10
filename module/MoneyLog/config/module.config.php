@@ -27,7 +27,7 @@ return [
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
-            'MoneyLog\Controller\Accantonato' => function ($controllerManager) {
+            MoneyLog\Controller\AccantonatoController::class => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\AccantonatoController(
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
@@ -73,7 +73,7 @@ return [
                 'options'   => [
                     'route'         => '/accantonato[/:action][/:id]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
-                    'defaults'      => ['controller' => MoneyLog\Controller\Accantonato::class, 'action' => 'index'],
+                    'defaults'      => ['controller' => MoneyLog\Controller\AccantonatoController::class, 'action' => 'index'],
                 ],
             ],
             'accantonaSettings'     => [

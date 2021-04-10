@@ -18,7 +18,7 @@ return [
                     'edit'      => 'user',
                     'index'     => 'user',
                 ],
-                'MoneyLog\Controller\Accantonato' => [
+                MoneyLog\Controller\AccantonatoController::class => [
                     'add'       => 'user',
                     'delete'    => 'user',
                     'edit'      => 'user',
