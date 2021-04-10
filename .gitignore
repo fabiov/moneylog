@@ -1,6 +1,7 @@
 .env
 .idea
 .notes
+.php_cs.cache
 .vagrant
 composer
 config/autoload/local.php

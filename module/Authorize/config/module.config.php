@@ -12,7 +12,7 @@ return [
                     'edit'  => 'user',
                     'index' => 'user',
                 ],
-                'MoneyLog\Controller\Categoria' => [
+                MoneyLog\Controller\CategoriaController::class => [
                     'add'       => 'user',
                     'delete'    => 'user',
                     'edit'      => 'user',

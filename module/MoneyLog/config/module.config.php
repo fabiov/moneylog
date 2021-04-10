@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'controllers' => [
         'factories' => [
-            MoneyLog\Controller\RecapController::class => function($controllerManager) {
+            MoneyLog\Controller\RecapController::class => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\RecapController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
@@ -34,7 +34,7 @@ return [
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
-            'MoneyLog\Controller\Categoria' => function ($controllerManager) {
+            MoneyLog\Controller\CategoriaController::class => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\CategoriaController(
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
@@ -57,7 +57,7 @@ return [
                 'options'   => [
                     'route'         => '/categoria[/:action][/:id]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
-                    'defaults'      => ['controller' => MoneyLog\Controller\Categoria::class, 'action' => 'index'],
+                    'defaults'      => ['controller' => MoneyLog\Controller\CategoriaController::class, 'action' => 'index'],
                 ],
             ],
             'accantona_recap'       => [
