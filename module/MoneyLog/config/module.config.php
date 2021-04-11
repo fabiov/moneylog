@@ -41,7 +41,7 @@ return [
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
-            'MoneyLog\Controller\Movement' => function ($controllerManager) {
+            MoneyLog\Controller\MovementController::class => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\MovementController(
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
@@ -57,7 +57,9 @@ return [
                 'options'   => [
                     'route'         => '/categoria[/:action][/:id]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
-                    'defaults'      => ['controller' => MoneyLog\Controller\CategoriaController::class, 'action' => 'index'],
+                    'defaults'      => [
+                        'controller' => MoneyLog\Controller\CategoriaController::class, 'action' => 'index'
+                    ],
                 ],
             ],
             'accantona_recap'       => [
@@ -65,7 +67,9 @@ return [
                 'options'   => [
                     'route'         => '/dashboard[/:action]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
-                    'defaults'      => ['controller' => MoneyLog\Controller\RecapController::class, 'action' => 'index'],
+                    'defaults'      => [
+                        'controller' => MoneyLog\Controller\RecapController::class, 'action' => 'index'
+                    ],
                 ],
             ],
             'accantona_accantonato' => [
@@ -73,7 +77,9 @@ return [
                 'options'   => [
                     'route'         => '/accantonato[/:action][/:id]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
-                    'defaults'      => ['controller' => MoneyLog\Controller\AccantonatoController::class, 'action' => 'index'],
+                    'defaults' => [
+                        'controller' => MoneyLog\Controller\AccantonatoController::class, 'action' => 'index'
+                    ],
                 ],
             ],
             'accantonaSettings'     => [
@@ -81,7 +87,7 @@ return [
                 'options'   => [
                     'route'         => '/settings[/:action][/:id]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
-                    'defaults'      => ['controller' => MoneyLog\Controller\SettingsController::class, 'action' => 'index'],
+                    'defaults' => ['controller' => MoneyLog\Controller\SettingsController::class, 'action' => 'index'],
                 ],
             ],
             'accantonaAccount'      => [
@@ -97,7 +103,7 @@ return [
                 'options'   => [
                     'route'         => '/movement[/:action][/:id]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
-                    'defaults'      => ['controller' => MoneyLog\Controller\Movement::class, 'action' => 'index'],
+                    'defaults' => ['controller' => MoneyLog\Controller\MovementController::class, 'action' => 'index'],
                 ],
             ],
         ],

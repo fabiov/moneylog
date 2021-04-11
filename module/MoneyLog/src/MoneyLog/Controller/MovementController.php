@@ -9,6 +9,7 @@ use Application\Repository\AccountRepository;
 use Doctrine\ORM\EntityManager;
 use MoneyLog\Form\MoveForm;
 use MoneyLog\Form\MovementForm;
+use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -63,7 +64,9 @@ class MovementController extends AbstractActionController
                 $this->em->flush();
 
                 return $this->redirect()->toRoute(
-                    'accantonaMovement', ['action' => 'account', 'id' => $item->accountId], ['query' => $searchParams]
+                    'accantonaMovement',
+                    ['action' => 'account', 'id' => $item->accountId],
+                    ['query' => $searchParams]
                 );
             }
         }
@@ -71,10 +74,6 @@ class MovementController extends AbstractActionController
         return ['item' => $item, 'form' => $form, 'searchParams' => $searchParams];
     }
 
-    /**
-     * @return \Zend\Http\Response|ViewModel
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
     public function accountAction()
     {
         $accountId    = $this->params()->fromRoute('id', 0);
@@ -153,10 +152,8 @@ class MovementController extends AbstractActionController
         ];
 
         /* @var Account $account */
-        $account = $this->em->getRepository(Account::class)->findOneBy([
-            'id'        => $accountId,
-            'userId'    => $this->user->id,
-        ]);
+        $account = $this->em->getRepository(Account::class)
+            ->findOneBy(['id' => $accountId, 'user' => $this->user->id]);
 
         if (!$account) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
@@ -173,7 +170,7 @@ class MovementController extends AbstractActionController
         return (new ViewModel(['rows' => $movementRepository->search($searchParams)]))->setTerminal(true);
     }
 
-    public function deleteAction()
+    public function deleteAction(): Response
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
@@ -221,7 +218,6 @@ class MovementController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-
                 $data = $form->getData();
 
                 /* @var Account $targetAccount */
@@ -288,9 +284,8 @@ class MovementController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-
                 $repetitionNumber = (int) $data['repetitionNumber'];
-                $repetitionNumber = !empty($data['repetition']) && 
+                $repetitionNumber = !empty($data['repetition']) &&
                                     in_array($data['repetitionPeriod'], ['month', 'week']) &&
                                     $repetitionNumber > 0 && $repetitionNumber < 13 ? $repetitionNumber : 1;
 
@@ -311,10 +306,11 @@ class MovementController extends AbstractActionController
                     $this->em->flush();
                 }
 
-                return $this->redirect()->toRoute('accantonaMovement', [
-                    'action' => 'account', 
-                    'id'    => $accountId
-                ], ['query' => $searchParams]);
+                return $this->redirect()->toRoute(
+                    'accantonaMovement',
+                    ['action' => 'account', 'id' => $accountId],
+                    ['query' => $searchParams]
+                );
             }
         }
 

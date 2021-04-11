@@ -3,7 +3,7 @@ return [
     'acl' => [
         'roles' => [
             'guest' => null,
-            'user'  => 'guest', // member extendes guest
+            'user'  => 'guest', // member extends guest
         ],
         'resources' => [
             'allow' => [
@@ -35,7 +35,7 @@ return [
                     'index'     => 'user',
                     'movement'  => 'user',
                 ],
-                'MoneyLog\Controller\Movement' => [
+                MoneyLog\Controller\MovementController::class => [
                     'account'   => 'user',
                     'add'       => 'user',
                     'delete'    => 'user',
