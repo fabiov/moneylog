@@ -12,7 +12,7 @@ return [
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity()
                 );
             },
-            'MoneyLog\Controller\Settings' => function ($controllerManager) {
+            MoneyLog\Controller\SettingsController::class => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\SettingsController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
@@ -81,7 +81,7 @@ return [
                 'options'   => [
                     'route'         => '/settings[/:action][/:id]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
-                    'defaults'      => ['controller' => MoneyLog\Controller\Settings::class, 'action' => 'index'],
+                    'defaults'      => ['controller' => MoneyLog\Controller\SettingsController::class, 'action' => 'index'],
                 ],
             ],
             'accantonaAccount'      => [

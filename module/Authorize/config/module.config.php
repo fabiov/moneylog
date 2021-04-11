@@ -24,7 +24,7 @@ return [
                     'edit'      => 'user',
                     'index'     => 'user',
                 ],
-                'MoneyLog\Controller\Settings' => [
+                MoneyLog\Controller\SettingsController::class => [
                     'index' => 'user',
                 ],
                 'MoneyLog\Controller\Account' => [
