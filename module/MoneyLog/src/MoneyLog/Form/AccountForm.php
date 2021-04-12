@@ -6,7 +6,6 @@ use Zend\Form\Form;
 
 class AccountForm extends Form
 {
-
     /**
      * AccountForm constructor.
      * @param string $name
@@ -53,5 +52,4 @@ class AccountForm extends Form
             'type' => 'Submit',
         ]);
     }
-
 }

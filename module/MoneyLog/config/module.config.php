@@ -20,7 +20,7 @@ return [
                     $controllerManager->get('user_data')
                 );
             },
-            'MoneyLog\Controller\Account' => function ($controllerManager) {
+            MoneyLog\Controller\AccountController::class => function ($controllerManager) {
                 /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\AccountController(
                     $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
@@ -95,7 +95,7 @@ return [
                 'options'   => [
                     'route'         => '/account[/:action][/:id]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
-                    'defaults'      => ['controller' => MoneyLog\Controller\Account::class, 'action' => 'index'],
+                    'defaults' => ['controller' => MoneyLog\Controller\AccountController::class, 'action' => 'index'],
                 ],
             ],
             'accantonaMovement'     => [

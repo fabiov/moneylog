@@ -27,7 +27,7 @@ return [
                 MoneyLog\Controller\SettingsController::class => [
                     'index' => 'user',
                 ],
-                'MoneyLog\Controller\Account' => [
+                MoneyLog\Controller\AccountController::class => [
                     'add'       => 'user',
                     'balance'   => 'user',
                     'delete'    => 'user',

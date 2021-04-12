@@ -1,4 +1,5 @@
 <?php
+/** @var \Zend\Form\Form $form */
 $title = 'Aggiungi un nuovo conto';
 $this->headTitle($title);
 
@@ -23,6 +24,8 @@ $form->prepare();
         <label><?php echo $this->formCheckbox($element); ?> Includi nel riepilogo</label>
         <?php echo $errors; ?>
     </div>
+
+    <input type="hidden" name="closed" value="0" />
 
     <?php $element = $form->get('submit'); ?>
     <?php $errors = $this->formElementErrors($element); ?>
