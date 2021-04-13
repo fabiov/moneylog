@@ -5,38 +5,38 @@ use Zend\Form\Form;
 
 class AuthForm extends Form
 {
-    public function __construct($name = null)
+    public function __construct()
     {
         parent::__construct('auth');
         $this->setAttribute('method', 'post');
 
-        $this->add(array(
+        $this->add([
             'name' => 'email',
-            'attributes' => array('type' => 'email', 'class' => 'form-control'),
-            'options' => array('label' => 'Email'),
-        ));
-        $this->add(array(
+            'attributes' => ['type' => 'email', 'class' => 'form-control'],
+            'options' => ['label' => 'Email'],
+        ]);
+        $this->add([
             'name' => 'password',
-            'attributes' => array('type' => 'password', 'class' => 'form-control'),
-            'options' => array(
+            'attributes' => ['type' => 'password', 'class' => 'form-control'],
+            'options' => [
                 'label' => 'Password',
-            ),
-        ));
-        $this->add(array(
+            ],
+        ]);
+        $this->add([
             'name' => 'rememberme',
             'type' => 'checkbox',
-            'attributes' => array(),
-            'options' => array('label' => 'Remember me'),
-        ));
-        $this->add(array(
+            'attributes' => [],
+            'options' => ['label' => 'Remember me'],
+        ]);
+        $this->add([
             'name' => 'submit',
             'value' => 'Sign in',
-            'attributes' => array(
+            'attributes' => [
                 'type'  => 'submit',
                 'id' => 'submitbutton',
                 'class' => 'btn btn-lg btn-primary btn-block',
                 'value' => 'Sign in',
-            ),
-        )); 
+            ],
+        ]); 
     }
 }

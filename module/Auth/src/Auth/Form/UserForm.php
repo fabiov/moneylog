@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Auth\Form;
 
 use Zend\Form\Form;
@@ -11,7 +13,7 @@ use Zend\Form\Form;
  */
 class UserForm extends Form
 {
-    public function __construct($name = null)
+    public function __construct()
     {
         parent::__construct('registration');
         $this->setAttribute('method', 'post');

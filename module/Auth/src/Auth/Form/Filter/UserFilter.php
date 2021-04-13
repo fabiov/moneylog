@@ -15,21 +15,21 @@ class UserFilter extends InputFilter
     function __construct()
     {
         $this
-            ->add(array(
+            ->add([
                 'name'       => 'name',
                 'required'   => true,
                 'filters'    => [['name' => 'StringTrim']],
                 'validators' => [
                     ['name' => 'StringLength', 'options' => ['encoding' => 'UTF-8', 'min' => 2, 'max' => 50]]
                 ],
-            ))
-            ->add(array(
+            ])
+            ->add([
                 'name'     => 'surname',
                 'required' => true,
-                'filters'  => array(array('name' => 'StringTrim')),
+                'filters'  => [['name' => 'StringTrim']],
                 'validators' => [
                     ['name' => 'StringLength', 'options' => ['encoding' => 'UTF-8', 'min' => 2, 'max' => 128]]
                 ],
-            ));
+            ]);
     }
 }

@@ -1,7 +1,6 @@
 <?php
-/**
- * @author fabio.ventura
- */
+declare(strict_types=1);
+
 namespace MoneyLog\Form;
 
 use Zend\Form\Form;
@@ -9,40 +8,40 @@ use Zend\Form\Form;
 class CategoriaForm extends Form
 {
 
-    public function __construct($name = null)
+    public function __construct()
     {
         // we want to ignore the name passed
         parent::__construct('categoria');
 
-        $this->add(array(
+        $this->add([
             'name' => 'id',
             'type' => 'Hidden',
-        ));
-        $this->add(array(
-            'attributes' => array('class' => 'form-control'),
+        ]);
+        $this->add([
+            'attributes' => ['class' => 'form-control'],
             'name' => 'descrizione',
             'type' => 'Text',
-            'options' => array('label' => 'Descrizione'),
-        ));
-        $this->add(array(
-            'attributes' => array('value' => 1, 'id' => 'categotyStatus'),
+            'options' => ['label' => 'Descrizione'],
+        ]);
+        $this->add([
+            'attributes' => ['value' => 1, 'id' => 'categotyStatus'],
             'name' => 'status',
-            'options' => array(
+            'options' => [
                 'label' => 'Attivo',
                 'use_hidden_element' => true,
                 'checked_value' => 1,
                 'unchecked_value' => 0,
-            ),
+            ],
             'type' => 'Checkbox',
-        ));
-        $this->add(array(
+        ]);
+        $this->add([
             'name' => 'submit',
             'type' => 'Submit',
-            'attributes' => array(
+            'attributes' => [
                 'value' => 'Go',
                 'id' => 'submitbutton',
-            ),
-        ));
+            ],
+        ]);
     }
 
 }

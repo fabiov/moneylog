@@ -18,7 +18,7 @@ class ChangePasswordFilter extends InputFilter
             'required' => true,
         ]);
         $this->add([
-            'filters'    => array(array('name' => 'StringTrim')),
+            'filters'    => [['name' => 'StringTrim']],
             'name'       => 'password',
             'required'   => true,
             'validators' => [[

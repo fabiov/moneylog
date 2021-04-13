@@ -34,6 +34,9 @@ class RegistrationController extends AbstractActionController
         $this->sm = $sm;
     }
 
+    /**
+     * @throws OptimisticLockException
+     */
     public function indexAction()
     {
         $form = new RegistrationForm();
@@ -54,7 +57,7 @@ class RegistrationController extends AbstractActionController
                 $this->em->persist($user);
                 $this->em->flush();
                 $this->sendConfirmationEmail($user);
-                $this->flashMessenger()->addMessage($user->email);
+                $this->flashMessenger()->addMessage($user->email); // @phpstan-ignore-line
 
                 return $this->redirect()->toRoute('auth_registration', ['action' => 'registration-success']);
             }
@@ -66,7 +69,7 @@ class RegistrationController extends AbstractActionController
     public function registrationSuccessAction(): ViewModel
     {
         $usr_email = null;
-        $flashMessenger = $this->flashMessenger();
+        $flashMessenger = $this->flashMessenger(); // @phpstan-ignore-line
         if ($flashMessenger->hasMessages()) {
             foreach($flashMessenger->getMessages() as $key => $value) {
                 $usr_email .=  $value;
@@ -104,6 +107,9 @@ class RegistrationController extends AbstractActionController
         return $viewModel;
     }
 
+    /**
+     * @throws OptimisticLockException
+     */
     public function forgottenPasswordAction()
     {
         $form = new ForgottenPasswordForm();
@@ -125,7 +131,7 @@ class RegistrationController extends AbstractActionController
                 $this->em->flush();
 
                 $this->sendPasswordByEmail($data['email'], $password);
-                $this->flashMessenger()->addMessage($data['email']);
+                $this->flashMessenger()->addMessage($data['email']); // @phpstan-ignore-line
                 return $this->redirect()->toRoute('auth_registration', ['action' => 'password-change-success']);
             }
         }
@@ -136,7 +142,7 @@ class RegistrationController extends AbstractActionController
     public function passwordChangeSuccessAction(): ViewModel
     {
         $usr_email = null;
-        $flashMessenger = $this->flashMessenger();
+        $flashMessenger = $this->flashMessenger(); // @phpstan-ignore-line
         if ($flashMessenger->hasMessages()) {
             foreach($flashMessenger->getMessages() as $value) {
                 $usr_email .=  $value;
