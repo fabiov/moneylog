@@ -24,3 +24,8 @@ php vendor/bin/doctrine-module migrations:generate
 ```shell
 mysql -h localhost -P 3306 -u dbuser -pdbpass --protocol=tcp moneylog
 ```
+
+## Code Style
+```shell
+$ php-cs-fixer fix --rules='{"array_syntax": {"syntax": "short"}}' module/Authorize/config/module.config.php
+```

@@ -45,21 +45,18 @@ return [
                     'move'      => 'user',
                     'movement'  => 'user',
                 ],
-                'Auth\Controller\User' => [
+                Auth\Controller\UserController::class => [
                     'change-password' => 'user',
                     'login'           => 'guest',
                     'logout'          => 'guest',
                     'update'          => 'user',
                 ],
-                'Auth\Controller\Registration' => [
+                Auth\Controller\RegistrationController::class => [
                     'confirm-email'             => 'guest',
                     'forgotten-password'        => 'guest',
                     'index'                     => 'guest',
                     'password-change-success'   => 'guest',
                     'registration-success'      => 'guest',
-                ],
-                'Application\Controller\Page' => [
-                    'all' => 'guest',
                 ],
             ],
         ],

@@ -20,6 +20,6 @@ class RegistrationControllerTest extends AbstractHttpControllerTestCase
         $this->assertModuleName('auth');
         $this->assertControllerName('auth\controller\registration');
         $this->assertControllerClass('RegistrationController');
-        $this->assertMatchedRouteName('auth/default');
+        $this->assertMatchedRouteName('auth_registration');
     }
 }

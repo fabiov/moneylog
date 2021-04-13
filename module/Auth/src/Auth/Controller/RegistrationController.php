@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Auth\Controller;
 
 use Application\Entity\Setting;
@@ -7,8 +9,8 @@ use Auth\Form\ForgottenPasswordFilter;
 use Auth\Form\ForgottenPasswordForm;
 use Auth\Form\Filter\RegistrationFilter;
 use Auth\Form\RegistrationForm;
-use Auth\Model\UserTable;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
 use Zend\Mail\Message;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\ServiceManager\ServiceManager;
@@ -17,7 +19,7 @@ use Zend\View\Model\ViewModel;
 class RegistrationController extends AbstractActionController
 {
     /**
-     * @var DoctrineORMEntityManager
+     * @var EntityManager
      */
     private $em;
 
@@ -26,16 +28,10 @@ class RegistrationController extends AbstractActionController
      */
     private $sm;
 
-    /**
-     * @var UserTable
-     */
-    private $userTable;
-
-    public function __construct(EntityManager $em, ServiceManager $sm, UserTable $userTable)
+    public function __construct(EntityManager $em, ServiceManager $sm)
     {
-        $this->em           = $em;
-        $this->sm           = $sm;
-        $this->userTable    = $userTable;
+        $this->em = $em;
+        $this->sm = $sm;
     }
 
     public function indexAction()
@@ -60,17 +56,14 @@ class RegistrationController extends AbstractActionController
                 $this->sendConfirmationEmail($user);
                 $this->flashMessenger()->addMessage($user->email);
 
-                return $this->redirect()->toRoute('auth/default', array(
-                    'controller' => 'registration',
-                    'action' => 'registration-success'
-                ));
+                return $this->redirect()->toRoute('auth_registration', ['action' => 'registration-success']);
             }
         }
         $this->layout('layout/unlogged');
-        return new ViewModel(array('form' => $form));
+        return new ViewModel(['form' => $form]);
     }
 
-    public function registrationSuccessAction()
+    public function registrationSuccessAction(): ViewModel
     {
         $usr_email = null;
         $flashMessenger = $this->flashMessenger();
@@ -80,24 +73,31 @@ class RegistrationController extends AbstractActionController
             }
         }
         $this->layout('layout/unlogged');
-        return new ViewModel(array('usr_email' => $usr_email));
+        return new ViewModel(['usr_email' => $usr_email]);
     }
 
-    public function confirmEmailAction()
+    /**
+     * @throws OptimisticLockException
+     */
+    public function confirmEmailAction(): ViewModel
     {
         $token = $this->params()->fromRoute('id');
-        $viewModel = new ViewModel(array('token' => $token));
-        try {
+        $viewModel = new ViewModel(['token' => $token]);
 
-            $user = $this->userTable->getUserByToken($token);
-            $this->userTable->activateUser($user->id);
+        /** @var User $user */
+        $user = $this->em->getRepository(User::class)->findOneBy(['registrationToken' => $token]);
+
+        if ($user) {
+            $user->setStatus(User::STATUS_CONFIRMED);
+            $this->em->persist($user);
 
             //create settings
             $setting = new Setting();
-            $setting->userId = $user->id;
+            $setting->userId = $user->getId();
             $this->em->persist($setting);
+
             $this->em->flush();
-        } catch(\Exception $e) {
+        } else {
             $viewModel->setTemplate('auth/registration/confirm-email-error.phtml');
         }
         $this->layout('layout/unlogged');
@@ -119,52 +119,44 @@ class RegistrationController extends AbstractActionController
 
                 $password = $this->getRandomString(10);
 
-                $user = $this->em->getRepository('Application\Entity\User')
-                    ->findOneBy(array('email' => $data['email']));
+                $user = $this->em->getRepository(User::class)->findOneBy(['email' => $data['email']]);
                 $user->password = $this->encriptPassword($password, $user->salt);
                 $this->em->persist($user);
                 $this->em->flush();
 
                 $this->sendPasswordByEmail($data['email'], $password);
                 $this->flashMessenger()->addMessage($data['email']);
-                return $this->redirect()->toRoute('auth/default', array(
-                    'action'        => 'password-change-success',
-                    'controller'    => 'registration',
-                ));
+                return $this->redirect()->toRoute('auth_registration', ['action' => 'password-change-success']);
             }
         }
         $this->layout('layout/unlogged');
-        return new ViewModel(array('form' => $form));
+        return new ViewModel(['form' => $form]);
     }
 
-    public function passwordChangeSuccessAction()
+    public function passwordChangeSuccessAction(): ViewModel
     {
         $usr_email = null;
         $flashMessenger = $this->flashMessenger();
         if ($flashMessenger->hasMessages()) {
-            foreach($flashMessenger->getMessages() as $key => $value) {
+            foreach($flashMessenger->getMessages() as $value) {
                 $usr_email .=  $value;
             }
         }
         $this->layout('layout/unlogged');
-        return new ViewModel(array('usr_email' => $usr_email));
+        return new ViewModel(['usr_email' => $usr_email]);
     }
 
-    public function prepareData($data)
+    private static function prepareData(array $data): array
     {
-        $data['salt'] = $this->getRandomString(4);
-        $data['password'] = $this->encriptPassword($data['password'], $data['salt']);
+        $data['salt'] = self::getRandomString(4);
+        $data['password'] = self::encriptPassword($data['password'], $data['salt']);
         $data['status'] = 0;
         $data['role'] = 'user';
-        $data['registrationToken'] = $this->getRandomString(8);
+        $data['registrationToken'] = self::getRandomString(8);
         return $data;
     }
 
-    /**
-     * @param int
-     * @return string
-     */
-    public function getRandomString($length)
+    private static function getRandomString(int $length): string
     {
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $rand  = '';
@@ -174,31 +166,17 @@ class RegistrationController extends AbstractActionController
         return $rand;
     }
 
-    public function getStaticSalt()
-    {
-        $config = $this->sm->get('Config');
-        $staticSalt = $config['static_salt'];
-        return $staticSalt;
-    }
-
-    public function encriptPassword($password, $dynamicSalt)
+    private static function encriptPassword(string $password, string $dynamicSalt): string
     {
         return md5($password . $dynamicSalt);
     }
 
-    /**
-     * @param $user
-     */
-    public function sendConfirmationEmail($user)
+    private function sendConfirmationEmail(User $user): void
     {
         $config = $this->sm->get('Config');
         $body = "Please, click the link to confirm your registration. "
               . $this->getRequest()->getServer('HTTP_ORIGIN')
-              . $this->url()->fromRoute('auth/default', array(
-                    'controller' => 'registration',
-                    'action' => 'confirm-email',
-                    'id' => $user->registrationToken
-                ));
+              . $this->url()->fromRoute('auth_registration', ['action' => 'confirm-email','id' => $user->registrationToken]);
 
         $message = new Message();
         $message->addTo($user->email)
@@ -208,11 +186,7 @@ class RegistrationController extends AbstractActionController
         $this->sm->get('mail.transport')->send($message);
     }
 
-    /**
-     * @param string $userEmail
-     * @param string $password
-     */
-    public function sendPasswordByEmail($userEmail, $password)
+    private function sendPasswordByEmail($userEmail, $password): void
     {
         $config = $this->sm->get('Config');
 

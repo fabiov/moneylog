@@ -1,22 +1,11 @@
 <?php
-/* @var Zend\View\Renderer\PhpRenderer $this */
-$this->form->setAttributes(array(
-    'action' => $this->url('auth/default', array('controller' => 'registration', 'action' => 'index')),
-    'class' => 'form-signin',
-));
-$this->form->prepare();
+/* @var \Zend\Form\Form $form */
+$form->setAttributes(['action' => $this->url('auth_registration', ['action' => 'index']), 'class' => 'form-signin']);
+$form->prepare();
 ?>
 <style type="text/css">
-    .form-signin {
-        max-width: 330px;
-        padding: 15px;
-        margin: 0 auto;
-    }
-    .form-signin ul {
-        color: #a94442;
-        list-style-type: none;
-        padding: 0;
-    }
+    .form-signin {max-width: 330px; padding: 15px; margin: 0 auto;}
+    .form-signin ul {color: #a94442; list-style-type: none; padding: 0;}
 </style>
 <?php echo $this->form()->openTag($this->form); ?>
     <h1>Registration</h1>
