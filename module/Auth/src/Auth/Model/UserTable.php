@@ -5,6 +5,9 @@ use Zend\Db\TableGateway\TableGateway;
 
 class UserTable
 {
+    /**
+     * @var TableGateway
+     */
     protected $tableGateway;
 
     public function __construct(TableGateway $tableGateway)
@@ -14,44 +17,32 @@ class UserTable
 
     public function fetchAll()
     {
-        $resultSet = $this->tableGateway->select();
-        return $resultSet;
+        return $this->tableGateway->select();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getUser($id)
     {
         $id  = (int) $id;
-        $row = $this->tableGateway->select(array('id' => $id))->current();
+        $row = $this->tableGateway->select(['id' => $id])->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
         }
         return $row;
     }
 
-    public function getUserByToken($token)
-    {
-        $row = $this->tableGateway->select(array('registrationToken' => $token))->current();
-        if (!$row) {
-            throw new \Exception("Could not find row $token");
-        }
-        return $row;
-    }
-
-    public function activateUser($id)
-    {
-        $this->tableGateway->update(array('status' => 1), array('id' => $id));
-    }
-
     public function changePassword($id, $password)
     {
-        $data = array('password' => $password);
-        $this->tableGateway->update($data, array('usr_id' => (int) $id));
+        $data = ['password' => $password];
+        $this->tableGateway->update($data, ['usr_id' => (int) $id]);
     }
 
     public function saveUser(Auth $auth)
     {
         // for Zend\Db\TableGateway\TableGateway we need the data in array not object
-        $data = array(
+        $data = [
             'email'             => $auth->email,
             'name'              => $auth->name,
             'password'          => $auth->password,
@@ -59,12 +50,12 @@ class UserTable
             'status'            => $auth->status,
             'role'              => $auth->role,
             'registrationToken' => $auth->registrationToken,
-        );
+        ];
 
         $id = (int) $auth->id;
         if ($id) {
             if ($this->getUser($id)) {
-                $this->tableGateway->update($data, array('id' => $id));
+                $this->tableGateway->update($data, ['id' => $id]);
             } else {
                 throw new \Exception('Form id does not exist');
             }
@@ -75,7 +66,7 @@ class UserTable
 
     public function deleteUser($id)
     {
-        $this->tableGateway->delete(array('usr_id' => $id));
+        $this->tableGateway->delete(['usr_id' => $id]);
     }
 
 }

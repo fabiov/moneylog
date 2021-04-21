@@ -1,48 +1,45 @@
 <?php
+declare(strict_types=1);
+
+use Zend\Authentication\AuthenticationService;
+
 return [
     'controllers' => [
-        'factories' => array(
-            Auth\Controller\User::class => function (Zend\ServiceManager\ServiceManager $controllerManager) {
+        'factories' => [
+            Auth\Controller\UserController::class => function (Zend\ServiceManager\ServiceManager $controllerManager) {
                 return new Auth\Controller\UserController(
-                    $controllerManager->get(Zend\Authentication\AuthenticationService::class)->getIdentity(),
+                    $controllerManager->get(AuthenticationService::class)->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager->get(Auth\Service\AuthManager::class)
                 );
             },
-            Auth\Controller\Registration::class => function (Zend\ServiceManager\ServiceManager $controllerManager) {
+            Auth\Controller\RegistrationController::class => function (Zend\ServiceManager\ServiceManager $controllerManager) {
                 return new Auth\Controller\RegistrationController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
-                    $controllerManager,
-                    $controllerManager->get(Auth\Model\UserTable::class)
+                    $controllerManager
                 );
             },
-        ),
+        ],
     ],
     'router' => [
-        'routes' => array(
-            'auth' => array(
-                'type' => 'Literal',
-                'options' => array(
-                    'defaults' => ['__NAMESPACE__' => 'Auth\Controller', 'controller' => 'User', 'action' => 'index'],
-                    'route'    => '/auth',
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/[:controller[/:action[/:id]]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id'         => '[a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => ['controller' => 'user', 'action' => 'index'],
-                        ),
-                    ),
-                ),
-            ),
-        ),
+        'routes' => [
+            'auth' => [
+                'type' => 'segment',
+                'options' => [
+                    'constraints' => ['action' => '[a-zA-Z][a-zA-Z0-9_-]+', 'id' => '[\w]+'],
+                    'defaults' => ['controller' => Auth\Controller\UserController::class, 'action' => 'index'],
+                    'route' => '/auth/user[/:action][/:id]',
+                ],
+            ],
+            'auth_registration' => [
+                'type' => 'segment',
+                'options' => [
+                    'constraints' => ['action' => '[a-zA-Z][a-zA-Z0-9_-]+', 'id' => '[\w]+'],
+                    'defaults' => ['controller' => Auth\Controller\RegistrationController::class, 'action' => 'index'],
+                    'route' => '/auth/registration[/:action][/:id]',
+                ],
+            ],
+        ],
     ],
     'service_manager' => [
         // added for Authentication and Authorization. Without this each time we have to create a new instance.
@@ -54,19 +51,21 @@ return [
             },
             Auth\Service\AuthManager::class => function (Interop\Container\ContainerInterface $container) {
                 return new Auth\Service\AuthManager(
-                    $container->get(Zend\Authentication\AuthenticationService::class),
+                    $container->get(AuthenticationService::class),
                     $container->get(Zend\Session\SessionManager::class),
-                    $container->get(\Auth\Service\UserData::class)
+                    $container->get(Auth\Service\UserData::class)
                 );
             },
-            Zend\Authentication\AuthenticationService::class => \Auth\Service\Factory\AuthenticationServiceFactory::class,
+            AuthenticationService::class => Auth\Service\Factory\AuthenticationServiceFactory::class,
         ],
         'invokables' => [
             'user_data' => 'Auth\Service\UserData',
         ],
     ],
     'view_manager' => [
-        'display_exceptions'  => true,
-        'template_path_stack' => ['auth' => __DIR__ . '/../view'],
+        'display_exceptions' => true,
+        'template_path_stack' => [
+            'auth' => __DIR__ . '/../view',
+        ],
     ],
 ];

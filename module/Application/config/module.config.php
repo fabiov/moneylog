@@ -20,13 +20,13 @@ return [
                 'type' => 'Zend\Router\Http\Literal',
                 'options' => [
                     'route'    => '/',
-                    'defaults' => ['controller' => 'Auth\Controller\User', 'action' => 'login'],
+                    'defaults' => ['controller' => Auth\Controller\UserController::class, 'action' => 'login'],
                 ],
             ],
             // The following is a route to simplify getting started creating new controllers and actions without needing
             // to create a new module.
             // Simply drop new controllers in, and you can access them using the path /application/:controller/:action
-            'application' => array(
+            'application' => [
                 'type'    => 'Literal',
                 'options' => [
                     'route'    => '/application',
@@ -49,7 +49,7 @@ return [
                         ],
                     ],
                 ],
-            ),
+            ],
             'privacy_policy' => [
                 'type' => 'Literal',
                 'options' => [
@@ -60,23 +60,23 @@ return [
         ],
     ],
     'service_manager' => [
-        'abstract_factories' => array(
+        'abstract_factories' => [
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
-        ),
-        'aliases' => array(
+        ],
+        'aliases' => [
             'translator' => 'MvcTranslator',
-        ),
+        ],
     ],
     'translator' => [
         'locale' => 'it_IT',
-        'translation_file_patterns' => array(
-            array(
+        'translation_file_patterns' => [
+            [
                 'type'     => 'gettext',
                 'base_dir' => __DIR__ . '/../language',
                 'pattern'  => '%s.mo',
-            ),
-        ),
+            ],
+        ],
     ],
     'view_manager' => [
         'display_not_found_reason' => true,
@@ -84,37 +84,37 @@ return [
         'doctype'                  => 'HTML5',
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
-        'template_map' => array(
+        'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
-        ),
+        ],
         'template_path_stack' => [
             'application' => __DIR__ . '/../view'
         ],
     ],
 
     // Placeholder for console routes
-    'console' => array(
+    'console' => [
         'router' => [
             'routes' => [],
         ],
-    ),
+    ],
 
     // Doctrine config
-    'doctrine' => array(
-        'driver' => array(
-            'application_entities' => array(
+    'doctrine' => [
+        'driver' => [
+            'application_entities' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
                 'paths' => [__DIR__ . '/../src/Application/Entity'],
-            ),
-            'orm_default' => array(
+            ],
+            'orm_default' => [
                 'drivers' => ['Application\Entity' => 'application_entities'],
-            ),
-        )
-    ),
+            ],
+        ]
+    ],
     'view_helpers' => [
         'invokables' => [
             'helpTooltip'      => 'Application\ViewHelper\HelpTooltip',

@@ -3,8 +3,11 @@ namespace MoneyLog\Controller;
 
 use Application\Entity\Account;
 use Application\Entity\Movement;
+use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
 use MoneyLog\Form\AccountForm;
+use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -32,14 +35,13 @@ class AccountController extends AbstractActionController
         $form = new AccountForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
-
             $account = new Account();
             $form->setInputFilter($account->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
                 $data = $form->getData();
-                $data['userId'] = $this->user->id;
+                $data['user'] = $this->em->find(User::class, $this->user->id);
                 $account->exchangeArray($data);
                 $this->em->persist($account);
                 $this->em->flush();
@@ -50,10 +52,13 @@ class AccountController extends AbstractActionController
         return ['form' => $form];
     }
 
-    public function indexAction()
+    /**
+     * @return ViewModel
+     */
+    public function indexAction(): ViewModel
     {
-        $data              = [];
-        $accountRepository = $this->em->getRepository('Application\Entity\Account');
+        $data = [];
+        $accountRepository = $this->em->getRepository(Account::class);
 
         // i dati in un record set potrebbero non essere nell'altro e vice versa
 
@@ -61,6 +66,7 @@ class AccountController extends AbstractActionController
         foreach ($accountAvailable as $i) {
             $data[$i['id']]['id']        = $i['id'];
             $data[$i['id']]['name']      = $i['name'];
+            $data[$i['id']]['closed']    = $i['closed'];
             $data[$i['id']]['recap']     = $i['recap'];
             $data[$i['id']]['available'] = $i['total'];
         }
@@ -69,6 +75,7 @@ class AccountController extends AbstractActionController
         foreach ($accountBalances as $i) {
             $data[$i['id']]['id']        = $i['id'];
             $data[$i['id']]['name']      = $i['name'];
+            $data[$i['id']]['closed']    = $i['closed'];
             $data[$i['id']]['recap']     = $i['recap'];
             $data[$i['id']]['balance']   = $i['total'];
         }
@@ -79,11 +86,11 @@ class AccountController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        $account = $this->em->getRepository('Application\Entity\Account')
-            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
+        /** @var Account $account */
+        $account = $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
 
         if (!$account) {
-            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+            return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
         }
 
         $form = new AccountForm();
@@ -99,10 +106,14 @@ class AccountController extends AbstractActionController
                 return $this->redirect()->toRoute('accantonaAccount'); // Redirect to list
             }
         }
-        return array('id' => $id, 'form' => $form);
+        return ['id' => $id, 'form' => $form];
     }
 
-    public function deleteAction()
+    /**
+     * @return Response
+     * @throws OptimisticLockException
+     */
+    public function deleteAction(): Response
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -113,13 +124,10 @@ class AccountController extends AbstractActionController
         if ($request->isPost()) {
 
             /* @var Account $account */
-            $account = $this->em->getRepository('Application\Entity\Account')->findOneBy([
-                'id'     => $id,
-                'userId' => $this->user->id
-            ]);
+            $account = $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
             if ($account) {
                 $this->em->createQueryBuilder()
-                    ->delete('Application\Entity\Movement', 'm')
+                    ->delete(Movement::class, 'm')
                     ->where('m.account=:account')
                     ->setParameter('account', $account)
                     ->getQuery()->execute();
@@ -132,10 +140,10 @@ class AccountController extends AbstractActionController
     }
 
     /**
-     * @return \Zend\Http\Response
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return Response
+     * @throws OptimisticLockException
      */
-    public function balanceAction()
+    public function balanceAction(): Response
     {
         // check if the user is account owner
         $amount      = (float) $this->getRequest()->getPost('amount');
@@ -147,7 +155,6 @@ class AccountController extends AbstractActionController
             ->findOneBy(['id' => $id, 'userId' => $this->user->id]);
 
         if ($account && $amount) {
-
             $currentBalance = $this->em->getRepository(Movement::class)
                 ->getBalance($id, new \DateTime());
 

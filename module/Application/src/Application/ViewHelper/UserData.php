@@ -10,30 +10,20 @@ class UserData extends AbstractHelper
      */
     private $data;
 
-    /**
-     * @return $this
-     */
-    public function __invoke()
+    public function __invoke(): self
     {
-
         if (!$this->data) {
-            $this->data = new \Auth\Service\UserData('user_data');
+            $this->data = new \Auth\Service\UserData();
         }
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->data->getName() . ' ' . $this->data->getSurname();
     }
 
-    /**
-     * @return bool
-     */
-    public function hasStored()
+    public function hasStored(): bool
     {
         return (bool) $this->data->getSettings()['stored'];
     }

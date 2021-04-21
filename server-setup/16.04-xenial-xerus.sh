@@ -42,6 +42,7 @@ EOF
 a2ensite moneylog
 a2enmod rewrite
 service apache2 restart
+usermod -a -G www-data ubuntu
 
 # create swap file 
 # https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04

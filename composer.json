@@ -5,13 +5,21 @@
     "keywords": ["framework", "zf"],
     "homepage": "http://moneylog.it",
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.2",
         "zendframework/zendframework": "^3.0",
         "doctrine/doctrine-orm-module": "^1.0",
         "zendframework/zend-router": "^3.0",
-        "doctrine/migrations": "^1.5"
+        "doctrine/migrations": "^1.5",
+        "ext-pdo": "*"
     },
     "require-dev": {
-        "zendframework/zend-component-installer": "^1.1"
+        "zendframework/zend-component-installer": "^1.1",
+        "zendframework/zend-test": "^3.3",
+        "phpstan/phpstan": "^0.12.83"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ApplicationTest\\": "module/Application/test/"
+        }
     }
 }

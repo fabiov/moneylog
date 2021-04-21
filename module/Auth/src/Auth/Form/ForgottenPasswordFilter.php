@@ -7,18 +7,18 @@ class ForgottenPasswordFilter extends InputFilter
 {
     public function __construct($sm)
     {
-        $this->add(array(
+        $this->add([
             'name'          => 'email',
             'required'      => true,
-            'validators'    => array(
-                array('name' => 'EmailAddress'),
-                array(
+            'validators'    => [
+                ['name' => 'EmailAddress'],
+                [
                     'name'      => 'Zend\Validator\Db\RecordExists',
                     'options'   => [
                         'adapter' => $sm->get('Zend\Db\Adapter\Adapter'), 'field' => 'email', 'table' => 'user'
                     ],
-                ),
-            ),
-        ));
+                ],
+            ],
+        ]);
     }
 }

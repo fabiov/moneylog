@@ -7,38 +7,38 @@ class RegistrationFilter extends InputFilter
 {
     public function __construct($sm)
     {
-        $this->add(array(
+        $this->add([
             'name' => 'email',
             'required' => true,
-            'validators' => array(
-                array('name' => 'EmailAddress'),
-                array(
+            'validators' => [
+                ['name' => 'EmailAddress'],
+                [
                     'name' => 'Zend\Validator\Db\NoRecordExists',
-                    'options' => array(
+                    'options' => [
                         'table' => 'user', 'field' => 'email', 'adapter' => $sm->get('Zend\Db\Adapter\Adapter')
-                    ),
-                ),
-            ),
-        ));
+                    ],
+                ],
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'password',
             'required' => true,
-            'filters' => array(array('name' => 'StringTrim')),
-            'validators' => array(
-                array('name' => 'StringLength', 'options' => array('encoding' => 'UTF-8', 'min' => 6, 'max' => 12)),
-            ),
-        ));
+            'filters' => [['name' => 'StringTrim']],
+            'validators' => [
+                ['name' => 'StringLength', 'options' => ['encoding' => 'UTF-8', 'min' => 6, 'max' => 12]],
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'password_confirm',
             'required' => true,
-            'filters' => array(array('name' => 'StringTrim')),
-            'validators' => array(
-                array('name' => 'StringLength', 'options' => array('encoding' => 'UTF-8', 'min' => 6, 'max' => 12)),
-                array('name' => 'Identical', 'options' => array('token' => 'password')),
-            ),
-        ));
+            'filters' => [['name' => 'StringTrim']],
+            'validators' => [
+                ['name' => 'StringLength', 'options' => ['encoding' => 'UTF-8', 'min' => 6, 'max' => 12]],
+                ['name' => 'Identical', 'options' => ['token' => 'password']],
+            ],
+        ]);
     }
 
 }

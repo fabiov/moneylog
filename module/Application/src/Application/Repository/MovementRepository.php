@@ -104,7 +104,7 @@ class MovementRepository extends EntityRepository
             ->select('m.date, SUM(m.amount) AS amount')
             ->from(Movement::class, 'm')
             ->innerJoin('m.account', 'a')
-            ->where("a.userId=$userId AND m.amount < 0 AND a.recap=1 AND m.date BETWEEN :minDate AND :maxDate")
+            ->where("a.user=$userId AND m.amount < 0 AND a.recap=1 AND m.date BETWEEN :minDate AND :maxDate")
             ->setParameter(':minDate', $minDate)
             ->setParameter(':maxDate', $maxDate)
             ->groupBy('m.date')

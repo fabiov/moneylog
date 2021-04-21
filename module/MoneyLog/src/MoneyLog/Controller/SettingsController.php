@@ -1,8 +1,12 @@
 <?php
 namespace MoneyLog\Controller;
 
+use Application\Entity\Setting;
 use Auth\Service\UserData;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\TransactionRequiredException;
 use MoneyLog\Form\SettingsForm;
 use Zend\Mvc\Controller\AbstractActionController;
 
@@ -31,10 +35,16 @@ class SettingsController extends AbstractActionController
         $this->userData = $userData;
     }
 
-    public function indexAction()
+    /**
+     * @throws OptimisticLockException
+     * @throws TransactionRequiredException
+     * @throws ORMException
+     */
+    public function indexAction(): array
     {
+        /** @var Setting $setting */
+        $setting = $this->em->find(Setting::class, $this->user->id);
         $message = '';
-        $setting = $this->em->find('Application\Entity\Setting', $this->user->id);
 
         $form = new SettingsForm();
         $form->bind($setting);
@@ -52,6 +62,6 @@ class SettingsController extends AbstractActionController
                 $message = 'Impostazioni salvate correttamente.';
             }
         }
-        return array('form' => $form, 'message' => $message);
+        return ['form' => $form, 'message' => $message];
     }
 }

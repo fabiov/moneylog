@@ -1,8 +1,12 @@
+.env
 .idea
 .notes
+.php_cs.cache
 .vagrant
 composer
 config/autoload/local.php
 data/DoctrineORMModule/*
+docker/mysql/data
+docker/php-apache/logs
 note.*
 vendor/*

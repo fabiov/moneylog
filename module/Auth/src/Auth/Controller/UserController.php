@@ -9,15 +9,16 @@ use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
 use Auth\Model\Auth;
 use Auth\Service\AuthManager;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM;
 use Zend\Authentication\Result;
+use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class UserController extends AbstractActionController
 {
     /**
-     * @var EntityManager
+     * @var ORM\EntityManager
      */
     private $em;
 
@@ -36,22 +37,27 @@ class UserController extends AbstractActionController
      * UserController constructor.
      *
      * @param $user
-     * @param $em
+     * @param ORM\EntityManager $em
      * @param AuthManager $authManager
      */
-    public function __construct($user, EntityManager $em, AuthManager $authManager)
+    public function __construct($user, ORM\EntityManager $em, AuthManager $authManager)
     {
         $this->authManager = $authManager;
         $this->em          = $em;
         $this->user        = $user;
     }
 
+    /**
+     * @throws ORM\OptimisticLockException
+     * @throws ORM\TransactionRequiredException
+     * @throws ORM\ORMException
+     */
     public function updateAction()
     {
-        /* @var User $user*/
-        $user = $this->em->find(\Application\Entity\User::class, $this->user->id)->setInputFilter(new UserFilter());
+        /** @var User $user */
+        $user = $this->em->find(User::class, $this->user->id)->setInputFilter(new UserFilter());
         if (!$user) {
-            return $this->forward()->dispatch(\Auth\Controller\User::class, ['action' => 'logout']);
+            return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
         }
 
         $form = new UserForm();
@@ -75,7 +81,7 @@ class UserController extends AbstractActionController
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      * @throws \Exception
      */
     public function loginAction()
@@ -110,30 +116,34 @@ class UserController extends AbstractActionController
             }
         }
         $this->layout('layout/unlogged');
-        return new ViewModel(array('form' => $form, 'messages' => $messages));
+        return new ViewModel(['form' => $form, 'messages' => $messages]);
     }
 
     /**
-     * @return \Zend\Http\Response
-     * @throws \Exception
+     * @return Response
      */
-    public function logoutAction()
+    public function logoutAction(): Response
     {
         $this->authManager->logout();
-        return $this->redirect()->toRoute('auth/default', array('action' => 'login'));
+        return $this->redirect()->toRoute('auth', ['action' => 'login']);
     }
 
+    /**
+     * @throws ORM\OptimisticLockException
+     * @throws ORM\TransactionRequiredException
+     * @throws ORM\ORMException
+     */
     public function changePasswordAction()
     {
         /* @var User $user*/
-        $user = $this->em->find('Application\Entity\User', $this->user->id)->setInputFilter(new UserFilter());
+        $user = $this->em->find(User::class, $this->user->id)->setInputFilter(new UserFilter());
         if (!$user) {
-            return $this->forward()->dispatch('Auth\Controller\User', ['action' => 'logout']);
+            return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
         }
 
         $form     = new ChangePasswordForm();
         $error    = false;
-        $messages = $this->flashMessenger()->getMessages();
+        $messages = $this->flashMessenger()->getMessages(); // @phpstan-ignore-line
         $message  = $messages ? $messages[0] : '';
         $request  = $this->getRequest();
 
@@ -149,8 +159,10 @@ class UserController extends AbstractActionController
                     $user->password = md5($data['password'] . $user->salt);
                     $this->em->persist($user);
                     $this->em->flush();
+
+                    // @phpstan-ignore-next-line
                     $this->flashMessenger()->addMessage('La password è stata aggiornata con successo');
-                    return $this->redirect()->toRoute('auth/default', ['controller' => 'user', 'action' => 'change-password']);
+                    return $this->redirect()->toRoute('auth', ['action' => 'change-password']);
                 } else {
                     $error   = true;
                     $message = 'Password non valida';

@@ -3,31 +3,31 @@ return [
     'acl' => [
         'roles' => [
             'guest' => null,
-            'user'  => 'guest', // member extendes guest
+            'user'  => 'guest', // member extends guest
         ],
         'resources' => [
             'allow' => [
-                'MoneyLog\Controller\Recap' => [
+                MoneyLog\Controller\RecapController::class => [
                     'add'   => 'user',
                     'edit'  => 'user',
                     'index' => 'user',
                 ],
-                'MoneyLog\Controller\Categoria' => [
+                MoneyLog\Controller\CategoriaController::class => [
                     'add'       => 'user',
                     'delete'    => 'user',
                     'edit'      => 'user',
                     'index'     => 'user',
                 ],
-                'MoneyLog\Controller\Accantonato' => [
+                MoneyLog\Controller\AccantonatoController::class => [
                     'add'       => 'user',
                     'delete'    => 'user',
                     'edit'      => 'user',
                     'index'     => 'user',
                 ],
-                'MoneyLog\Controller\Settings' => [
+                MoneyLog\Controller\SettingsController::class => [
                     'index' => 'user',
                 ],
-                'MoneyLog\Controller\Account' => [
+                MoneyLog\Controller\AccountController::class => [
                     'add'       => 'user',
                     'balance'   => 'user',
                     'delete'    => 'user',
@@ -35,7 +35,7 @@ return [
                     'index'     => 'user',
                     'movement'  => 'user',
                 ],
-                'MoneyLog\Controller\Movement' => [
+                MoneyLog\Controller\MovementController::class => [
                     'account'   => 'user',
                     'add'       => 'user',
                     'delete'    => 'user',
@@ -45,21 +45,18 @@ return [
                     'move'      => 'user',
                     'movement'  => 'user',
                 ],
-                'Auth\Controller\User' => [
+                Auth\Controller\UserController::class => [
                     'change-password' => 'user',
                     'login'           => 'guest',
                     'logout'          => 'guest',
                     'update'          => 'user',
                 ],
-                'Auth\Controller\Registration' => [
+                Auth\Controller\RegistrationController::class => [
                     'confirm-email'             => 'guest',
                     'forgotten-password'        => 'guest',
                     'index'                     => 'guest',
                     'password-change-success'   => 'guest',
                     'registration-success'      => 'guest',
-                ],
-                'Application\Controller\Page' => [
-                    'all' => 'guest',
                 ],
             ],
         ],

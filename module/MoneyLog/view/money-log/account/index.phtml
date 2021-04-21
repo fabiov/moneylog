@@ -16,6 +16,7 @@ $totalBalance   = 0;
                     <thead>
                         <tr>
                             <th>Nome</th>
+                            <th>Stato</th>
                             <th>Includi nel riepilogo</th>
                             <th class="text-right">Saldo disponibile</th>
                             <th class="text-right">Saldo contabile</th>
@@ -37,21 +38,22 @@ $totalBalance   = 0;
                                     <?php echo $this->escapeHtml($row['name']); ?>
                                 </a>
                             </td>
+                            <td><?php echo $row['closed'] ? 'Chiuso' : 'Aperto'; ?></td>
                             <td><?php echo $row['recap'] ? 'Sì' : 'No'; ?></td>
                             <td class="text-right total"><?php if (isset($row['available'])) echo $this->currencyForma($row['available']); ?></td>
                             <td class="text-right total"><?php if (isset($row['balance'])) echo $this->currencyForma($row['balance']); ?></td>
                             <td class="text-right">
+                                <?php if (!$row['closed']): ?>
                                 <a href="<?php echo $this->url('accantonaMovement', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
                                     <span class="glyphicon glyphicon-transfer" title="Giroconto: sposta i soldi da un conto ad un'altro"></span>
                                 </a>
-                                <span
-                                    class="btn btn-default balance"
-                                    data-href="<?php echo $this->url('accantonaAccount', array('action' => 'balance', 'id' => $row['id'])); ?>"
-                                    data-target="#modal-balance"
-                                    data-toggle="modal"
-                                >
+                                <span class="btn btn-default balance"
+                                      data-href="<?php echo $this->url('accantonaAccount', array('action' => 'balance', 'id' => $row['id'])); ?>"
+                                      data-target="#modal-balance"
+                                      data-toggle="modal">
                                     <span class="glyphicon glyphicon-equalizer" title="Il conguaglio adegua il conto all'importo indicato"></span>
                                 </span>
+                                <?php endif; ?>
                                 <a href="<?php echo $this->url('accantonaAccount', array('action' => 'edit', 'id' => $row['id'])); ?>" class="btn btn-default">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Modifica"></span>
                                 </a>
@@ -64,8 +66,7 @@ $totalBalance   = 0;
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td><strong>Totale</strong></td>
-                            <td></td>
+                            <td colspan="3"><strong>Totale</strong></td>
                             <td class="text-right"><strong><?php echo $this->currencyForma($totalAvailable); ?></strong></td>
                             <td class="text-right"><strong><?php echo $this->currencyForma($totalBalance); ?></strong></td>
                             <td></td>

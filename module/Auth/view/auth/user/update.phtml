@@ -1,5 +1,9 @@
-<?php /* @var $this \Zend\View\View */?>
-<?php echo $this->pageHeader('Utente'); ?>
+<?php
+/** @var \Zend\Form\Form $form*/
+/** @var \Zend\View\View $this */
+/** @var string $message */
+echo $this->pageHeader('Utente');
+?>
 <div class="row">
     <div class="col-lg-4 col-md-3">
     </div>
@@ -24,7 +28,7 @@
                         </div>
                         <?php endif; ?>
                         <div class="form-group">
-                            <a href="<?php echo $this->url('auth/default', array('controller' => 'user', 'action' => 'change-password')); ?>">Cambia password</a>
+                            <a href="<?php echo $this->url('auth', ['action' => 'change-password']); ?>">Cambia password</a>
                         </div>
                     </div>
                 </div>
