@@ -151,10 +151,10 @@ class AccountController extends AbstractActionController
         $routeName   = $this->getRequest()->getPost('forward');
         $id          = (int) $this->params()->fromRoute('id', 0);
 
-        $account = $this->em->getRepository('Application\Entity\Account')
-            ->findOneBy(['id' => $id, 'userId' => $this->user->id]);
+        $account = $this->em->getRepository(Account::class)
+            ->findOneBy(['id' => $id, 'user' => $this->user->id]);
 
-        if ($account && $amount) {
+        if ($account) {
             $currentBalance = $this->em->getRepository(Movement::class)
                 ->getBalance($id, new \DateTime());
 
