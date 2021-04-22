@@ -22,7 +22,7 @@ return [
         ],
     ],
     'service_manager' => [
-        'factories' => ['Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory'],
+        'factories' => ['Laminas\Db\Adapter\Adapter' => 'Laminas\Db\Adapter\AdapterServiceFactory'],
     ],
     'session_config'  => [                  // Session configuration.
         'cookie_lifetime' => 3600,          // Session cookie will expire in 1 hour.
