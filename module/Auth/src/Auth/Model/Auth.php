@@ -1,11 +1,11 @@
 <?php
 namespace Auth\Model;
 
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
-// the object will be hydrated by Zend\Db\TableGateway\TableGateway
+use Laminas\InputFilter\Factory as InputFactory;
+use Laminas\InputFilter\InputFilter;
+use Laminas\InputFilter\InputFilterAwareInterface;
+use Laminas\InputFilter\InputFilterInterface;
+// the object will be hydrated by Laminas\Db\TableGateway\TableGateway
 class Auth implements InputFilterAwareInterface
 {
     public $id;
@@ -21,7 +21,7 @@ class Auth implements InputFilterAwareInterface
 
     /**
      * Hydration
-     * ArrayObject, or at least implement exchangeArray. For Zend\Db\ResultSet\ResultSet to work
+     * ArrayObject, or at least implement exchangeArray. For Laminas\Db\ResultSet\ResultSet to work
      *
      * @param array $data
      */

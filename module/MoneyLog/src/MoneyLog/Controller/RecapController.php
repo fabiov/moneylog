@@ -6,8 +6,8 @@ use Application\Entity\Account;
 use Application\Entity\Category;
 use Application\Entity\Movement;
 use Application\Entity\Setting;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
 class RecapController extends AbstractActionController
 {

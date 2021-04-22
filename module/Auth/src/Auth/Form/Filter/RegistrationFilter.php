@@ -1,7 +1,7 @@
 <?php
 namespace Auth\Form\Filter;
 
-use Zend\InputFilter\InputFilter;
+use Laminas\InputFilter\InputFilter;
 
 class RegistrationFilter extends InputFilter
 {
@@ -13,9 +13,9 @@ class RegistrationFilter extends InputFilter
             'validators' => [
                 ['name' => 'EmailAddress'],
                 [
-                    'name' => 'Zend\Validator\Db\NoRecordExists',
+                    'name' => 'Laminas\Validator\Db\NoRecordExists',
                     'options' => [
-                        'table' => 'user', 'field' => 'email', 'adapter' => $sm->get('Zend\Db\Adapter\Adapter')
+                        'table' => 'user', 'field' => 'email', 'adapter' => $sm->get('Laminas\Db\Adapter\Adapter')
                     ],
                 ],
             ],

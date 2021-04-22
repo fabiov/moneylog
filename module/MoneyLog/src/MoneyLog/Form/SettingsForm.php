@@ -1,7 +1,7 @@
 <?php
 namespace MoneyLog\Form;
 
-use Zend\Form\Form;
+use Laminas\Form\Form;
 
 class SettingsForm extends Form
 {
@@ -13,7 +13,7 @@ class SettingsForm extends Form
 
         $this->add([
             'attributes' => ['max' => 28, 'min' => 0, 'step' => 1, 'value' => 27],
-            'filters'    => [['name' => 'Zend\Filter\StringTrim']],
+            'filters'    => [['name' => 'Laminas\Filter\StringTrim']],
             'name'       => 'payDay',
             'options'    => ['label' => 'Giorno di paga'],
             'required'   => true,
@@ -21,14 +21,14 @@ class SettingsForm extends Form
         ]);
         $this->add([
             'attributes' => ['max'   => 48, 'min' => 2, 'step'  => 1, 'value' => 12],
-            'filters'    => [['name' => 'Zend\Filter\StringTrim']],
+            'filters'    => [['name' => 'Laminas\Filter\StringTrim']],
             'name'       => 'monthsRetrospective',
             'options'    => ['label' => 'Mesi di retrospettiva'],
             'required'   => true,
             'type'       => 'Number',
         ]);
         $this->add([
-            'filters'    => [['name' => 'Zend\Filter\StringTrim']],
+            'filters'    => [['name' => 'Laminas\Filter\StringTrim']],
             'name'       => 'stored',
             'options'    => [
                 'checked_value'      => 1,

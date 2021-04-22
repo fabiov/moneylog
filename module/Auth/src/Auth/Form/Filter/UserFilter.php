@@ -1,7 +1,7 @@
 <?php
 namespace Auth\Form\Filter;
 
-use Zend\InputFilter\InputFilter;
+use Laminas\InputFilter\InputFilter;
 
 /**
  * Class UserFilter

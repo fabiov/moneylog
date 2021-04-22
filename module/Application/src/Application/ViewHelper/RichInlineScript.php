@@ -1,7 +1,7 @@
 <?php
 namespace Application\ViewHelper;
 
-use Zend\View\Helper\AbstractHelper;
+use Laminas\View\Helper\AbstractHelper;
 
 class RichInlineScript extends AbstractHelper
 {

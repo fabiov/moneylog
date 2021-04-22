@@ -13,14 +13,14 @@ class Module
     public function getAutoloaderConfig()
     {
         return [
-            'Zend\Loader\StandardAutoloader' => [
+            'Laminas\Loader\StandardAutoloader' => [
                 'namespaces' => [__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__],
             ],
         ];
     }
 
     // FOR Authorization
-    public function onBootstrap(\Zend\EventManager\EventInterface $e) // use it to attach event listeners
+    public function onBootstrap(\Laminas\EventManager\EventInterface $e) // use it to attach event listeners
     {
         $application = $e->getApplication();
         $em = $application->getEventManager();
@@ -29,17 +29,17 @@ class Module
 
     /**
      * WORKING the main engine for ACL
-     * @param \Zend\EventManager\EventInterface $e
+     * @param \Laminas\EventManager\EventInterface $e
      * @throws \Exception
      */
-    public function onRoute(\Zend\EventManager\EventInterface $e) // Event manager of the app
+    public function onRoute(\Laminas\EventManager\EventInterface $e) // Event manager of the app
     {
         $application = $e->getApplication();
         $routeMatch = $e->getRouteMatch();
         $sm = $application->getServiceManager();
 
-        /* @var $auth \Zend\Authentication\AuthenticationService */
-        $auth = $sm->get(\Zend\Authentication\AuthenticationService::class);
+        /* @var $auth \Laminas\Authentication\AuthenticationService */
+        $auth = $sm->get(\Laminas\Authentication\AuthenticationService::class);
 
         $config = $sm->get('Config');
         $acl = new Acl($config);

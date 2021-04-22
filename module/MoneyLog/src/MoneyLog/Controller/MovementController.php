@@ -9,9 +9,9 @@ use Application\Repository\AccountRepository;
 use Doctrine\ORM\EntityManager;
 use MoneyLog\Form\MoveForm;
 use MoneyLog\Form\MovementForm;
-use Zend\Http\Response;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Response;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
 class MovementController extends AbstractActionController
 {
@@ -135,7 +135,7 @@ class MovementController extends AbstractActionController
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return \Laminas\Http\Response|ViewModel
      */
     public function exportAction()
     {

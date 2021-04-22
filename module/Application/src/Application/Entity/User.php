@@ -2,9 +2,9 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterInterface;
+use Laminas\InputFilter\InputFilterAwareInterface;
+use Laminas\InputFilter\InputFilter;
+use Laminas\InputFilter\InputFilterInterface;
 
 /**
  * Class User

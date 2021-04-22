@@ -1,8 +1,8 @@
 <?php
 namespace Application\ViewHelper;
 
-use Zend\Escaper\Escaper;
-use Zend\View\Helper\AbstractHelper;
+use Laminas\Escaper\Escaper;
+use Laminas\View\Helper\AbstractHelper;
 
 class HelpTooltip extends AbstractHelper
 {

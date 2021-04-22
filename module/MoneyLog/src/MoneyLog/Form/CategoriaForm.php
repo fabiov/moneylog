@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace MoneyLog\Form;
 
-use Zend\Form\Form;
+use Laminas\Form\Form;
 
 class CategoriaForm extends Form
 {

@@ -7,9 +7,9 @@ use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use MoneyLog\Form\AccountForm;
-use Zend\Http\Response;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Response;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
 class AccountController extends AbstractActionController
 {

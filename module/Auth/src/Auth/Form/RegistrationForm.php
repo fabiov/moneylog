@@ -1,7 +1,7 @@
 <?php
 namespace Auth\Form;
 
-use Zend\Form\Form;
+use Laminas\Form\Form;
 
 class RegistrationForm extends Form
 {
@@ -56,11 +56,11 @@ class RegistrationForm extends Form
         ]);
 
 //        $this->add(array(
-//            'type' => 'Zend\Form\Element\Captcha',
+//            'type' => 'Laminas\Form\Element\Captcha',
 //            'name' => 'captcha',
 //            'options' => array(
 //                'label' => 'Please verify you are human',
-//                'captcha' => new \Zend\Captcha\ReCaptcha(array(
+//                'captcha' => new \Laminas\Captcha\ReCaptcha(array(
 //                    'pubKey'    => '6LdjpBIUAAAAAGDwoUOVWGSZSudz1U2EYWDOafD7',
 //                    'privKey'   => '6LdjpBIUAAAAANHJptlPZIB5Ty3kXKPS6tmSbc1j',
 //                )),

@@ -1,7 +1,7 @@
 <?php
 namespace MoneyLog\Form;
 
-use Zend\Form\Form;
+use Laminas\Form\Form;
 
 class MoveForm extends Form
 {
@@ -25,7 +25,7 @@ class MoveForm extends Form
         ]);
         $this->add([
             'attributes'    => ['class' => 'form-control', 'placeholder' => 'Descrizione'],
-            'filters'       => [['name' => 'Zend\Filter\StringTrim']],
+            'filters'       => [['name' => 'Laminas\Filter\StringTrim']],
             'name'          => 'description',
             'options'       => ['label' => 'Descrizione'],
             'required'      => true,

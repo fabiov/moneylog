@@ -1,7 +1,7 @@
 <?php
 namespace MoneyLog\Form;
 
-use Zend\Form\Form;
+use Laminas\Form\Form;
 
 class AccantonatoForm extends Form
 {
@@ -32,7 +32,7 @@ class AccantonatoForm extends Form
         ]);
         $this->add([
             'attributes' => ['class' => 'form-control', 'maxlength' => 255, 'placeholder' => 'Descrizione'],
-            'filters'  => [['name' => 'Zend\Filter\StringTrim']],
+            'filters'  => [['name' => 'Laminas\Filter\StringTrim']],
             'name' => 'descrizione',
             'options' => ['label' => 'Descrizione'],
             'required' => true,

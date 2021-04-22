@@ -1,9 +1,9 @@
 <?php
 namespace Auth\Service;
 
-use Zend\Authentication\AuthenticationService;
-use Zend\Authentication\Result;
-use Zend\Session\SessionManager;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Authentication\Result;
+use Laminas\Session\SessionManager;
 
 class AuthManager
 {
@@ -68,7 +68,7 @@ class AuthManager
             $this->userData->setSettings($identity->setting);
 
             // following code generate an exception
-            // Zend\Session\Exception\InvalidArgumentException
+            // Laminas\Session\Exception\InvalidArgumentException
             // 'session.cookie_lifetime' is not a valid sessions-related ini setting.
 //            if ($rememberMe) {
 //                // Session cookie will expire in 1 week.

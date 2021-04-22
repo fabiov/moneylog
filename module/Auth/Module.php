@@ -4,13 +4,13 @@ namespace Auth;
 // Add this for Table Date Gateway
 use Auth\Model\Auth;
 use Auth\Model\UserTable;
-use Zend\Db\ResultSet\ResultSet;
-use Zend\Db\TableGateway\TableGateway;
+use Laminas\Db\ResultSet\ResultSet;
+use Laminas\Db\TableGateway\TableGateway;
 
 // Add this for SMTP transport
-use Zend\ServiceManager\ServiceManager;
-use Zend\Mail\Transport\Smtp;
-use Zend\Mail\Transport\SmtpOptions;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Mail\Transport\Smtp;
+use Laminas\Mail\Transport\SmtpOptions;
 
 class Module
 {
@@ -23,7 +23,7 @@ class Module
     public function getAutoloaderConfig()
     {
         return array(
-            'Zend\Loader\StandardAutoloader' => array(
+            'Laminas\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
@@ -42,7 +42,7 @@ class Module
                     return $table;
                 },
                 'UserTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $dbAdapter = $sm->get('Laminas\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Auth()); // Notice what is set here
                     return new TableGateway('User', $dbAdapter, null, $resultSetPrototype);

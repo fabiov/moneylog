@@ -3,7 +3,7 @@ namespace MoneyLog\Form;
 
 use Application\Entity\Movement;
 use Doctrine\ORM\EntityManager;
-use Zend\Form\Form;
+use Laminas\Form\Form;
 
 class MovementForm extends Form
 {
@@ -39,7 +39,7 @@ class MovementForm extends Form
                 'value_options'             => ['-1' => 'Uscita', '1' => 'Entrata'],
             ],
             'required' => true,
-            'type'     => \Zend\Form\Element\Select::class,
+            'type'     => \Laminas\Form\Element\Select::class,
         ]);
         $this->add([
             'attributes'    => ['class' => 'form-control', 'value' => date('Y-m-d')],
@@ -57,7 +57,7 @@ class MovementForm extends Form
         ]);
         $this->add([
             'attributes'    => ['class' => 'form-control', 'placeholder' => 'Descrizione'],
-            'filters'       => [['name' => 'Zend\Filter\StringTrim']],
+            'filters'       => [['name' => 'Laminas\Filter\StringTrim']],
             'name'          => 'description',
             'options'       => ['label' => 'Descrizione'],
             'required'      => true,

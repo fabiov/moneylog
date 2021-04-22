@@ -1,8 +1,8 @@
 <?php
 namespace MoneyLog\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
-use Zend\Escaper\Escaper;
+use Laminas\View\Helper\AbstractHelper;
+use Laminas\Escaper\Escaper;
 
 class WidgetSelect extends AbstractHelper
 {

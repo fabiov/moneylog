@@ -2,8 +2,8 @@
 namespace Auth\Service;
 
 use Application\Entity\User;
-use Zend\Authentication\Adapter\AdapterInterface;
-use Zend\Authentication\Result;
+use Laminas\Authentication\Adapter\AdapterInterface;
+use Laminas\Authentication\Result;
 
 /**
  * Adapter used for authenticating user. It takes login and password on input
