@@ -1,12 +1,12 @@
 <?php
 
-namespace ApplicationTest\Controller;
+namespace AuthTest\Controller;
 
 use Laminas\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class RegistrationControllerTest extends AbstractHttpControllerTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->setApplicationConfig(include __DIR__ . '/../../../../config/application.config.php');
         parent::setUp();
