@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit colors="true">
     <testsuites>
-        <testsuite name="MoneyLog Test Suite">
+        <testsuite name="Application">
             <directory>./module/Application/test</directory>
         </testsuite>
         <testsuite name="Auth">
