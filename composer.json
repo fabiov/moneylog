@@ -3,8 +3,7 @@
     "description": "MoneyLog",
     "license": "BSD-3-Clause",
     "keywords": [
-        "framework",
-        "zf"
+        "framework"
     ],
     "homepage": "http://moneylog.it",
     "require": {
@@ -66,7 +65,6 @@
         "laminas/laminas-stdlib": "^3.0.1",
         "laminas/laminas-stratigility": "^1.2.1",
         "laminas/laminas-tag": "^2.6.1",
-        "laminas/laminas-test": "^3.0.1",
         "laminas/laminas-text": "^2.6",
         "laminas/laminas-uri": "^2.5.2",
         "laminas/laminas-validator": "^2.8",
