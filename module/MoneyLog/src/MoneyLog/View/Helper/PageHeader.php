@@ -1,8 +1,8 @@
 <?php
 namespace MoneyLog\View\Helper;
 
-// use \Zend\I18n\View\Helper\DateFormat;
-use Zend\View\Helper\AbstractHelper;
+// use \Laminas\I18n\View\Helper\DateFormat;
+use Laminas\View\Helper\AbstractHelper;
 
 class PageHeader extends AbstractHelper
 {

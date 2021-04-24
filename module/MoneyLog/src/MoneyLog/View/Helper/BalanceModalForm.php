@@ -1,7 +1,7 @@
 <?php
 namespace MoneyLog\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
+use Laminas\View\Helper\AbstractHelper;
 
 /**
  * Class BalanceModalForm

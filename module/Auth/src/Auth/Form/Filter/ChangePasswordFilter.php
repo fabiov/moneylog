@@ -1,8 +1,8 @@
 <?php
 namespace Auth\Form\Filter;
 
-use Zend\InputFilter\InputFilter;
-use Zend\Validator\Regex;
+use Laminas\InputFilter\InputFilter;
+use Laminas\Validator\Regex;
 
 /**
  * Class ChangePasswordFilter

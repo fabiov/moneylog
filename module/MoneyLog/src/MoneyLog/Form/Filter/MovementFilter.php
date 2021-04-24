@@ -1,7 +1,7 @@
 <?php
 namespace MoneyLog\Form\Filter;
 
-use Zend\InputFilter\InputFilter;
+use Laminas\InputFilter\InputFilter;
 
 class MovementFilter extends InputFilter
 {

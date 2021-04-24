@@ -17,7 +17,7 @@ return [
     'router' => [
         'routes' => [
             'home' => [
-                'type' => 'Zend\Router\Http\Literal',
+                'type' => 'Laminas\Router\Http\Literal',
                 'options' => [
                     'route'    => '/',
                     'defaults' => ['controller' => Auth\Controller\UserController::class, 'action' => 'login'],
@@ -61,8 +61,8 @@ return [
     ],
     'service_manager' => [
         'abstract_factories' => [
-            'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
-            'Zend\Log\LoggerAbstractServiceFactory',
+            'Laminas\Cache\Service\StorageCacheAbstractServiceFactory',
+            'Laminas\Log\LoggerAbstractServiceFactory',
         ],
         'aliases' => [
             'translator' => 'MvcTranslator',

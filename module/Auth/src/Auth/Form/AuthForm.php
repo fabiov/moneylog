@@ -1,7 +1,7 @@
 <?php
 namespace Auth\Form;
 
-use Zend\Form\Form;
+use Laminas\Form\Form;
 
 class AuthForm extends Form
 {

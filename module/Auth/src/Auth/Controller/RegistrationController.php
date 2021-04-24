@@ -11,10 +11,10 @@ use Auth\Form\Filter\RegistrationFilter;
 use Auth\Form\RegistrationForm;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
-use Zend\Mail\Message;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\ServiceManager\ServiceManager;
-use Zend\View\Model\ViewModel;
+use Laminas\Mail\Message;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\View\Model\ViewModel;
 
 class RegistrationController extends AbstractActionController
 {

@@ -1,7 +1,7 @@
 <?php
 namespace Auth\Model;
 
-use Zend\Db\TableGateway\TableGateway;
+use Laminas\Db\TableGateway\TableGateway;
 
 class UserTable
 {
@@ -41,7 +41,7 @@ class UserTable
 
     public function saveUser(Auth $auth)
     {
-        // for Zend\Db\TableGateway\TableGateway we need the data in array not object
+        // for Laminas\Db\TableGateway\TableGateway we need the data in array not object
         $data = [
             'email'             => $auth->email,
             'name'              => $auth->name,

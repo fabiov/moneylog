@@ -4,29 +4,11 @@ return [
     'modules' => [
         'Authorize',
         'MoneyLog',
-        'Zend\I18n',
-//        'Zend\Db',
-//        'Zend\Log',
-//        'Zend\Mail',
-//        'Zend\Mvc\Console',
-//        'Zend\Mvc\I18n',
-//        'Zend\Mvc\Plugin\Prg',
-//        'Zend\Navigation',
-//        'Zend\Serializer',
-//        'Zend\ServiceManager\Di',
-//        'Zend\Mvc\Plugin\Identity',
-        'Zend\Mvc\Plugin\FlashMessenger',
-//        'Zend\Mvc\Plugin\FilePrg',
-        'Zend\Session',
-//        'Zend\Cache',
-        'Zend\Form',
-//        'Zend\InputFilter',
-//        'Zend\Filter',
-//        'Zend\Paginator',
-//        'Zend\Hydrator',
-        'Zend\Router',
-//        'Zend\Validator',
-//        'Album',
+        'Laminas\I18n',
+        'Laminas\Mvc\Plugin\FlashMessenger',
+        'Laminas\Session',
+        'Laminas\Form',
+        'Laminas\Router',
         'Application',
         'Auth',
         'DoctrineModule',
@@ -87,6 +69,6 @@ return [
     // )
 
    // Initial configuration with which to seed the ServiceManager.
-   // Should be compatible with Zend\ServiceManager\Config.
+   // Should be compatible with Laminas\ServiceManager\Config.
    // 'service_manager' => array(),
 ];

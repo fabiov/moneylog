@@ -2,10 +2,10 @@
 namespace Auth\Service\Factory;
 
 use Interop\Container\ContainerInterface;
-use Zend\Authentication\AuthenticationService;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\Session\SessionManager;
-use Zend\Authentication\Storage\Session as SessionStorage;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Session\SessionManager;
+use Laminas\Authentication\Storage\Session as SessionStorage;
 use Auth\Service\AuthAdapter;
 
 /**
@@ -14,7 +14,7 @@ use Auth\Service\AuthAdapter;
 class AuthenticationServiceFactory implements FactoryInterface
 {
     /**
-     * This method creates the Zend\Authentication\AuthenticationService service and returns its instance.
+     * This method creates the Laminas\Authentication\AuthenticationService service and returns its instance.
      *
      * @param ContainerInterface $container
      * @param string $requestedName

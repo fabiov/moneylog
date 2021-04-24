@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Auth\Form;
 
-use Zend\Form\Form;
+use Laminas\Form\Form;
 
 /**
  * ATTENZIONE: filtri e forn devono avere esattamente gli stessi campi

@@ -9,7 +9,7 @@
 namespace Auth\Service;
 
 use Application\Entity\Setting;
-use Zend\Session\Container;
+use Laminas\Session\Container;
 
 /**
  * Class UserData

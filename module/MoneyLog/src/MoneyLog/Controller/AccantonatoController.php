@@ -4,8 +4,8 @@ namespace MoneyLog\Controller;
 use Application\Entity\Aside;
 use Doctrine\ORM\EntityManager;
 use MoneyLog\Form\AccantonatoForm;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
 class AccantonatoController extends AbstractActionController
 {

@@ -10,10 +10,10 @@ use Auth\Form\UserForm;
 use Auth\Model\Auth;
 use Auth\Service\AuthManager;
 use Doctrine\ORM;
-use Zend\Authentication\Result;
-use Zend\Http\Response;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Authentication\Result;
+use Laminas\Http\Response;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
 class UserController extends AbstractActionController
 {

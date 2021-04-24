@@ -1,9 +1,9 @@
 <?php
 namespace Authorize\Acl;
 
-use Zend\Permissions\Acl\Acl as ZendAcl;
-use Zend\Permissions\Acl\Role\GenericRole as Role;
-use Zend\Permissions\Acl\Resource\GenericResource as Resource;
+use Laminas\Permissions\Acl\Acl as LaminasAcl;
+use Laminas\Permissions\Acl\Role\GenericRole as Role;
+use Laminas\Permissions\Acl\Resource\GenericResource as Resource;
 
 /**
  * Class Acl to handle Access Control List, loading ACL defined in a config
@@ -14,7 +14,7 @@ use Zend\Permissions\Acl\Resource\GenericResource as Resource;
  * @license http://binware.org/license/index/type:new-bsd New BSD License
  * @see http://p0l0.binware.org/index.php/2012/02/18/zend-framework-2-authentication-acl-using-eventmanager/
  */
-class Acl extends ZendAcl
+class Acl extends LaminasAcl
 {
 
     /**

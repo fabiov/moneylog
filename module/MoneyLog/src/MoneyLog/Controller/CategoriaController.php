@@ -5,8 +5,8 @@ use Application\Entity\Aside;
 use Application\Entity\Category;
 use Doctrine\ORM\EntityManager;
 use MoneyLog\Form\CategoriaForm;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
 class CategoriaController extends AbstractActionController
 {

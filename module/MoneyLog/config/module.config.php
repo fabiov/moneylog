@@ -6,45 +6,45 @@ return [
     'controllers' => [
         'factories' => [
             MoneyLog\Controller\RecapController::class => function ($controllerManager) {
-                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\RecapController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
-                    $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity()
+                    $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity()
                 );
             },
             MoneyLog\Controller\SettingsController::class => function ($controllerManager) {
-                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\SettingsController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
-                    $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('user_data')
                 );
             },
             MoneyLog\Controller\AccountController::class => function ($controllerManager) {
-                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\AccountController(
-                    $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
             MoneyLog\Controller\AccantonatoController::class => function ($controllerManager) {
-                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\AccantonatoController(
-                    $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
             MoneyLog\Controller\CategoriaController::class => function ($controllerManager) {
-                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\CategoriaController(
-                    $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
             MoneyLog\Controller\MovementController::class => function ($controllerManager) {
-                /* @var Zend\Mvc\Controller\ControllerManager $controllerManager */
+                /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\MovementController(
-                    $controllerManager->get('Zend\Authentication\AuthenticationService')->getIdentity(),
+                    $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },

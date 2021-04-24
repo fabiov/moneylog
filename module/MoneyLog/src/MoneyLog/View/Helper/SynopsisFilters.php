@@ -1,8 +1,7 @@
 <?php
 namespace MoneyLog\View\Helper;
 
-use Zend\Debug\Debug;
-use Zend\View\Helper\AbstractHelper;
+use Laminas\View\Helper\AbstractHelper;
 
 /**
  * Class SynopsisFilters

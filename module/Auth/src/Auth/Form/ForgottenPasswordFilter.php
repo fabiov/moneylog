@@ -1,7 +1,7 @@
 <?php
 namespace Auth\Form;
 
-use Zend\InputFilter\InputFilter;
+use Laminas\InputFilter\InputFilter;
 
 class ForgottenPasswordFilter extends InputFilter
 {
@@ -13,9 +13,9 @@ class ForgottenPasswordFilter extends InputFilter
             'validators'    => [
                 ['name' => 'EmailAddress'],
                 [
-                    'name'      => 'Zend\Validator\Db\RecordExists',
+                    'name'      => 'Laminas\Validator\Db\RecordExists',
                     'options'   => [
-                        'adapter' => $sm->get('Zend\Db\Adapter\Adapter'), 'field' => 'email', 'table' => 'user'
+                        'adapter' => $sm->get('Laminas\Db\Adapter\Adapter'), 'field' => 'email', 'table' => 'user'
                     ],
                 ],
             ],

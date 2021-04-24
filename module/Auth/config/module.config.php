@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-use Zend\Authentication\AuthenticationService;
+use Laminas\Authentication\AuthenticationService;
 
 return [
     'controllers' => [
         'factories' => [
-            Auth\Controller\UserController::class => function (Zend\ServiceManager\ServiceManager $controllerManager) {
+            Auth\Controller\UserController::class => function (Laminas\ServiceManager\ServiceManager $controllerManager) {
                 return new Auth\Controller\UserController(
                     $controllerManager->get(AuthenticationService::class)->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager->get(Auth\Service\AuthManager::class)
                 );
             },
-            Auth\Controller\RegistrationController::class => function (Zend\ServiceManager\ServiceManager $controllerManager) {
+            Auth\Controller\RegistrationController::class => function (Laminas\ServiceManager\ServiceManager $controllerManager) {
                 return new Auth\Controller\RegistrationController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager
@@ -52,7 +52,7 @@ return [
             Auth\Service\AuthManager::class => function (Interop\Container\ContainerInterface $container) {
                 return new Auth\Service\AuthManager(
                     $container->get(AuthenticationService::class),
-                    $container->get(Zend\Session\SessionManager::class),
+                    $container->get(Laminas\Session\SessionManager::class),
                     $container->get(Auth\Service\UserData::class)
                 );
             },

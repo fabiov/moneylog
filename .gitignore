@@ -2,6 +2,7 @@
 .idea
 .notes
 .php_cs.cache
+.phpunit.result.cache
 .vagrant
 composer
 config/autoload/local.php

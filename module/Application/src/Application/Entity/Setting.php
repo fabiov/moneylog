@@ -2,10 +2,10 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
+use Laminas\InputFilter\InputFilter;
+use Laminas\InputFilter\Factory as InputFactory;
+use Laminas\InputFilter\InputFilterAwareInterface;
+use Laminas\InputFilter\InputFilterInterface;
 
 /**
  * Setting.
@@ -135,17 +135,17 @@ class Setting implements InputFilterAwareInterface
         if (!$this->inputFilter) {
             $this->inputFilter = new InputFilter();
             $this->inputFilter->add(array(
-                'filters'  => [['name' => 'Zend\Filter\ToInt']],
+                'filters'  => [['name' => 'Laminas\Filter\ToInt']],
                 'name'     => 'payDay',
                 'required' => true,
             ));
             $this->inputFilter->add(array(
-                'filters'  => [['name' => 'Zend\Filter\ToInt']],
+                'filters'  => [['name' => 'Laminas\Filter\ToInt']],
                 'name'     => 'monthsRetrospective',
                 'required' => true,
             ));
             $this->inputFilter->add(array(
-                'filters'  => [['name' => 'Zend\Filter\ToInt']],
+                'filters'  => [['name' => 'Laminas\Filter\ToInt']],
                 'name'     => 'stored',
                 'required' => true,
             ));
