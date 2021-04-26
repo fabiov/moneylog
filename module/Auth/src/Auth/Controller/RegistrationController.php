@@ -10,7 +10,6 @@ use Auth\Form\ForgottenPasswordForm;
 use Auth\Form\Filter\RegistrationFilter;
 use Auth\Form\RegistrationForm;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\OptimisticLockException;
 use Laminas\Mail\Message;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\ServiceManager\ServiceManager;
@@ -35,7 +34,9 @@ class RegistrationController extends AbstractActionController
     }
 
     /**
-     * @throws OptimisticLockException
+     * @return \Laminas\Http\Response|\Laminas\View\Model\ViewModel
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function indexAction()
     {
@@ -57,7 +58,7 @@ class RegistrationController extends AbstractActionController
                 $this->em->persist($user);
                 $this->em->flush();
                 $this->sendConfirmationEmail($user);
-                $this->flashMessenger()->addMessage($user->email); // @phpstan-ignore-line
+                $this->flashMessenger()->addMessage($user->email);
 
                 return $this->redirect()->toRoute('auth_registration', ['action' => 'registration-success']);
             }
@@ -69,7 +70,7 @@ class RegistrationController extends AbstractActionController
     public function registrationSuccessAction(): ViewModel
     {
         $usr_email = null;
-        $flashMessenger = $this->flashMessenger(); // @phpstan-ignore-line
+        $flashMessenger = $this->flashMessenger();
         if ($flashMessenger->hasMessages()) {
             foreach($flashMessenger->getMessages() as $key => $value) {
                 $usr_email .=  $value;
@@ -80,7 +81,9 @@ class RegistrationController extends AbstractActionController
     }
 
     /**
-     * @throws OptimisticLockException
+     * @return \Laminas\View\Model\ViewModel
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function confirmEmailAction(): ViewModel
     {
@@ -108,7 +111,9 @@ class RegistrationController extends AbstractActionController
     }
 
     /**
-     * @throws OptimisticLockException
+     * @return \Laminas\Http\Response|\Laminas\View\Model\ViewModel
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function forgottenPasswordAction()
     {
@@ -131,7 +136,7 @@ class RegistrationController extends AbstractActionController
                 $this->em->flush();
 
                 $this->sendPasswordByEmail($data['email'], $password);
-                $this->flashMessenger()->addMessage($data['email']); // @phpstan-ignore-line
+                $this->flashMessenger()->addMessage($data['email']);
                 return $this->redirect()->toRoute('auth_registration', ['action' => 'password-change-success']);
             }
         }
@@ -142,7 +147,7 @@ class RegistrationController extends AbstractActionController
     public function passwordChangeSuccessAction(): ViewModel
     {
         $usr_email = null;
-        $flashMessenger = $this->flashMessenger(); // @phpstan-ignore-line
+        $flashMessenger = $this->flashMessenger();
         if ($flashMessenger->hasMessages()) {
             foreach($flashMessenger->getMessages() as $value) {
                 $usr_email .=  $value;

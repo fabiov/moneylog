@@ -5,7 +5,7 @@ use Laminas\InputFilter\Factory as InputFactory;
 use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
-// the object will be hydrated by Laminas\Db\TableGateway\TableGateway
+
 class Auth implements InputFilterAwareInterface
 {
     public $id;
@@ -19,32 +19,27 @@ class Auth implements InputFilterAwareInterface
 
     protected $inputFilter;
 
-    /**
-     * Hydration
-     * ArrayObject, or at least implement exchangeArray. For Laminas\Db\ResultSet\ResultSet to work
-     *
-     * @param array $data
-     */
     public function exchangeArray(array $data)
     {
-        $this->id                = isset($data['id'])                ? $data['id']                : null;
-        $this->email             = isset($data['email'])             ? $data['email']             : null;
-        $this->name              = isset($data['name'])              ? $data['name']              : null;
-        $this->password          = isset($data['password'])          ? $data['password']          : null;
-        $this->salt              = isset($data['salt'])              ? $data['salt']              : null;
-        $this->status            = isset($data['status'])            ? $data['status']            : null;
-        $this->role              = isset($data['role'])              ? $data['role']              : null;
-        $this->registrationToken = isset($data['registrationToken']) ? $data['registrationToken'] : null;
+        $this->id                = $data['id'] ?? null;
+        $this->email             = $data['email'] ?? null;
+        $this->name              = $data['name'] ?? null;
+        $this->password          = $data['password'] ?? null;
+        $this->salt              = $data['salt'] ?? null;
+        $this->status            = $data['status'] ?? null;
+        $this->role              = $data['role'] ?? null;
+        $this->registrationToken = $data['registrationToken'] ?? null;
     }
 
-	// Extraction. The Registration from the tutorial works even without it.
-	// The standard Hydrator of the Form expects getArrayCopy to be able to bind
-    public function getArrayCopy()
+	public function getArrayCopy(): array
     {
         return get_object_vars($this);
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception("Not used");
@@ -56,48 +51,39 @@ class Auth implements InputFilterAwareInterface
             $inputFilter = new InputFilter();
             $factory     = new InputFactory();
 
-            $inputFilter->add($factory->createInput(array(
+            $inputFilter->add($factory->createInput([
                 'name'     => 'email',
                 'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
+                'filters'  => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
                         'name'    => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
-                        ),
-                    ),
-                ),
-            )));
+                        'options' => ['encoding' => 'UTF-8', 'max' => 100, 'min' => 1],
+                    ],
+                ],
+            ]));
 
-            $inputFilter->add($factory->createInput(array(
+            $inputFilter->add($factory->createInput([
                 'name'     => 'password',
                 'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
+                'filters'  => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
                         'name'    => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
-                        ),
-                    ),
-                ),
-            )));
+                        'options' => ['encoding' => 'UTF-8', 'max' => 100, 'min' => 1],
+                    ],
+                ],
+            ]));
 
             $this->inputFilter = $inputFilter;
         }
 
         return $this->inputFilter;
     }
-
 }
