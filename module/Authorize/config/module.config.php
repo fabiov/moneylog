@@ -7,6 +7,17 @@ return [
         ],
         'resources' => [
             'allow' => [
+                Application\Controller\PageController::class => [
+                    'offline' => 'guest',
+                    'privacy-policy' => 'guest',
+                ],
+                Auth\Controller\RegistrationController::class => [
+                    'confirm-email' => 'guest',
+                    'forgotten-password' => 'guest',
+                    'index' => 'guest',
+                    'password-change-success' => 'guest',
+                    'registration-success' => 'guest',
+                ],
                 MoneyLog\Controller\RecapController::class => [
                     'add'   => 'user',
                     'edit'  => 'user',
@@ -50,13 +61,6 @@ return [
                     'login'           => 'guest',
                     'logout'          => 'guest',
                     'update'          => 'user',
-                ],
-                Auth\Controller\RegistrationController::class => [
-                    'confirm-email'             => 'guest',
-                    'forgotten-password'        => 'guest',
-                    'index'                     => 'guest',
-                    'password-change-success'   => 'guest',
-                    'registration-success'      => 'guest',
                 ],
             ],
         ],

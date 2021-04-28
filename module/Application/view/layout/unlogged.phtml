@@ -10,6 +10,7 @@
         echo $this->headTitle('MoneyLog')->setSeparator('|')->setAutoEscape(false);
         echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/wallet_32x28.png'));
         ?>
+        <link rel="manifest" href="/manifest.json">
         <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" /><!-- Bootstrap Core CSS -->
         <link href="/vendor/metisMenu/metisMenu.min.css" rel="stylesheet" /><!-- MetisMenu CSS -->
 
@@ -35,6 +36,11 @@
 
         <!-- begin google analitics code -->
         <script type="text/javascript">
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/js/service-worker.js').catch(function(error) {
+                    console.error('Service worker registration failed, error:', error);
+                });
+            }
             $(document).ready(function(){
                 $.cookieBar({
                     "acceptText": 'Conferma',
