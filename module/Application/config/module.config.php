@@ -1,70 +1,28 @@
 <?php
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
+
+declare(strict_types=1);
 
 return [
     'controllers' => [
         'invokables' => [
-            Application\Controller\IndexController::class,
             Application\Controller\PageController::class,
         ],
     ],
     'router' => [
         'routes' => [
             'home' => [
-                'type' => 'Laminas\Router\Http\Literal',
+                'type' => Laminas\Router\Http\Literal::class,
                 'options' => [
                     'route'    => '/',
                     'defaults' => ['controller' => Auth\Controller\UserController::class, 'action' => 'login'],
                 ],
             ],
-            // The following is a route to simplify getting started creating new controllers and actions without needing
-            // to create a new module.
-            // Simply drop new controllers in, and you can access them using the path /application/:controller/:action
-            'application' => [
-                'type'    => 'Literal',
+            'page' => [
+                'type' => Laminas\Router\Http\Segment::class,
                 'options' => [
-                    'route'    => '/application',
+                    'route'    => '/page[/:action]',
                     'defaults' => [
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Index',
-                        'action'        => 'index',
-                    ],
-                ],
-                'may_terminate' => true,
-                'child_routes' => [
-                    'default' => [
-                        'type'    => 'Segment',
-                        'options' => [
-                            'defaults'    => [],
-                            'constraints' => [
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*', 'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
-                            ],
-                            'route'       => '/[:controller[/:action]]',
-                        ],
-                    ],
-                ],
-            ],
-            'privacy_policy' => [
-                'type' => Laminas\Router\Http\Literal::class,
-                'options' => [
-                    'route'    => '/privacy-policy',
-                    'defaults' => [
-                        'controller' => Application\Controller\PageController::class, 'action' => 'privacy-policy'
-                    ],
-                ],
-            ],
-            'offline' => [
-                'type' => Laminas\Router\Http\Literal::class,
-                'options' => [
-                    'route'    => '/offline',
-                    'defaults' => [
-                        'controller' => Application\Controller\PageController::class, 'action' => 'offline'
+                        'controller' => Application\Controller\PageController::class
                     ],
                 ],
             ],
@@ -97,7 +55,6 @@ return [
         'exception_template'       => 'error/index',
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ],
@@ -128,10 +85,10 @@ return [
     ],
     'view_helpers' => [
         'invokables' => [
-            'helpTooltip'      => 'Application\ViewHelper\HelpTooltip',
-            'richInlineScript' => 'Application\ViewHelper\RichInlineScript',
-            'sbaFormRow'       => 'Application\ViewHelper\SbaFormRow',
-            'userData'         => 'Application\ViewHelper\UserData',
+            'helpTooltip' => Application\ViewHelper\HelpTooltip::class,
+            'richInlineScript' => Application\ViewHelper\RichInlineScript::class,
+            'sbaFormRow' => Application\ViewHelper\SbaFormRow::class,
+            'userData' => Application\ViewHelper\UserData::class,
         ],
     ],
 ];
