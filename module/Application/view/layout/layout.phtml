@@ -66,6 +66,11 @@
         <script src="/js/modernizr-custom.js" type="text/javascript"></script>
         <!-- begin google analitics code -->
         <script type="text/javascript">
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/js/service-worker.js').catch(function(error) {
+                    console.error('Service worker registration failed, error:', error);
+                });
+            }
             $(document).ready(function(){
                 $.cookieBar({
                     "acceptText": 'Conferma',
