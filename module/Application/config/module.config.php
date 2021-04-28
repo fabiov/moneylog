@@ -10,8 +10,8 @@
 return [
     'controllers' => [
         'invokables' => [
-            'Application\Controller\Index' => 'Application\Controller\IndexController',
-            'Application\Controller\Page'  => 'Application\Controller\PageController',
+            Application\Controller\IndexController::class,
+            Application\Controller\PageController::class,
         ],
     ],
     'router' => [
@@ -51,10 +51,21 @@ return [
                 ],
             ],
             'privacy_policy' => [
-                'type' => 'Literal',
+                'type' => Laminas\Router\Http\Literal::class,
                 'options' => [
                     'route'    => '/privacy-policy',
-                    'defaults' => ['controller' => 'Application\Controller\Page', 'action' => 'privacyPolicy'],
+                    'defaults' => [
+                        'controller' => Application\Controller\PageController::class, 'action' => 'privacy-policy'
+                    ],
+                ],
+            ],
+            'offline' => [
+                'type' => Laminas\Router\Http\Literal::class,
+                'options' => [
+                    'route'    => '/offline',
+                    'defaults' => [
+                        'controller' => Application\Controller\PageController::class, 'action' => 'offline'
+                    ],
                 ],
             ],
         ],

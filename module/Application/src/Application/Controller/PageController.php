@@ -10,10 +10,12 @@ use Laminas\View\Model\ViewModel;
  */
 class PageController extends AbstractActionController
 {
-    /**
-     * @return ViewModel
-     */
-    public function privacyPolicyAction()
+    public function offlineAction(): ViewModel
+    {
+        return new ViewModel();
+    }
+
+    public function privacyPolicyAction(): ViewModel
     {
         return new ViewModel();
     }
