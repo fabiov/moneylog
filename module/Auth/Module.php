@@ -1,7 +1,6 @@
 <?php
 namespace Auth; 
 
-use Auth\Model\UserTable;
 use Laminas\Mail\Transport\Smtp;
 use Laminas\Mail\Transport\SmtpOptions;
 use Laminas\ServiceManager\ServiceManager;

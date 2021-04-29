@@ -27,9 +27,8 @@ mysql -h localhost -P 3306 -u dbuser -pdbpass --protocol=tcp moneylog
 
 ## Code Style
 ```shell
-$ php-cs-fixer fix --rules='{"array_syntax": {"syntax": "short"}, "ordered_imports": true}' module/Authorize/config/module.config.php
+$ php-cs-fixer fix --rules='{"array_syntax": {"syntax": "short"}, "ordered_imports": true}' <file>
 ```
-
 
 ## PHP Stan
 ```shell
