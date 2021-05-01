@@ -143,7 +143,7 @@ class UserController extends AbstractActionController
 
         $form     = new ChangePasswordForm();
         $error    = false;
-        $messages = $this->flashMessenger()->getMessages(); // @phpstan-ignore-line
+        $messages = $this->flashMessenger()->getMessages();
         $message  = $messages ? $messages[0] : '';
         $request  = $this->getRequest();
 
@@ -160,7 +160,6 @@ class UserController extends AbstractActionController
                     $this->em->persist($user);
                     $this->em->flush();
 
-                    // @phpstan-ignore-next-line
                     $this->flashMessenger()->addMessage('La password è stata aggiornata con successo');
                     return $this->redirect()->toRoute('auth', ['action' => 'change-password']);
                 } else {

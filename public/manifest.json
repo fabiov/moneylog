@@ -1,0 +1,31 @@
+{
+  "short_name": "MoneyLog",
+  "name": "MoneyLog: diario delle spese",
+  "icons": [
+    {
+      "src": "/img/wallet-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/img/wallet-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/dashboard",
+  "background_color": "#ffffff",
+  "display": "fullscreen",
+  "scope": "/",
+  "theme_color": "#e7e7e7",
+  "shortcuts": [
+  ],
+  "description": "MoneyLog: tieni traccia delle tue spese.",
+  "screenshots": [
+    {
+      "src": "/img/screenshot/dashboard-404x808.png",
+      "type": "image/png",
+      "sizes": "404x808"
+    }
+  ]
+}

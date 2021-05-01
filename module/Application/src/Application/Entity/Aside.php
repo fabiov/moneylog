@@ -3,13 +3,10 @@ namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\Factory as InputFactory;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
 
 /**
- * Setting.
- *
  * @ORM\Entity(repositoryClass="Application\Repository\AsideRepository")
  * @ORM\Table(name="aside")
  * @property int $id
@@ -56,7 +53,7 @@ class Aside implements InputFilterAwareInterface
      * @param string $property
      * @return mixed
      */
-    public function __get($property)
+    public function __get(string $property)
     {
         return $this->$property;
     }
@@ -67,28 +64,20 @@ class Aside implements InputFilterAwareInterface
      * @param string $property
      * @param mixed $value
      */
-    public function __set($property, $value)
+    public function __set(string $property, $value)
     {
         $this->$property = $value;
     }
 
-    /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
-    public function getArrayCopy()
+    public function getArrayCopy(): array
     {
         return get_object_vars($this);
     }
 
     /**
-     * Populate from an array.
-     *
-     * @param array $data
-     * @return Setting
+     * @throws \Exception
      */
-    public function exchangeArray($data = array())
+    public function exchangeArray($data = []): void
     {
         if (isset($data['id'])) {
             $this->id = $data['id'];
@@ -96,49 +85,43 @@ class Aside implements InputFilterAwareInterface
         if (isset($data['userId'])) {
             $this->userId = $data['userId'];
         }
-        $this->valuta      = isset($data['valuta'])      ? new \DateTime($data['valuta']) : null;
-        $this->importo     = isset($data['importo'])     ? $data['importo']               : null;
-        $this->descrizione = isset($data['descrizione']) ? $data['descrizione']           : null;
+        $this->valuta = isset($data['valuta']) ? new \DateTime($data['valuta']) : null;
+        $this->importo = $data['importo'] ?? null;
+        $this->descrizione = $data['descrizione'] ?? null;
     }
 
     /**
-     * Set input filter
-     *
-     * @param  InputFilterInterface $inputFilter
-     * @return InputFilterAwareInterface
+     * @param \Laminas\InputFilter\InputFilterInterface $inputFilter
+     * @throws \Exception
      */
-    public function setInputFilter(InputFilterInterface $inputFilter)
+    public function setInputFilter(InputFilterInterface $inputFilter): void
     {
-        throw new \Exception("Not used");
+        throw new \Exception('Not used');
     }
 
-    /**
-     * @return InputFilter
-     */
-    public function getInputFilter()
+    public function getInputFilter(): InputFilter
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
-            $inputFilter->add(array(
+            $inputFilter->add([
                 'name' => 'valuta',
                 'required' => true,
-                'filters' => array(array('name' => 'Laminas\Filter\StringTrim')),
-            ));
-            $inputFilter->add(array(
+                'filters' => [['name' => \Laminas\Filter\StringTrim::class]],
+            ]);
+            $inputFilter->add([
                 'name' => 'importo',
                 'required' => true,
-                'filters' => array(array('name' => 'Laminas\Filter\StringTrim')),
-            ));
-            $inputFilter->add(array(
+                'filters' => [['name' => \Laminas\Filter\StringTrim::class]],
+            ]);
+            $inputFilter->add([
                 'name' => 'descrizione',
                 'required' => true,
-                'filters' => array(array('name' => 'Laminas\Filter\StringTrim')),
-            ));
+                'filters' => [['name' => \Laminas\Filter\StringTrim::class]],
+            ]);
 
             $this->inputFilter = $inputFilter;
         }
         return $this->inputFilter;
     }
-
 }
