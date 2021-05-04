@@ -30,7 +30,7 @@ RUN a2enmod info
 
 RUN service apache2 restart
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.21
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # mom funzion perché non trova ancora la direvtory /var/www/moneylog
 #RUN composer install --working-dir=/var/www/html

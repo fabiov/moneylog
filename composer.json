@@ -11,7 +11,7 @@
         "php": ">=7.2",
         "doctrine/doctrine-orm-module": "^1.0",
         "doctrine/migrations": "^1.5",
-        "laminas/laminas-dependency-plugin": "^1.0",
+        "laminas/laminas-dependency-plugin": "^2.0",
         "laminas/laminas-authentication": "^2.5.3",
         "laminas/laminas-barcode": "^2.6",
         "laminas/laminas-cache": "^2.7.1",
@@ -73,7 +73,7 @@
         "laminas/laminas-xmlrpc": "^2.6"
     },
     "require-dev": {
-        "laminas/laminas-component-installer": "^1.1",
+        "laminas/laminas-component-installer": "^2.3",
         "laminas/laminas-test": "^3.3",
         "phpstan/phpstan": "^0.12.83"
     },
