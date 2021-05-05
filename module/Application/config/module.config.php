@@ -85,6 +85,8 @@ return [
     ],
     'view_helpers' => [
         'invokables' => [
+            'commonJavascript' => Application\ViewHelper\CommonJavascript::class,
+            'footer' => Application\ViewHelper\Footer::class,
             'helpTooltip' => Application\ViewHelper\HelpTooltip::class,
             'richInlineScript' => Application\ViewHelper\RichInlineScript::class,
             'sbaFormRow' => Application\ViewHelper\SbaFormRow::class,
