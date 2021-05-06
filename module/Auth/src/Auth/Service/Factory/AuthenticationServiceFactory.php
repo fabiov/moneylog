@@ -14,7 +14,7 @@ class AuthenticationServiceFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): AuthenticationService
     {
-        $authStorage = new Session('Zend_Auth', 'session');
+        $authStorage = new Session('Zend_Auth');
 
         // Create the service and inject dependencies into its constructor.
         return new AuthenticationService($authStorage, $container->get(AuthAdapter::class));

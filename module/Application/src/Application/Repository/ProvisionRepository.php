@@ -1,13 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace Application\Repository;
 
-use Application\Entity\Aside;
+use Application\Entity\Provision;
 use Application\Entity\Movement;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 
-class AsideRepository extends EntityRepository
+class ProvisionRepository extends EntityRepository
 {
 
     public function getBalance($userId)
@@ -16,7 +16,7 @@ class AsideRepository extends EntityRepository
         $qb = $em
             ->createQueryBuilder()
             ->select('COALESCE(SUM(a.importo), 0) AS total')
-            ->from(Aside::class, 'a')
+            ->from(Provision::class, 'a')
             ->where('a.userId=:userId')
             ->setParameter(':userId', $userId);
 
@@ -33,7 +33,7 @@ class AsideRepository extends EntityRepository
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('a')
-            ->from(Aside::class, 'a')
+            ->from(Provision::class, 'a')
             ->where('1=1');
 
         if (!empty($params['userId'])) {
@@ -67,7 +67,7 @@ class AsideRepository extends EntityRepository
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder()
                  ->select('COALESCE(SUM(a.importo), 0) AS total')
-                 ->from(Aside::class, 'a')
+                 ->from(Provision::class, 'a')
                  ->where('a.userId=:userId')
                  ->setParameter(':userId', $userId);
 

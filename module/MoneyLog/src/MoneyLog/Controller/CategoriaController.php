@@ -1,7 +1,7 @@
 <?php
 namespace MoneyLog\Controller;
 
-use Application\Entity\Aside;
+use Application\Entity\Provision;
 use Application\Entity\Category;
 use Doctrine\ORM\EntityManager;
 use MoneyLog\Form\CategoriaForm;
@@ -97,7 +97,7 @@ class CategoriaController extends AbstractActionController
 
             $this->em->beginTransaction();
             if ($sum) {
-                $aside = new Aside();
+                $aside = new Provision();
                 $aside->userId      = $this->user->id;
                 $aside->descrizione = 'Conguaglio rimozione categoria ' . $category->getDescrizione();
                 $aside->importo     = $sum;

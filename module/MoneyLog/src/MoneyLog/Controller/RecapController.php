@@ -1,7 +1,7 @@
 <?php
 namespace MoneyLog\Controller;
 
-use Application\Entity\Aside;
+use Application\Entity\Provision;
 use Application\Entity\Account;
 use Application\Entity\Category;
 use Application\Entity\Movement;
@@ -43,7 +43,7 @@ class RecapController extends AbstractActionController
         usort($avgPerCategory, function ($a, $b) { return ($a['average'] ?? 0) <=> ($b['average'] ?? 0); });
 
         $totalExpense   = $em->getRepository(Movement::class)->getTotalExpense($this->user->id);
-        $stored         = $em->getRepository(Aside::class)->getSum($this->user->id) + $totalExpense;
+        $stored         = $em->getRepository(Provision::class)->getSum($this->user->id) + $totalExpense;
         $accounts       = $em->getRepository(Account::class)->getTotals($this->user->id, true, new \DateTime());
         $donutSpends    = [];
         $donutAccounts  = [];
