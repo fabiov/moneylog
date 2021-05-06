@@ -15,7 +15,7 @@
   ],
   "start_url": "/dashboard",
   "background_color": "#ffffff",
-  "display": "fullscreen",
+  "display": "standalone",
   "scope": "/",
   "theme_color": "#e7e7e7",
   "shortcuts": [
