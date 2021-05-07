@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace AuthTest\Controller;
 
 use Auth\Controller\RegistrationController;
+use Laminas\Http\Response;
 use Laminas\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class RegistrationControllerTest extends AbstractHttpControllerTestCase
@@ -20,7 +21,7 @@ class RegistrationControllerTest extends AbstractHttpControllerTestCase
     public function testForgottenPasswordActionCanBeAccessed(): void
     {
         $this->dispatch('/auth/registration/forgotten-password');
-        $this->assertResponseStatusCode(200);
+        $this->assertResponseStatusCode(Response::STATUS_CODE_200);
 
         $this->assertModuleName('auth');
         $this->assertControllerName(RegistrationController::class);
@@ -33,7 +34,7 @@ class RegistrationControllerTest extends AbstractHttpControllerTestCase
     public function testRegistrationActionCanBeAccessed(): void
     {
         $this->dispatch('/auth/registration/forgotten-password');
-        $this->assertResponseStatusCode(200);
+        $this->assertResponseStatusCode(Response::STATUS_CODE_200);
 
         $this->assertModuleName('auth');
         $this->assertControllerName(RegistrationController::class);
