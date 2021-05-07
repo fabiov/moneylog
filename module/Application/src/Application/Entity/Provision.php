@@ -7,15 +7,15 @@ use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
 
 /**
- * @ORM\Entity(repositoryClass="Application\Repository\AsideRepository")
- * @ORM\Table(name="aside")
+ * @ORM\Entity(repositoryClass="Application\Repository\ProvisionRepository")
+ * @ORM\Table(name="provision")
  * @property int $id
  * @property int $userid
  * @property \DateTime $valuta
  * @property float $importo
  * @property string $descrizione
  */
-class Aside implements InputFilterAwareInterface
+class Provision implements InputFilterAwareInterface
 {
 
     protected $inputFilter;
