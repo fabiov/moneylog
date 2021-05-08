@@ -82,17 +82,15 @@ class Category implements InputFilterAwareInterface
      * @param string $property
      * @param mixed $value
      */
-    public function __set($property, $value)
+    public function __set(string $property, $value)
     {
         $this->$property = $value;
     }
 
     /**
      * Convert the object to an array.
-     *
-     * @return array
      */
-    public function getArrayCopy()
+    public function getArrayCopy(): array
     {
         return get_object_vars($this);
     }
@@ -101,14 +99,13 @@ class Category implements InputFilterAwareInterface
      * Populate from an array.
      *
      * @param array $data
-     * @return Setting
      */
-    public function exchangeArray($data = [])
+    public function exchangeArray(array $data = []): void
     {
         if (isset($data['userId'])) {
             $this->userId = $data['userId'];
         }
-        $this->descrizione = isset($data['descrizione']) ? $data['descrizione'] : null;
+        $this->descrizione = $data['descrizione'] ?? null;
         $this->status      = empty($data['status']) ? 0 : 1;
     }
 

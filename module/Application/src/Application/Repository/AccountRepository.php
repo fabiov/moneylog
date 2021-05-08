@@ -8,11 +8,11 @@ use Doctrine\ORM\EntityRepository;
 class AccountRepository extends EntityRepository
 {
     /**
-     * @param $userId
-     * @param false $onlyRecap
+     * @param int $userId
+     * @param bool $onlyRecap
      * @return array<Account>
      */
-    public function getUserAccounts($userId, $onlyRecap = false)
+    public function getUserAccounts(int $userId, bool $onlyRecap = false): array
     {
         $qb = $this->createQueryBuilder('a')
             ->select('a')
@@ -33,9 +33,8 @@ class AccountRepository extends EntityRepository
      * @param \DateTime|null|string $date
      * @return array
      */
-    public function getTotals(int $userId, $onlyRecap = false, $date = null)
+    public function getTotals(int $userId, bool $onlyRecap = false, $date = null): array
     {
-        /* @var Doctrine\ORM\QueryBuilder */
         $qb = $this->getEntityManager()
                    ->createQueryBuilder()
                    ->select('a.id', 'a.name', 'a.recap', 'a.closed', 'COALESCE(SUM(m.amount), 0) AS total')

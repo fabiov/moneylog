@@ -16,6 +16,9 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\View\Model\ViewModel;
 
+/**
+ * @method \Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger flashMessenger()
+ */
 class RegistrationController extends AbstractActionController
 {
     /**
