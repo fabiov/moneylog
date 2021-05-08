@@ -4,13 +4,10 @@ namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\Factory as InputFactory;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
 
 /**
- * Setting.
- *
  * @ORM\Entity
  * @ORM\Table(name="setting")
  * @property int $userId
@@ -134,21 +131,21 @@ class Setting implements InputFilterAwareInterface
     {
         if (!$this->inputFilter) {
             $this->inputFilter = new InputFilter();
-            $this->inputFilter->add(array(
+            $this->inputFilter->add([
                 'filters'  => [['name' => 'Laminas\Filter\ToInt']],
                 'name'     => 'payDay',
                 'required' => true,
-            ));
-            $this->inputFilter->add(array(
+            ]);
+            $this->inputFilter->add([
                 'filters'  => [['name' => 'Laminas\Filter\ToInt']],
                 'name'     => 'monthsRetrospective',
                 'required' => true,
-            ));
-            $this->inputFilter->add(array(
+            ]);
+            $this->inputFilter->add([
                 'filters'  => [['name' => 'Laminas\Filter\ToInt']],
                 'name'     => 'stored',
                 'required' => true,
-            ));
+            ]);
         }
         return $this->inputFilter;
     }

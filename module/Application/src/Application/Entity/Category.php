@@ -11,9 +11,6 @@ use Laminas\InputFilter\InputFilterInterface;
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\CategoryRepository")
  * @ORM\Table(name="category")
- * @property int $id
- * @property int $userId
- * @property string $descrizione
  * @property int $status
  * @property string $created
  * @property string $updated
@@ -106,7 +103,7 @@ class Category implements InputFilterAwareInterface
      * @param array $data
      * @return Setting
      */
-    public function exchangeArray($data = array())
+    public function exchangeArray($data = [])
     {
         if (isset($data['userId'])) {
             $this->userId = $data['userId'];
@@ -133,15 +130,15 @@ class Category implements InputFilterAwareInterface
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
-            $inputFilter->add(array(
+            $inputFilter->add([
                 'name'     => 'descrizione',
                 'required' => true,
-                'filters'  => array(array('name' => 'StringTrim')),
-            ));
-            $inputFilter->add(array(
+                'filters'  => [['name' => 'StringTrim']],
+            ]);
+            $inputFilter->add([
                 'name'     => 'status',
-                'filters'  => array(array('name' => 'Int')),
-            ));
+                'filters'  => [['name' => 'Int']],
+            ]);
 
             $this->inputFilter = $inputFilter;
         }
