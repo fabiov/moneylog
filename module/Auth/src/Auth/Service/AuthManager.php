@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Service;
 
 use Laminas\Authentication\AuthenticationService;
@@ -60,7 +61,6 @@ class AuthManager
         // If user wants to "remember him", we will make session to expire in one month.
         // By default session expires in 1 hour (as specified in our config/global.php file).
         if ($result->getCode() == Result::SUCCESS && $rememberMe) {
-
             $identity = $result->getIdentity();
 
             $this->userData->setName($identity->name);

@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Model;
 
 use Laminas\InputFilter\Factory as InputFactory;
@@ -31,7 +32,7 @@ class Auth implements InputFilterAwareInterface
         $this->registrationToken = $data['registrationToken'] ?? null;
     }
 
-	public function getArrayCopy(): array
+    public function getArrayCopy(): array
     {
         return get_object_vars($this);
     }

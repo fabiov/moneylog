@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\Controller;
 
 use Application\Entity\Account;
@@ -13,7 +14,6 @@ use Laminas\View\Model\ViewModel;
 
 class AccountController extends AbstractActionController
 {
-
     /**
      * @var \stdClass
      */

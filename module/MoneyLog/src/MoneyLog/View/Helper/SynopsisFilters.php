@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;
@@ -42,7 +43,6 @@ class SynopsisFilters extends AbstractHelper
         }
 
         if ($filters['category']) {
-
             $category = '';
             foreach ($categories as $c) {
                 if ($c->id == $filters['category']) {

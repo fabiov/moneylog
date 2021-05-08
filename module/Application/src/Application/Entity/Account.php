@@ -18,7 +18,6 @@ use Laminas\InputFilter\InputFilter;
  */
 class Account implements InputFilterAwareInterface
 {
-
     protected $inputFilter;
 
     /**
@@ -134,5 +133,4 @@ class Account implements InputFilterAwareInterface
         }
         return $this->inputFilter;
     }
-
 }

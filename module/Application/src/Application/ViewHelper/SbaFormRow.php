@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\ViewHelper;
 
 use Laminas\Escaper\Escaper;
@@ -14,7 +15,6 @@ class SbaFormRow extends AbstractHelper
      */
     public function __invoke(Element $element, $help = '')
     {
-
         if ($help) {
             $escaper = new Escaper('utf-8');
 

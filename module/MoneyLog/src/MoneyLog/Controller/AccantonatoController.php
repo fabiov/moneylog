@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\Controller;
 
 use Application\Entity\Provision;
@@ -9,7 +10,6 @@ use Laminas\View\Model\ViewModel;
 
 class AccantonatoController extends AbstractActionController
 {
-
     /**
      * @var \stdClass
      */
@@ -31,7 +31,6 @@ class AccantonatoController extends AbstractActionController
         $form = new AccantonatoForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
-
             $accantonato = new Provision();
             $form->setInputFilter($accantonato->getInputFilter());
             $form->setData($request->getPost());

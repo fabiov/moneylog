@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -19,7 +20,6 @@ use Laminas\InputFilter\InputFilterInterface;
  */
 class Setting implements InputFilterAwareInterface
 {
-
     protected $inputFilter;
 
     /**
@@ -83,7 +83,7 @@ class Setting implements InputFilterAwareInterface
      */
     public function setStored($stored)
     {
-        $this->stored = (boolean) $stored;
+        $this->stored = (bool) $stored;
         return $this;
     }
 
@@ -105,8 +105,8 @@ class Setting implements InputFilterAwareInterface
      */
     public function exchangeArray(array $data)
     {
-        $this->userId              = isset($data['userId'])              ? $data['userId']              : null;
-        $this->payDay              = isset($data['payDay'])              ? $data['payDay']              : null;
+        $this->userId              = isset($data['userId']) ? $data['userId'] : null;
+        $this->payDay              = isset($data['payDay']) ? $data['payDay'] : null;
         $this->monthsRetrospective = isset($data['monthsRetrospective']) ? $data['monthsRetrospective'] : null;
 
         if (array_key_exists('stored', $data)) {

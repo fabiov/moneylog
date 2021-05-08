@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,9 +20,8 @@ use Laminas\InputFilter\InputFilterInterface;
  */
 class Category implements InputFilterAwareInterface
 {
-
-    const STATUS_INACTIVE = 0;
-    const STATUS_ACTIVE = 1;
+    public const STATUS_INACTIVE = 0;
+    public const STATUS_ACTIVE = 1;
 
     protected $inputFilter;
 
@@ -63,7 +63,8 @@ class Category implements InputFilterAwareInterface
      */
     private $movements;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->movements = new ArrayCollection();
     }
 
@@ -111,7 +112,7 @@ class Category implements InputFilterAwareInterface
             $this->userId = $data['userId'];
         }
         $this->descrizione = isset($data['descrizione']) ? $data['descrizione'] : null;
-        $this->status      = empty($data['status'])      ? 0                    : 1;
+        $this->status      = empty($data['status']) ? 0 : 1;
     }
 
     /**

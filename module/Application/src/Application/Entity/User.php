@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -25,8 +26,8 @@ use Laminas\InputFilter\InputFilterInterface;
  */
 class User implements InputFilterAwareInterface
 {
-    const STATUS_NOT_CONFIRMED = 0;
-    const STATUS_CONFIRMED = 1;
+    public const STATUS_NOT_CONFIRMED = 0;
+    public const STATUS_CONFIRMED = 1;
 
     protected $inputFilter;
 
@@ -147,11 +148,11 @@ class User implements InputFilterAwareInterface
      */
     public function exchangeArray(array $data = array())
     {
-        $this->id      = isset($data['id'])      ? $data['id']      : null;
+        $this->id      = isset($data['id']) ? $data['id'] : null;
         if (array_key_exists('email', $data)) {
             $this->email = $data['email'];
         }
-        $this->name    = isset($data['name'])    ? $data['name']    : null;
+        $this->name    = isset($data['name']) ? $data['name'] : null;
         $this->surname = isset($data['surname']) ? $data['surname'] : null;
         if (array_key_exists('password', $data)) {
             $this->password = $data['password'];

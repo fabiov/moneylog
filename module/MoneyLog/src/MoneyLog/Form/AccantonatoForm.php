@@ -1,11 +1,11 @@
 <?php
+
 namespace MoneyLog\Form;
 
 use Laminas\Form\Form;
 
 class AccantonatoForm extends Form
 {
-
     public function __construct($name = 'accantona')
     {
         // we want to ignore the name passed
@@ -39,5 +39,4 @@ class AccantonatoForm extends Form
             'type' => 'Text',
         ]);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Entity;
 
 use MoneyLog\Form\Filter\MovementFilter;
@@ -23,8 +24,8 @@ use Laminas\InputFilter\InputFilter;
  */
 class Movement implements InputFilterAwareInterface
 {
-    const IN = 1;
-    const OUT = -1;
+    public const IN = 1;
+    public const OUT = -1;
 
     protected $inputFilter;
 
@@ -127,9 +128,9 @@ class Movement implements InputFilterAwareInterface
         if (array_key_exists('category', $data)) {
             $this->category = $data['category'];
         }
-        $this->date        = isset($data['date'])        ? new \DateTime($data['date']) : null;
-        $this->amount      = isset($data['amount'])      ? $data['amount']              : null;
-        $this->description = isset($data['description']) ? $data['description']         : null;
+        $this->date        = isset($data['date']) ? new \DateTime($data['date']) : null;
+        $this->amount      = isset($data['amount']) ? $data['amount'] : null;
+        $this->description = isset($data['description']) ? $data['description'] : null;
     }
 
     /**

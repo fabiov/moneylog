@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Auth\Form;
@@ -26,6 +27,6 @@ class ForgottenPasswordForm extends Form
                 'type'  => 'submit',
                 'value' => 'Invia',
             ],
-        ]); 
+        ]);
     }
 }

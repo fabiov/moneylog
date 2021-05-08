@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Auth\Controller;
@@ -44,12 +45,10 @@ class RegistrationController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-
             $form->setInputFilter(new RegistrationFilter($this->sm));
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-
                 $data = $form->getData();
                 $data = $this->prepareData($data);
 
@@ -72,7 +71,7 @@ class RegistrationController extends AbstractActionController
         $usr_email = null;
         $flashMessenger = $this->flashMessenger();
         if ($flashMessenger->hasMessages()) {
-            foreach($flashMessenger->getMessages() as $key => $value) {
+            foreach ($flashMessenger->getMessages() as $key => $value) {
                 $usr_email .=  $value;
             }
         }
@@ -121,7 +120,6 @@ class RegistrationController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-
             $form->setInputFilter(new ForgottenPasswordFilter($this->sm));
             $form->setData($request->getPost());
 
@@ -149,7 +147,7 @@ class RegistrationController extends AbstractActionController
         $usr_email = null;
         $flashMessenger = $this->flashMessenger();
         if ($flashMessenger->hasMessages()) {
-            foreach($flashMessenger->getMessages() as $value) {
+            foreach ($flashMessenger->getMessages() as $value) {
                 $usr_email .=  $value;
             }
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\Controller;
 
 use Application\Entity\Provision;
@@ -21,7 +22,8 @@ class RecapController extends AbstractActionController
      */
     private $em;
 
-    public function __construct($em, \stdClass $user) {
+    public function __construct($em, \stdClass $user)
+    {
         $this->em   = $em;
         $this->user = $user;
     }
@@ -40,7 +42,9 @@ class RecapController extends AbstractActionController
         $avgPerCategory = $em->getRepository(Category::class)
                 ->getAverages($this->user->id, new \DateTime('-' . $settings->monthsRetrospective . ' MONTH'));
 
-        usort($avgPerCategory, function ($a, $b) { return ($a['average'] ?? 0) <=> ($b['average'] ?? 0); });
+        usort($avgPerCategory, function ($a, $b) {
+            return ($a['average'] ?? 0) <=> ($b['average'] ?? 0);
+        });
 
         $totalExpense   = $em->getRepository(Movement::class)->getTotalExpense($this->user->id);
         $stored         = $em->getRepository(Provision::class)->getSum($this->user->id) + $totalExpense;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\ViewHelper;
 
 use Laminas\View\Helper\AbstractHelper;

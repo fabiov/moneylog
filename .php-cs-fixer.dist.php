@@ -1,8 +1,8 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('vendor')
     ->exclude('data/DoctrineORMModule')
+    ->exclude('vendor')
 //    ->notPath('src/Symfony/Component/Translation/Tests/fixtures/resources.php')
     ->in(__DIR__)
 ;
@@ -10,7 +10,7 @@ $finder = PhpCsFixer\Finder::create()
 $config = new PhpCsFixer\Config();
 return $config->setRules([
     '@PSR12' => true,
-    'array_syntax' => ['syntax' => 'short'],
+    // 'array_syntax' => ['syntax' => 'short'],
     // 'compact_nullable_typehint' => true,
     // 'dir_constant' => true,
     // 'ereg_to_preg' => true,

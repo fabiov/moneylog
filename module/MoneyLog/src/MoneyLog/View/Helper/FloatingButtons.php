@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;
@@ -10,7 +11,6 @@ use Laminas\View\Helper\AbstractHelper;
  */
 class FloatingButtons extends AbstractHelper
 {
-
     /**
      * @var array
      */

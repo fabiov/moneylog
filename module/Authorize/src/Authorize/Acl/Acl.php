@@ -1,4 +1,5 @@
 <?php
+
 namespace Authorize\Acl;
 
 use Laminas\Permissions\Acl\Acl as LaminasAcl;
@@ -16,11 +17,10 @@ use Laminas\Permissions\Acl\Resource\GenericResource as Resource;
  */
 class Acl extends LaminasAcl
 {
-
     /**
      * Default Role
      */
-    const DEFAULT_ROLE = 'guest';
+    public const DEFAULT_ROLE = 'guest';
 
     /**
      * Constructor

@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Form\Filter;
 
 use Laminas\InputFilter\InputFilter;
@@ -40,5 +41,4 @@ class RegistrationFilter extends InputFilter
             ],
         ]);
     }
-
 }

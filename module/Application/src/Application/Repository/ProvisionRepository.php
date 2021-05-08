@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Application\Repository;
@@ -9,7 +10,6 @@ use Doctrine\ORM\EntityRepository;
 
 class ProvisionRepository extends EntityRepository
 {
-
     public function getBalance($userId)
     {
         $em = $this->getEntityManager();
@@ -62,7 +62,7 @@ class ProvisionRepository extends EntityRepository
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getSum($userId) 
+    public function getSum($userId)
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder()
