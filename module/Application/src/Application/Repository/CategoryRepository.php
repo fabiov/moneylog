@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Repository;
 
 use Application\Entity\Category;
@@ -7,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 
 class CategoryRepository extends EntityRepository
 {
-
     /**
      * Get the averages for categories
      *
@@ -34,10 +34,8 @@ class CategoryRepository extends EntityRepository
 
         $data = [];
         foreach ($oldest as $categoryId => $row) {
-
             $avarage = null;
             if (isset($rs[$categoryId])) {
-
                 $date = $row['date'] < $rs[$categoryId]['first_date']
                       ? $since->format('Y-m-d') : $rs[$categoryId]['first_date'];
                 list($y, $m, $d) = explode('-', $date);
@@ -54,7 +52,6 @@ class CategoryRepository extends EntityRepository
                 'id'            => $row['id'],
                 'status'        => $row['status'],
             ];
-
         }
         return $data;
     }

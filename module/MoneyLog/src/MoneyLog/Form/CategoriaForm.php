@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MoneyLog\Form;
@@ -7,7 +8,6 @@ use Laminas\Form\Form;
 
 class CategoriaForm extends Form
 {
-
     public function __construct()
     {
         // we want to ignore the name passed
@@ -43,5 +43,4 @@ class CategoriaForm extends Form
             ],
         ]);
     }
-
 }

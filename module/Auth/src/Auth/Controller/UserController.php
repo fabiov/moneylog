@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Controller;
 
 use Application\Entity\User;
@@ -154,7 +155,6 @@ class UserController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-
                 if (md5($data['current'] . $user->salt) == $user->password) {
                     $user->password = md5($data['password'] . $user->salt);
                     $this->em->persist($user);

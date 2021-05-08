@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\Controller;
 
 use Application\Entity\Setting;
@@ -12,7 +13,6 @@ use Laminas\Mvc\Controller\AbstractActionController;
 
 class SettingsController extends AbstractActionController
 {
-
     /**
      * @var EntityManager
      */

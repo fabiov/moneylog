@@ -1,11 +1,11 @@
 <?php
+
 namespace MoneyLog\Form;
 
 use Laminas\Form\Form;
 
 class SettingsForm extends Form
 {
-
     public function __construct()
     {
         // we want to ignore the name passed

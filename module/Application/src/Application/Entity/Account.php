@@ -11,14 +11,14 @@ use Laminas\InputFilter\InputFilterInterface;
 use Laminas\InputFilter\InputFilter;
 
 /**
- * Setting.
- *
  * @ORM\Entity(repositoryClass="Application\Repository\AccountRepository")
  * @ORM\Table(name="account")
  */
 class Account implements InputFilterAwareInterface
 {
-
+    /**
+     * @var InputFilterInterface
+     */
     protected $inputFilter;
 
     /**
@@ -51,6 +51,7 @@ class Account implements InputFilterAwareInterface
 
     /**
      * @ORM\Column(name="closed", type="boolean", nullable=false, options={"default": false})
+     * @var bool
      */
     protected $closed = false;
 
@@ -134,5 +135,4 @@ class Account implements InputFilterAwareInterface
         }
         return $this->inputFilter;
     }
-
 }

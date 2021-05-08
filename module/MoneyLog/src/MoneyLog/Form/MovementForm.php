@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\Form;
 
 use Application\Entity\Movement;
@@ -71,7 +72,7 @@ class MovementForm extends Form
                 'find_method'               => [
                     'name'   => 'findBy',
                     'params' => [
-                        'criteria' => ['userId' => $userId, 'status' => \Application\Entity\Category::STATUS_ACTIVE], 
+                        'criteria' => ['userId' => $userId, 'status' => \Application\Entity\Category::STATUS_ACTIVE],
                         'orderBy'  => ['descrizione' => 'ASC']
                     ]
                 ],

@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityRepository;
 
 class AccountRepository extends EntityRepository
 {
-
     /**
      * @param $userId
      * @param false $onlyRecap

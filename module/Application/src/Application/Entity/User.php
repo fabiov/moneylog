@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,48 +8,40 @@ use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterInterface;
 
 /**
- * Class User
- *
  * @ORM\Entity
  * @ORM\Table(name = "user", uniqueConstraints = {@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
  * @package Application\Entity
- * @property int $id
- * @property string $email
- * @property string $name
- * @property string $surname
- * @property string $password
- * @property string $salt
- * @property int $status
- * @property string $role
- * @property string $registrationToken
- * @property Setting $setting
  */
 class User implements InputFilterAwareInterface
 {
-    const STATUS_NOT_CONFIRMED = 0;
-    const STATUS_CONFIRMED = 1;
+    public const STATUS_NOT_CONFIRMED = 0;
+    public const STATUS_CONFIRMED = 1;
 
     protected $inputFilter;
 
     /**
-     * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Id
+     * @var int
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string")
+     * @var string
      */
     protected $email;
 
     /**
      * @ORM\Column(type="string")
+     * @var string
      */
     protected $name;
 
     /**
      * @ORM\Column(type="string")
+     * @var string
      */
     protected $surname;
 
@@ -97,7 +90,7 @@ class User implements InputFilterAwareInterface
 
     /**
      * One user has One settings.
-     *
+     * @var Setting
      * @ORM\OneToOne(targetEntity="Setting")
      * @ORM\JoinColumn(name="id", referencedColumnName="userId")
      */
@@ -145,13 +138,13 @@ class User implements InputFilterAwareInterface
      *
      * @param array $data
      */
-    public function exchangeArray(array $data = array())
+    public function exchangeArray(array $data = [])
     {
-        $this->id      = isset($data['id'])      ? $data['id']      : null;
+        $this->id      = isset($data['id']) ? $data['id'] : null;
         if (array_key_exists('email', $data)) {
             $this->email = $data['email'];
         }
-        $this->name    = isset($data['name'])    ? $data['name']    : null;
+        $this->name    = isset($data['name']) ? $data['name'] : null;
         $this->surname = isset($data['surname']) ? $data['surname'] : null;
         if (array_key_exists('password', $data)) {
             $this->password = $data['password'];
@@ -187,35 +180,35 @@ class User implements InputFilterAwareInterface
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
-            $inputFilter->add(array(
+            $inputFilter->add([
                 'name'     => 'email',
                 'required' => true,
-                'filters' => array(array('name' => 'StringTrim'))
-            ));
-            $inputFilter->add(array(
+                'filters' => [['name' => 'StringTrim']]
+            ]);
+            $inputFilter->add([
                 'name' => 'name',
                 'required' => true,
-                'filters' => array(array('name' => 'StringTrim'))
-            ));
-            $inputFilter->add(array(
+                'filters' => [['name' => 'StringTrim']]
+            ]);
+            $inputFilter->add([
                 'name' => 'surname',
                 'required' => true,
-                'filters' => array(array('name' => 'StringTrim'))
-            ));
-            $inputFilter->add(array(
+                'filters' => [['name' => 'StringTrim']]
+            ]);
+            $inputFilter->add([
                 'name'     => 'password',
                 'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
+                'filters'  => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
                         'name' => 'StringLength',
-                        'options' => array('encoding' => 'UTF-8', 'min' => 1),
-                    ),
-                ),
-            ));
+                        'options' => ['encoding' => 'UTF-8', 'min' => 1],
+                    ],
+                ],
+            ]);
 
             $this->inputFilter = $inputFilter;
         }

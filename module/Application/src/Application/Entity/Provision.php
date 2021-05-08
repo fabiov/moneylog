@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -17,7 +18,6 @@ use Laminas\InputFilter\InputFilterInterface;
  */
 class Provision implements InputFilterAwareInterface
 {
-
     protected $inputFilter;
 
     /**

@@ -10,7 +10,7 @@
  */
 return [
     'db'              => ['driver' => 'Pdo'],
-    'doctrine' => [        
+    'doctrine' => [
         // migrations configuration
         'migrations_configuration' => [
             'orm_default' => [

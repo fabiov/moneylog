@@ -1,4 +1,5 @@
 <?php
+
 namespace Authorize;
 
 use Authorize\Acl\Acl;

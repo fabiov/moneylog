@@ -1,5 +1,8 @@
 <?php
-if (!defined('APP_ENV')) define('APP_ENV', empty($_SERVER['APP_ENV']) ? 'production': $_SERVER['APP_ENV']);
+
+if (!defined('APP_ENV')) {
+    define('APP_ENV', empty($_SERVER['APP_ENV']) ? 'production' : $_SERVER['APP_ENV']);
+}
 
 // Display all errors when APP_ENV is development.
 if (APP_ENV == 'development') {

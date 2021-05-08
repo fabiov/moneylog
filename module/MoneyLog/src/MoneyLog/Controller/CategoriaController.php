@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\Controller;
 
 use Application\Entity\Provision;
@@ -73,7 +74,6 @@ class CategoriaController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-
             $form->setInputFilter($category->getInputFilter());
             $form->setData($request->getPost());
 
@@ -110,6 +110,5 @@ class CategoriaController extends AbstractActionController
         }
 
         return $this->redirect()->toRoute('accantona_categoria'); // Redirect to list of categories
-
     }
 }

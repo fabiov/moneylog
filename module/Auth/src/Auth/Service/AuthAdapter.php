@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Service;
 
 use Application\Entity\User;
@@ -90,7 +91,6 @@ class AuthAdapter implements AdapterInterface
         // Now we need to calculate hash based on user-entered password and compare
         // it with the password hash stored in database.
         if ($user->getPassword() === md5($this->password . $user->getSalt())) {
-
             $user->setLastLogin(new \DateTime());
             $this->entityManager->flush();
 

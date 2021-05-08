@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;

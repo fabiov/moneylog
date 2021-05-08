@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\View\Helper;
 
 // use \Laminas\I18n\View\Helper\DateFormat;

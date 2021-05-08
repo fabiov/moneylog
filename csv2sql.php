@@ -4,9 +4,8 @@
 $options = getopt('i:');
 $inputFile  = $options['i'];
 
-if (($handle = fopen($inputFile, "r")) !== FALSE) {
-    while (($row = fgetcsv($handle, null, ',')) !== FALSE) {
-
+if (($handle = fopen($inputFile, "r")) !== false) {
+    while (($row = fgetcsv($handle, null, ',')) !== false) {
         $amount = (float) str_replace(',', '.', $row[4]);
 
         if ($amount) {

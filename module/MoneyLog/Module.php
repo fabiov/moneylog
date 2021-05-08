@@ -2,6 +2,7 @@
 /**
  * @author fabio.ventura
  */
+
 namespace MoneyLog;
 
 use Laminas\Db\ResultSet\ResultSet;
@@ -11,7 +12,6 @@ use Laminas\ModuleManager\Feature\ConfigProviderInterface;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
-
     public function getAutoloaderConfig()
     {
         return [
