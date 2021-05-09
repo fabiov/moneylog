@@ -8,12 +8,12 @@ use Doctrine\ORM\EntityRepository;
 class MovementRepository extends EntityRepository
 {
     /**
-     * @param $accountId
-     * @param null $date
+     * @param int $accountId
+     * @param ?\DateTime $date
      * @return float
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getBalance($accountId, $date = null)
+    public function getBalance(int $accountId, ?\DateTime $date = null)
     {
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
@@ -23,8 +23,7 @@ class MovementRepository extends EntityRepository
             ->setParameter(':accountId', $accountId);
 
         if ($date) {
-            $qb->andWhere('m.date<=:date')
-                ->setParameter(':date', $date instanceof \DateTime ? $date->format('Y-m-d') : $date);
+            $qb->andWhere('m.date<=:date')->setParameter(':date', $date->format('Y-m-d'));
         }
 
         $result = $qb->getQuery()->getOneOrNullResult();

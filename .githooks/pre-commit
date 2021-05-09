@@ -29,7 +29,7 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
                     break
                     ;;
                 [Nn]* )
-                    echo "Run './dc php-cs-fixer-fix \$(git diff --name-only --cached --diff-filter=ACMR -- '*.php') --show-progress=dots' to fix";
+                    echo "Run php-cs-fixer to fix";
                     exit 1
                     ;;
                 [Ff]* )
@@ -49,7 +49,7 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
         done
     fi
 
-    phpstan analyze --level=2 module
+    vendor/bin/phpstan analyze --level=2 module
     STATUS=$?
 
     if [[ "$STATUS" -eq 0 ]]; then
