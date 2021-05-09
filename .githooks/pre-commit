@@ -49,22 +49,22 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
         done
     fi
 
-#    ./dc psalm
-#    STATUS=$?
-#
-#    if [[ "$STATUS" -eq 0 ]]; then
-#        echo -e "\e[42mPHP Static Analysis is OK\e[m"
-#    else
-#        while true; do
-#            read -p $'\e[31mDo you really want to commit ignoring psalm errors? y/n \e[0m: ' yn < /dev/tty
-#            case $yn in
-#                #[Yy]* ) exit 0; break;; # Si commit
-#                [Yy]* ) echo ""; echo "Please consider fixing psalm errors"; break;;
-#                [Nn]* ) exit 1;; # No commit
-#                * ) echo "Please answer y or n.";;
-#            esac
-#        done
-#    fi
+    phpstan analyze --level=2 module
+    STATUS=$?
+
+    if [[ "$STATUS" -eq 0 ]]; then
+        echo -e "\e[42mPHP Static Analysis is OK\e[m"
+    else
+        while true; do
+            read -p $'\e[31mDo you really want to commit ignoring Static Analysis errors? y/n \e[0m: ' yn < /dev/tty
+            case $yn in
+                #[Yy]* ) exit 0; break;; # Si commit
+                [Yy]* ) echo ""; echo "Please consider fixing psalm errors"; break;;
+                [Nn]* ) exit 1;; # No commit
+                * ) echo "Please answer y or n.";;
+            esac
+        done
+    fi
 
 #    ./dc phpunit
 #    STATUS=$?

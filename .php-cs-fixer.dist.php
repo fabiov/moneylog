@@ -10,7 +10,8 @@ $finder = PhpCsFixer\Finder::create()
 $config = new PhpCsFixer\Config();
 return $config->setRules([
     '@PSR12' => true,
-     'array_syntax' => ['syntax' => 'short'],
+    'array_syntax' => ['syntax' => 'short'],
+    'no_unused_imports' => true,
     // 'compact_nullable_typehint' => true,
     // 'dir_constant' => true,
     // 'ereg_to_preg' => true,
@@ -24,7 +25,6 @@ return $config->setRules([
     // 'modernize_types_casting' => true,
     // 'no_alias_functions' => true,
     // 'no_unset_on_property' => true,
-    // 'no_unused_imports' => true,
     // 'no_useless_else' => true,
     // 'no_useless_return' => true,
     // 'self_accessor' => false,

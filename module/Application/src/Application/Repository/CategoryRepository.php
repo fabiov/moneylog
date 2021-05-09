@@ -68,7 +68,7 @@ class CategoryRepository extends EntityRepository
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('c.id, c.descrizione, MIN(m.date) AS date, c.status')
-            ->from(Category::class, 'c', 'c.id', 'm.date')
+            ->from(Category::class, 'c', 'c.id')
             ->leftJoin(Movement::class, 'm', 'WITH', 'c.id=m.category')
             ->where("c.userId=$userId")
             ->groupBy('c.id');
