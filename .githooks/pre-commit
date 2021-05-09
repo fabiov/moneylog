@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 PHP_STAGED_FILES=$(git diff --name-only --cached --diff-filter=ACMR -- '*.php' | sed 's| |\\ |g')
+CS_ERROR=0
 
 if [[ -n "$PHP_STAGED_FILES" ]]; then
 
@@ -12,10 +13,20 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
         exit 0
     fi
 
-    docker-compose exec php php-cs-fixer fix --dry-run --show-progress=dots
-    STATUS=$?
+#    docker-compose exec php php-cs-fixer fix --dry-run --show-progress=dots
+    for line in $PHP_STAGED_FILE; do
+        php-cs-fixer fix -q --dry-run "$line"
+        STATUS=$?
 
-    if [[ "$STATUS" -eq 0 ]]; then
+        echo "php-cs-fixer fix -q --dry-run \"$line\""
+        if [[ "$STATUS" -ne 0 ]]; then
+            CS_ERROR=1
+            echo "CAZZO!!!"
+            break;
+        fi
+    done
+
+    if [[ "$CS_ERROR" -eq 0 ]]; then
         echo ""
         echo -e "\e[42mCode style is OK\e[m"
     else

@@ -20,14 +20,16 @@ class ProvisionRepository extends EntityRepository
             ->where('a.userId=:userId')
             ->setParameter(':userId', $userId);
 
-        return $qb->getQuery()->getSingleScalarResult() + $em->getRepository(Movement::class)->getTotalExpense($userId);
+        /** @var \Application\Repository\MovementRepository $movementRepository */
+        $movementRepository = $em->getRepository(Movement::class);
+        return $qb->getQuery()->getSingleScalarResult() + $movementRepository->getTotalExpense($userId);
     }
 
     /**
      * @param array $params
      * @return array
      */
-    public function search(array $params = [])
+    public function search(array $params = array())
     {
         $cleanParams  = [];
         $qb = $this->getEntityManager()
