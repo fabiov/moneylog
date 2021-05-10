@@ -60,15 +60,15 @@ class CategoryRepository extends EntityRepository
      * Get the averages for categories
      *
      * @param int $userId
-     * @param int $status null for all statuses
+     * @param int|null $status null for all statuses
      * @return array
      */
-    public function oldestMovements(int $userId, int $status = null)
+    public function oldestMovements(int $userId, int $status = null): array
     {
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('c.id, c.descrizione, MIN(m.date) AS date, c.status')
-            ->from(Category::class, 'c', 'c.id', 'm.date')
+            ->from(Category::class, 'c', 'c.id')
             ->leftJoin(Movement::class, 'm', 'WITH', 'c.id=m.category')
             ->where("c.userId=$userId")
             ->groupBy('c.id');

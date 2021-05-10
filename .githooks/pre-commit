@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 PHP_STAGED_FILES=$(git diff --name-only --cached --diff-filter=ACMR -- '*.php' | sed 's| |\\ |g')
+CS_ERROR=0
 
 if [[ -n "$PHP_STAGED_FILES" ]]; then
 
@@ -12,10 +13,18 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
         exit 0
     fi
 
-    docker-compose exec php php-cs-fixer fix --dry-run --show-progress=dots
-    STATUS=$?
+#    docker-compose exec php php-cs-fixer fix --dry-run --show-progress=dots
+    for staged in $PHP_STAGED_FILES; do
+        php-cs-fixer fix -q "$staged"
+        STATUS=$?
 
-    if [[ "$STATUS" -eq 0 ]]; then
+        if [[ "$STATUS" -ne 0 ]]; then
+            CS_ERROR=1
+            break;
+        fi
+    done
+
+    if [[ "$CS_ERROR" -eq 0 ]]; then
         echo ""
         echo -e "\e[42mCode style is OK\e[m"
     else
@@ -29,7 +38,7 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
                     break
                     ;;
                 [Nn]* )
-                    echo "Run './dc php-cs-fixer-fix \$(git diff --name-only --cached --diff-filter=ACMR -- '*.php') --show-progress=dots' to fix";
+                    echo "Run php-cs-fixer to fix";
                     exit 1
                     ;;
                 [Ff]* )
@@ -49,22 +58,22 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
         done
     fi
 
-#    ./dc psalm
-#    STATUS=$?
-#
-#    if [[ "$STATUS" -eq 0 ]]; then
-#        echo -e "\e[42mPHP Static Analysis is OK\e[m"
-#    else
-#        while true; do
-#            read -p $'\e[31mDo you really want to commit ignoring psalm errors? y/n \e[0m: ' yn < /dev/tty
-#            case $yn in
-#                #[Yy]* ) exit 0; break;; # Si commit
-#                [Yy]* ) echo ""; echo "Please consider fixing psalm errors"; break;;
-#                [Nn]* ) exit 1;; # No commit
-#                * ) echo "Please answer y or n.";;
-#            esac
-#        done
-#    fi
+    vendor/bin/phpstan analyze --level=2 module
+    STATUS=$?
+
+    if [[ "$STATUS" -eq 0 ]]; then
+        echo -e "\e[42mPHP Static Analysis is OK\e[m"
+    else
+        while true; do
+            read -p $'\e[31mDo you really want to commit ignoring Static Analysis errors? y/n \e[0m: ' yn < /dev/tty
+            case $yn in
+                #[Yy]* ) exit 0; break;; # Si commit
+                [Yy]* ) echo ""; echo "Please consider fixing psalm errors"; break;;
+                [Nn]* ) exit 1;; # No commit
+                * ) echo "Please answer y or n.";;
+            esac
+        done
+    fi
 
 #    ./dc phpunit
 #    STATUS=$?

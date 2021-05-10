@@ -113,11 +113,8 @@ class Movement implements InputFilterAwareInterface
 
     /**
      * Convert the object to an array.
-     *
-     * @param $data
-     * @throws \Exception
      */
-    public function exchangeArray($data)
+    public function exchangeArray($data): void
     {
         if (isset($data['id'])) {
             $this->id = $data['id'];
@@ -129,26 +126,17 @@ class Movement implements InputFilterAwareInterface
             $this->category = $data['category'];
         }
         $this->date        = isset($data['date']) ? new \DateTime($data['date']) : null;
-        $this->amount      = isset($data['amount']) ? $data['amount'] : null;
-        $this->description = isset($data['description']) ? $data['description'] : null;
+        $this->amount      = $data['amount'] ?? null;
+        $this->description = $data['description'] ?? null;
     }
 
-    /**
-     * Set input filter
-     *
-     * @param  InputFilterInterface $inputFilter
-     * @return InputFilterAwareInterface
-     */
-    public function setInputFilter(InputFilterInterface $inputFilter)
+    public function setInputFilter(InputFilterInterface $inputFilter): self
     {
         $this->inputFilter = $inputFilter;
         return $this;
     }
 
-    /**
-     * @return InputFilter
-     */
-    public function getInputFilter()
+    public function getInputFilter(): InputFilter
     {
         if (!$this->inputFilter) {
             $this->inputFilter = new MovementFilter();

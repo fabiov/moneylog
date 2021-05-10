@@ -8,12 +8,12 @@ use Doctrine\ORM\EntityRepository;
 class MovementRepository extends EntityRepository
 {
     /**
-     * @param $accountId
-     * @param null $date
+     * @param int $accountId
+     * @param ?\DateTime $date
      * @return float
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getBalance($accountId, $date = null)
+    public function getBalance(int $accountId, ?\DateTime $date = null): float
     {
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
@@ -23,8 +23,7 @@ class MovementRepository extends EntityRepository
             ->setParameter(':accountId', $accountId);
 
         if ($date) {
-            $qb->andWhere('m.date<=:date')
-                ->setParameter(':date', $date instanceof \DateTime ? $date->format('Y-m-d') : $date);
+            $qb->andWhere('m.date<=:date')->setParameter(':date', $date->format('Y-m-d'));
         }
 
         $result = $qb->getQuery()->getOneOrNullResult();
@@ -35,13 +34,13 @@ class MovementRepository extends EntityRepository
      * @param array $params
      * @return array
      */
-    public function search(array $params = [])
+    public function search(array $params = []): array
     {
         $cleanParams  = [];
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('m')
-            ->from('Application\Entity\Movement', 'm')
+            ->from(Movement::class, 'm')
             ->where('1=1');
 
         if (!empty($params['accountId'])) {
@@ -77,12 +76,12 @@ class MovementRepository extends EntityRepository
     }
 
     /**
-     * @param $userId
-     * @return mixed
+     * @param int $userId
+     * @return float
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getTotalExpense($userId)
+    public function getTotalExpense(int $userId): float
     {
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
@@ -92,7 +91,7 @@ class MovementRepository extends EntityRepository
             ->where('c.userId=:userId')
             ->setParameter(':userId', $userId);
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return (float) $qb->getQuery()->getSingleScalarResult();
     }
 
     public function getMovementByDay(int $userId, string $minDate, string $maxDate)

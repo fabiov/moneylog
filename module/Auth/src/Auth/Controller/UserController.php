@@ -16,6 +16,9 @@ use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
+/**
+ * @method \Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger flashMessenger()
+ */
 class UserController extends AbstractActionController
 {
     /**
