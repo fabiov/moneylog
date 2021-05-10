@@ -14,14 +14,12 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
     fi
 
 #    docker-compose exec php php-cs-fixer fix --dry-run --show-progress=dots
-    for line in $PHP_STAGED_FILE; do
-        php-cs-fixer fix -q --dry-run "$line"
+    for staged in $PHP_STAGED_FILES; do
+        php-cs-fixer fix -q "$staged"
         STATUS=$?
 
-        echo "php-cs-fixer fix -q --dry-run \"$line\""
         if [[ "$STATUS" -ne 0 ]]; then
             CS_ERROR=1
-            echo "CAZZO!!!"
             break;
         fi
     done

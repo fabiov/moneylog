@@ -29,7 +29,7 @@ class ProvisionRepository extends EntityRepository
      * @param array $params
      * @return array
      */
-    public function search(array $params = array())
+    public function search(array $params = [])
     {
         $cleanParams  = [];
         $qb = $this->getEntityManager()
@@ -59,12 +59,12 @@ class ProvisionRepository extends EntityRepository
     }
 
     /**
-     * @param $userId
+     * @param int $userId
      * @return float
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getSum($userId)
+    public function getSum(int $userId): float
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder()
