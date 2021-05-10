@@ -10,11 +10,7 @@ use Laminas\View\Helper\AbstractHelper;
  */
 class DataTable extends AbstractHelper
 {
-    /**
-     * @param $selector
-     * @param array $options
-     */
-    public function __invoke($selector, array $options = [])
+    public function __invoke(string $selector, array $options = []): void
     {
         $json = json_encode(array_merge([
             'language'   => ['url' => '/js/data-table-Italian.json'],

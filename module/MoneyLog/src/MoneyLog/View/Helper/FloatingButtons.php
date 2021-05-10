@@ -11,34 +11,20 @@ use Laminas\View\Helper\AbstractHelper;
  */
 class FloatingButtons extends AbstractHelper
 {
-    /**
-     * @var array
-     */
-    private $items = array();
+    private $items = [];
 
-    /**
-     * @return $this
-     */
-    public function __invoke()
+    public function __invoke(): self
     {
         return $this;
     }
 
-    /**
-     * @param $item
-     * @return $this
-     */
-    public function addRawItem($item)
+    public function addRawItem(string $item): self
     {
         $this->items[] = $item;
         return $this;
     }
 
-    /**
-     * @param $params
-     * @return $this
-     */
-    public function addAnchorItem(array $params)
+    public function addAnchorItem(array $params): self
     {
         $html = '<a href="' . $params['href'] . '" data-mfb-label="' . $params['label'] . '" class="mfb-component__button--child">'
               . '<i class="mfb-component__child-icon glyphicon glyphicon-' . $params['icon'] . '"></i>'
