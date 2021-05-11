@@ -7,6 +7,9 @@ parameters:
     paths:
         - %currentWorkingDirectory%/module
     ignoreErrors:
+        - '/Access to an undefined property Laminas\\Session\\Container::\$settings\./'
+        - '/Access to an undefined property Laminas\\Session\\Container::\$surname\./'
+        - '/Access to protected property Laminas\\Session\\Container::\$name\./'
         - '/Call to an undefined method Laminas\\EventManager\\EventInterface::getApplication\(\)\./'
         - '/Call to an undefined method Laminas\\EventManager\\EventInterface::getResponse\(\)\./'
         - '/Call to an undefined method Laminas\\EventManager\\EventInterface::getRouteMatch\(\)\./'
