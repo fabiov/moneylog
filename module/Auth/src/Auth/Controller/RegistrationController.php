@@ -60,7 +60,7 @@ class RegistrationController extends AbstractActionController
                 $this->em->persist($user);
                 $this->em->flush();
                 $this->sendConfirmationEmail($user);
-                $this->flashMessenger()->addMessage($user->email);
+                $this->flashMessenger()->addMessage($user->getEmail());
 
                 return $this->redirect()->toRoute('auth_registration', ['action' => 'registration-success']);
             }
@@ -191,10 +191,10 @@ class RegistrationController extends AbstractActionController
         $config = $this->sm->get('Config');
         $body = "Please, click the link to confirm your registration. "
               . $this->getRequest()->getServer('HTTP_ORIGIN')
-              . $this->url()->fromRoute('auth_registration', ['action' => 'confirm-email','id' => $user->registrationToken]);
+              . $this->url()->fromRoute('auth_registration', ['action' => 'confirm-email','id' => $user->getRegistrationToken()]);
 
         $message = new Message();
-        $message->addTo($user->email)
+        $message->addTo($user->getEmail())
                 ->addFrom($config['mail']['sender']['address'], $config['mail']['sender']['name'])
                 ->setSubject('Conferma registrazione')
                 ->setBody($body);

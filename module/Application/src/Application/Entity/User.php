@@ -410,4 +410,9 @@ class User implements InputFilterAwareInterface
         $this->setting = $setting;
         return $this;
     }
+
+    public function getRegistrationToken(): string
+    {
+        return $this->registrationToken;
+    }
 }
