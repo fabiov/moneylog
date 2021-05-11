@@ -64,11 +64,11 @@ class AccantonatoController extends AbstractActionController
         /** @var \Application\Repository\ProvisionRepository $provisionRepository */
         $provisionRepository = $this->em->getRepository(Provision::class);
 
-        return new ViewModel(array(
+        return new ViewModel([
             'balance'       => $provisionRepository->getBalance($this->user->id),
             'searchParams'  => $searchParams,
             'rows'          => $provisionRepository->search(array_merge($searchParams, ['userId' => $this->user->id])),
-        ));
+        ]);
     }
 
     public function editAction()
@@ -96,7 +96,7 @@ class AccantonatoController extends AbstractActionController
                     ->toRoute('accantona_accantonato', [], ['query' => $searchParams]);
             }
         }
-        return array('id' => $id, 'form' => $form, 'searchParams' => $searchParams);
+        return ['id' => $id, 'form' => $form, 'searchParams' => $searchParams];
     }
 
     public function deleteAction()

@@ -46,10 +46,10 @@ class Acl extends LaminasAcl
     /**
      * Adds Roles to ACL
      *
-     * @param $roles
+     * @param array $roles
      * @return $this
      */
-    protected function _addRoles($roles)
+    protected function _addRoles(array $roles): self
     {
         foreach ($roles as $name => $parent) {
             if (!$this->hasRole($name)) {
@@ -69,11 +69,11 @@ class Acl extends LaminasAcl
     /**
      * Adds Resources to ACL
      *
-     * @param $resources
+     * @param array $resources
      * @return $this
      * @throws \Exception
      */
-    protected function _addResources($resources)
+    protected function _addResources(array $resources): self
     {
         foreach ($resources as $permission => $controllers) {
             foreach ($controllers as $controller => $actions) {
