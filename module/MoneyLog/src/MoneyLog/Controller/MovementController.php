@@ -42,7 +42,7 @@ class MovementController extends AbstractActionController
         $item->amount = abs($item->amount);
 
         if (!$item || $item->account->getUser()->getId() != $this->user->id) {
-            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+            return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
         }
 
         $form = new MovementForm('movement', $this->em, $this->user->id);
@@ -96,7 +96,7 @@ class MovementController extends AbstractActionController
         $account = $this->em->getRepository(Account::class)->findOneBy($criteria);
 
         if (!$account) {
-            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+            return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
         }
 
         $categories = $this->em->getRepository(\Application\Entity\Category::class)
@@ -126,7 +126,7 @@ class MovementController extends AbstractActionController
             $dataLineChart[] = ['date' => $date, 'balance' => $balance];
         }
 
-        return new ViewModel(array(
+        return new ViewModel([
             'account'          => $account,
             'balanceAccount'   => $movementRepository->getBalance($accountId),
             'balanceAvailable' => $movementRepository->getBalance($accountId, new \DateTime()),
@@ -134,7 +134,7 @@ class MovementController extends AbstractActionController
             'dataLineChart'    => $dataLineChart,
             'rows'             => $movementRepository->search($searchParams),
             'searchParams'     => $searchParams,
-        ));
+        ]);
     }
 
     /**
@@ -159,7 +159,7 @@ class MovementController extends AbstractActionController
             ->findOneBy(['id' => $accountId, 'user' => $this->user->id]);
 
         if (!$account) {
-            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+            return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
         }
 
         /** @var \Application\Repository\MovementRepository $movementRepository */
@@ -178,7 +178,7 @@ class MovementController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         /* @var $item \Application\Entity\Movement */
-        $item = $this->em->getRepository('Application\Entity\Movement')->findOneBy(array('id' => $id));
+        $item = $this->em->getRepository('Application\Entity\Movement')->findOneBy(['id' => $id]);
 
         if ($item && $item->account->getUser()->getId() == $this->user->id) {
             $this->em->remove($item);
@@ -204,10 +204,10 @@ class MovementController extends AbstractActionController
         $sourceAccount = $accountRepository->find($id);
 
         if (!$sourceAccount || $sourceAccount->getUser()->getId() != $this->user->id) {
-            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+            return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
         }
 
-        $accountOptions = array('' => '');
+        $accountOptions = ['' => ''];
         foreach ($accountRepository->getUserAccounts($this->user->id) as $account) {
             if ($account->getId() != $sourceAccount->getId() && !$account->isClosed()) {
                 $accountOptions[$account->getId()] = $account->getName();
@@ -227,25 +227,25 @@ class MovementController extends AbstractActionController
                 $targetAccount = $accountRepository->find($data['targetAccountId']);
 
                 if (!$targetAccount || $targetAccount->getUser()->getId() != $this->user->id) {
-                    return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+                    return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
                 }
 
                 $outcoming = new Movement();
-                $outcoming->exchangeArray(array(
+                $outcoming->exchangeArray([
                     'date'        => $data['date'],
                     'amount'      => $data['amount'] * -1,
                     'description' => $data['description'],
-                ));
+                ]);
                 $outcoming->account = $sourceAccount;
                 $this->em->persist($outcoming);
 
                 $incoming = new Movement();
-                $incoming->exchangeArray(array(
+                $incoming->exchangeArray([
                     'accountId'   => $targetAccount->getId(),
                     'date'        => $data['date'],
                     'amount'      => $data['amount'],
                     'description' => $data['description'],
-                ));
+                ]);
                 $incoming->account = $targetAccount;
                 $this->em->persist($incoming);
 
@@ -275,7 +275,7 @@ class MovementController extends AbstractActionController
         $account = $this->em->getRepository(Account::class)->find($accountId);
 
         if (!$account || $account->getUser()->getId() != $this->user->id) {
-            return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
+            return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
         }
 
         $request = $this->getRequest();
