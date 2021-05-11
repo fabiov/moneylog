@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Service;
 
 use Application\Entity\Setting;

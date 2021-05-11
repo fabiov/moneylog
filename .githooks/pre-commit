@@ -15,7 +15,7 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
 
 #    docker-compose exec php php-cs-fixer fix --dry-run --show-progress=dots
     for staged in $PHP_STAGED_FILES; do
-        php-cs-fixer fix -q "$staged"
+        php-cs-fixer fix --dry-run -q "$staged"
         STATUS=$?
 
         if [[ "$STATUS" -ne 0 ]]; then
