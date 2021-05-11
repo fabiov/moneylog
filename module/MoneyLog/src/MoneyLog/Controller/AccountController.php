@@ -166,9 +166,9 @@ class AccountController extends AbstractActionController
 
             $movement              = new Movement();
             $movement->account     = $account;
-            $movement->date        = new \DateTime();
             $movement->amount      = $amount - $currentBalance;
             $movement->description = $description;
+            $movement->setDate(new \DateTime());
             $this->em->persist($movement);
             $this->em->flush();
         }

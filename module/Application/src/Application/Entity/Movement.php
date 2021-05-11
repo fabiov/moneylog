@@ -101,6 +101,11 @@ class Movement implements InputFilterAwareInterface
         $this->$property = $value;
     }
 
+    public function setDate(\DateTime $date): void
+    {
+        $this->date = $date;
+    }
+
     /**
      * Convert the object to an array.
      *

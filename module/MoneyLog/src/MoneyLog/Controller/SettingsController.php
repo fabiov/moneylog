@@ -40,7 +40,7 @@ class SettingsController extends AbstractActionController
      * @throws TransactionRequiredException
      * @throws ORMException
      */
-    public function indexAction(): array
+    public function indexAction()
     {
         /** @var Setting $setting */
         $setting = $this->em->find(Setting::class, $this->user->id);
