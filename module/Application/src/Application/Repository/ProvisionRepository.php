@@ -73,6 +73,6 @@ class ProvisionRepository extends EntityRepository
                  ->where('a.userId=:userId')
                  ->setParameter(':userId', $userId);
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return (float) $qb->getQuery()->getSingleScalarResult();
     }
 }
