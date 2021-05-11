@@ -74,6 +74,9 @@ class MovementController extends AbstractActionController
         return ['item' => $item, 'form' => $form, 'searchParams' => $searchParams];
     }
 
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function accountAction()
     {
         $accountId    = $this->params()->fromRoute('id', 0);
@@ -99,12 +102,12 @@ class MovementController extends AbstractActionController
         $categories = $this->em->getRepository(\Application\Entity\Category::class)
             ->findBy(['status' => 1, 'userId' => $this->user->id], ['descrizione' => 'ASC']);
 
-        /* @var \Application\Repository\MovementRepository $movementRepository */
+        /** @var \Application\Repository\MovementRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Movement::class);
         $rows               = $movementRepository->search($searchParams);
 
         $previewsDate    = date('Y-m-d', strtotime("$dateMin -1 day"));
-        $previewsBalance = $movementRepository->getBalance($accountId, $previewsDate);
+        $previewsBalance = $movementRepository->getBalance($accountId, new \DateTime($previewsDate));
         $balances        = [$previewsDate => $previewsBalance];
 
         foreach (array_reverse($rows) as $movement) {
@@ -159,7 +162,7 @@ class MovementController extends AbstractActionController
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
-        /* @var \Application\Repository\MovementRepository $movementRepository */
+        /** @var \Application\Repository\MovementRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Movement::class);
 
         $fileName = 'export-' . strtolower($account->getName()) . '.csv';
@@ -194,18 +197,18 @@ class MovementController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
         $searchParams = $this->params()->fromQuery();
 
-        /* @var AccountRepository $accountRepo */
-        $accountRepo = $this->em->getRepository('Application\Entity\Account');
+        /** @var AccountRepository $accountRepository */
+        $accountRepository = $this->em->getRepository(Account::class);
 
         /* @var $sourceAccount Account */
-        $sourceAccount = $accountRepo->find($id);
+        $sourceAccount = $accountRepository->find($id);
 
         if (!$sourceAccount || $sourceAccount->getUser()->getId() != $this->user->id) {
             return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
         }
 
         $accountOptions = array('' => '');
-        foreach ($accountRepo->getUserAccounts($this->user->id) as $account) {
+        foreach ($accountRepository->getUserAccounts($this->user->id) as $account) {
             if ($account->getId() != $sourceAccount->getId() && !$account->isClosed()) {
                 $accountOptions[$account->getId()] = $account->getName();
             }
@@ -221,7 +224,7 @@ class MovementController extends AbstractActionController
                 $data = $form->getData();
 
                 /* @var Account $targetAccount */
-                $targetAccount = $accountRepo->find($data['targetAccountId']);
+                $targetAccount = $accountRepository->find($data['targetAccountId']);
 
                 if (!$targetAccount || $targetAccount->getUser()->getId() != $this->user->id) {
                     return $this->redirect()->toRoute('accantonaAccount', array('action' => 'index'));
