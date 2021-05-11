@@ -49,7 +49,7 @@ class CategoriaController extends AbstractActionController
                 return $this->redirect()->toRoute('accantona_categoria');
             }
         }
-        return array('form' => $form);
+        return ['form' => $form];
     }
 
     public function indexAction()
@@ -64,9 +64,9 @@ class CategoriaController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         $category = $this->em->getRepository('Application\Entity\Category')
-            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
+            ->findOneBy(['id' => $id, 'userId' => $this->user->id]);
         if (!$category) {
-            return $this->redirect()->toRoute('accantona_categoria', array('action' => 'index'));
+            return $this->redirect()->toRoute('accantona_categoria', ['action' => 'index']);
         }
 
         $form = new CategoriaForm();
@@ -82,7 +82,7 @@ class CategoriaController extends AbstractActionController
                 return $this->redirect()->toRoute('accantona_categoria');
             }
         }
-        return array('id' => $id, 'form' => $form);
+        return ['id' => $id, 'form' => $form];
     }
 
     public function deleteAction()
@@ -97,12 +97,12 @@ class CategoriaController extends AbstractActionController
 
             $this->em->beginTransaction();
             if ($sum) {
-                $aside = new Provision();
-                $aside->userId      = $this->user->id;
-                $aside->descrizione = 'Conguaglio rimozione categoria ' . $category->getDescrizione();
-                $aside->importo     = $sum;
-                $aside->valuta      = new \DateTime();
-                $this->em->persist($aside);
+                $provision = new Provision();
+                $provision->userId      = $this->user->id;
+                $provision->descrizione = 'Conguaglio rimozione categoria ' . $category->getDescrizione();
+                $provision->importo     = $sum;
+                $provision->valuta      = new \DateTime();
+                $this->em->persist($provision);
             }
             $this->em->remove($category);
             $this->em->flush();

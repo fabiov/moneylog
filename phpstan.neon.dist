@@ -12,6 +12,7 @@ parameters:
         - '/Call to an undefined method Laminas\\Stdlib\\RequestInterface::getPost\(\)\./'
         - '/Call to an undefined method Laminas\\Stdlib\\RequestInterface::getServer\(\)\./'
         - '/Call to an undefined method Laminas\\Stdlib\\RequestInterface::isPost\(\)\./'
+        - '/Call to an undefined method Laminas\\Stdlib\\ResponseInterface::getHeaders\(\)\./'
         - '/Call to an undefined method Laminas\\View\\Renderer\\RendererInterface::currencyFormat\(\)\./'
         - '/Call to an undefined method Laminas\\View\\Renderer\\RendererInterface::escapeHtml\(\)\./'
         - '/Call to an undefined method Laminas\\View\\Renderer\\RendererInterface::formCheckbox\(\)\./'

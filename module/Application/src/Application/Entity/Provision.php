@@ -10,42 +10,37 @@ use Laminas\InputFilter\InputFilterInterface;
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\ProvisionRepository")
  * @ORM\Table(name="provision")
- * @property int $id
- * @property int $userid
- * @property \DateTime $valuta
- * @property float $importo
- * @property string $descrizione
  */
 class Provision implements InputFilterAwareInterface
 {
-    protected $inputFilter;
+    private $inputFilter;
 
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(name="userId", type="integer", options={"unsigned"=true});
      */
-    protected $userId;
+    private $userId;
 
     /**
      * @ORM\Column(name="valuta", type="date")
      */
-    protected $valuta;
+    private $valuta;
 
     /**
      * @ORM\Column(name="importo", type="decimal", precision=8, scale=2)
      */
-    protected $importo;
+    private $importo;
 
     /**
      * @ORM\Column(name="descrizione", type="string")
      */
-    protected $descrizione;
+    private $descrizione;
 
     /**
      * Magic getter to expose protected properties.
