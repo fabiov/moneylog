@@ -40,11 +40,11 @@ class UserController extends AbstractActionController
     /**
      * UserController constructor.
      *
-     * @param $user
+     * @param ?\stdClass $user
      * @param ORM\EntityManager $em
      * @param AuthManager $authManager
      */
-    public function __construct($user, ORM\EntityManager $em, AuthManager $authManager)
+    public function __construct(?\stdClass $user, ORM\EntityManager $em, AuthManager $authManager)
     {
         $this->authManager = $authManager;
         $this->em          = $em;
@@ -59,10 +59,11 @@ class UserController extends AbstractActionController
     public function updateAction()
     {
         /** @var User $user */
-        $user = $this->em->find(User::class, $this->user->id)->setInputFilter(new UserFilter());
+        $user = $this->em->find(User::class, $this->user->id);
         if (!$user) {
             return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
         }
+        $user->setInputFilter(new UserFilter());
 
         $form = new UserForm();
         $form->bind($user);
@@ -73,6 +74,7 @@ class UserController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                /** @var User $data */
                 $data = $form->getData();
                 $user->setName($data->getName())->setSurname($data->getSurname());
                 $this->em->persist($user);
