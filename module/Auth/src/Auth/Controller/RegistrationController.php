@@ -168,12 +168,15 @@ class RegistrationController extends AbstractActionController
         return $data;
     }
 
+    /**
+     * @throws \Exception
+     */
     private static function getRandomString(int $length): string
     {
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $rand  = '';
         for ($i = 0; $i < $length; $i++) {
-            $rand .= $chars[mt_rand(0, strlen($chars) - 1)];
+            $rand .= $chars[random_int(0, strlen($chars) - 1)];
         }
         return $rand;
     }

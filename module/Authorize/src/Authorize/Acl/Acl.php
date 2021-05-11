@@ -54,7 +54,7 @@ class Acl extends LaminasAcl
         foreach ($roles as $name => $parent) {
             if (!$this->hasRole($name)) {
                 if (empty($parent)) {
-                    $parent = array();
+                    $parent = [];
                 } else {
                     $parent = explode(',', $parent);
                 }

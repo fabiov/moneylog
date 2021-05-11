@@ -7,6 +7,10 @@ parameters:
     paths:
         - %currentWorkingDirectory%/module
     ignoreErrors:
+        - '/Call to an undefined method Laminas\\EventManager\\EventInterface::getApplication\(\)\./'
+        - '/Call to an undefined method Laminas\\EventManager\\EventInterface::getResponse\(\)\./'
+        - '/Call to an undefined method Laminas\\EventManager\\EventInterface::getRouteMatch\(\)\./'
+        - '/Call to an undefined method Laminas\\EventManager\\EventInterface::getRouter\(\)\./'
         - '/Call to an undefined method Laminas\\Form\\ElementInterface::setDisableInArrayValidator\(\)\./'
         - '/Call to an undefined method Laminas\\Form\\ElementInterface::setValueOptions\(\)\./'
         - '/Call to an undefined method Laminas\\Stdlib\\RequestInterface::getPost\(\)\./'

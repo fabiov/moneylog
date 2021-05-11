@@ -47,7 +47,7 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
 
                     git diff --name-only --cached --diff-filter=ACMR -- '*.php' | while read line; do
                         php-cs-fixer fix -q "$line"
-                        git add "$line";
+                        git add "$line" && echo "Add file $line to stage"
                     done
                     break
                     ;;
