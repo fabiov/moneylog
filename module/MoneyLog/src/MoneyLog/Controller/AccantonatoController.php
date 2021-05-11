@@ -26,20 +26,25 @@ class AccantonatoController extends AbstractActionController
         $this->em   = $em;
     }
 
+    /**
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Exception
+     */
     public function addAction()
     {
         $form = new AccantonatoForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $accantonato = new Provision();
-            $form->setInputFilter($accantonato->getInputFilter());
+            $provision = new Provision();
+            $form->setInputFilter($provision->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
                 $data = $form->getData();
                 $data['userId'] = $this->user->id;
-                $accantonato->exchangeArray($data);
-                $this->em->persist($accantonato);
+                $provision->exchangeArray($data);
+                $this->em->persist($provision);
                 $this->em->flush();
 
                 return $this->redirect()->toRoute('accantona_accantonato');
@@ -48,7 +53,7 @@ class AccantonatoController extends AbstractActionController
         return new ViewModel(['form' => $form]);
     }
 
-    public function indexAction()
+    public function indexAction(): ViewModel
     {
         $searchParams = [
             'dateMax'     => $this->params()->fromQuery('dateMax'),
@@ -56,12 +61,13 @@ class AccantonatoController extends AbstractActionController
             'description' => $this->params()->fromQuery('description'),
         ];
 
-        $stored = $this->em->getRepository(Provision::class);
+        /** @var \Application\Repository\ProvisionRepository $provisionRepository */
+        $provisionRepository = $this->em->getRepository(Provision::class);
 
         return new ViewModel(array(
-            'balance'       => $stored->getBalance($this->user->id),
+            'balance'       => $provisionRepository->getBalance($this->user->id),
             'searchParams'  => $searchParams,
-            'rows'          => $stored->search(array_merge($searchParams, ['userId' => $this->user->id])),
+            'rows'          => $provisionRepository->search(array_merge($searchParams, ['userId' => $this->user->id])),
         ));
     }
 
