@@ -5,6 +5,7 @@ namespace MoneyLog\Controller;
 use Application\Entity\Provision;
 use Application\Entity\Category;
 use Doctrine\ORM\EntityManager;
+use Laminas\Http\Response;
 use MoneyLog\Form\CategoriaForm;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
@@ -85,23 +86,31 @@ class CategoriaController extends AbstractActionController
         return ['id' => $id, 'form' => $form];
     }
 
-    public function deleteAction()
+    /**
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
+     */
+    public function deleteAction(): Response
     {
-        $id   = (int) $this->params()->fromRoute('id', 0);
-        $repo = $this->em->getRepository(Category::class);
+        $id   = (int) $this->params()->fromRoute('id');
+
+        /** @var \Application\Repository\CategoryRepository $categoryRepository */
+        $categoryRepository = $this->em->getRepository(Category::class);
 
         /* @var $category Category */
-        $category = $repo->find($id);
-        if ($category && $category->userId == $this->user->id) {
-            $sum = $repo->getSum($id);
+        $category = $categoryRepository->find($id);
+        if ($category && $category->userId === $this->user->id) {
+            $sum = $categoryRepository->getSum($id);
 
             $this->em->beginTransaction();
             if ($sum) {
                 $provision = new Provision();
-                $provision->userId      = $this->user->id;
-                $provision->descrizione = 'Conguaglio rimozione categoria ' . $category->getDescrizione();
-                $provision->importo     = $sum;
-                $provision->valuta      = new \DateTime();
+                $provision->setUserId($this->user->id);
+                $provision->setDescrizione('Conguaglio rimozione categoria ' . $category->getDescrizione());
+                $provision->setImporto($sum);
+                $provision->setValuta(new \DateTime());
                 $this->em->persist($provision);
             }
             $this->em->remove($category);

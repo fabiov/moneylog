@@ -14,6 +14,7 @@ use Laminas\InputFilter\InputFilterInterface;
  * @property int $status
  * @property string $created
  * @property string $updated
+ * @property int $userId
  */
 class Category implements InputFilterAwareInterface
 {

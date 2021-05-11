@@ -3,6 +3,7 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Laminas\Filter\StringTrim;
 use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
@@ -64,6 +65,26 @@ class Provision implements InputFilterAwareInterface
         $this->$property = $value;
     }
 
+    public function setUserId(int $userId): void
+    {
+        $this->userId = $userId;
+    }
+
+    public function setValuta(\DateTime $valuta): void
+    {
+        $this->valuta = $valuta;
+    }
+
+    public function setImporto(float $importo): void
+    {
+        $this->importo = $importo;
+    }
+
+    public function setDescrizione(string $descrizione): void
+    {
+        $this->descrizione = $descrizione;
+    }
+
     public function getArrayCopy(): array
     {
         return get_object_vars($this);
@@ -102,17 +123,17 @@ class Provision implements InputFilterAwareInterface
             $inputFilter->add([
                 'name' => 'valuta',
                 'required' => true,
-                'filters' => [['name' => \Laminas\Filter\StringTrim::class]],
+                'filters' => [['name' => StringTrim::class]],
             ]);
             $inputFilter->add([
                 'name' => 'importo',
                 'required' => true,
-                'filters' => [['name' => \Laminas\Filter\StringTrim::class]],
+                'filters' => [['name' => StringTrim::class]],
             ]);
             $inputFilter->add([
                 'name' => 'descrizione',
                 'required' => true,
-                'filters' => [['name' => \Laminas\Filter\StringTrim::class]],
+                'filters' => [['name' => StringTrim::class]],
             ]);
 
             $this->inputFilter = $inputFilter;
