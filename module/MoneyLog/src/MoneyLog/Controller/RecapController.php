@@ -8,7 +8,6 @@ use Application\Entity\Category;
 use Application\Entity\Movement;
 use Application\Entity\Setting;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\View\Model\ViewModel;
 
 class RecapController extends AbstractActionController
 {
@@ -28,27 +27,31 @@ class RecapController extends AbstractActionController
         $this->user = $user;
     }
 
-    /**
-     * @return array|ViewModel
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
-     */
-    public function indexAction()
+    public function indexAction(): array
     {
-        $em = $this->em;
-        /* @var Setting $settings */
-        $settings = $em->find(Setting::class, $this->user->id);
-        $avgPerCategory = $em->getRepository(Category::class)
-                ->getAverages($this->user->id, new \DateTime('-' . $settings->monthsRetrospective . ' MONTH'));
+        /** @var \Application\Repository\AccountRepository $accountRepository */
+        $accountRepository = $this->em->getRepository(Account::class);
 
-        usort($avgPerCategory, function ($a, $b) {
+        /** @var \Application\Repository\MovementRepository $movementRepository */
+        $movementRepository = $this->em->getRepository(Movement::class);
+
+        /** @var \Application\Repository\ProvisionRepository $provisionRepository */
+        $provisionRepository = $this->em->getRepository(Provision::class);
+
+        /** @var \Application\Repository\CategoryRepository $categoryRepository */
+        $categoryRepository = $this->em->getRepository(Category::class);
+
+        /* @var Setting $settings */
+        $settings = $this->em->find(Setting::class, $this->user->id);
+        $avgPerCategory = $categoryRepository->getAverages($this->user->id, new \DateTime('-' . $settings->monthsRetrospective . ' MONTH'));
+
+        usort($avgPerCategory, static function ($a, $b) {
             return ($a['average'] ?? 0) <=> ($b['average'] ?? 0);
         });
 
-        $totalExpense   = $em->getRepository(Movement::class)->getTotalExpense($this->user->id);
-        $stored         = $em->getRepository(Provision::class)->getSum($this->user->id) + $totalExpense;
-        $accounts       = $em->getRepository(Account::class)->getTotals($this->user->id, true, new \DateTime());
+        $totalExpense   = $movementRepository->getTotalExpense($this->user->id);
+        $stored         = $provisionRepository->getSum($this->user->id) + $totalExpense;
+        $accounts       = $accountRepository->getTotals($this->user->id, true, new \DateTime());
         $donutSpends    = [];
         $donutAccounts  = [];
         $currentDay     = date('j');
@@ -86,7 +89,7 @@ class RecapController extends AbstractActionController
         for ($i = $beginFiller; $i <= $endFiller; $i->modify('+1 day')) {
             $monthlyOverviewData[$i->format('Y-m-d')] = ['date' => $i->format('d/m/Y'), 'amount' => 0];
         }
-        foreach ($em->getRepository(Movement::class)->getMovementByDay($this->user->id, $begin, $end) as $item) {
+        foreach ($movementRepository->getMovementByDay($this->user->id, $begin, $end) as $item) {
             $monthlyOverviewData[$item['date']->format('Y-m-d')] = [
                 'date' => $item['date']->format('d/m/Y'), 'amount' => $item['amount']
             ];
