@@ -2,13 +2,11 @@
 
 namespace MoneyLog\View\Helper;
 
-// use \Laminas\I18n\View\Helper\DateFormat;
-use Zend\Debug\Debug;
 use Laminas\View\Helper\AbstractHelper;
 
 class DateForma extends AbstractHelper
 {
-    public function __invoke($date)
+    public function __invoke($date): string
     {
         if (is_object($date)) {
             return $date->format('d/m/Y');

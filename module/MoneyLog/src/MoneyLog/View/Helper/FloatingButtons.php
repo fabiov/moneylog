@@ -11,6 +11,9 @@ use Laminas\View\Helper\AbstractHelper;
  */
 class FloatingButtons extends AbstractHelper
 {
+    /**
+     * @var array
+     */
     private $items = [];
 
     public function __invoke(): self
@@ -24,6 +27,10 @@ class FloatingButtons extends AbstractHelper
         return $this;
     }
 
+    /**
+     * @param array<string> $params
+     * @return $this
+     */
     public function addAnchorItem(array $params): self
     {
         $html = '<a href="' . $params['href'] . '" data-mfb-label="' . $params['label'] . '" class="mfb-component__button--child">'

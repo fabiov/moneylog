@@ -10,12 +10,12 @@ use Laminas\View\Helper\AbstractHelper;
  */
 class Morris extends AbstractHelper
 {
-    public function __invoke()
+    public function __invoke(): self
     {
         return $this;
     }
 
-    public function donut($element, array $data, $labelKey = 'label', $valueKey = 'value')
+    public function donut($element, array $data, string $labelKey = 'label', string $valueKey = 'value')
     {
         $data = array_filter($data, function ($item) use ($valueKey) {
             return $item[$valueKey] > 0;

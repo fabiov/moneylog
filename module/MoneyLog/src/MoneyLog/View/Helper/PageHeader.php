@@ -2,12 +2,11 @@
 
 namespace MoneyLog\View\Helper;
 
-// use \Laminas\I18n\View\Helper\DateFormat;
 use Laminas\View\Helper\AbstractHelper;
 
 class PageHeader extends AbstractHelper
 {
-    public function __invoke($title)
+    public function __invoke(string $title): string
     {
         $str = $this->view->escapeHtml($title);
         $this->view->headTitle($str);

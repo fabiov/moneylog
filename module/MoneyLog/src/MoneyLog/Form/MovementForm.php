@@ -2,7 +2,6 @@
 
 namespace MoneyLog\Form;
 
-use Application\Entity\Movement;
 use Doctrine\ORM\EntityManager;
 use Laminas\Form\Form;
 
@@ -21,9 +20,10 @@ class MovementForm extends Form
     /**
      * MovementForm constructor.
      * @param string $name
-     * @param EntityManager $em
+     * @param \Doctrine\ORM\EntityManager $em
+     * @param $userId
      */
-    public function __construct($name = 'movement', EntityManager $em, $userId)
+    public function __construct(string $name = 'movement', EntityManager $em, $userId)
     {
         parent::__construct($name);
 
