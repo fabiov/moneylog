@@ -58,7 +58,7 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
         done
     fi
 
-    vendor/bin/phpstan analyze --level=2 module
+    vendor/bin/phpstan analyze
     STATUS=$?
 
     if [[ "$STATUS" -eq 0 ]]; then

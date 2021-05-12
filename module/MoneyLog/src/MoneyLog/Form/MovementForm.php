@@ -21,7 +21,7 @@ class MovementForm extends Form
      * MovementForm constructor.
      * @param string $name
      * @param \Doctrine\ORM\EntityManager $em
-     * @param $userId
+     * @param int $userId
      */
     public function __construct(string $name = 'movement', EntityManager $em, $userId)
     {

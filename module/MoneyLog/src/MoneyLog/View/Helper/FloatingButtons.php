@@ -29,9 +29,9 @@ class FloatingButtons extends AbstractHelper
 
     /**
      * @param array<string> $params
-     * @return $this
+     * @return \MoneyLog\View\Helper\FloatingButtons
      */
-    public function addAnchorItem(array $params): self
+    public function addAnchorItem(array $params): FloatingButtons
     {
         $html = '<a href="' . $params['href'] . '" data-mfb-label="' . $params['label'] . '" class="mfb-component__button--child">'
               . '<i class="mfb-component__child-icon glyphicon glyphicon-' . $params['icon'] . '"></i>'
