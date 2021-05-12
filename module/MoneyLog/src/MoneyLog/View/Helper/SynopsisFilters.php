@@ -11,8 +11,8 @@ use Laminas\View\Helper\AbstractHelper;
 class SynopsisFilters extends AbstractHelper
 {
     /**
-     * @param array $filters
-     * @param array $categories
+     * @param array<string> $filters
+     * @param array<\Application\Entity\Category> $categories
      * @return string
      */
     public function __invoke(array $filters, array $categories): string

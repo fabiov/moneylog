@@ -6,7 +6,7 @@ use Laminas\View\Helper\AbstractHelper;
 
 class CurrencyForma extends AbstractHelper
 {
-    public function __invoke($amount): string
+    public function __invoke(float $amount): string
     {
         return $this->view->currencyFormat($amount, 'EUR', true, 'it_IT');
     }

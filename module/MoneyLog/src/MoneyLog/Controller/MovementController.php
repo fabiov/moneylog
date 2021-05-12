@@ -99,7 +99,7 @@ class MovementController extends AbstractActionController
             return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
         }
 
-        $categories = $this->em->getRepository(\Application\Entity\Category::class)
+        $categories = $this->em->getRepository(Category::class)
             ->findBy(['status' => 1, 'userId' => $this->user->id], ['descrizione' => 'ASC']);
 
         /** @var \Application\Repository\MovementRepository $movementRepository */

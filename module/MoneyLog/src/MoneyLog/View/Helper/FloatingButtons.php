@@ -12,7 +12,7 @@ use Laminas\View\Helper\AbstractHelper;
 class FloatingButtons extends AbstractHelper
 {
     /**
-     * @var array
+     * @var array<string>
      */
     private $items = [];
 

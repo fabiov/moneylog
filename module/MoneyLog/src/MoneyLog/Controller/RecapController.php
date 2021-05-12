@@ -7,6 +7,7 @@ use Application\Entity\Account;
 use Application\Entity\Category;
 use Application\Entity\Movement;
 use Application\Entity\Setting;
+use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
@@ -18,11 +19,11 @@ class RecapController extends AbstractActionController
     private $user;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
-    public function __construct($em, \stdClass $user)
+    public function __construct(EntityManagerInterface $em, \stdClass $user)
     {
         $this->em   = $em;
         $this->user = $user;

@@ -11,10 +11,12 @@ use Laminas\InputFilter\InputFilterInterface;
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\CategoryRepository")
  * @ORM\Table(name="category")
+ * @property int $id
  * @property int $status
- * @property string $created
- * @property string $updated
  * @property int $userId
+ * @property string $created
+ * @property string $descrizione
+ * @property string $updated
  */
 class Category implements InputFilterAwareInterface
 {

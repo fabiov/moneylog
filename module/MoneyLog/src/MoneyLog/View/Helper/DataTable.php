@@ -10,6 +10,10 @@ use Laminas\View\Helper\AbstractHelper;
  */
 class DataTable extends AbstractHelper
 {
+    /**
+     * @param string $selector
+     * @param array<array|bool> $options
+     */
     public function __invoke(string $selector, array $options = []): void
     {
         $json = json_encode(array_merge([
