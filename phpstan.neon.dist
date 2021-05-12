@@ -1,5 +1,5 @@
 parameters:
-    level: 5
+    level: 6
     parallel:
         processTimeout: 180.0
     fileExtensions:

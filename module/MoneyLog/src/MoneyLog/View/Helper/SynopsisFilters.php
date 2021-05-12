@@ -12,9 +12,10 @@ class SynopsisFilters extends AbstractHelper
 {
     /**
      * @param array $filters
+     * @param array $categories
      * @return string
      */
-    public function __invoke(array $filters, array $categories)
+    public function __invoke(array $filters, array $categories): string
     {
         $piaces = [];
 

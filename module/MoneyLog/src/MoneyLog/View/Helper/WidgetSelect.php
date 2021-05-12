@@ -7,7 +7,11 @@ use Laminas\Escaper\Escaper;
 
 class WidgetSelect extends AbstractHelper
 {
-    public function __invoke($data)
+    /**
+     * @param array<array|string> $data
+     * @return string
+     */
+    public function __invoke(array $data): string
     {
         $escaper = new Escaper('utf-8');
 
