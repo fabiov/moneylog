@@ -15,7 +15,7 @@ class CategoryRepository extends EntityRepository
      * @param \DateTime $since
      * @return array
      */
-    public function getAverages(int $userId, \DateTime $since)
+    public function getAverages(int $userId, \DateTime $since): array
     {
         $oldest = $this->oldestMovements($userId);
 
@@ -34,20 +34,21 @@ class CategoryRepository extends EntityRepository
 
         $data = [];
         foreach ($oldest as $categoryId => $row) {
-            $avarage = null;
+            $average = null;
             if (isset($rs[$categoryId])) {
                 $date = $row['date'] < $rs[$categoryId]['first_date']
                       ? $since->format('Y-m-d') : $rs[$categoryId]['first_date'];
-                list($y, $m, $d) = explode('-', $date);
+                [$y, $m, $d] = explode('-', $date);
 
-                //mesi di differenza
-                $monthDiff = (mktime(0, 0, 0) - mktime(0, 0, 0, $m, $d, $y)) / 2628000;
+                // mesi di differenza
+                $firstDateUnixTime = mktime(0, 0, 0, (int) $m, (int) $d, (int) $y);
+                $monthDiff = (mktime(0, 0, 0) - $firstDateUnixTime) / 2628000;
                 if ($monthDiff) {
-                    $avarage = $rs[$categoryId]['amount'] / $monthDiff;
+                    $average = $rs[$categoryId]['amount'] / $monthDiff;
                 }
             }
             $data[] = [
-                'average'       => $avarage,
+                'average'       => $average,
                 'description'   => $row['descrizione'],
                 'id'            => $row['id'],
                 'status'        => $row['status'],
