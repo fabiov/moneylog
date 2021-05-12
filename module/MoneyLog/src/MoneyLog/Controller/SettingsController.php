@@ -63,6 +63,6 @@ class SettingsController extends AbstractActionController
                 $message = 'Impostazioni salvate correttamente.';
             }
         }
-        return new ViewModel( ['form' => $form, 'message' => $message]);
+        return new ViewModel(['form' => $form, 'message' => $message]);
     }
 }

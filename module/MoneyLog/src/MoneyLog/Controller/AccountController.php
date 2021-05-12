@@ -88,7 +88,7 @@ class AccountController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        /** @var Account $account */
+        /** @var ?Account $account */
         $account = $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
 
         if (!$account) {

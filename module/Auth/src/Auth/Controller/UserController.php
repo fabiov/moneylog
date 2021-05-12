@@ -27,7 +27,7 @@ class UserController extends AbstractActionController
     private $em;
 
     /**
-     * @var \stdClass
+     * @var ?\stdClass
      */
     private $user;
 
@@ -58,7 +58,7 @@ class UserController extends AbstractActionController
      */
     public function updateAction()
     {
-        /** @var User $user */
+        /** @var ?User $user */
         $user = $this->em->find(User::class, $this->user->id);
         if (!$user) {
             return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
@@ -112,7 +112,6 @@ class UserController extends AbstractActionController
                 switch ($result->getCode()) {
                     case Result::SUCCESS:
                         return $this->redirect()->toRoute('accantona_recap');
-                        break;
                     case Result::FAILURE_IDENTITY_NOT_FOUND:
                     case Result::FAILURE_CREDENTIAL_INVALID:
                     default:

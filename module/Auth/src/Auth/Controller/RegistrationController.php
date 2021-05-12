@@ -92,7 +92,7 @@ class RegistrationController extends AbstractActionController
         $token = $this->params()->fromRoute('id');
         $viewModel = new ViewModel(['token' => $token]);
 
-        /** @var User $user */
+        /** @var ?User $user */
         $user = $this->em->getRepository(User::class)->findOneBy(['registrationToken' => $token]);
 
         if ($user) {

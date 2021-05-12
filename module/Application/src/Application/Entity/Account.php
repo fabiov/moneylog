@@ -17,7 +17,7 @@ use Laminas\InputFilter\InputFilter;
 class Account implements InputFilterAwareInterface
 {
     /**
-     * @var InputFilterInterface
+     * @var ?InputFilterInterface
      */
     protected $inputFilter;
 
