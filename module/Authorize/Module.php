@@ -3,25 +3,31 @@
 namespace Authorize;
 
 use Authorize\Acl\Acl;
+use Laminas\EventManager\EventInterface;
+use Laminas\Loader\StandardAutoloader;
 
 class Module
 {
-    public function getConfig()
+    public function getConfig(): array
     {
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function getAutoloaderConfig()
+    public function getAutoloaderConfig(): array
     {
         return [
-            'Laminas\Loader\StandardAutoloader' => [
+            StandardAutoloader::class => [
                 'namespaces' => [__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__],
             ],
         ];
     }
 
-    // FOR Authorization
-    public function onBootstrap(\Laminas\EventManager\EventInterface $e) // use it to attach event listeners
+    /**
+     * FOR Authorization
+     * use it to attach event listeners
+     * @param \Laminas\EventManager\EventInterface $e
+     */
+    public function onBootstrap(EventInterface $e): void
     {
         $application = $e->getApplication();
         $em = $application->getEventManager();
@@ -33,7 +39,7 @@ class Module
      * @param \Laminas\EventManager\EventInterface $e
      * @throws \Exception
      */
-    public function onRoute(\Laminas\EventManager\EventInterface $e) // Event manager of the app
+    public function onRoute(EventInterface $e): void
     {
         $application = $e->getApplication();
         $routeMatch = $e->getRouteMatch();
@@ -56,7 +62,7 @@ class Module
         }
 
         if (!$acl->isAllowed($role, $controller, $action)) {
-            $url = $e->getRouter()->assemble(array(), array('name' => 'home'));
+            $url = $e->getRouter()->assemble([], ['name' => 'home']);
             $response = $e->getResponse();
             $response->getHeaders()->addHeaderLine('Location', $url);
 

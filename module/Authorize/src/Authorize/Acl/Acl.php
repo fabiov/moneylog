@@ -29,7 +29,7 @@ class Acl extends LaminasAcl
      * @return void
      * @throws \Exception
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         if (!isset($config['acl']['roles']) || !isset($config['acl']['resources'])) {
             throw new \Exception('Invalid ACL Config found');

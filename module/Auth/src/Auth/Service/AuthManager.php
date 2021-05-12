@@ -84,7 +84,7 @@ class AuthManager
     /**
      * Performs user logout.
      */
-    public function logout()
+    public function logout(): void
     {
         // Remove identity from session.
         $this->authService->clearIdentity();
