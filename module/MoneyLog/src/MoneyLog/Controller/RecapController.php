@@ -8,6 +8,7 @@ use Application\Entity\Category;
 use Application\Entity\Movement;
 use Application\Entity\Setting;
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
 class RecapController extends AbstractActionController
 {
@@ -27,7 +28,7 @@ class RecapController extends AbstractActionController
         $this->user = $user;
     }
 
-    public function indexAction(): array
+    public function indexAction(): ViewModel
     {
         /** @var \Application\Repository\AccountRepository $accountRepository */
         $accountRepository = $this->em->getRepository(Account::class);
@@ -95,7 +96,7 @@ class RecapController extends AbstractActionController
             ];
         }
 
-        return [
+        return new ViewModel([
             'accounts'              => $accounts,
             'avgPerCategory'        => $avgPerCategory,
             'donutAccounts'         => $donutAccounts,
@@ -104,6 +105,6 @@ class RecapController extends AbstractActionController
             'monthlyOverviewData'   => $monthlyOverviewData,
             'remainingDays'         => $remainingDays,
             'stored'                => $stored,
-        ];
+        ]);
     }
 }

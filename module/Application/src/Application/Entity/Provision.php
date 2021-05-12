@@ -108,9 +108,10 @@ class Provision implements InputFilterAwareInterface
 
     /**
      * @param \Laminas\InputFilter\InputFilterInterface $inputFilter
+     * @return \Laminas\InputFilter\InputFilterAwareInterface
      * @throws \Exception
      */
-    public function setInputFilter(InputFilterInterface $inputFilter): void
+    public function setInputFilter(InputFilterInterface $inputFilter): InputFilterAwareInterface
     {
         throw new \Exception('Not used');
     }
