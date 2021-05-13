@@ -5,10 +5,11 @@ namespace Auth;
 use Laminas\Mail\Transport\Smtp;
 use Laminas\Mail\Transport\SmtpOptions;
 use Laminas\ServiceManager\ServiceManager;
+use Laminas\Loader\StandardAutoloader;
 
 class Module
 {
-    public function getConfig()
+    public function getConfig(): array
     {
         return include __DIR__ . '/config/module.config.php';
     }
@@ -16,7 +17,7 @@ class Module
     public function getAutoloaderConfig(): array
     {
         return [
-            'Laminas\Loader\StandardAutoloader' => [
+            StandardAutoloader::class => [
                 'namespaces' => [
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ],

@@ -6,15 +6,22 @@ use Laminas\View\Helper\AbstractHelper;
 
 class RichInlineScript extends AbstractHelper
 {
+    /**
+     * @var string
+     */
     private $documentReady = '';
-    private $generic       = '';
 
-    public function addOnDocumentReady($js)
+    /**
+     * @var string
+     */
+    private $generic = '';
+
+    public function addOnDocumentReady(string $js): void
     {
         $this->documentReady .= $js . PHP_EOL;
     }
 
-    public function addGeneric($js)
+    public function addGeneric(string $js): void
     {
         $this->generic .= $js . PHP_EOL;
     }
