@@ -201,7 +201,7 @@ class RegistrationController extends AbstractActionController
         $this->sm->get('mail.transport')->send($message);
     }
 
-    private function sendPasswordByEmail($userEmail, $password): void
+    private function sendPasswordByEmail(string $userEmail, string $password): void
     {
         $config = $this->sm->get('Config');
 

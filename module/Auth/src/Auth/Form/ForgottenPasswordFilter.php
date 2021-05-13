@@ -2,11 +2,14 @@
 
 namespace Auth\Form;
 
+use Laminas\Db\Adapter\Adapter;
 use Laminas\InputFilter\InputFilter;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Validator\Db\RecordExists;
 
 class ForgottenPasswordFilter extends InputFilter
 {
-    public function __construct($sm)
+    public function __construct(ServiceManager $sm)
     {
         $this->add([
             'name'          => 'email',
@@ -14,10 +17,8 @@ class ForgottenPasswordFilter extends InputFilter
             'validators'    => [
                 ['name' => 'EmailAddress'],
                 [
-                    'name'      => 'Laminas\Validator\Db\RecordExists',
-                    'options'   => [
-                        'adapter' => $sm->get('Laminas\Db\Adapter\Adapter'), 'field' => 'email', 'table' => 'user'
-                    ],
+                    'name' => RecordExists::class,
+                    'options' => ['adapter' => $sm->get(Adapter::class), 'field' => 'email', 'table' => 'user'],
                 ],
             ],
         ]);
