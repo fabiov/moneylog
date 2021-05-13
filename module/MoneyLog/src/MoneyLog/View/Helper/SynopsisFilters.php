@@ -17,43 +17,43 @@ class SynopsisFilters extends AbstractHelper
      */
     public function __invoke(array $filters, array $categories): string
     {
-        $piaces = [];
+        $pieces = [];
 
         if ($filters['dateMin'] || $filters['dateMax']) {
-            $piaces['date'] = '';
+            $pieces['date'] = '';
             if ($filters['dateMin']) {
-                $piaces['date'] .= 'dal <strong>' . date('d/m/Y', strtotime($filters['dateMin'])) . '</strong>';
+                $pieces['date'] .= 'dal <strong>' . date('d/m/Y', strtotime($filters['dateMin'])) . '</strong>';
             }
             if ($filters['dateMax']) {
-                $piaces['date'] .= ' al <strong>' . date('d/m/Y', strtotime($filters['dateMax'])) . '</strong>';
+                $pieces['date'] .= ' al <strong>' . date('d/m/Y', strtotime($filters['dateMax'])) . '</strong>';
             }
         }
 
         if ($filters['amountMin'] || $filters['amountMax']) {
-            $piaces['amount'] = '';
+            $pieces['amount'] = '';
             if ($filters['amountMin']) {
-                $piaces['amount'] .= 'da <strong>' . $filters['amountMin'] . '€</strong>';
+                $pieces['amount'] .= 'da <strong>' . $filters['amountMin'] . '€</strong>';
             }
             if ($filters['amountMax']) {
-                $piaces['amount'] .= ' a <strong>' . $filters['amountMax'] . '€</strong>';
+                $pieces['amount'] .= ' a <strong>' . $filters['amountMax'] . '€</strong>';
             }
         }
 
         if ($filters['description']) {
-            $piaces['description'] = 'descrizione <strong>' . $filters['description'] . '</strong>';
+            $pieces['description'] = 'descrizione <strong>' . $filters['description'] . '</strong>';
         }
 
         if ($filters['category']) {
             $category = '';
-            foreach ($categories as $c) {
-                if ($c->id == $filters['category']) {
-                    $category = $c->descrizione;
+            foreach ($categories as $category) {
+                if ($category->getId() == $filters['category']) {
+                    $category = $category->getDescrizione();
                 }
             }
 
-            $piaces['category'] = 'categoria <strong>' . $category . '</strong>';
+            $pieces['category'] = 'categoria <strong>' . $category . '</strong>';
         }
 
-        return $piaces ? implode(', ', $piaces) : '<strong>Motra tutto</strong>';
+        return $pieces ? implode(', ', $pieces) : '<strong>Motra tutto</strong>';
     }
 }

@@ -11,12 +11,6 @@ use Laminas\InputFilter\InputFilterInterface;
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\CategoryRepository")
  * @ORM\Table(name="category")
- * @property int $id
- * @property int $status
- * @property int $userId
- * @property string $created
- * @property string $descrizione
- * @property string $updated
  */
 class Category implements InputFilterAwareInterface
 {
@@ -78,26 +72,19 @@ class Category implements InputFilterAwareInterface
         $this->movements = new ArrayCollection();
     }
 
-    /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
-    public function __get($property)
+    public function getId(): int
     {
-        return $this->$property;
+        return $this->id;
     }
 
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     */
-    public function __set(string $property, $value)
+    public function getDescrizione(): string
     {
-        $this->$property = $value;
+        return $this->descrizione;
+    }
+
+    public function setDescrizione(string $descrizione): void
+    {
+        $this->descrizione = $descrizione;
     }
 
     /**
@@ -126,7 +113,7 @@ class Category implements InputFilterAwareInterface
      * @param InputFilterInterface $inputFilter
      * @return $this
      */
-    public function setInputFilter(InputFilterInterface $inputFilter)
+    public function setInputFilter(InputFilterInterface $inputFilter): Category
     {
         $this->inputFilter = $inputFilter;
         return $this;
@@ -151,15 +138,5 @@ class Category implements InputFilterAwareInterface
         }
 
         return $this->inputFilter;
-    }
-
-    public function getDescrizione(): string
-    {
-        return $this->descrizione;
-    }
-
-    public function setDescrizione(string $descrizione): void
-    {
-        $this->descrizione = $descrizione;
     }
 }
