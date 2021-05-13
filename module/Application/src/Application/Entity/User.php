@@ -17,6 +17,9 @@ class User implements InputFilterAwareInterface
     public const STATUS_NOT_CONFIRMED = 0;
     public const STATUS_CONFIRMED = 1;
 
+    /**
+     * @var ?InputFilterInterface
+     */
     protected $inputFilter;
 
     /**
@@ -47,26 +50,31 @@ class User implements InputFilterAwareInterface
 
     /**
      * @ORM\Column(type="string", length=32, options={"fixed" = true})
+     * @var string
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=4, options={"fixed" = true})
+     * @var string
      */
     private $salt;
 
     /**
      * @ORM\Column(type="integer", options={"unsigned"=true})
+     * @var int
      */
     private $status = 0;
 
     /**
      * @ORM\Column(type="string")
+     * @var string
      */
     private $role;
 
     /**
      * @ORM\Column(type="string", length=8, options={"fixed" = true})
+     * @var string
      */
     private $registrationToken;
 
@@ -138,14 +146,15 @@ class User implements InputFilterAwareInterface
      *
      * @param array $data
      */
-    public function exchangeArray(array $data = [])
+    public function exchangeArray(array $data = []): void
     {
-        $this->id      = isset($data['id']) ? $data['id'] : null;
+        $this->id = $data['id'] ?? null;
+        $this->name = $data['name'] ?? null;
+        $this->surname = $data['surname'] ?? null;
+
         if (array_key_exists('email', $data)) {
             $this->email = $data['email'];
         }
-        $this->name    = isset($data['name']) ? $data['name'] : null;
-        $this->surname = isset($data['surname']) ? $data['surname'] : null;
         if (array_key_exists('password', $data)) {
             $this->password = $data['password'];
         }

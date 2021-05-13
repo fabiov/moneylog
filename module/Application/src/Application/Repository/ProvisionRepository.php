@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityRepository;
 
 class ProvisionRepository extends EntityRepository
 {
-    public function getBalance($userId)
+    public function getBalance(int $userId): float
     {
         $em = $this->getEntityManager();
         $qb = $em
@@ -22,6 +22,7 @@ class ProvisionRepository extends EntityRepository
 
         /** @var \Application\Repository\MovementRepository $movementRepository */
         $movementRepository = $em->getRepository(Movement::class);
+
         return $qb->getQuery()->getSingleScalarResult() + $movementRepository->getTotalExpense($userId);
     }
 

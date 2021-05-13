@@ -30,10 +30,6 @@ class MovementRepository extends EntityRepository
         return (float) $result['balance'];
     }
 
-    /**
-     * @param array $params
-     * @return array
-     */
     public function search(array $params = []): array
     {
         $cleanParams  = [];
@@ -94,7 +90,7 @@ class MovementRepository extends EntityRepository
         return (float) $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function getMovementByDay(int $userId, string $minDate, string $maxDate)
+    public function getMovementByDay(int $userId, string $minDate, string $maxDate): array
     {
         // SELECT date, SUM(amount) AS amount FROM movement INNER JOIN account ON movement.accountId=account.id
         // WHERE userId=1 AND recap=1 AND date >= '2019-02-10' AND date<='2019-02-25' GROUP BY date

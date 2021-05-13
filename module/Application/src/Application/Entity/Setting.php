@@ -17,6 +17,9 @@ use Laminas\InputFilter\InputFilterInterface;
  */
 class Setting implements InputFilterAwareInterface
 {
+    /**
+     * @var ?InputFilterInterface
+     */
     protected $inputFilter;
 
     /**
@@ -124,10 +127,7 @@ class Setting implements InputFilterAwareInterface
         return $this;
     }
 
-    /**
-     * @return InputFilter
-     */
-    public function getInputFilter()
+    public function getInputFilter(): InputFilterInterface
     {
         if (!$this->inputFilter) {
             $this->inputFilter = new InputFilter();

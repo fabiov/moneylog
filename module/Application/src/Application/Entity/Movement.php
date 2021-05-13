@@ -14,7 +14,7 @@ use Laminas\InputFilter\InputFilter;
  * @ORM\Table(name="movement")
  * @property int $id
  * @property int $accountId
- * @property DateTime $date
+ * @property \DateTime $date
  * @property float $amount
  * @property string $description
  *
@@ -27,48 +27,59 @@ class Movement implements InputFilterAwareInterface
     public const IN = 1;
     public const OUT = -1;
 
+    /**
+     * @var ?InputFilterInterface
+     */
     protected $inputFilter;
 
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     protected $id;
 
     /**
      * @ORM\Column(name="accountId", type="integer", options={"unsigned"=true})
+     * @var int
      */
     protected $accountId;
 
     /**
      * @ORM\Column(name="date", type="date")
+     * @var \DateTime
      */
     protected $date;
 
     /**
      * @ORM\Column(name="amount", type="float")
+     * @var float
      */
     protected $amount;
 
     /**
      * @ORM\Column(name="description", type="string")
+     * @var string
      */
     protected $description;
 
     /**
      * @ORM\Column(name="created", type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
+     * @var \DateTime
      */
     private $created;
 
     /**
      * @ORM\Column(name="updated", type="datetime", nullable=true)
+     * @var \DateTime
      */
     private $updated;
 
     /**
      * @ORM\ManyToOne(targetEntity="Account", inversedBy="movements")
      * @ORM\JoinColumn(name="accountId", referencedColumnName="id")
+     * @var Account
      */
     protected $account;
 
@@ -76,6 +87,7 @@ class Movement implements InputFilterAwareInterface
      * Many movements have one category. This is the owning side.
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="movements")
      * @ORM\JoinColumn(name="categoryId", referencedColumnName="id", onDelete="SET NULL")
+     * @var Category
      */
     private $category;
 
@@ -85,7 +97,7 @@ class Movement implements InputFilterAwareInterface
      * @param string $property
      * @return mixed
      */
-    public function __get($property)
+    public function __get(string $property)
     {
         return $this->$property;
     }
@@ -116,10 +128,7 @@ class Movement implements InputFilterAwareInterface
         return get_object_vars($this);
     }
 
-    /**
-     * Convert the object to an array.
-     */
-    public function exchangeArray($data): void
+    public function exchangeArray(array $data): void
     {
         if (isset($data['id'])) {
             $this->id = $data['id'];
@@ -141,7 +150,7 @@ class Movement implements InputFilterAwareInterface
         return $this;
     }
 
-    public function getInputFilter(): InputFilter
+    public function getInputFilter(): InputFilterInterface
     {
         if (!$this->inputFilter) {
             $this->inputFilter = new MovementFilter();

@@ -23,43 +23,53 @@ class Category implements InputFilterAwareInterface
     public const STATUS_INACTIVE = 0;
     public const STATUS_ACTIVE = 1;
 
+    /**
+     * @var ?InputFilterInterface
+     */
     protected $inputFilter;
 
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     protected $id;
 
     /**
      * @ORM\Column(name="userId", type="integer", options={"unsigned"=true})
+     * @var int
      */
     protected $userId;
 
     /**
      * @ORM\Column(name="descrizione", type="string")
+     * @var string
      */
     protected $descrizione;
 
     /**
      * @ORM\Column(name="status", type="integer")
+     * @var int
      */
     protected $status = 1;
 
     /**
      * @ORM\Column(name="created", type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
+     * @var \DateTime
      */
     protected $created;
 
     /**
      * @ORM\Column(name="updated", type="datetime", nullable=true)
+     * @var \DateTime
      */
     protected $updated;
 
     /**
      * One category has many movements. This is the inverse side.
      * @ORM\OneToMany(targetEntity="Movement", mappedBy="category")
+     * @var ArrayCollection<int, Movement>
      */
     private $movements;
 
@@ -122,10 +132,7 @@ class Category implements InputFilterAwareInterface
         return $this;
     }
 
-    /**
-     * @return InputFilter
-     */
-    public function getInputFilter()
+    public function getInputFilter(): InputFilterInterface
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
@@ -146,18 +153,12 @@ class Category implements InputFilterAwareInterface
         return $this->inputFilter;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescrizione()
+    public function getDescrizione(): string
     {
         return $this->descrizione;
     }
 
-    /**
-     * @param string $descrizione
-     */
-    public function setDescrizione($descrizione)
+    public function setDescrizione(string $descrizione): void
     {
         $this->descrizione = $descrizione;
     }

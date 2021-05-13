@@ -14,32 +14,40 @@ use Laminas\InputFilter\InputFilterInterface;
  */
 class Provision implements InputFilterAwareInterface
 {
+    /**
+     * @var ?InputFilterInterface
+     */
     private $inputFilter;
 
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(name="userId", type="integer", options={"unsigned"=true});
+     * @var int
      */
     private $userId;
 
     /**
      * @ORM\Column(name="valuta", type="date")
+     * @var \DateTime
      */
     private $valuta;
 
     /**
      * @ORM\Column(name="importo", type="decimal", precision=8, scale=2)
+     * @var float
      */
     private $importo;
 
     /**
      * @ORM\Column(name="descrizione", type="string")
+     * @var string
      */
     private $descrizione;
 
@@ -93,7 +101,7 @@ class Provision implements InputFilterAwareInterface
     /**
      * @throws \Exception
      */
-    public function exchangeArray($data = []): void
+    public function exchangeArray(array $data = []): void
     {
         if (isset($data['id'])) {
             $this->id = $data['id'];
@@ -116,7 +124,7 @@ class Provision implements InputFilterAwareInterface
         throw new \Exception('Not used');
     }
 
-    public function getInputFilter(): InputFilter
+    public function getInputFilter(): InputFilterInterface
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();

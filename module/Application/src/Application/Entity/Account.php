@@ -57,6 +57,7 @@ class Account implements InputFilterAwareInterface
 
     /**
      * @ORM\OneToMany(targetEntity="Movement", mappedBy="account")
+     * @var ArrayCollection<int, Movement>
      */
     protected $movements;
 
@@ -90,13 +91,7 @@ class Account implements InputFilterAwareInterface
         return get_object_vars($this);
     }
 
-    /**
-     * Populate from an array.
-     *
-     * @param array $data
-     * @return $this
-     */
-    public function exchangeArray(array $data = []): Account
+    public function exchangeArray(array $data = []): self
     {
         if (isset($data['user'])) {
             $this->user = $data['user'];
