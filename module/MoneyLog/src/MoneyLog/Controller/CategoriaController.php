@@ -4,6 +4,7 @@ namespace MoneyLog\Controller;
 
 use Application\Entity\Provision;
 use Application\Entity\Category;
+use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Laminas\Http\Response;
 use MoneyLog\Form\CategoriaForm;
@@ -41,7 +42,7 @@ class CategoriaController extends AbstractActionController
 
             if ($form->isValid()) {
                 $data = $form->getData();
-                $data['userId'] = $this->user->id;
+                $data['user'] = $this->em->getRepository(User::class)->find($this->user->id);
                 $category->exchangeArray($data);
                 $this->em->persist($category);
                 $this->em->flush();
@@ -56,7 +57,7 @@ class CategoriaController extends AbstractActionController
     public function indexAction()
     {
         return new ViewModel([
-            'rows' => $this->em->getRepository(Category::class)->findBy(['userId' => $this->user->id])
+            'rows' => $this->em->getRepository(Category::class)->findBy(['user' => $this->user->id])
         ]);
     }
 
@@ -65,7 +66,7 @@ class CategoriaController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         $category = $this->em->getRepository('Application\Entity\Category')
-            ->findOneBy(['id' => $id, 'userId' => $this->user->id]);
+            ->findOneBy(['id' => $id, 'user' => $this->user->id]);
         if (!$category) {
             return $this->redirect()->toRoute('accantona_categoria', ['action' => 'index']);
         }

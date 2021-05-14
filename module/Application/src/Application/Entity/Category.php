@@ -2,7 +2,6 @@
 
 namespace Application\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterAwareInterface;
@@ -20,7 +19,7 @@ class Category implements InputFilterAwareInterface
     /**
      * @var ?InputFilterInterface
      */
-    protected $inputFilter;
+    private $inputFilter;
 
     /**
      * @ORM\Id
@@ -28,49 +27,27 @@ class Category implements InputFilterAwareInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
-    protected $id;
+    private $id;
 
     /**
-     * @ORM\Column(name="userId", type="integer", options={"unsigned"=true})
-     * @var int
+     * Many categories have one user. This is the owning side.
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @var User
      */
-    protected $userId;
+    private $user;
 
     /**
      * @ORM\Column(name="descrizione", type="string")
      * @var string
      */
-    protected $descrizione;
+    private $descrizione;
 
     /**
      * @ORM\Column(name="status", type="integer")
      * @var int
      */
-    protected $status = 1;
-
-    /**
-     * @ORM\Column(name="created", type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
-     * @var \DateTime
-     */
-    protected $created;
-
-    /**
-     * @ORM\Column(name="updated", type="datetime", nullable=true)
-     * @var \DateTime
-     */
-    protected $updated;
-
-    /**
-     * One category has many movements. This is the inverse side.
-     * @ORM\OneToMany(targetEntity="Movement", mappedBy="category")
-     * @var ArrayCollection<int, Movement>
-     */
-    private $movements;
-
-    public function __construct()
-    {
-        $this->movements = new ArrayCollection();
-    }
+    private $status = 1;
 
     public function getId(): int
     {
@@ -85,6 +62,11 @@ class Category implements InputFilterAwareInterface
     public function setDescrizione(string $descrizione): void
     {
         $this->descrizione = $descrizione;
+    }
+
+    public function getStatus(): int
+    {
+        return $this->status;
     }
 
     /**
@@ -102,8 +84,8 @@ class Category implements InputFilterAwareInterface
      */
     public function exchangeArray(array $data = []): void
     {
-        if (isset($data['userId'])) {
-            $this->userId = $data['userId'];
+        if (isset($data['user'])) {
+            $this->user = $data['user'];
         }
         $this->descrizione = $data['descrizione'] ?? null;
         $this->status      = empty($data['status']) ? 0 : 1;
