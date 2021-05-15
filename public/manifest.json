@@ -15,9 +15,9 @@
   ],
   "start_url": "/dashboard",
   "background_color": "#ffffff",
-  "display": "fullscreen",
+  "display": "standalone",
   "scope": "/",
-  "theme_color": "#e7e7e7",
+  "theme_color": "#f8f8f8",
   "shortcuts": [
   ],
   "description": "MoneyLog: tieni traccia delle tue spese.",
