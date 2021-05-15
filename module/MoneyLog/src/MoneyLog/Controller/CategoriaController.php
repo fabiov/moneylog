@@ -102,13 +102,13 @@ class CategoriaController extends AbstractActionController
 
         /* @var $category Category */
         $category = $categoryRepository->find($id);
-        if ($category && $category->userId === $this->user->id) {
+        if ($category && $category->getUser()->getId() === $this->user->id) {
             $sum = $categoryRepository->getSum($id);
 
             $this->em->beginTransaction();
             if ($sum) {
                 $provision = new Provision();
-                $provision->setUserId($this->user->id);
+                $provision->setUser($category->getUser());
                 $provision->setDescrizione('Conguaglio rimozione categoria ' . $category->getDescrizione());
                 $provision->setImporto($sum);
                 $provision->setValuta(new \DateTime());
