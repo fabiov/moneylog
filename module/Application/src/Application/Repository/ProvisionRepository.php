@@ -15,9 +15,9 @@ class ProvisionRepository extends EntityRepository
         $em = $this->getEntityManager();
         $qb = $em
             ->createQueryBuilder()
-            ->select('COALESCE(SUM(a.importo), 0) AS total')
-            ->from(Provision::class, 'a')
-            ->where('a.userId=:userId')
+            ->select('COALESCE(SUM(Provision.importo), 0) AS total')
+            ->from(Provision::class, 'Provision')
+            ->where('Provision.user=:userId')
             ->setParameter(':userId', $userId);
 
         /** @var \Application\Repository\MovementRepository $movementRepository */
@@ -26,37 +26,34 @@ class ProvisionRepository extends EntityRepository
         return $qb->getQuery()->getSingleScalarResult() + $movementRepository->getTotalExpense($userId);
     }
 
-    /**
-     * @param array $params
-     * @return array
-     */
-    public function search(array $params = [])
+    public function search(array $params = []): array
     {
         $cleanParams  = [];
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
-            ->select('a')
-            ->from(Provision::class, 'a')
+            ->select('Provision')
+            ->from(Provision::class, 'Provision')
             ->where('1=1');
 
         if (!empty($params['userId'])) {
-            $qb->andWhere('a.userId = :userId');
+            $qb->andWhere('Provision.user = :userId');
             $cleanParams['userId'] = $params['userId'];
         }
         if (!empty($params['dateMin'])) {
-            $qb->andWhere('a.valuta >= :dateMin');
+            $qb->andWhere('Provision.valuta >= :dateMin');
             $cleanParams['dateMin'] = $params['dateMin'];
         }
         if (!empty($params['dateMax'])) {
-            $qb->andWhere('a.valuta <= :dateMax');
+            $qb->andWhere('Provision.valuta <= :dateMax');
             $cleanParams['dateMax'] = $params['dateMax'];
         }
         if (!empty($params['description'])) {
-            $qb->andWhere('a.descrizione LIKE :description');
+            $qb->andWhere('Provision.descrizione LIKE :description');
             $cleanParams['description'] = '%' . $params['description'] . '%';
         }
 
-        return $qb->setParameters($cleanParams)->orderBy('a.valuta', 'DESC')->getQuery()->getResult();
+        $query = $qb->setParameters($cleanParams)->orderBy('Provision.valuta', 'DESC')->getQuery();
+        return $query->getResult();
     }
 
     /**
@@ -69,9 +66,9 @@ class ProvisionRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder()
-                 ->select('COALESCE(SUM(a.importo), 0) AS total')
-                 ->from(Provision::class, 'a')
-                 ->where('a.userId=:userId')
+                 ->select('COALESCE(SUM(Provision.importo), 0) AS total')
+                 ->from(Provision::class, 'Provision')
+                 ->where('Provision.user=:userId')
                  ->setParameter(':userId', $userId);
 
         return (float) $qb->getQuery()->getSingleScalarResult();

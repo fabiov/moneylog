@@ -3,6 +3,7 @@
 namespace MoneyLog\Controller;
 
 use Application\Entity\Provision;
+use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
 use MoneyLog\Form\AccantonatoForm;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -41,9 +42,13 @@ class AccantonatoController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+
+                /** @var User $user */
+                $user = $this->em->find(User::class, $this->user->id);
+
                 $data = $form->getData();
-                $data['userId'] = $this->user->id;
                 $provision->exchangeArray($data);
+                $provision->setUser($user);
                 $this->em->persist($provision);
                 $this->em->flush();
 
@@ -75,7 +80,7 @@ class AccantonatoController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        $aside = $this->em->getRepository(Provision::class)->findOneBy(['id' => $id, 'userId' => $this->user->id]);
+        $aside = $this->em->getRepository(Provision::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
 
         if (!$aside) {
             return $this->redirect()->toRoute('accantona_accantonato', ['action' => 'index']);
@@ -102,7 +107,7 @@ class AccantonatoController extends AbstractActionController
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        $spend = $this->em->getRepository(Provision::class)->findOneBy(['id' => $id, 'userId' => $this->user->id]);
+        $spend = $this->em->getRepository(Provision::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
 
         if ($spend) {
             $this->em->remove($spend);
