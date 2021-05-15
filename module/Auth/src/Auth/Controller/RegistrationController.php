@@ -131,8 +131,9 @@ class RegistrationController extends AbstractActionController
 
                 $password = $this->getRandomString(10);
 
+                /** @var User $user */
                 $user = $this->em->getRepository(User::class)->findOneBy(['email' => $data['email']]);
-                $user->password = $this->encriptPassword($password, $user->salt);
+                $user->setPassword($this->encriptPassword($password, $user->getSalt()));
                 $this->em->persist($user);
                 $this->em->flush();
 

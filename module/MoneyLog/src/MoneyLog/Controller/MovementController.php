@@ -58,7 +58,7 @@ class MovementController extends AbstractActionController
 
             if ($form->isValid()) {
 
-                /** @var Category $category */
+                /** @var ?Category $category */
                 $category = $this->em
                     ->getRepository(Category::class)
                     ->findOneBy(['id' => $data['category'], 'user' => $this->user->id]);

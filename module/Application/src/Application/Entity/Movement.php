@@ -83,7 +83,7 @@ class Movement implements InputFilterAwareInterface
         return $this->category;
     }
 
-    public function setCategory(Category $category): void
+    public function setCategory(?Category $category): void
     {
         $this->category = $category;
     }
