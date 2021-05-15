@@ -130,23 +130,23 @@ $morrisData = array();
                     <tbody>
                         <?php foreach ($rows as $row): ?>
                             <?php
-                            $strDate = $row->date->format('Y-m-d');
+                            $strDate = $row->getDate()->format('Y-m-d');
                             if (!isset($chartData[$strDate])) {
                                 $chartData[$strDate] = ['in' => 0, 'out' => 0];
                             }
-                            $row->amount > 0 ? $chartData[$strDate]['in']  += $row->amount
-                                             : $chartData[$strDate]['out'] += $row->amount;
+                            $row->getAmount() > 0 ? $chartData[$strDate]['in']  += $row->getAmount()
+                                                  : $chartData[$strDate]['out'] += $row->getAmount();
                             ?>
                         <tr>
-                            <td class="date"><?php echo $this->dateForma($row->date); ?></td>
-                            <td class="text-right amount"><?php echo $this->currencyForma($row->amount); ?></td>
-                            <td class="description"><?php echo $row->description; ?></td>
-                            <td class="description"><?php echo $row->category ? $row->category->getDescrizione() : ''; ?></td>
+                            <td class="date"><?php echo $this->dateForma($row->getDate()); ?></td>
+                            <td class="text-right amount"><?php echo $this->currencyForma($row->getAmount()); ?></td>
+                            <td class="description"><?php echo $row->getDescription(); ?></td>
+                            <td class="description"><?php echo $row->getCategory() ? $row->getCategory()->getDescrizione() : ''; ?></td>
                             <td class="text-right">
-                                <a href="<?php echo $this->url('accantonaMovement', ['action' => 'edit', 'id' => $row->id], ['query' => $searchParams]); ?>" class="btn btn-default btn-xs" title="Modifica">
+                                <a href="<?php echo $this->url('accantonaMovement', ['action' => 'edit', 'id' => $row->getId()], ['query' => $searchParams]); ?>" class="btn btn-default btn-xs" title="Modifica">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                 </a>
-                                <span data-href="<?php echo $this->url('accantonaMovement', ['action' => 'delete', 'id' => $row->id], ['query' => $searchParams]); ?>" class="btn btn-default btn-xs delete-item" title="Elimina">
+                                <span data-href="<?php echo $this->url('accantonaMovement', ['action' => 'delete', 'id' => $row->getId()], ['query' => $searchParams]); ?>" class="btn btn-default btn-xs delete-item" title="Elimina">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                 </span>
                             </td>

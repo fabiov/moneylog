@@ -6,21 +6,11 @@ use MoneyLog\Form\Filter\MovementFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
-use Laminas\InputFilter\InputFilter;
 
 /**
  *
  * @ORM\Entity(repositoryClass="Application\Repository\MovementRepository")
  * @ORM\Table(name="movement")
- * @property int $id
- * @property int $accountId
- * @property \DateTime $date
- * @property float $amount
- * @property string $description
- *
- * Relations:
- * @property \Application\Entity\Account $account
- * @property \Application\Entity\Category $category
  */
 class Movement implements InputFilterAwareInterface
 {
@@ -38,84 +28,94 @@ class Movement implements InputFilterAwareInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
-    protected $id;
+    private $id;
 
     /**
-     * @ORM\Column(name="accountId", type="integer", options={"unsigned"=true})
-     * @var int
+     * Many movements have one account. This is the owning side.
+     * @ORM\ManyToOne(targetEntity="Account", inversedBy="movements")
+     * @ORM\JoinColumn(name="accountId", referencedColumnName="id", nullable=false)
+     * @var Account
      */
-    protected $accountId;
+    private $account;
+
+    /**
+     * Many movements have one category. This is the owning side.
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="movements")
+     * @ORM\JoinColumn(name="categoryId", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @var ?Category
+     */
+    private $category;
 
     /**
      * @ORM\Column(name="date", type="date")
      * @var \DateTime
      */
-    protected $date;
+    private $date;
 
     /**
      * @ORM\Column(name="amount", type="float")
      * @var float
      */
-    protected $amount;
+    private $amount;
 
     /**
      * @ORM\Column(name="description", type="string")
      * @var string
      */
-    protected $description;
+    private $description;
 
-    /**
-     * @ORM\Column(name="created", type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
-     * @var \DateTime
-     */
-    private $created;
-
-    /**
-     * @ORM\Column(name="updated", type="datetime", nullable=true)
-     * @var \DateTime
-     */
-    private $updated;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Account", inversedBy="movements")
-     * @ORM\JoinColumn(name="accountId", referencedColumnName="id")
-     * @var Account
-     */
-    protected $account;
-
-    /**
-     * Many movements have one category. This is the owning side.
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="movements")
-     * @ORM\JoinColumn(name="categoryId", referencedColumnName="id", onDelete="SET NULL")
-     * @var Category
-     */
-    private $category;
-
-    /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
-    public function __get(string $property)
+    public function getId(): int
     {
-        return $this->$property;
+        return $this->id;
     }
 
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     */
-    public function __set($property, $value)
+    public function getAccount(): Account
     {
-        $this->$property = $value;
+        return $this->account;
+    }
+    public function setAccount(Account $account): void
+    {
+        $this->account = $account;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(Category $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function getDate(): \DateTime
+    {
+        return $this->date;
     }
 
     public function setDate(\DateTime $date): void
     {
         $this->date = $date;
+    }
+
+    public function getAmount(): float
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(float $amount): void
+    {
+        $this->amount = $amount;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 
     /**
@@ -134,7 +134,7 @@ class Movement implements InputFilterAwareInterface
             $this->id = $data['id'];
         }
         if (isset($data['accountId'])) {
-            $this->accountId = $data['accountId'];
+            $this->account = $data['accountId'];
         }
         if (array_key_exists('category', $data)) {
             $this->category = $data['category'];

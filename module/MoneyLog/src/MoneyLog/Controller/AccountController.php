@@ -155,7 +155,10 @@ class AccountController extends AbstractActionController
         $routeName   = $this->getRequest()->getPost('forward');
         $id          = (int) $this->params()->fromRoute('id', 0);
 
-        $account = $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
+        /** @var ?Account $account */
+        $account = $this->em
+            ->getRepository(Account::class)
+            ->findOneBy(['id' => $id, 'user' => $this->user->id]);
 
         if ($account) {
 
@@ -164,10 +167,10 @@ class AccountController extends AbstractActionController
 
             $currentBalance = $movementRepository->getBalance($id, new \DateTime());
 
-            $movement              = new Movement();
-            $movement->account     = $account;
-            $movement->amount      = $amount - $currentBalance;
-            $movement->description = $description;
+            $movement = new Movement();
+            $movement->setAccount($account);
+            $movement->setAmount($amount - $currentBalance);
+            $movement->setDescription($description);
             $movement->setDate(new \DateTime());
             $this->em->persist($movement);
             $this->em->flush();

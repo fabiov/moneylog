@@ -19,7 +19,7 @@ class MovementRepository extends EntityRepository
             ->createQueryBuilder()
             ->select('COALESCE(SUM(m.amount), 0) AS balance')
             ->from(Movement::class, 'm')
-            ->where('m.accountId=:accountId')
+            ->where('m.account=:accountId')
             ->setParameter(':accountId', $accountId);
 
         if ($date) {
@@ -40,7 +40,7 @@ class MovementRepository extends EntityRepository
             ->where('1=1');
 
         if (!empty($params['accountId'])) {
-            $qb->andWhere('m.accountId = :accountId');
+            $qb->andWhere('m.account = :accountId');
             $cleanParams['accountId'] = $params['accountId'];
         }
         if (!empty($params['dateMin'])) {
