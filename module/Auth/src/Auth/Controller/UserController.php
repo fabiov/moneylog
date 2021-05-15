@@ -159,8 +159,8 @@ class UserController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-                if (md5($data['current'] . $user->salt) == $user->password) {
-                    $user->password = md5($data['password'] . $user->salt);
+                if (md5($data['current'] . $user->getSalt()) == $user->getPassword()) {
+                    $user->setPassword(md5($data['password'] . $user->getSalt()));
                     $this->em->persist($user);
                     $this->em->flush();
 

@@ -101,7 +101,7 @@ class RegistrationController extends AbstractActionController
 
             //create settings
             $setting = new Setting();
-            $setting->userId = $user->getId();
+            $setting->user = $user;
             $this->em->persist($setting);
 
             $this->em->flush();
@@ -131,8 +131,9 @@ class RegistrationController extends AbstractActionController
 
                 $password = $this->getRandomString(10);
 
+                /** @var User $user */
                 $user = $this->em->getRepository(User::class)->findOneBy(['email' => $data['email']]);
-                $user->password = $this->encriptPassword($password, $user->salt);
+                $user->setPassword($this->encriptPassword($password, $user->getSalt()));
                 $this->em->persist($user);
                 $this->em->flush();
 
