@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Application\Entity;
 
@@ -10,7 +11,6 @@ use Laminas\InputFilter\InputFilterInterface;
 /**
  * @ORM\Entity
  * @ORM\Table(name = "user", uniqueConstraints = {@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
- * @package Application\Entity
  */
 class User implements InputFilterAwareInterface
 {
@@ -20,7 +20,7 @@ class User implements InputFilterAwareInterface
     /**
      * @var ?InputFilterInterface
      */
-    protected $inputFilter;
+    private $inputFilter;
 
     /**
      * @ORM\Column(type="integer", options={"unsigned"=true});
@@ -28,25 +28,25 @@ class User implements InputFilterAwareInterface
      * @ORM\Id
      * @var int
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string")
      * @var string
      */
-    protected $email;
+    private $email;
 
     /**
      * @ORM\Column(type="string")
      * @var string
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\Column(type="string")
      * @var string
      */
-    protected $surname;
+    private $surname;
 
     /**
      * @ORM\Column(type="string", length=32, options={"fixed" = true})
