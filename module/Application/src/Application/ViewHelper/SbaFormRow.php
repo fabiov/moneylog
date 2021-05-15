@@ -13,7 +13,7 @@ class SbaFormRow extends AbstractHelper
      * @param string $help
      * @return string
      */
-    public function __invoke(Element $element, $help = '')
+    public function __invoke(Element $element, string $help = ''): string
     {
         if ($help) {
             $escaper = new Escaper('utf-8');
@@ -47,7 +47,7 @@ class SbaFormRow extends AbstractHelper
      * @param Element $element
      * @return string
      */
-    private static function addFormControllCssClass(Element $element)
+    private static function addFormControllCssClass(Element $element): string
     {
         $str = $element->getAttribute('class');
         return preg_match('/(^| )form-control( |$)/', $str) ? $str : "$str form-control";

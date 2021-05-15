@@ -2,10 +2,10 @@
 /**
  * @var Application\Entity\Account $account
  * @var Laminas\View\Renderer\PhpRenderer $this
- * @var array $categories
  * @var array $dataLineChart
- * @var array $rows
  * @var array $searchParams
+ * @var array<\Application\Entity\Category> $categories
+ * @var array<\Application\Entity\Movement> $rows
  */
 $chartData = array();
 $morrisData = array();
@@ -56,8 +56,8 @@ $morrisData = array();
                                 <select class="form-control" name="category">
                                     <option></option>
                                     <?php foreach ($categories as $category): ?>
-                                        <option value="<?php echo $category->id; ?>"<?php if ($category->id == $searchParams['category']) echo ' selected="selected"'?>>
-                                            <?php echo $category->descrizione; ?>
+                                        <option value="<?php echo $category->getId(); ?>"<?php if ($category->getId() == $searchParams['category']) echo ' selected="selected"'?>>
+                                            <?php echo $category->getDescrizione(); ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
@@ -141,7 +141,7 @@ $morrisData = array();
                             <td class="date"><?php echo $this->dateForma($row->date); ?></td>
                             <td class="text-right amount"><?php echo $this->currencyForma($row->amount); ?></td>
                             <td class="description"><?php echo $row->description; ?></td>
-                            <td class="description"><?php echo $row->category ? $row->category->descrizione : ''; ?></td>
+                            <td class="description"><?php echo $row->category ? $row->category->getDescrizione() : ''; ?></td>
                             <td class="text-right">
                                 <a href="<?php echo $this->url('accantonaMovement', ['action' => 'edit', 'id' => $row->id], ['query' => $searchParams]); ?>" class="btn btn-default btn-xs" title="Modifica">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>

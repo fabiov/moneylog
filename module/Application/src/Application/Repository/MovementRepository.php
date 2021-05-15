@@ -84,7 +84,7 @@ class MovementRepository extends EntityRepository
             ->select('COALESCE(SUM(m.amount), 0) AS amount')
             ->from(Movement::class, 'm')
             ->innerJoin('m.category', 'c')
-            ->where('c.userId=:userId')
+            ->where('c.user=:userId')
             ->setParameter(':userId', $userId);
 
         return (float) $qb->getQuery()->getSingleScalarResult();

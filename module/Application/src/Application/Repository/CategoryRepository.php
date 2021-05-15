@@ -24,7 +24,7 @@ class CategoryRepository extends EntityRepository
             ->select('SUM(m.amount) AS amount, MIN(m.date) AS first_date, c.id')
             ->from(Category::class, 'c', 'c.id')
             ->innerJoin(Movement::class, 'm', 'WITH', 'c.id=m.category')
-            ->where("c.userId=$userId")
+            ->where("c.user=$userId")
             ->andWhere('c.status=:status')
             ->andWhere('m.date >= :since')
             ->setParameters([':since'  => $since->format('Y-m-d'), ':status' => Category::STATUS_ACTIVE])
@@ -71,7 +71,7 @@ class CategoryRepository extends EntityRepository
             ->select('c.id, c.descrizione, MIN(m.date) AS date, c.status')
             ->from(Category::class, 'c', 'c.id')
             ->leftJoin(Movement::class, 'm', 'WITH', 'c.id=m.category')
-            ->where("c.userId=$userId")
+            ->where("c.user=$userId")
             ->groupBy('c.id');
         if ($status !== null) {
             $qb->andWhere("c.status=$status");

@@ -2,7 +2,10 @@
 
 namespace MoneyLog\Form;
 
+use Application\Entity\Category;
+use Application\Entity\Movement;
 use Doctrine\ORM\EntityManager;
+use Laminas\Form\Element\Select;
 use Laminas\Form\Form;
 
 class MovementForm extends Form
@@ -13,22 +16,16 @@ class MovementForm extends Form
     private $em;
 
     /**
-     * @var int
-     */
-    private $userId;
-
-    /**
      * MovementForm constructor.
      * @param string $name
      * @param \Doctrine\ORM\EntityManager $em
      * @param int $userId
      */
-    public function __construct(string $name = 'movement', EntityManager $em, $userId)
+    public function __construct(string $name, EntityManager $em, int $userId)
     {
         parent::__construct($name);
 
-        $this->em     = $em;
-        $this->userId = $userId;
+        $this->em = $em;
 
         $this->add([
             'name'     => 'type',
@@ -37,10 +34,10 @@ class MovementForm extends Form
                 'display_empty_item'        => false,
                 'label'                     => 'Tipo',
                 'property'                  => 'descrizione',
-                'value_options'             => ['-1' => 'Uscita', '1' => 'Entrata'],
+                'value_options'             => [Movement::OUT => 'Uscita', Movement::IN => 'Entrata'],
             ],
             'required' => true,
-            'type'     => \Laminas\Form\Element\Select::class,
+            'type'     => Select::class,
         ]);
         $this->add([
             'attributes'    => ['class' => 'form-control', 'value' => date('Y-m-d')],
@@ -72,13 +69,13 @@ class MovementForm extends Form
                 'find_method'               => [
                     'name'   => 'findBy',
                     'params' => [
-                        'criteria' => ['userId' => $userId, 'status' => \Application\Entity\Category::STATUS_ACTIVE],
+                        'criteria' => ['user' => $userId, 'status' => Category::STATUS_ACTIVE],
                         'orderBy'  => ['descrizione' => 'ASC']
                     ]
                 ],
                 'label'                     => 'Categoria',
                 'object_manager'            => $this->em,
-                'target_class'              => \Application\Entity\Category::class,
+                'target_class'              => Category::class,
                 'property'                  => 'descrizione',
             ],
             'required' => false,

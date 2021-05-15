@@ -59,7 +59,7 @@ class MovementController extends AbstractActionController
             if ($form->isValid()) {
                 $item->amount = $item->amount * $data['type'];
                 $item->category = $this->em->getRepository(Category::class)->findOneBy([
-                    'id' => $data['category'], 'userId' => $this->user->id
+                    'id' => $data['category'], 'user' => $this->user->id
                 ]);
                 $this->em->flush();
 
@@ -100,7 +100,7 @@ class MovementController extends AbstractActionController
         }
 
         $categories = $this->em->getRepository(Category::class)
-            ->findBy(['status' => 1, 'userId' => $this->user->id], ['descrizione' => 'ASC']);
+            ->findBy(['status' => 1, 'user' => $this->user->id], ['descrizione' => 'ASC']);
 
         /** @var \Application\Repository\MovementRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Movement::class);
@@ -292,8 +292,8 @@ class MovementController extends AbstractActionController
                                     in_array($data['repetitionPeriod'], ['month', 'week']) &&
                                     $repetitionNumber > 0 && $repetitionNumber < 13 ? $repetitionNumber : 1;
 
-                $category = $this->em->getRepository('Application\Entity\Category')
-                    ->findOneBy(['id' => $data['category'], 'userId' => $this->user->id]);
+                $category = $this->em->getRepository(Category::class)
+                    ->findOneBy(['id' => $data['category'], 'user' => $this->user->id]);
 
                 for ($i = 0; $i < $repetitionNumber; $i++) {
                     $movement = new Movement();

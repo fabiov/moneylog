@@ -2,7 +2,6 @@
 
 namespace Application\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterAwareInterface;
@@ -11,12 +10,6 @@ use Laminas\InputFilter\InputFilterInterface;
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\CategoryRepository")
  * @ORM\Table(name="category")
- * @property int $id
- * @property int $status
- * @property int $userId
- * @property string $created
- * @property string $descrizione
- * @property string $updated
  */
 class Category implements InputFilterAwareInterface
 {
@@ -26,7 +19,7 @@ class Category implements InputFilterAwareInterface
     /**
      * @var ?InputFilterInterface
      */
-    protected $inputFilter;
+    private $inputFilter;
 
     /**
      * @ORM\Id
@@ -34,70 +27,46 @@ class Category implements InputFilterAwareInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
-    protected $id;
+    private $id;
 
     /**
-     * @ORM\Column(name="userId", type="integer", options={"unsigned"=true})
-     * @var int
+     * Many categories have one user. This is the owning side.
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @var User
      */
-    protected $userId;
+    private $user;
 
     /**
      * @ORM\Column(name="descrizione", type="string")
      * @var string
      */
-    protected $descrizione;
+    private $descrizione;
 
     /**
      * @ORM\Column(name="status", type="integer")
      * @var int
      */
-    protected $status = 1;
+    private $status = 1;
 
-    /**
-     * @ORM\Column(name="created", type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
-     * @var \DateTime
-     */
-    protected $created;
-
-    /**
-     * @ORM\Column(name="updated", type="datetime", nullable=true)
-     * @var \DateTime
-     */
-    protected $updated;
-
-    /**
-     * One category has many movements. This is the inverse side.
-     * @ORM\OneToMany(targetEntity="Movement", mappedBy="category")
-     * @var ArrayCollection<int, Movement>
-     */
-    private $movements;
-
-    public function __construct()
+    public function getId(): int
     {
-        $this->movements = new ArrayCollection();
+        return $this->id;
     }
 
-    /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
-    public function __get($property)
+    public function getDescrizione(): string
     {
-        return $this->$property;
+        return $this->descrizione;
     }
 
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     */
-    public function __set(string $property, $value)
+    public function setDescrizione(string $descrizione): void
     {
-        $this->$property = $value;
+        $this->descrizione = $descrizione;
+    }
+
+    public function getStatus(): int
+    {
+        return $this->status;
     }
 
     /**
@@ -115,8 +84,8 @@ class Category implements InputFilterAwareInterface
      */
     public function exchangeArray(array $data = []): void
     {
-        if (isset($data['userId'])) {
-            $this->userId = $data['userId'];
+        if (isset($data['user'])) {
+            $this->user = $data['user'];
         }
         $this->descrizione = $data['descrizione'] ?? null;
         $this->status      = empty($data['status']) ? 0 : 1;
@@ -126,7 +95,7 @@ class Category implements InputFilterAwareInterface
      * @param InputFilterInterface $inputFilter
      * @return $this
      */
-    public function setInputFilter(InputFilterInterface $inputFilter)
+    public function setInputFilter(InputFilterInterface $inputFilter): Category
     {
         $this->inputFilter = $inputFilter;
         return $this;
@@ -151,15 +120,5 @@ class Category implements InputFilterAwareInterface
         }
 
         return $this->inputFilter;
-    }
-
-    public function getDescrizione(): string
-    {
-        return $this->descrizione;
-    }
-
-    public function setDescrizione(string $descrizione): void
-    {
-        $this->descrizione = $descrizione;
     }
 }

@@ -1,4 +1,9 @@
-<?php echo $this->pageHeader('Categorie di spesa'); ?>
+<?php
+/**
+ * @var array<\Application\Entity\Category> $rows
+ */
+echo $this->pageHeader('Categorie di spesa');
+?>
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -17,12 +22,12 @@
                     <?php foreach ($rows as $row) : ?>
                     <tr>
                         <td class="description"><?php echo $this->escapeHtml($row->getDescrizione()); ?></td>
-                        <td class="status"><?php echo $row->status ? 'Sì' : 'No'; ?></td>
+                        <td class="status"><?php echo $row->getStatus() ? 'Sì' : 'No'; ?></td>
                         <td class="text-right">
-                            <a href="<?php echo $this->url('accantona_categoria', ['action' => 'edit', 'id' => $row->id]); ?>" class="btn btn-default btn-xs" title="Modifica">
+                            <a href="<?php echo $this->url('accantona_categoria', ['action' => 'edit', 'id' => $row->getId()]); ?>" class="btn btn-default btn-xs" title="Modifica">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                             </a>
-                            <span data-href="<?php echo $this->url('accantona_categoria', ['action' => 'delete', 'id' => $row->id]); ?>" class="btn btn-default btn-xs delete-item" title="Elimina">
+                            <span data-href="<?php echo $this->url('accantona_categoria', ['action' => 'delete', 'id' => $row->getId()]); ?>" class="btn btn-default btn-xs delete-item" title="Elimina">
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                             </span>
                         </td>
