@@ -37,49 +37,49 @@ class User implements InputFilterAwareInterface
     private $email;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false)
      * @var string
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false)
      * @var string
      */
     private $surname;
 
     /**
-     * @ORM\Column(type="string", length=32, options={"fixed" = true})
+     * @ORM\Column(type="string", nullable=false, length=32, options={"fixed" = true})
      * @var string
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=4, options={"fixed" = true})
+     * @ORM\Column(type="string", nullable=false, length=4, options={"fixed" = true})
      * @var string
      */
     private $salt;
 
     /**
-     * @ORM\Column(type="integer", options={"unsigned"=true})
+     * @ORM\Column(type="integer", nullable=false, options={"unsigned"=true})
      * @var int
      */
     private $status = 0;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false)
      * @var string
      */
     private $role;
 
     /**
-     * @ORM\Column(type="string", length=8, options={"fixed" = true})
+     * @ORM\Column(type="string", nullable=false, length=8, options={"fixed" = true})
      * @var string
      */
     private $registrationToken;
 
     /**
-     * @ORM\Column(name="lastLogin", type="datetime", nullable=true)
+     * @ORM\Column(name="lastLogin", nullable=true, type="datetime", nullable=true)
      * @var \DateTime
      */
     private $lastLogin;
@@ -91,7 +91,7 @@ class User implements InputFilterAwareInterface
     private $created;
 
     /**
-     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     * @ORM\Column(name="updated", nullable=true, type="datetime", nullable=true)
      * @var \DateTime
      */
     private $updated;
