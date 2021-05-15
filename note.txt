@@ -1,4 +1,0 @@
-Create a new Model for Accantona module
-
-- Craete a files into Model directory
-- aggiungere i riferimenti nel file Accantona/Module.php

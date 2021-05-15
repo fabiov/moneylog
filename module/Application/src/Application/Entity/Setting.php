@@ -24,25 +24,26 @@ class Setting implements InputFilterAwareInterface
 
     /**
      * @ORM\Id
-     * @ORM\Column(name="userId", type="integer", options={"unsigned"=true});
-     * @var int
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @var User
      */
-    protected $userId;
+    protected $user;
 
     /**
-     * @ORM\Column(name="payDay", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\Column(name="payDay", type="smallint", nullable=false, options={"unsigned"=true, "default"=1})
      * @var int
      */
-    protected $payDay = 0;
+    protected $payDay = 1;
 
     /**
-     * @ORM\Column(name="monthsRetrospective", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\Column(name="monthsRetrospective", type="smallint", nullable=false, options={"unsigned"=true, "default"=12})
      * @var int
      */
     protected $monthsRetrospective = 12;
 
     /**
-     * @ORM\Column(name="`stored`", type="boolean", nullable=false)
+     * @ORM\Column(name="`stored`", type="boolean", nullable=false, options={"default"=false})
      * @var boolean
      */
     protected $stored = false;

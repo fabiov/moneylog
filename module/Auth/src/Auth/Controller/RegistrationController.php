@@ -101,7 +101,7 @@ class RegistrationController extends AbstractActionController
 
             //create settings
             $setting = new Setting();
-            $setting->userId = $user->getId();
+            $setting->user = $user;
             $this->em->persist($setting);
 
             $this->em->flush();

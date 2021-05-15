@@ -87,8 +87,7 @@ class User implements InputFilterAwareInterface
     /**
      * One user has One settings.
      * @var Setting
-     * @ORM\OneToOne(targetEntity="Setting")
-     * @ORM\JoinColumn(name="id", referencedColumnName="userId")
+     * @ORM\OneToOne(targetEntity="Setting", mappedBy="user")
      */
     private $setting;
 
