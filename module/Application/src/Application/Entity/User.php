@@ -85,29 +85,12 @@ class User implements InputFilterAwareInterface
     private $lastLogin;
 
     /**
-     * @ORM\Column(name="created", type="datetime", nullable=true, options={"default"="CURRENT_TIMESTAMP"})
-     * @var \DateTime
-     */
-    private $created;
-
-    /**
-     * @ORM\Column(name="updated", nullable=true, type="datetime", nullable=true)
-     * @var \DateTime
-     */
-    private $updated;
-
-    /**
      * One user has One settings.
      * @var Setting
      * @ORM\OneToOne(targetEntity="Setting")
      * @ORM\JoinColumn(name="id", referencedColumnName="userId")
      */
     private $setting;
-
-    public function __construct()
-    {
-        $this->created = new \DateTime();
-    }
 
     /**
      * Convert the object to an array.
@@ -266,16 +249,6 @@ class User implements InputFilterAwareInterface
     public function getLastLogin(): \DateTime
     {
         return $this->lastLogin;
-    }
-
-    public function getCreated(): \DateTime
-    {
-        return $this->created;
-    }
-
-    public function getUpdated(): \DateTime
-    {
-        return $this->updated;
     }
 
     public function getPassword(): string
