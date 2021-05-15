@@ -45,7 +45,9 @@ class RecapController extends AbstractActionController
 
         /* @var Setting $settings */
         $settings = $this->em->find(Setting::class, $this->user->id);
-        $avgPerCategory = $categoryRepository->getAverages($this->user->id, new \DateTime('-' . $settings->monthsRetrospective . ' MONTH'));
+
+        $since = new \DateTime('-' . $settings->getMonthsRetrospective() . ' MONTH');
+        $avgPerCategory = $categoryRepository->getAverages($this->user->id, $since);
 
         usort($avgPerCategory, static function ($a, $b) {
             return ($a['average'] ?? 0) <=> ($b['average'] ?? 0);
@@ -57,7 +59,8 @@ class RecapController extends AbstractActionController
         $donutSpends    = [];
         $donutAccounts  = [];
         $currentDay     = date('j');
-        $monthBudget    = $stored > 0 && $settings->stored ? 0 - $stored : 0;
+        $monthBudget    = $stored > 0 && $settings->hasStored() ? 0 - $stored : 0;
+        $payDay         = $settings->getPayDay();
 
         foreach ($avgPerCategory as $category) {
             if ($category['average'] < 0) {
@@ -70,13 +73,13 @@ class RecapController extends AbstractActionController
             $monthBudget += $account['total'];
         }
 
-        if ($settings->payDay) {
-            if ($currentDay < $settings->payDay) {
-                $remainingDays = $settings->payDay - $currentDay;
-                $begin = date("Y-m-$settings->payDay", strtotime('last month'));
+        if ($payDay) {
+            if ($currentDay < $payDay) {
+                $remainingDays = $settings->getPayDay() - $currentDay;
+                $begin = date("Y-m-$payDay", strtotime('last month'));
             } else {
-                $remainingDays = date('t') - $currentDay + $settings->payDay;
-                $begin = date("Y-m-$settings->payDay");
+                $remainingDays = date('t') - $currentDay + $payDay;
+                $begin = date("Y-m-$payDay");
             }
             $end = date('Y-m-d', strtotime(($remainingDays - 1) . ' day'));
         } else {

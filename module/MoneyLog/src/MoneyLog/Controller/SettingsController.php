@@ -56,7 +56,6 @@ class SettingsController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $setting->userId = $this->user->id;
                 $this->em->flush();
 
                 $this->userData->setSettings($setting);

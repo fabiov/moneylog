@@ -25,7 +25,7 @@ parameters:
         - '/Method Application\\Entity\\Category::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array\./'
         - '/Method Application\\Entity\\Movement::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array\./'
         - '/Method Application\\Entity\\Provision::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array\./'
-        - '/Method Application\\Entity\\Setting::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array./'
+        - '/Method Application\\Entity\\Setting::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array\./'
         - '/Method Application\\Entity\\User::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array\./'
         - '/Method Application\\Repository\\MovementRepository::search\(\) has parameter \$params with no value type specified in iterable type array\./'
         - '/Method Application\\Repository\\ProvisionRepository::search\(\) has parameter \$params with no value type specified in iterable type array\./'
