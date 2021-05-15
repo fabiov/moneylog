@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Model;
 
 use Laminas\InputFilter\Factory as InputFactory;
@@ -8,18 +9,52 @@ use Laminas\InputFilter\InputFilterInterface;
 
 class Auth implements InputFilterAwareInterface
 {
+    /**
+     * @var string
+     */
     public $id;
+
+    /**
+     * @var string
+     */
     public $email;
+
+    /**
+     * @var string
+     */
     public $name;
+
+    /**
+     * @var string
+     */
     public $password;
+
+    /**
+     * @var string
+     */
     public $salt;
+
+    /**
+     * @var string
+     */
     public $status;
+
+    /**
+     * @var string
+     */
     public $role;
+
+    /**
+     * @var string
+     */
     public $registrationToken;
 
+    /**
+     * @var ?InputFilter
+     */
     protected $inputFilter;
 
-    public function exchangeArray(array $data)
+    public function exchangeArray(array $data): void
     {
         $this->id                = $data['id'] ?? null;
         $this->email             = $data['email'] ?? null;
@@ -31,11 +66,10 @@ class Auth implements InputFilterAwareInterface
         $this->registrationToken = $data['registrationToken'] ?? null;
     }
 
-	public function getArrayCopy(): array
+    public function getArrayCopy(): array
     {
         return get_object_vars($this);
     }
-
 
     /**
      * @throws \Exception

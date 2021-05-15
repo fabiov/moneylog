@@ -4,6 +4,11 @@
 
 This is a web applycation to track your money.
 
+## Set hooks
+```shell
+git config core.hooksPath .githooks
+```
+
 ## Update data schema
 ```shell
 php vendor/bin/doctrine-module orm:schema-tool:update --force

@@ -11,14 +11,14 @@ use Laminas\InputFilter\InputFilterInterface;
 use Laminas\InputFilter\InputFilter;
 
 /**
- * Setting.
- *
  * @ORM\Entity(repositoryClass="Application\Repository\AccountRepository")
  * @ORM\Table(name="account")
  */
 class Account implements InputFilterAwareInterface
 {
-
+    /**
+     * @var ?InputFilterInterface
+     */
     protected $inputFilter;
 
     /**
@@ -51,11 +51,13 @@ class Account implements InputFilterAwareInterface
 
     /**
      * @ORM\Column(name="closed", type="boolean", nullable=false, options={"default": false})
+     * @var bool
      */
     protected $closed = false;
 
     /**
      * @ORM\OneToMany(targetEntity="Movement", mappedBy="account")
+     * @var ArrayCollection<int, Movement>
      */
     protected $movements;
 
@@ -89,13 +91,7 @@ class Account implements InputFilterAwareInterface
         return get_object_vars($this);
     }
 
-    /**
-     * Populate from an array.
-     *
-     * @param array $data
-     * @return $this
-     */
-    public function exchangeArray(array $data = []): Account
+    public function exchangeArray(array $data = []): self
     {
         if (isset($data['user'])) {
             $this->user = $data['user'];
@@ -134,5 +130,4 @@ class Account implements InputFilterAwareInterface
         }
         return $this->inputFilter;
     }
-
 }

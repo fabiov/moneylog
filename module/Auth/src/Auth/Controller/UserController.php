@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Controller;
 
 use Application\Entity\User;
@@ -15,6 +16,9 @@ use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
+/**
+ * @method \Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger flashMessenger()
+ */
 class UserController extends AbstractActionController
 {
     /**
@@ -23,7 +27,7 @@ class UserController extends AbstractActionController
     private $em;
 
     /**
-     * @var \stdClass
+     * @var ?\stdClass
      */
     private $user;
 
@@ -36,11 +40,11 @@ class UserController extends AbstractActionController
     /**
      * UserController constructor.
      *
-     * @param $user
+     * @param ?\stdClass $user
      * @param ORM\EntityManager $em
      * @param AuthManager $authManager
      */
-    public function __construct($user, ORM\EntityManager $em, AuthManager $authManager)
+    public function __construct(?\stdClass $user, ORM\EntityManager $em, AuthManager $authManager)
     {
         $this->authManager = $authManager;
         $this->em          = $em;
@@ -54,11 +58,12 @@ class UserController extends AbstractActionController
      */
     public function updateAction()
     {
-        /** @var User $user */
-        $user = $this->em->find(User::class, $this->user->id)->setInputFilter(new UserFilter());
+        /** @var ?User $user */
+        $user = $this->em->find(User::class, $this->user->id);
         if (!$user) {
             return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
         }
+        $user->setInputFilter(new UserFilter());
 
         $form = new UserForm();
         $form->bind($user);
@@ -69,6 +74,7 @@ class UserController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                /** @var User $data */
                 $data = $form->getData();
                 $user->setName($data->getName())->setSurname($data->getSurname());
                 $this->em->persist($user);
@@ -106,7 +112,6 @@ class UserController extends AbstractActionController
                 switch ($result->getCode()) {
                     case Result::SUCCESS:
                         return $this->redirect()->toRoute('accantona_recap');
-                        break;
                     case Result::FAILURE_IDENTITY_NOT_FOUND:
                     case Result::FAILURE_CREDENTIAL_INVALID:
                     default:
@@ -154,7 +159,6 @@ class UserController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-
                 if (md5($data['current'] . $user->salt) == $user->password) {
                     $user->password = md5($data['password'] . $user->salt);
                     $this->em->persist($user);

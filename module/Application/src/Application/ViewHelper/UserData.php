@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\ViewHelper;
 
 use Laminas\View\Helper\AbstractHelper;
@@ -6,7 +7,7 @@ use Laminas\View\Helper\AbstractHelper;
 class UserData extends AbstractHelper
 {
     /**
-     * @var \Auth\Service\UserData
+     * @var ?\Auth\Service\UserData
      */
     private $data;
 

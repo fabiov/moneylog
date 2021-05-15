@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Form\Filter;
 
 use Laminas\InputFilter\InputFilter;
@@ -12,7 +13,7 @@ class UserFilter extends InputFilter
     /**
      * UserFilter constructor.
      */
-    function __construct()
+    public function __construct()
     {
         $this
             ->add([

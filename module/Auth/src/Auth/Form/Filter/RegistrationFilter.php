@@ -1,11 +1,15 @@
 <?php
+
 namespace Auth\Form\Filter;
 
+use Laminas\Db\Adapter\Adapter;
 use Laminas\InputFilter\InputFilter;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Validator\Db\NoRecordExists;
 
 class RegistrationFilter extends InputFilter
 {
-    public function __construct($sm)
+    public function __construct(ServiceManager $sm)
     {
         $this->add([
             'name' => 'email',
@@ -13,10 +17,8 @@ class RegistrationFilter extends InputFilter
             'validators' => [
                 ['name' => 'EmailAddress'],
                 [
-                    'name' => 'Laminas\Validator\Db\NoRecordExists',
-                    'options' => [
-                        'table' => 'user', 'field' => 'email', 'adapter' => $sm->get('Laminas\Db\Adapter\Adapter')
-                    ],
+                    'name' => NoRecordExists::class,
+                    'options' => ['table' => 'user', 'field' => 'email', 'adapter' => $sm->get(Adapter::class)],
                 ],
             ],
         ]);
@@ -40,5 +42,4 @@ class RegistrationFilter extends InputFilter
             ],
         ]);
     }
-
 }

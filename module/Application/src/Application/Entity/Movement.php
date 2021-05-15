@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Entity;
 
 use MoneyLog\Form\Filter\MovementFilter;
@@ -13,7 +14,7 @@ use Laminas\InputFilter\InputFilter;
  * @ORM\Table(name="movement")
  * @property int $id
  * @property int $accountId
- * @property DateTime $date
+ * @property \DateTime $date
  * @property float $amount
  * @property string $description
  *
@@ -23,51 +24,62 @@ use Laminas\InputFilter\InputFilter;
  */
 class Movement implements InputFilterAwareInterface
 {
-    const IN = 1;
-    const OUT = -1;
+    public const IN = 1;
+    public const OUT = -1;
 
+    /**
+     * @var ?InputFilterInterface
+     */
     protected $inputFilter;
 
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     protected $id;
 
     /**
      * @ORM\Column(name="accountId", type="integer", options={"unsigned"=true})
+     * @var int
      */
     protected $accountId;
 
     /**
      * @ORM\Column(name="date", type="date")
+     * @var \DateTime
      */
     protected $date;
 
     /**
      * @ORM\Column(name="amount", type="float")
+     * @var float
      */
     protected $amount;
 
     /**
      * @ORM\Column(name="description", type="string")
+     * @var string
      */
     protected $description;
 
     /**
      * @ORM\Column(name="created", type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
+     * @var \DateTime
      */
     private $created;
 
     /**
      * @ORM\Column(name="updated", type="datetime", nullable=true)
+     * @var \DateTime
      */
     private $updated;
 
     /**
      * @ORM\ManyToOne(targetEntity="Account", inversedBy="movements")
      * @ORM\JoinColumn(name="accountId", referencedColumnName="id")
+     * @var Account
      */
     protected $account;
 
@@ -75,6 +87,7 @@ class Movement implements InputFilterAwareInterface
      * Many movements have one category. This is the owning side.
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="movements")
      * @ORM\JoinColumn(name="categoryId", referencedColumnName="id", onDelete="SET NULL")
+     * @var Category
      */
     private $category;
 
@@ -84,7 +97,7 @@ class Movement implements InputFilterAwareInterface
      * @param string $property
      * @return mixed
      */
-    public function __get($property)
+    public function __get(string $property)
     {
         return $this->$property;
     }
@@ -100,6 +113,11 @@ class Movement implements InputFilterAwareInterface
         $this->$property = $value;
     }
 
+    public function setDate(\DateTime $date): void
+    {
+        $this->date = $date;
+    }
+
     /**
      * Convert the object to an array.
      *
@@ -110,13 +128,7 @@ class Movement implements InputFilterAwareInterface
         return get_object_vars($this);
     }
 
-    /**
-     * Convert the object to an array.
-     *
-     * @param $data
-     * @throws \Exception
-     */
-    public function exchangeArray($data)
+    public function exchangeArray(array $data): void
     {
         if (isset($data['id'])) {
             $this->id = $data['id'];
@@ -127,27 +139,18 @@ class Movement implements InputFilterAwareInterface
         if (array_key_exists('category', $data)) {
             $this->category = $data['category'];
         }
-        $this->date        = isset($data['date'])        ? new \DateTime($data['date']) : null;
-        $this->amount      = isset($data['amount'])      ? $data['amount']              : null;
-        $this->description = isset($data['description']) ? $data['description']         : null;
+        $this->date        = isset($data['date']) ? new \DateTime($data['date']) : null;
+        $this->amount      = $data['amount'] ?? null;
+        $this->description = $data['description'] ?? null;
     }
 
-    /**
-     * Set input filter
-     *
-     * @param  InputFilterInterface $inputFilter
-     * @return InputFilterAwareInterface
-     */
-    public function setInputFilter(InputFilterInterface $inputFilter)
+    public function setInputFilter(InputFilterInterface $inputFilter): self
     {
         $this->inputFilter = $inputFilter;
         return $this;
     }
 
-    /**
-     * @return InputFilter
-     */
-    public function getInputFilter()
+    public function getInputFilter(): InputFilterInterface
     {
         if (!$this->inputFilter) {
             $this->inputFilter = new MovementFilter();

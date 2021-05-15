@@ -7,14 +7,13 @@ use Doctrine\ORM\EntityRepository;
 
 class MovementRepository extends EntityRepository
 {
-
     /**
-     * @param $accountId
-     * @param null $date
+     * @param int $accountId
+     * @param ?\DateTime $date
      * @return float
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getBalance($accountId, $date = null)
+    public function getBalance(int $accountId, ?\DateTime $date = null): float
     {
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
@@ -24,25 +23,20 @@ class MovementRepository extends EntityRepository
             ->setParameter(':accountId', $accountId);
 
         if ($date) {
-            $qb->andWhere('m.date<=:date')
-                ->setParameter(':date', $date instanceof \DateTime ? $date->format('Y-m-d') : $date);
+            $qb->andWhere('m.date<=:date')->setParameter(':date', $date->format('Y-m-d'));
         }
 
         $result = $qb->getQuery()->getOneOrNullResult();
         return (float) $result['balance'];
     }
 
-    /**
-     * @param array $params
-     * @return array
-     */
-    public function search(array $params = [])
+    public function search(array $params = []): array
     {
         $cleanParams  = [];
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('m')
-            ->from('Application\Entity\Movement', 'm')
+            ->from(Movement::class, 'm')
             ->where('1=1');
 
         if (!empty($params['accountId'])) {
@@ -78,25 +72,26 @@ class MovementRepository extends EntityRepository
     }
 
     /**
-     * @param $userId
-     * @return mixed
+     * @param int $userId
+     * @return float
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getTotalExpense($userId)
+    public function getTotalExpense(int $userId): float
     {
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('COALESCE(SUM(m.amount), 0) AS amount')
             ->from(Movement::class, 'm')
             ->innerJoin('m.category', 'c')
-            ->where('c.userId=:userId')
+            ->where('c.user=:userId')
             ->setParameter(':userId', $userId);
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return (float) $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function getMovementByDay(int $userId, string $minDate, string $maxDate) {
+    public function getMovementByDay(int $userId, string $minDate, string $maxDate): array
+    {
         // SELECT date, SUM(amount) AS amount FROM movement INNER JOIN account ON movement.accountId=account.id
         // WHERE userId=1 AND recap=1 AND date >= '2019-02-10' AND date<='2019-02-25' GROUP BY date
         $qb = $this->getEntityManager()

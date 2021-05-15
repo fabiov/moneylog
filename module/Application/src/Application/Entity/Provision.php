@@ -1,7 +1,9 @@
 <?php
+
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Laminas\Filter\StringTrim;
 use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
@@ -9,43 +11,45 @@ use Laminas\InputFilter\InputFilterInterface;
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\ProvisionRepository")
  * @ORM\Table(name="provision")
- * @property int $id
- * @property int $userid
- * @property \DateTime $valuta
- * @property float $importo
- * @property string $descrizione
  */
 class Provision implements InputFilterAwareInterface
 {
-
-    protected $inputFilter;
+    /**
+     * @var ?InputFilterInterface
+     */
+    private $inputFilter;
 
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(name="userId", type="integer", options={"unsigned"=true});
+     * @var int
      */
-    protected $userId;
+    private $userId;
 
     /**
      * @ORM\Column(name="valuta", type="date")
+     * @var \DateTime
      */
-    protected $valuta;
+    private $valuta;
 
     /**
      * @ORM\Column(name="importo", type="decimal", precision=8, scale=2)
+     * @var float
      */
-    protected $importo;
+    private $importo;
 
     /**
      * @ORM\Column(name="descrizione", type="string")
+     * @var string
      */
-    protected $descrizione;
+    private $descrizione;
 
     /**
      * Magic getter to expose protected properties.
@@ -69,6 +73,26 @@ class Provision implements InputFilterAwareInterface
         $this->$property = $value;
     }
 
+    public function setUserId(int $userId): void
+    {
+        $this->userId = $userId;
+    }
+
+    public function setValuta(\DateTime $valuta): void
+    {
+        $this->valuta = $valuta;
+    }
+
+    public function setImporto(float $importo): void
+    {
+        $this->importo = $importo;
+    }
+
+    public function setDescrizione(string $descrizione): void
+    {
+        $this->descrizione = $descrizione;
+    }
+
     public function getArrayCopy(): array
     {
         return get_object_vars($this);
@@ -77,7 +101,7 @@ class Provision implements InputFilterAwareInterface
     /**
      * @throws \Exception
      */
-    public function exchangeArray($data = []): void
+    public function exchangeArray(array $data = []): void
     {
         if (isset($data['id'])) {
             $this->id = $data['id'];
@@ -92,14 +116,15 @@ class Provision implements InputFilterAwareInterface
 
     /**
      * @param \Laminas\InputFilter\InputFilterInterface $inputFilter
+     * @return \Laminas\InputFilter\InputFilterAwareInterface
      * @throws \Exception
      */
-    public function setInputFilter(InputFilterInterface $inputFilter): void
+    public function setInputFilter(InputFilterInterface $inputFilter): InputFilterAwareInterface
     {
         throw new \Exception('Not used');
     }
 
-    public function getInputFilter(): InputFilter
+    public function getInputFilter(): InputFilterInterface
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
@@ -107,17 +132,17 @@ class Provision implements InputFilterAwareInterface
             $inputFilter->add([
                 'name' => 'valuta',
                 'required' => true,
-                'filters' => [['name' => \Laminas\Filter\StringTrim::class]],
+                'filters' => [['name' => StringTrim::class]],
             ]);
             $inputFilter->add([
                 'name' => 'importo',
                 'required' => true,
-                'filters' => [['name' => \Laminas\Filter\StringTrim::class]],
+                'filters' => [['name' => StringTrim::class]],
             ]);
             $inputFilter->add([
                 'name' => 'descrizione',
                 'required' => true,
-                'filters' => [['name' => \Laminas\Filter\StringTrim::class]],
+                'filters' => [['name' => StringTrim::class]],
             ]);
 
             $this->inputFilter = $inputFilter;

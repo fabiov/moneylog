@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\Form\Filter;
 
 use Laminas\InputFilter\InputFilter;

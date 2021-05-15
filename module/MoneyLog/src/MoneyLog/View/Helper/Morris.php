@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;
@@ -9,13 +10,18 @@ use Laminas\View\Helper\AbstractHelper;
  */
 class Morris extends AbstractHelper
 {
-
-    public function __invoke()
+    public function __invoke(): self
     {
         return $this;
     }
 
-    public function donut($element, array $data, $labelKey = 'label', $valueKey = 'value')
+    /**
+     * @param string $element
+     * @param array<array> $data
+     * @param string $labelKey
+     * @param string $valueKey
+     */
+    public function donut(string $element, array $data, string $labelKey = 'label', string $valueKey = 'value'): void
     {
         $data = array_filter($data, function ($item) use ($valueKey) {
             return $item[$valueKey] > 0;

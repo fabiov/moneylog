@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Application\Repository;
@@ -9,8 +10,7 @@ use Doctrine\ORM\EntityRepository;
 
 class ProvisionRepository extends EntityRepository
 {
-
-    public function getBalance($userId)
+    public function getBalance(int $userId): float
     {
         $em = $this->getEntityManager();
         $qb = $em
@@ -20,7 +20,10 @@ class ProvisionRepository extends EntityRepository
             ->where('a.userId=:userId')
             ->setParameter(':userId', $userId);
 
-        return $qb->getQuery()->getSingleScalarResult() + $em->getRepository(Movement::class)->getTotalExpense($userId);
+        /** @var \Application\Repository\MovementRepository $movementRepository */
+        $movementRepository = $em->getRepository(Movement::class);
+
+        return $qb->getQuery()->getSingleScalarResult() + $movementRepository->getTotalExpense($userId);
     }
 
     /**
@@ -57,12 +60,12 @@ class ProvisionRepository extends EntityRepository
     }
 
     /**
-     * @param $userId
+     * @param int $userId
      * @return float
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getSum($userId) 
+    public function getSum(int $userId): float
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder()
@@ -71,6 +74,6 @@ class ProvisionRepository extends EntityRepository
                  ->where('a.userId=:userId')
                  ->setParameter(':userId', $userId);
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return (float) $qb->getQuery()->getSingleScalarResult();
     }
 }

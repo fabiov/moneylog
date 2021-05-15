@@ -1,15 +1,13 @@
 <?php
+
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\Factory as InputFactory;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
 
 /**
- * Setting.
- *
  * @ORM\Entity
  * @ORM\Table(name="setting")
  * @property int $userId
@@ -19,7 +17,9 @@ use Laminas\InputFilter\InputFilterInterface;
  */
 class Setting implements InputFilterAwareInterface
 {
-
+    /**
+     * @var ?InputFilterInterface
+     */
     protected $inputFilter;
 
     /**
@@ -83,7 +83,7 @@ class Setting implements InputFilterAwareInterface
      */
     public function setStored($stored)
     {
-        $this->stored = (boolean) $stored;
+        $this->stored = (bool) $stored;
         return $this;
     }
 
@@ -105,8 +105,8 @@ class Setting implements InputFilterAwareInterface
      */
     public function exchangeArray(array $data)
     {
-        $this->userId              = isset($data['userId'])              ? $data['userId']              : null;
-        $this->payDay              = isset($data['payDay'])              ? $data['payDay']              : null;
+        $this->userId              = isset($data['userId']) ? $data['userId'] : null;
+        $this->payDay              = isset($data['payDay']) ? $data['payDay'] : null;
         $this->monthsRetrospective = isset($data['monthsRetrospective']) ? $data['monthsRetrospective'] : null;
 
         if (array_key_exists('stored', $data)) {
@@ -127,28 +127,25 @@ class Setting implements InputFilterAwareInterface
         return $this;
     }
 
-    /**
-     * @return InputFilter
-     */
-    public function getInputFilter()
+    public function getInputFilter(): InputFilterInterface
     {
         if (!$this->inputFilter) {
             $this->inputFilter = new InputFilter();
-            $this->inputFilter->add(array(
+            $this->inputFilter->add([
                 'filters'  => [['name' => 'Laminas\Filter\ToInt']],
                 'name'     => 'payDay',
                 'required' => true,
-            ));
-            $this->inputFilter->add(array(
+            ]);
+            $this->inputFilter->add([
                 'filters'  => [['name' => 'Laminas\Filter\ToInt']],
                 'name'     => 'monthsRetrospective',
                 'required' => true,
-            ));
-            $this->inputFilter->add(array(
+            ]);
+            $this->inputFilter->add([
                 'filters'  => [['name' => 'Laminas\Filter\ToInt']],
                 'name'     => 'stored',
                 'required' => true,
-            ));
+            ]);
         }
         return $this->inputFilter;
     }

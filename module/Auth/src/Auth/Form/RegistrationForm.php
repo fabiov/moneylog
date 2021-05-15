@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Form;
 
 use Laminas\Form\Form;

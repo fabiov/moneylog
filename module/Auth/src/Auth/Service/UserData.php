@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: fabio
- * Date: 31/03/17
- * Time: 21.22
- */
 
 namespace Auth\Service;
 
@@ -30,47 +24,29 @@ class UserData
         $this->data = new Container('user_data');
     }
 
-    /**
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->data->name = $name;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->data->name;
     }
 
-    /**
-    * @param string $surname
-    * @return $this
-    */
-    public function setSurname($surname)
+    public function setSurname(string $surname): self
     {
         $this->data->surname = $surname;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSurname()
+    public function getSurname(): string
     {
         return $this->data->surname;
     }
 
-    /**
-     * @param Setting $settings
-     * @return $this
-     */
-    public function setSettings(Setting $settings)
+    public function setSettings(Setting $settings): self
     {
         $this->data->settings = [
             'payDay'              => $settings->payDay,
@@ -80,10 +56,7 @@ class UserData
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getSettings()
+    public function getSettings(): array
     {
         return $this->data->settings;
     }

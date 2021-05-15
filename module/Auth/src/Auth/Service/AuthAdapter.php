@@ -1,7 +1,9 @@
 <?php
+
 namespace Auth\Service;
 
 use Application\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Authentication\Adapter\AdapterInterface;
 use Laminas\Authentication\Result;
 
@@ -26,27 +28,16 @@ class AuthAdapter implements AdapterInterface
     private $password;
 
     /**
-     * Entity manager.
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
-    /**
-     * AuthAdapter constructor.
-     * @param $entityManager
-     */
-    public function __construct($entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * Sets user email.
-     *
-     * @param string $email
-     * @return $this
-     */
-    public function setEmail(string $email)
+    public function setEmail(string $email): self
     {
         $this->email = $email;
         return $this;
@@ -90,7 +81,6 @@ class AuthAdapter implements AdapterInterface
         // Now we need to calculate hash based on user-entered password and compare
         // it with the password hash stored in database.
         if ($user->getPassword() === md5($this->password . $user->getSalt())) {
-
             $user->setLastLogin(new \DateTime());
             $this->entityManager->flush();
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Authorize\Acl;
 
 use Laminas\Permissions\Acl\Acl as LaminasAcl;
@@ -16,11 +17,10 @@ use Laminas\Permissions\Acl\Resource\GenericResource as Resource;
  */
 class Acl extends LaminasAcl
 {
-
     /**
      * Default Role
      */
-    const DEFAULT_ROLE = 'guest';
+    public const DEFAULT_ROLE = 'guest';
 
     /**
      * Constructor
@@ -29,7 +29,7 @@ class Acl extends LaminasAcl
      * @return void
      * @throws \Exception
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         if (!isset($config['acl']['roles']) || !isset($config['acl']['resources'])) {
             throw new \Exception('Invalid ACL Config found');
@@ -46,15 +46,15 @@ class Acl extends LaminasAcl
     /**
      * Adds Roles to ACL
      *
-     * @param $roles
+     * @param array $roles
      * @return $this
      */
-    protected function _addRoles($roles)
+    protected function _addRoles(array $roles): self
     {
         foreach ($roles as $name => $parent) {
             if (!$this->hasRole($name)) {
                 if (empty($parent)) {
-                    $parent = array();
+                    $parent = [];
                 } else {
                     $parent = explode(',', $parent);
                 }
@@ -69,11 +69,11 @@ class Acl extends LaminasAcl
     /**
      * Adds Resources to ACL
      *
-     * @param $resources
+     * @param array $resources
      * @return $this
      * @throws \Exception
      */
-    protected function _addResources($resources)
+    protected function _addResources(array $resources): self
     {
         foreach ($resources as $permission => $controllers) {
             foreach ($controllers as $controller => $actions) {

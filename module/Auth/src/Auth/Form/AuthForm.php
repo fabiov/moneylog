@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Form;
 
 use Laminas\Form\Form;
@@ -37,6 +38,6 @@ class AuthForm extends Form
                 'class' => 'btn btn-lg btn-primary btn-block',
                 'value' => 'Sign in',
             ],
-        ]); 
+        ]);
     }
 }

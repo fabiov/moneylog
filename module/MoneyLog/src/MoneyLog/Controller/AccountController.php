@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\Controller;
 
 use Application\Entity\Account;
@@ -13,7 +14,6 @@ use Laminas\View\Model\ViewModel;
 
 class AccountController extends AbstractActionController
 {
-
     /**
      * @var \stdClass
      */
@@ -58,6 +58,8 @@ class AccountController extends AbstractActionController
     public function indexAction(): ViewModel
     {
         $data = [];
+
+        /** @var \Application\Repository\AccountRepository $accountRepository */
         $accountRepository = $this->em->getRepository(Account::class);
 
         // i dati in un record set potrebbero non essere nell'altro e vice versa
@@ -86,7 +88,7 @@ class AccountController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        /** @var Account $account */
+        /** @var ?Account $account */
         $account = $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
 
         if (!$account) {
@@ -140,8 +142,10 @@ class AccountController extends AbstractActionController
     }
 
     /**
-     * @return Response
-     * @throws OptimisticLockException
+     * @return \Laminas\Http\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function balanceAction(): Response
     {
@@ -151,18 +155,20 @@ class AccountController extends AbstractActionController
         $routeName   = $this->getRequest()->getPost('forward');
         $id          = (int) $this->params()->fromRoute('id', 0);
 
-        $account = $this->em->getRepository(Account::class)
-            ->findOneBy(['id' => $id, 'user' => $this->user->id]);
+        $account = $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
 
         if ($account) {
-            $currentBalance = $this->em->getRepository(Movement::class)
-                ->getBalance($id, new \DateTime());
+
+            /** @var \Application\Repository\MovementRepository $movementRepository */
+            $movementRepository = $this->em->getRepository(Movement::class);
+
+            $currentBalance = $movementRepository->getBalance($id, new \DateTime());
 
             $movement              = new Movement();
             $movement->account     = $account;
-            $movement->date        = new \DateTime();
             $movement->amount      = $amount - $currentBalance;
             $movement->description = $description;
+            $movement->setDate(new \DateTime());
             $this->em->persist($movement);
             $this->em->flush();
         }

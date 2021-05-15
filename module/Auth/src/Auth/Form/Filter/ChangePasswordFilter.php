@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Form\Filter;
 
 use Laminas\InputFilter\InputFilter;

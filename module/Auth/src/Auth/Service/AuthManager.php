@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Service;
 
 use Laminas\Authentication\AuthenticationService;
@@ -40,27 +41,28 @@ class AuthManager
      * Performs a login attempt. If $rememberMe argument is true, it forces the session
      * to last for one month (otherwise the session expires on one hour).
      *
-     * @param $email
-     * @param $password
-     * @param $rememberMe
-     * @return mixed
-     * @throws \Exception
+     * @param string $email
+     * @param string $password
+     * @param bool $rememberMe
+     * @return \Laminas\Authentication\Result
      */
-    public function login($email, $password, $rememberMe)
+    public function login(string $email, string $password, bool $rememberMe): Result
     {
         // Check if user has already logged in. If so, do not allow to log in twice.
 //        if ($this->authService->getIdentity() != null) {
 //            throw new \Exception('Already logged in');
 //        }
 
+        /** @var \Auth\Service\AuthAdapter $authAdapter */
+        $authAdapter = $this->authService->getAdapter();
+
         // Authenticate with login/password.
-        $this->authService->getAdapter()->setEmail($email)->setPassword($password);
+        $authAdapter->setEmail($email)->setPassword($password);
         $result = $this->authService->authenticate();
 
         // If user wants to "remember him", we will make session to expire in one month.
         // By default session expires in 1 hour (as specified in our config/global.php file).
         if ($result->getCode() == Result::SUCCESS && $rememberMe) {
-
             $identity = $result->getIdentity();
 
             $this->userData->setName($identity->name);
@@ -82,7 +84,7 @@ class AuthManager
     /**
      * Performs user logout.
      */
-    public function logout()
+    public function logout(): void
     {
         // Remove identity from session.
         $this->authService->clearIdentity();

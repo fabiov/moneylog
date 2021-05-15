@@ -1,11 +1,16 @@
 <?php
+
 namespace MoneyLog\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;
 
 class WidgetText extends AbstractHelper
 {
-    public function __invoke($data)
+    /**
+     * @param array<string> $data
+     * @return string
+     */
+    public function __invoke(array $data): string
     {
         $classes = '';
         if (!empty($data['col-lg'])) {

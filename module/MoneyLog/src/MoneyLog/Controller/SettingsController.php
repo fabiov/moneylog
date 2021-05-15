@@ -1,4 +1,5 @@
 <?php
+
 namespace MoneyLog\Controller;
 
 use Application\Entity\Setting;
@@ -7,12 +8,12 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\TransactionRequiredException;
+use Laminas\View\Model\ViewModel;
 use MoneyLog\Form\SettingsForm;
 use Laminas\Mvc\Controller\AbstractActionController;
 
 class SettingsController extends AbstractActionController
 {
-
     /**
      * @var EntityManager
      */
@@ -40,7 +41,7 @@ class SettingsController extends AbstractActionController
      * @throws TransactionRequiredException
      * @throws ORMException
      */
-    public function indexAction(): array
+    public function indexAction(): ViewModel
     {
         /** @var Setting $setting */
         $setting = $this->em->find(Setting::class, $this->user->id);
@@ -62,6 +63,6 @@ class SettingsController extends AbstractActionController
                 $message = 'Impostazioni salvate correttamente.';
             }
         }
-        return ['form' => $form, 'message' => $message];
+        return new ViewModel(['form' => $form, 'message' => $message]);
     }
 }

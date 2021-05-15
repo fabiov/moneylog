@@ -1,9 +1,12 @@
 <?php
+
 namespace MoneyLog\Controller;
 
 use Application\Entity\Provision;
 use Application\Entity\Category;
+use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
+use Laminas\Http\Response;
 use MoneyLog\Form\CategoriaForm;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
@@ -39,7 +42,7 @@ class CategoriaController extends AbstractActionController
 
             if ($form->isValid()) {
                 $data = $form->getData();
-                $data['userId'] = $this->user->id;
+                $data['user'] = $this->em->getRepository(User::class)->find($this->user->id);
                 $category->exchangeArray($data);
                 $this->em->persist($category);
                 $this->em->flush();
@@ -48,13 +51,13 @@ class CategoriaController extends AbstractActionController
                 return $this->redirect()->toRoute('accantona_categoria');
             }
         }
-        return array('form' => $form);
+        return ['form' => $form];
     }
 
     public function indexAction()
     {
         return new ViewModel([
-            'rows' => $this->em->getRepository(Category::class)->findBy(['userId' => $this->user->id])
+            'rows' => $this->em->getRepository(Category::class)->findBy(['user' => $this->user->id])
         ]);
     }
 
@@ -63,9 +66,9 @@ class CategoriaController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         $category = $this->em->getRepository('Application\Entity\Category')
-            ->findOneBy(array('id' => $id, 'userId' => $this->user->id));
+            ->findOneBy(['id' => $id, 'user' => $this->user->id]);
         if (!$category) {
-            return $this->redirect()->toRoute('accantona_categoria', array('action' => 'index'));
+            return $this->redirect()->toRoute('accantona_categoria', ['action' => 'index']);
         }
 
         $form = new CategoriaForm();
@@ -73,7 +76,6 @@ class CategoriaController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-
             $form->setInputFilter($category->getInputFilter());
             $form->setData($request->getPost());
 
@@ -82,27 +84,35 @@ class CategoriaController extends AbstractActionController
                 return $this->redirect()->toRoute('accantona_categoria');
             }
         }
-        return array('id' => $id, 'form' => $form);
+        return ['id' => $id, 'form' => $form];
     }
 
-    public function deleteAction()
+    /**
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
+     */
+    public function deleteAction(): Response
     {
-        $id   = (int) $this->params()->fromRoute('id', 0);
-        $repo = $this->em->getRepository(Category::class);
+        $id   = (int) $this->params()->fromRoute('id');
+
+        /** @var \Application\Repository\CategoryRepository $categoryRepository */
+        $categoryRepository = $this->em->getRepository(Category::class);
 
         /* @var $category Category */
-        $category = $repo->find($id);
-        if ($category && $category->userId == $this->user->id) {
-            $sum = $repo->getSum($id);
+        $category = $categoryRepository->find($id);
+        if ($category && $category->userId === $this->user->id) {
+            $sum = $categoryRepository->getSum($id);
 
             $this->em->beginTransaction();
             if ($sum) {
-                $aside = new Provision();
-                $aside->userId      = $this->user->id;
-                $aside->descrizione = 'Conguaglio rimozione categoria ' . $category->getDescrizione();
-                $aside->importo     = $sum;
-                $aside->valuta      = new \DateTime();
-                $this->em->persist($aside);
+                $provision = new Provision();
+                $provision->setUserId($this->user->id);
+                $provision->setDescrizione('Conguaglio rimozione categoria ' . $category->getDescrizione());
+                $provision->setImporto($sum);
+                $provision->setValuta(new \DateTime());
+                $this->em->persist($provision);
             }
             $this->em->remove($category);
             $this->em->flush();
@@ -110,6 +120,5 @@ class CategoriaController extends AbstractActionController
         }
 
         return $this->redirect()->toRoute('accantona_categoria'); // Redirect to list of categories
-
     }
 }

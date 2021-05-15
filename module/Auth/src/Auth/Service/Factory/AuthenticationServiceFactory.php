@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Service\Factory;
 
 use Auth\Service\AuthAdapter;

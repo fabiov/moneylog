@@ -12,7 +12,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
         parent::setUp();
     }
 
-    public function testIndexActionCanBeAccessed()
+    public function testIndexActionCanBeAccessed(): void
     {
         $this->dispatch('/');
         $this->assertResponseStatusCode(200);

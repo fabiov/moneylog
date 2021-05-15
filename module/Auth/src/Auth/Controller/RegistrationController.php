@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Auth\Controller;
@@ -15,6 +16,9 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\View\Model\ViewModel;
 
+/**
+ * @method \Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger flashMessenger()
+ */
 class RegistrationController extends AbstractActionController
 {
     /**
@@ -44,12 +48,10 @@ class RegistrationController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-
             $form->setInputFilter(new RegistrationFilter($this->sm));
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-
                 $data = $form->getData();
                 $data = $this->prepareData($data);
 
@@ -58,7 +60,7 @@ class RegistrationController extends AbstractActionController
                 $this->em->persist($user);
                 $this->em->flush();
                 $this->sendConfirmationEmail($user);
-                $this->flashMessenger()->addMessage($user->email);
+                $this->flashMessenger()->addMessage($user->getEmail());
 
                 return $this->redirect()->toRoute('auth_registration', ['action' => 'registration-success']);
             }
@@ -72,7 +74,7 @@ class RegistrationController extends AbstractActionController
         $usr_email = null;
         $flashMessenger = $this->flashMessenger();
         if ($flashMessenger->hasMessages()) {
-            foreach($flashMessenger->getMessages() as $key => $value) {
+            foreach ($flashMessenger->getMessages() as $key => $value) {
                 $usr_email .=  $value;
             }
         }
@@ -90,7 +92,7 @@ class RegistrationController extends AbstractActionController
         $token = $this->params()->fromRoute('id');
         $viewModel = new ViewModel(['token' => $token]);
 
-        /** @var User $user */
+        /** @var ?User $user */
         $user = $this->em->getRepository(User::class)->findOneBy(['registrationToken' => $token]);
 
         if ($user) {
@@ -121,7 +123,6 @@ class RegistrationController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-
             $form->setInputFilter(new ForgottenPasswordFilter($this->sm));
             $form->setData($request->getPost());
 
@@ -149,7 +150,7 @@ class RegistrationController extends AbstractActionController
         $usr_email = null;
         $flashMessenger = $this->flashMessenger();
         if ($flashMessenger->hasMessages()) {
-            foreach($flashMessenger->getMessages() as $value) {
+            foreach ($flashMessenger->getMessages() as $value) {
                 $usr_email .=  $value;
             }
         }
@@ -167,12 +168,15 @@ class RegistrationController extends AbstractActionController
         return $data;
     }
 
+    /**
+     * @throws \Exception
+     */
     private static function getRandomString(int $length): string
     {
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $rand  = '';
         for ($i = 0; $i < $length; $i++) {
-            $rand .= $chars[mt_rand(0, strlen($chars) - 1)];
+            $rand .= $chars[random_int(0, strlen($chars) - 1)];
         }
         return $rand;
     }
@@ -187,17 +191,17 @@ class RegistrationController extends AbstractActionController
         $config = $this->sm->get('Config');
         $body = "Please, click the link to confirm your registration. "
               . $this->getRequest()->getServer('HTTP_ORIGIN')
-              . $this->url()->fromRoute('auth_registration', ['action' => 'confirm-email','id' => $user->registrationToken]);
+              . $this->url()->fromRoute('auth_registration', ['action' => 'confirm-email','id' => $user->getRegistrationToken()]);
 
         $message = new Message();
-        $message->addTo($user->email)
+        $message->addTo($user->getEmail())
                 ->addFrom($config['mail']['sender']['address'], $config['mail']['sender']['name'])
                 ->setSubject('Conferma registrazione')
                 ->setBody($body);
         $this->sm->get('mail.transport')->send($message);
     }
 
-    private function sendPasswordByEmail($userEmail, $password): void
+    private function sendPasswordByEmail(string $userEmail, string $password): void
     {
         $config = $this->sm->get('Config');
 

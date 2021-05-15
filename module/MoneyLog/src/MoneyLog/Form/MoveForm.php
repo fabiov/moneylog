@@ -1,11 +1,17 @@
 <?php
+
 namespace MoneyLog\Form;
 
 use Laminas\Form\Form;
 
 class MoveForm extends Form
 {
-    public function __construct($name = null, $options = [])
+    /**
+     * MoveForm constructor.
+     * @param null $name
+     * @param array<array> $options
+     */
+    public function __construct($name = null, array $options = [])
     {
         parent::__construct($name, $options);
 
@@ -40,7 +46,11 @@ class MoveForm extends Form
         ]);
     }
 
-    public function setAccountOptions($accounts)
+    /**
+     * @param array<string> $accounts
+     * @return $this
+     */
+    public function setAccountOptions(array $accounts): self
     {
         $this->get('targetAccountId')->setValueOptions($accounts);
         return $this;
