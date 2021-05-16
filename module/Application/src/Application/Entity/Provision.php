@@ -109,7 +109,9 @@ class Provision implements InputFilterAwareInterface
         if (isset($data['userId'])) {
             $this->user = $data['userId'];
         }
-        $this->valuta = isset($data['valuta']) ? new \DateTime($data['valuta']) : null;
+        if (isset($data['valuta'])) {
+            $this->valuta = new \DateTime($data['valuta']);
+        }
         $this->importo = $data['importo'] ?? null;
         $this->descrizione = $data['descrizione'] ?? null;
     }

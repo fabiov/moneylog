@@ -58,6 +58,10 @@ class UserController extends AbstractActionController
      */
     public function updateAction()
     {
+        if (!$this->user) {
+            return $this->redirect()->toRoute('auth', ['action' => 'login']);
+        }
+
         /** @var ?User $user */
         $user = $this->em->find(User::class, $this->user->id);
         if (!$user) {
@@ -142,6 +146,10 @@ class UserController extends AbstractActionController
      */
     public function changePasswordAction()
     {
+        if (!$this->user) {
+            return $this->redirect()->toRoute('auth', ['action' => 'login']);
+        }
+
         /** @var ?User $user */
         $user = $this->em->find(User::class, $this->user->id);
         if (!$user) {

@@ -139,7 +139,9 @@ class Movement implements InputFilterAwareInterface
         if (array_key_exists('category', $data)) {
             $this->category = $data['category'];
         }
-        $this->date        = isset($data['date']) ? new \DateTime($data['date']) : null;
+        if (isset($data['date'])) {
+            $this->date = new \DateTime($data['date']);
+        }
         $this->amount      = $data['amount'] ?? null;
         $this->description = $data['description'] ?? null;
     }

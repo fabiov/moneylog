@@ -182,14 +182,15 @@ class MovementController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        /** @var  ?Movement $item */
+        /** @var ?Movement $item */
         $item = $this->em->getRepository(Movement::class)->findOneBy(['id' => $id]);
 
-        if ($item && $item->getAccount()->getUser()->getId() == $this->user->id) {
-            $this->em->remove($item);
-            $this->em->flush();
+        if (!$item || $item->getAccount()->getUser()->getId() != $this->user->id) {
+            return $this->redirect()->toRoute('accantona_recap');
         }
 
+        $this->em->remove($item);
+        $this->em->flush();
         return $this->redirect()->toRoute(
             'accantonaMovement',
             ['action' => 'account', 'id' => $item->getAccount()->getId()],
