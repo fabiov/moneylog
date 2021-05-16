@@ -1,5 +1,8 @@
 <?php
-/* @var Auth\Form\AuthForm $form */
+/**
+ * @var Auth\Form\AuthForm $form
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ */
 $form = $this->form;
 $form->setAttributes(['action' => $this->url('auth', ['action' => 'login']), 'class' => 'form-signin']);
 $form->prepare();

@@ -1,13 +1,14 @@
 <?php
 /**
  * @var Laminas\View\Renderer\PhpRenderer $this
- * @var array $searchParams
  * @var array<\Application\Entity\Provision> $rows
+ * @var array<string> $searchParams
+ * @var float $balance
  */
+echo $this->pageHeader('Accantonati');
 ?>
-<?php echo $this->pageHeader('Accantonati'); ?>
 <div class="row">
-    <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '12', 'fa' => 'eur', 'label' => 'Saldo', 'text' => $this->currencyForma($this->balance)]); ?>
+    <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '12', 'fa' => 'eur', 'label' => 'Saldo', 'text' => $this->currencyForma($balance)]); ?>
 </div>
 <div class="row">
     <div class="col-lg-12">

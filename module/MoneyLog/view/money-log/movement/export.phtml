@@ -12,10 +12,12 @@ echo implode(',', [
 ]) . PHP_EOL;
 
 foreach ($rows as $row) {
+
+    $category = $row->getCategory();
     echo '"' . implode('","', [
         $this->dateForma($row->getDate()),
         number_format($row->getAmount(), 2, ',', ''),
         str_replace('"', '""', trim($row->getDescription())),
-        $row->getCategory() ? str_replace('"', '""', $row->getCategory()->getDescrizione()) : '',
+        $category ? str_replace('"', '""', $category->getDescrizione()) : '',
     ]) . '"' . PHP_EOL;
 }

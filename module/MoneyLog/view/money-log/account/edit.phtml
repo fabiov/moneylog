@@ -1,10 +1,13 @@
 <?php
-/** @var \Laminas\Form\Form $form */
-
+/**
+ * @var Laminas\Form\Form $form
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var string $id
+ */
 $title = 'Modifica conto';
 $this->headTitle($title);
-$this->form->setAttribute('action', $this->url('accantonaAccount', array('action' => 'edit', 'id' => $this->id)));
-$this->form->prepare();
+$form->setAttribute('action', $this->url('accantonaAccount', array('action' => 'edit', 'id' => $id)));
+$form->prepare();
 ?>
 <?php echo $this->pageHeader($title); ?>
 <?php echo $this->form()->openTag($form); ?>

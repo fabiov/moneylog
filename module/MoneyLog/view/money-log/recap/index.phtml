@@ -1,5 +1,19 @@
-<?php $sum = 0; ?>
-<?php echo $this->pageHeader('Cruscotto'); ?>
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var array<array> $accounts
+ * @var array<array> $avgPerCategory
+ * @var array<array> $donutAccounts
+ * @var array<array> $donutSpends
+ * @var array<array> $monthlyOverviewData
+ * @var float $monthBudget
+ * @var float $stored
+ * @var int $remainingDays
+ */
+
+$sum = 0;
+echo $this->pageHeader('Cruscotto');
+?>
 <div class="row">
     <?php
     echo $this->widgetText([
@@ -189,9 +203,9 @@ Morris.Bar({
 <?php $this->inlineScript()->captureEnd(); ?>
 
 <?php
-if ($this->donutSpends) {
-    $this->morris()->donut('donut-spends', $this->donutSpends);
+if ($donutSpends) {
+    $this->morris()->donut('donut-spends', $donutSpends);
 }
-if ($this->donutAccounts) {
-    $this->morris()->donut('donut-accounts', $this->donutAccounts);
+if ($donutAccounts) {
+    $this->morris()->donut('donut-accounts', $donutAccounts);
 }

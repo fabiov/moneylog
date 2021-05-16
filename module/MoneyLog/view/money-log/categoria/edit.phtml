@@ -1,6 +1,11 @@
 <?php
-$this->form->setAttribute('action', $this->url('accantona_categoria', array('action' => 'edit', 'id' => $this->id)));
-$this->form->prepare();
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var MoneyLog\Form\CategoriaForm $form
+ * @var string $id
+ */
+$form->setAttribute('action', $this->url('accantona_categoria', array('action' => 'edit', 'id' => $id)));
+$form->prepare();
 ?>
 <?php echo $this->pageHeader('Modifica categorie'); ?>
 <div class="row">

@@ -1,15 +1,21 @@
-<?php /** @var Application\Entity\Movement $item */ ?>
-<?php /** @var array $searchParams */ ?>
-<?php echo $this->pageHeader('Modifica movimento'); ?>
+<?php
+/**
+ * @var Application\Entity\Movement $item
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var MoneyLog\Form\MovementForm $form
+ * @var array<string> $searchParams
+ */
+echo $this->pageHeader('Modifica movimento');
+?>
 <div class="row">
     <div class="col-lg-4"></div>
     <div class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">Modifica movimento in <?php echo $item->getAccount()->getName(); ?></div>
             <div class="panel-body">
-                <?php $this->form->setAttribute('action', $this->url('accantonaMovement', ['action' => 'edit', 'id' => $item->getId()], ['query' => $searchParams])); ?>
-                <?php $this->form->prepare(); ?>
-                <?php echo $this->partial('money-log/movement/partials/movement', ['form' => $this->form, 'accountId' => $item->getAccount()->getId(), 'isRepeatable' => false, 'searchParams' => $searchParams]); ?>
+                <?php $form->setAttribute('action', $this->url('accantonaMovement', ['action' => 'edit', 'id' => $item->getId()], ['query' => $searchParams])); ?>
+                <?php $form->prepare(); ?>
+                <?php echo $this->partial('money-log/movement/partials/movement', ['form' => $form, 'accountId' => $item->getAccount()->getId(), 'isRepeatable' => false, 'searchParams' => $searchParams]); ?>
             </div>
         </div>
     </div>

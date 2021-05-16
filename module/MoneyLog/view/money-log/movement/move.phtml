@@ -2,7 +2,8 @@
 /**
  * @var \Application\Entity\Account $sourceAccount
  * @var \Laminas\Form\Form $form
- * @var array $searchParams
+ * @var array<string> $searchParams
+ * @var Laminas\View\Renderer\PhpRenderer $this
  */
 echo $this->pageHeader('Giroconto');
 ?>
@@ -12,7 +13,7 @@ echo $this->pageHeader('Giroconto');
         <div class="panel panel-default">
             <div class="panel-heading">Preleva da <?php echo $sourceAccount->getName(); ?></div>
             <div class="panel-body">
-                <?php echo $this->form()->openTag($this->form); ?>
+                <?php echo $this->form()->openTag($form); ?>
 
                     <?php echo $this->sbaFormRow($form->get('date')); ?>
                     <?php echo $this->sbaFormRow($form->get('amount')); ?>
