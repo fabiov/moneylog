@@ -46,7 +46,9 @@ class AccantonatoController extends AbstractActionController
                 /** @var User $user */
                 $user = $this->em->find(User::class, $this->user->id);
 
+                /** @var array $data */
                 $data = $form->getData();
+
                 $provision->exchangeArray($data);
                 $provision->setUser($user);
                 $this->em->persist($provision);
@@ -80,19 +82,20 @@ class AccantonatoController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        $aside = $this->em->getRepository(Provision::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
+        /** @var ?Provision $provision */
+        $provision = $this->em->getRepository(Provision::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
 
-        if (!$aside) {
+        if (!$provision) {
             return $this->redirect()->toRoute('accantona_accantonato', ['action' => 'index']);
         }
 
         $form = new AccantonatoForm('accantonati');
-        $form->bind($aside);
+        $form->bind($provision);
 
         $request = $this->getRequest();
         $searchParams = $this->params()->fromQuery();
         if ($request->isPost()) {
-            $form->setInputFilter($aside->getInputFilter());
+            $form->setInputFilter($provision->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {

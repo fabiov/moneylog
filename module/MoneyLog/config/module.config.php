@@ -118,7 +118,6 @@ return [
             'morris'            => MoneyLog\View\Helper\Morris::class,
             'pageHeader'        => MoneyLog\View\Helper\PageHeader::class,
             'synopsisFilters'   => MoneyLog\View\Helper\SynopsisFilters::class,
-            'widgetSelect'      => MoneyLog\View\Helper\WidgetSelect::class,
             'widgetText'        => MoneyLog\View\Helper\WidgetText::class,
         ],
     ],

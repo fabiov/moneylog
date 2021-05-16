@@ -40,9 +40,15 @@ class AccountController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+
+                /** @var User $user */
+                $user = $this->em->find(User::class, $this->user->id);
+
+                /** @var array $data */
                 $data = $form->getData();
-                $data['user'] = $this->em->find(User::class, $this->user->id);
+
                 $account->exchangeArray($data);
+                $account->setUser($user);
                 $this->em->persist($account);
                 $this->em->flush();
 
