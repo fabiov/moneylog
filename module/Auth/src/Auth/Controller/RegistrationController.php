@@ -52,8 +52,10 @@ class RegistrationController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $data = $form->getData();
-                $data = $this->prepareData($data);
+
+                /** @var array $formData */
+                $formData = $form->getData();
+                $data = $this->prepareData($formData);
 
                 $user = new User();
                 $user->exchangeArray($data);
@@ -126,6 +128,7 @@ class RegistrationController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                /** @var array $data */
                 $data = $form->getData();
 
                 $password = $this->getRandomString(10);

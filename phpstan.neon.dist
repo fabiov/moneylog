@@ -37,5 +37,6 @@ parameters:
         - '/Method Authorize\\Acl\\Acl::_addRoles\(\) has parameter \$roles with no value type specified in iterable type array\./'
         - '/Method [\w\\]+::\w+\(\) return type has no value type specified in iterable type [\w\$\(\)\\]+\./'
         - '/Method \w+\\Controller\\\w+Controller::\w+Action\(\) has no return typehint specified\./'
-        - '/PHPDoc tag @var for variable \$data has no value type specified in iterable type array./'
+        - '/PHPDoc tag @var for variable \$data has no value type specified in iterable type array\./'
+        - '/PHPDoc tag @var for variable \$formData has no value type specified in iterable type array\./'
         - '/Property Auth\\Service\\UserData::\$data type has no value type specified in iterable type Laminas\\Session\\Container\./'

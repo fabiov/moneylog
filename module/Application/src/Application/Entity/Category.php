@@ -59,6 +59,11 @@ class Category implements InputFilterAwareInterface
         return $this->user;
     }
 
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
+    }
+
     public function getDescrizione(): string
     {
         return $this->descrizione;

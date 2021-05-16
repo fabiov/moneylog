@@ -43,7 +43,7 @@ class RecapController extends AbstractActionController
         /** @var \Application\Repository\CategoryRepository $categoryRepository */
         $categoryRepository = $this->em->getRepository(Category::class);
 
-        /* @var Setting $setting */
+        /** @var Setting $setting */
         $setting = $this->em->find(Setting::class, $this->user->id);
 
         $since = new \DateTime('-' . $setting->getMonthsRetrospective() . ' MONTH');

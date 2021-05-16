@@ -63,7 +63,7 @@ class AuthAdapter implements AdapterInterface
      */
     public function authenticate(): Result
     {
-        /* @var \Application\Entity\User $user */
+        /** @var ?User $user */
         // Check the database if there is a user with such email.
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $this->email]);
 

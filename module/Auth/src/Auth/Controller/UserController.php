@@ -104,6 +104,8 @@ class UserController extends AbstractActionController
             $form->setInputFilter($authFormFilters->getInputFilter());
             $form->setData($request->getPost());
             if ($form->isValid()) {
+
+                /** @var array $data */
                 $data = $form->getData();
 
                 // Perform login attempt.
@@ -140,11 +142,13 @@ class UserController extends AbstractActionController
      */
     public function changePasswordAction()
     {
-        /* @var User $user*/
-        $user = $this->em->find(User::class, $this->user->id)->setInputFilter(new UserFilter());
+        /** @var ?User $user */
+        $user = $this->em->find(User::class, $this->user->id);
         if (!$user) {
             return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
         }
+
+        $user->setInputFilter(new UserFilter());
 
         $form     = new ChangePasswordForm();
         $error    = false;

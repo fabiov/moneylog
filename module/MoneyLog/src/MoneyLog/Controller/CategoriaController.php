@@ -41,9 +41,15 @@ class CategoriaController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+
+                /** @var User $user */
+                $user = $this->em->getRepository(User::class)->find($this->user->id);
+
+                /** @var array $data */
                 $data = $form->getData();
-                $data['user'] = $this->em->getRepository(User::class)->find($this->user->id);
+
                 $category->exchangeArray($data);
+                $category->setUser($user);
                 $this->em->persist($category);
                 $this->em->flush();
 
@@ -65,8 +71,10 @@ class CategoriaController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        $category = $this->em->getRepository('Application\Entity\Category')
+        /** @var ?Category $category */
+        $category = $this->em->getRepository(Category::class)
             ->findOneBy(['id' => $id, 'user' => $this->user->id]);
+
         if (!$category) {
             return $this->redirect()->toRoute('accantona_categoria', ['action' => 'index']);
         }
@@ -100,8 +108,9 @@ class CategoriaController extends AbstractActionController
         /** @var \Application\Repository\CategoryRepository $categoryRepository */
         $categoryRepository = $this->em->getRepository(Category::class);
 
-        /* @var $category Category */
+        /** @var ?Category $category */
         $category = $categoryRepository->find($id);
+
         if ($category && $category->getUser()->getId() === $this->user->id) {
             $sum = $categoryRepository->getSum($id);
 

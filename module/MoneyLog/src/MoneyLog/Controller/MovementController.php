@@ -35,7 +35,7 @@ class MovementController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        /* @var ?Movement $item */
+        /** @var ?Movement $item */
         $item = $this->em->getRepository(Movement::class)->findOneBy(['id' => $id]);
 
         if (!$item || $item->getAccount()->getUser()->getId() != $this->user->id) {
@@ -110,7 +110,7 @@ class MovementController extends AbstractActionController
         $movementRepository = $this->em->getRepository(Movement::class);
         $rows               = $movementRepository->search($searchParams);
 
-        $previewsDate    = date('Y-m-d', strtotime("$dateMin -1 day"));
+        $previewsDate    = date('Y-m-d', (int) strtotime("$dateMin -1 day"));
         $previewsBalance = $movementRepository->getBalance($accountId, new \DateTime($previewsDate));
         $balances        = [$previewsDate => $previewsBalance];
 
@@ -159,7 +159,7 @@ class MovementController extends AbstractActionController
             'description' => $this->params()->fromQuery('description'),
         ];
 
-        /* @var Account $account */
+        /** @var ?Account $account */
         $account = $this->em->getRepository(Account::class)
             ->findOneBy(['id' => $accountId, 'user' => $this->user->id]);
 
@@ -182,8 +182,8 @@ class MovementController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        /* @var $item \Application\Entity\Movement */
-        $item = $this->em->getRepository('Application\Entity\Movement')->findOneBy(['id' => $id]);
+        /** @var  ?Movement $item */
+        $item = $this->em->getRepository(Movement::class)->findOneBy(['id' => $id]);
 
         if ($item && $item->getAccount()->getUser()->getId() == $this->user->id) {
             $this->em->remove($item);
@@ -205,7 +205,7 @@ class MovementController extends AbstractActionController
         /** @var AccountRepository $accountRepository */
         $accountRepository = $this->em->getRepository(Account::class);
 
-        /* @var $sourceAccount Account */
+        /** @var ?Account $sourceAccount */
         $sourceAccount = $accountRepository->find($id);
 
         if (!$sourceAccount || $sourceAccount->getUser()->getId() != $this->user->id) {
@@ -226,9 +226,10 @@ class MovementController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                /** @var array $data */
                 $data = $form->getData();
 
-                /* @var Account $targetAccount */
+                /** @var ?Account $targetAccount */
                 $targetAccount = $accountRepository->find($data['targetAccountId']);
 
                 if (!$targetAccount || $targetAccount->getUser()->getId() != $this->user->id) {
@@ -277,7 +278,7 @@ class MovementController extends AbstractActionController
         $accountId = (int) $this->params()->fromRoute('id');
         $searchParams = $this->params()->fromQuery();
 
-        /* @var $account Account */
+        /** @var ?Account $account */
         $account = $this->em->getRepository(Account::class)->find($accountId);
 
         if (!$account || $account->getUser()->getId() != $this->user->id) {
@@ -303,8 +304,9 @@ class MovementController extends AbstractActionController
 
                 for ($i = 0; $i < $repetitionNumber; $i++) {
                     $movement = new Movement();
+                    $timestamp = (int) strtotime("{$data['date']} +$i {$data['repetitionPeriod']}");
                     $movement->exchangeArray([
-                        'date'          => date('Y-m-d', strtotime("{$data['date']} +$i {$data['repetitionPeriod']}")),
+                        'date'          => date('Y-m-d', $timestamp),
                         'amount'        => $data['amount'] * $data['type'],
                         'description'   => $data['description'],
                         'category'      => $category,
