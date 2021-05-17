@@ -73,15 +73,15 @@ class RegistrationController extends AbstractActionController
 
     public function registrationSuccessAction(): ViewModel
     {
-        $usr_email = null;
+        $userEmail = null;
         $flashMessenger = $this->flashMessenger();
         if ($flashMessenger->hasMessages()) {
-            foreach ($flashMessenger->getMessages() as $key => $value) {
-                $usr_email .=  $value;
+            foreach ($flashMessenger->getMessages() as $value) {
+                $userEmail .=  $value;
             }
         }
         $this->layout('layout/unlogged');
-        return new ViewModel(['usr_email' => $usr_email]);
+        return new ViewModel(['userEmail' => $userEmail]);
     }
 
     /**
@@ -150,15 +150,15 @@ class RegistrationController extends AbstractActionController
 
     public function passwordChangeSuccessAction(): ViewModel
     {
-        $usr_email = null;
+        $userEmail = null;
         $flashMessenger = $this->flashMessenger();
         if ($flashMessenger->hasMessages()) {
             foreach ($flashMessenger->getMessages() as $value) {
-                $usr_email .=  $value;
+                $userEmail .=  $value;
             }
         }
         $this->layout('layout/unlogged');
-        return new ViewModel(['usr_email' => $usr_email]);
+        return new ViewModel(['userEmail' => $userEmail]);
     }
 
     private static function prepareData(array $data): array

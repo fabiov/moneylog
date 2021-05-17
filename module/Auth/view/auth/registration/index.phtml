@@ -1,5 +1,8 @@
 <?php
-/* @var \Laminas\Form\Form $form */
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var Auth\Form\RegistrationForm $form
+ */
 $form->setAttributes(['action' => $this->url('auth_registration', ['action' => 'index']), 'class' => 'form-signin']);
 $form->prepare();
 ?>
@@ -7,7 +10,7 @@ $form->prepare();
     .form-signin {max-width: 330px; padding: 15px; margin: 0 auto;}
     .form-signin ul {color: #a94442; list-style-type: none; padding: 0;}
 </style>
-<?php echo $this->form()->openTag($this->form); ?>
+<?php echo $this->form()->openTag($form); ?>
     <h1>Registration</h1>
 
     <?php $element = $form->get('name'); ?>
@@ -58,5 +61,5 @@ $form->prepare();
         <?php /*echo $errors;*/ ?>
     <!-- /div -->
 
-    <?= $this->formSubmit($this->form->get('submit')); ?>
+    <?= $this->formSubmit($form->get('submit')); ?>
 <?= $this->form()->closeTag(); ?>

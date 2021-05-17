@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var string $content
+ */
+?>
 <!DOCTYPE html>
 <html lang="it">
     <head>
@@ -42,7 +48,7 @@
             </div>
         </nav>
         <div class="container">
-            <?php echo $this->content; ?>
+            <?php echo $content; ?>
         </div>
         <hr />
         <?php echo $this->footer(); ?>

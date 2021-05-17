@@ -2,8 +2,8 @@
 /**
  * @var Auth\Form\AuthForm $form
  * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var string $messages
  */
-$form = $this->form;
 $form->setAttributes(['action' => $this->url('auth', ['action' => 'login']), 'class' => 'form-signin']);
 $form->prepare();
 ?>
@@ -33,8 +33,8 @@ $form->prepare();
 
     <?php echo $this->formSubmit($form->get('submit')); ?>
     <br />
-    <?php if ($this->messages): ?>
-    <div class="alert alert-danger" role="alert"><?php echo $this->escapeHtml($this->messages); ?></div>
+    <?php if ($messages): ?>
+    <div class="alert alert-danger" role="alert"><?php echo $this->escapeHtml($messages); ?></div>
     <?php endif; ?>
     <div>
         <a href="<?php echo $this->url('auth_registration', ['action' => 'index']);?>"><?php echo $this->translate('Register'); ?></a>
