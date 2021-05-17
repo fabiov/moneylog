@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace MoneyLog\Controller;
 
@@ -11,7 +12,7 @@ use MoneyLog\Form\CategoriaForm;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
-class CategoriaController extends AbstractActionController
+class CategoryController extends AbstractActionController
 {
     /**
      * @var \stdClass

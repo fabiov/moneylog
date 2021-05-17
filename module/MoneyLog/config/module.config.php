@@ -9,42 +9,42 @@ return [
                 /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\RecapController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
-                    $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity()
+                    $controllerManager->get(Laminas\Authentication\AuthenticationService::class)->getIdentity()
                 );
             },
             MoneyLog\Controller\SettingsController::class => function ($controllerManager) {
                 /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\SettingsController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
-                    $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity(),
+                    $controllerManager->get(Laminas\Authentication\AuthenticationService::class)->getIdentity(),
                     $controllerManager->get('user_data')
                 );
             },
             MoneyLog\Controller\AccountController::class => function ($controllerManager) {
                 /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\AccountController(
-                    $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity(),
+                    $controllerManager->get(Laminas\Authentication\AuthenticationService::class)->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
             MoneyLog\Controller\ProvisionController::class => function ($controllerManager) {
                 /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\ProvisionController(
-                    $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity(),
+                    $controllerManager->get(Laminas\Authentication\AuthenticationService::class)->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
-            MoneyLog\Controller\CategoriaController::class => function ($controllerManager) {
+            MoneyLog\Controller\CategoryController::class => function ($controllerManager) {
                 /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
-                return new MoneyLog\Controller\CategoriaController(
-                    $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity(),
+                return new MoneyLog\Controller\CategoryController(
+                    $controllerManager->get(Laminas\Authentication\AuthenticationService::class)->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
             MoneyLog\Controller\MovementController::class => function ($controllerManager) {
                 /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\MovementController(
-                    $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity(),
+                    $controllerManager->get(Laminas\Authentication\AuthenticationService::class)->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
@@ -58,7 +58,7 @@ return [
                     'route'         => '/categoria[/:action][/:id]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
                     'defaults'      => [
-                        'controller' => MoneyLog\Controller\CategoriaController::class, 'action' => 'index'
+                        'controller' => MoneyLog\Controller\CategoryController::class, 'action' => 'index'
                     ],
                 ],
             ],
