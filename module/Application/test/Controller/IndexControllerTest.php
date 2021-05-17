@@ -2,6 +2,7 @@
 
 namespace ApplicationTest\Controller;
 
+use Laminas\Http\Response;
 use Laminas\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class IndexControllerTest extends AbstractHttpControllerTestCase
@@ -15,7 +16,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
     public function testIndexActionCanBeAccessed(): void
     {
         $this->dispatch('/');
-        $this->assertResponseStatusCode(200);
+        $this->assertResponseStatusCode(Response::STATUS_CODE_200);
 
         $this->assertModuleName('auth');
         $this->assertControllerName('auth\controller\user');

@@ -30,7 +30,7 @@ return [
                     'edit'      => 'user',
                     'index'     => 'user',
                 ],
-                MoneyLog\Controller\AccantonatoController::class => [
+                MoneyLog\Controller\ProvisionController::class => [
                     'add'       => 'user',
                     'delete'    => 'user',
                     'edit'      => 'user',

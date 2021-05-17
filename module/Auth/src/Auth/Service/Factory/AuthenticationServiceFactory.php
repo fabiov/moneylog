@@ -15,9 +15,7 @@ class AuthenticationServiceFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): AuthenticationService
     {
-        $authStorage = new Session();
-
         // Create the service and inject dependencies into its constructor.
-        return new AuthenticationService($authStorage, $container->get(AuthAdapter::class));
+        return new AuthenticationService(new Session(), $container->get(AuthAdapter::class));
     }
 }

@@ -9,7 +9,7 @@ use MoneyLog\Form\AccantonatoForm;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
-class AccantonatoController extends AbstractActionController
+class ProvisionController extends AbstractActionController
 {
     /**
      * @var \stdClass

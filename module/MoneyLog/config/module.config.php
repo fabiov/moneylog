@@ -27,9 +27,9 @@ return [
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
             },
-            MoneyLog\Controller\AccantonatoController::class => function ($controllerManager) {
+            MoneyLog\Controller\ProvisionController::class => function ($controllerManager) {
                 /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
-                return new MoneyLog\Controller\AccantonatoController(
+                return new MoneyLog\Controller\ProvisionController(
                     $controllerManager->get('Laminas\Authentication\AuthenticationService')->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default')
                 );
@@ -78,7 +78,7 @@ return [
                     'route'         => '/accantonato[/:action][/:id]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
                     'defaults' => [
-                        'controller' => MoneyLog\Controller\AccantonatoController::class, 'action' => 'index'
+                        'controller' => MoneyLog\Controller\ProvisionController::class, 'action' => 'index'
                     ],
                 ],
             ],
