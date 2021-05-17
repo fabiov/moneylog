@@ -76,7 +76,7 @@ return [
     'doctrine' => [
         'driver' => [
             'application_entities' => [
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'class' => Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
                 'cache' => 'array',
                 'paths' => [__DIR__ . '/../src/Application/Entity'],
             ],
