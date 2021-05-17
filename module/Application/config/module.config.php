@@ -30,8 +30,8 @@ return [
     ],
     'service_manager' => [
         'abstract_factories' => [
-            'Laminas\Cache\Service\StorageCacheAbstractServiceFactory',
-            'Laminas\Log\LoggerAbstractServiceFactory',
+            Laminas\Cache\Service\StorageCacheAbstractServiceFactory::class,
+            Laminas\Log\LoggerAbstractServiceFactory::class,
         ],
         'aliases' => [
             'translator' => 'MvcTranslator',
@@ -74,7 +74,7 @@ return [
     'doctrine' => [
         'driver' => [
             'application_entities' => [
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'class' => Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
                 'cache' => 'array',
                 'paths' => [__DIR__ . '/../src/Application/Entity'],
             ],

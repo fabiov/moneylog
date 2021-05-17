@@ -1,7 +1,8 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('data/DoctrineORMModule')
+    ->exclude('data')
+    ->exclude('docker')
     ->exclude('vendor')
 //    ->notPath('src/Symfony/Component/Translation/Tests/fixtures/resources.php')
     ->in(__DIR__)
