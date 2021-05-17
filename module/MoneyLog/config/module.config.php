@@ -5,9 +5,9 @@ declare(strict_types=1);
 return [
     'controllers' => [
         'factories' => [
-            MoneyLog\Controller\RecapController::class => function ($controllerManager) {
+            MoneyLog\Controller\DashboardController::class => function ($controllerManager) {
                 /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
-                return new MoneyLog\Controller\RecapController(
+                return new MoneyLog\Controller\DashboardController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager->get(Laminas\Authentication\AuthenticationService::class)->getIdentity()
                 );
@@ -68,7 +68,7 @@ return [
                     'route'         => '/dashboard[/:action]',
                     'constraints'   => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
                     'defaults'      => [
-                        'controller' => MoneyLog\Controller\RecapController::class, 'action' => 'index'
+                        'controller' => MoneyLog\Controller\DashboardController::class, 'action' => 'index'
                     ],
                 ],
             ],

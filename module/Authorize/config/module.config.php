@@ -19,7 +19,7 @@ return [
                     'password-change-success' => 'guest',
                     'registration-success' => 'guest',
                 ],
-                MoneyLog\Controller\RecapController::class => [
+                MoneyLog\Controller\DashboardController::class => [
                     'add'   => 'user',
                     'edit'  => 'user',
                     'index' => 'user',

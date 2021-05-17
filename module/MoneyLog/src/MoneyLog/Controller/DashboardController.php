@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace MoneyLog\Controller;
 
@@ -11,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
-class RecapController extends AbstractActionController
+class DashboardController extends AbstractActionController
 {
     /**
      * @var \stdClass
