@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Laminas\Code\Exception\RuntimeException;
+
 return [
     'controllers' => [
         'invokables' => [
@@ -30,8 +32,8 @@ return [
     ],
     'service_manager' => [
         'abstract_factories' => [
-            'Laminas\Cache\Service\StorageCacheAbstractServiceFactory',
-            'Laminas\Log\LoggerAbstractServiceFactory',
+            Laminas\Cache\Service\StorageCacheAbstractServiceFactory::class,
+            Laminas\Log\LoggerAbstractServiceFactory::class,
         ],
         'aliases' => [
             'translator' => 'MvcTranslator',
