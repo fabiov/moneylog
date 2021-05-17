@@ -44,7 +44,7 @@ class Category implements InputFilterAwareInterface
     private $descrizione;
 
     /**
-     * @ORM\Column(name="status", type="integer")
+     * @ORM\Column(name="status", type="smallint")
      * @var int
      */
     private $status = 1;

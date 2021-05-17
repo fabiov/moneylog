@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Laminas\Code\Exception\RuntimeException;
-
 return [
     'controllers' => [
         'invokables' => [

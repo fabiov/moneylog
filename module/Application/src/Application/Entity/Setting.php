@@ -3,6 +3,7 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Laminas\Filter\ToInt;
 use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
@@ -123,17 +124,17 @@ class Setting implements InputFilterAwareInterface
         if (!$this->inputFilter) {
             $this->inputFilter = new InputFilter();
             $this->inputFilter->add([
-                'filters'  => [['name' => 'Laminas\Filter\ToInt']],
+                'filters'  => [['name' => ToInt::class]],
                 'name'     => 'payDay',
                 'required' => true,
             ]);
             $this->inputFilter->add([
-                'filters'  => [['name' => 'Laminas\Filter\ToInt']],
+                'filters'  => [['name' => ToInt::class]],
                 'name'     => 'monthsRetrospective',
                 'required' => true,
             ]);
             $this->inputFilter->add([
-                'filters'  => [['name' => 'Laminas\Filter\ToInt']],
+                'filters'  => [['name' => ToInt::class]],
                 'name'     => 'stored',
                 'required' => true,
             ]);
