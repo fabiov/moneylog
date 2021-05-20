@@ -83,5 +83,10 @@
             "ApplicationTest\\": "module/Application/test/",
             "AuthTest\\": "module/Auth/test/"
         }
+    },
+    "scripts": {
+        "migrations-diff": "vendor/bin/doctrine-module migrations:diff",
+        "migrations-migrate": "vendor/bin/doctrine-module migrations:migrate",
+        "migrations-status": "vendor/bin/doctrine-module migrations:status"
     }
 }

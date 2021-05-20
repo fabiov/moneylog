@@ -13,6 +13,7 @@ return $config->setRules([
     '@PSR12' => true,
     'array_syntax' => ['syntax' => 'short'],
     'no_unused_imports' => true,
+    'visibility_required' => ['property', 'method', 'const'],
     // 'compact_nullable_typehint' => true,
     // 'dir_constant' => true,
     // 'ereg_to_preg' => true,
@@ -31,7 +32,6 @@ return $config->setRules([
     // 'self_accessor' => false,
     // 'strict_param' => true,
     // 'ternary_to_null_coalescing' => true,
-    // 'visibility_required' => ['property', 'method', 'const'],
     // 'void_return' => false,
 ])
     ->setFinder($finder)
