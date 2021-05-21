@@ -79,9 +79,6 @@ class Category implements InputFilterAwareInterface
         return $this->status;
     }
 
-    /**
-     * Convert the object to an array.
-     */
     public function getArrayCopy(): array
     {
         return get_object_vars($this);
