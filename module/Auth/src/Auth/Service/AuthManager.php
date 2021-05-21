@@ -4,7 +4,6 @@ namespace Auth\Service;
 
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Authentication\Result;
-use Laminas\Session\SessionManager;
 
 class AuthManager
 {
@@ -14,27 +13,14 @@ class AuthManager
     private $authService;
 
     /**
-     * @var SessionManager
-     */
-    private $sessionManager;
-
-    /**
      * @var UserData
      */
     private $userData;
 
-    /**
-     * AuthManager constructor.
-     *
-     * @param AuthenticationService $authenticationService
-     * @param SessionManager $sessionManager
-     * @param UserData $userData
-     */
-    public function __construct(AuthenticationService $authenticationService, SessionManager $sessionManager, UserData $userData)
+    public function __construct(AuthenticationService $authenticationService, UserData $userData)
     {
-        $this->authService    = $authenticationService;
-        $this->sessionManager = $sessionManager;
-        $this->userData       = $userData;
+        $this->authService = $authenticationService;
+        $this->userData    = $userData;
     }
 
     /**
@@ -58,31 +44,23 @@ class AuthManager
 
         // If user wants to "remember him", we will make session to expire in one month.
         // By default session expires in 1 hour (as specified in our config/global.php file).
-        if ($result->getCode() == Result::SUCCESS && $rememberMe) {
+        if ($result->getCode() == Result::SUCCESS) {
             $identity = $result->getIdentity();
 
             $this->userData->setName($identity->name);
             $this->userData->setSurname($identity->surname);
             $this->userData->setSettings($identity->setting);
 
-            // following code generate an exception
-            // Laminas\Session\Exception\InvalidArgumentException
-            // 'session.cookie_lifetime' is not a valid sessions-related ini setting.
-//            if ($rememberMe) {
-//                // Session cookie will expire in 1 week.
-//                $this->sessionManager->rememberMe(3600 * 24 * 7);
-//            }
+            // if ($rememberMe) {
+            //     // Session cookie will expire in 1 week.
+            // }
         }
 
         return $result;
     }
 
-    /**
-     * Performs user logout.
-     */
     public function logout(): void
     {
-        // Remove identity from session.
         $this->authService->clearIdentity();
     }
 }

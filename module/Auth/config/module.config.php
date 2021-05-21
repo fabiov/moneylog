@@ -54,7 +54,6 @@ return [
             Auth\Service\AuthManager::class => function (Interop\Container\ContainerInterface $container) {
                 return new Auth\Service\AuthManager(
                     $container->get(AuthenticationService::class),
-                    $container->get(Laminas\Session\SessionManager::class),
                     $container->get(Auth\Service\UserData::class)
                 );
             },
