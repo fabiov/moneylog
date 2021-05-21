@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Auth\Controller\UserController;
 use Laminas\Authentication\AuthenticationService;
+use Auth\Controller\RegistrationController;
 
 return [
     'controllers' => [
@@ -15,8 +16,8 @@ return [
                     $controllerManager->get(Auth\Service\AuthManager::class)
                 );
             },
-            Auth\Controller\RegistrationController::class => function (Laminas\ServiceManager\ServiceManager $controllerManager) {
-                return new Auth\Controller\RegistrationController(
+            RegistrationController::class => function (Laminas\ServiceManager\ServiceManager $controllerManager) {
+                return new RegistrationController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager
                 );
@@ -37,7 +38,7 @@ return [
                 'type' => 'segment',
                 'options' => [
                     'constraints' => ['action' => '[a-zA-Z][a-zA-Z0-9_-]+', 'id' => '[\w]+'],
-                    'defaults' => ['controller' => Auth\Controller\RegistrationController::class, 'action' => 'index'],
+                    'defaults' => ['controller' => RegistrationController::class, 'action' => 'index'],
                     'route' => '/auth/registration[/:action][/:id]',
                 ],
             ],
@@ -65,7 +66,7 @@ return [
             },
         ],
         'invokables' => [
-            'user_data' => 'Auth\Service\UserData',
+            'user_data' => Auth\Service\UserData::class,
         ],
     ],
     'view_manager' => [
