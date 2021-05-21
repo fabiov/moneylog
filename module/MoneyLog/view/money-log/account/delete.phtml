@@ -1,25 +1,23 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @var Application\Entity\Category $category
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var string $id
  */
-
- $title = 'Delete category';
- $this->headTitle($title);
- ?>
+$title = 'Delete category';
+$this->headTitle($title);
+?>
 <?php echo $this->pageHeader($title); ?>
- <p>Are you sure that you want to delete
-     '<?php echo $this->escapeHtml($category->descrizione); ?>'?
+ <p>
+     Are you sure that you want to delete '<?php echo $this->escapeHtml($category->getDescrizione()); ?>'?
  </p>
  <?php
- $url = $this->url('accantona_categoria', array('action' => 'delete', 'id' => $this->id));
+ $url = $this->url('accantona_categoria', array('action' => 'delete', 'id' => $id));
  ?>
  <form action="<?php echo $url; ?>" method="post">
- <div>
-     <input type="hidden" name="id" value="<?php echo (int) $category->id; ?>" />
-     <input type="submit" name="del" value="Yes" />
-     <input type="submit" name="del" value="No" />
- </div>
+     <div>
+         <input type="hidden" name="id" value="<?php echo (int) $category->getId(); ?>" />
+         <input type="submit" name="del" value="Yes" />
+         <input type="submit" name="del" value="No" />
+     </div>
  </form>

@@ -1,7 +1,9 @@
 <?php
 /**
- * @var \Application\Entity\Account $sourceAccount
- * @var array $searchParams
+ * @var Application\Entity\Account $sourceAccount
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var MoneyLog\Form\MovementForm $form
+ * @var array<string> $searchParams
  */
 echo $this->pageHeader('Aggiungi movimento');
 ?>
@@ -14,7 +16,7 @@ echo $this->pageHeader('Aggiungi movimento');
                 Aggiungi movimento in <?php echo $sourceAccount->getName(); ?>
             </div>
             <div class="panel-body">
-                <?php echo $this->partial('money-log/movement/partials/movement', ['form' => $this->form, 'accountId' => $sourceAccount->getId(), 'isRepeatable' => true, 'searchParams' => $searchParams]); ?>
+                <?php echo $this->partial('money-log/movement/partials/movement', ['form' => $form, 'accountId' => $sourceAccount->getId(), 'isRepeatable' => true, 'searchParams' => $searchParams]); ?>
             </div>
         </div>
     </div>

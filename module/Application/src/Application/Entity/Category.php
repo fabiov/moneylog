@@ -44,7 +44,7 @@ class Category implements InputFilterAwareInterface
     private $descrizione;
 
     /**
-     * @ORM\Column(name="status", type="integer")
+     * @ORM\Column(name="status", type="smallint")
      * @var int
      */
     private $status = 1;
@@ -52,6 +52,16 @@ class Category implements InputFilterAwareInterface
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
     }
 
     public function getDescrizione(): string

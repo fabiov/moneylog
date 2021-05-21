@@ -81,6 +81,11 @@ class Account implements InputFilterAwareInterface
         return $this->user;
     }
 
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
+    }
+
     public function isClosed(): bool
     {
         return $this->closed;

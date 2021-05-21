@@ -52,8 +52,10 @@ class RegistrationController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $data = $form->getData();
-                $data = $this->prepareData($data);
+
+                /** @var array $formData */
+                $formData = $form->getData();
+                $data = $this->prepareData($formData);
 
                 $user = new User();
                 $user->exchangeArray($data);
@@ -71,15 +73,15 @@ class RegistrationController extends AbstractActionController
 
     public function registrationSuccessAction(): ViewModel
     {
-        $usr_email = null;
+        $userEmail = null;
         $flashMessenger = $this->flashMessenger();
         if ($flashMessenger->hasMessages()) {
-            foreach ($flashMessenger->getMessages() as $key => $value) {
-                $usr_email .=  $value;
+            foreach ($flashMessenger->getMessages() as $value) {
+                $userEmail .=  $value;
             }
         }
         $this->layout('layout/unlogged');
-        return new ViewModel(['usr_email' => $usr_email]);
+        return new ViewModel(['userEmail' => $userEmail]);
     }
 
     /**
@@ -100,8 +102,7 @@ class RegistrationController extends AbstractActionController
             $this->em->persist($user);
 
             //create settings
-            $setting = new Setting();
-            $setting->userId = $user->getId();
+            $setting = new Setting($user);
             $this->em->persist($setting);
 
             $this->em->flush();
@@ -127,12 +128,14 @@ class RegistrationController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                /** @var array $data */
                 $data = $form->getData();
 
                 $password = $this->getRandomString(10);
 
+                /** @var User $user */
                 $user = $this->em->getRepository(User::class)->findOneBy(['email' => $data['email']]);
-                $user->password = $this->encriptPassword($password, $user->salt);
+                $user->setPassword($this->encriptPassword($password, $user->getSalt()));
                 $this->em->persist($user);
                 $this->em->flush();
 
@@ -147,15 +150,15 @@ class RegistrationController extends AbstractActionController
 
     public function passwordChangeSuccessAction(): ViewModel
     {
-        $usr_email = null;
+        $userEmail = null;
         $flashMessenger = $this->flashMessenger();
         if ($flashMessenger->hasMessages()) {
             foreach ($flashMessenger->getMessages() as $value) {
-                $usr_email .=  $value;
+                $userEmail .=  $value;
             }
         }
         $this->layout('layout/unlogged');
-        return new ViewModel(['usr_email' => $usr_email]);
+        return new ViewModel(['userEmail' => $userEmail]);
     }
 
     private static function prepareData(array $data): array

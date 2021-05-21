@@ -1,5 +1,8 @@
 <?php
-/* @var Laminas\View\Renderer\PhpRenderer $this */
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var array<\Application\Entity\Movement> $rows
+ */
 
 echo implode(',', [
     '"Data"',
@@ -9,10 +12,12 @@ echo implode(',', [
 ]) . PHP_EOL;
 
 foreach ($rows as $row) {
+
+    $category = $row->getCategory();
     echo '"' . implode('","', [
-        $this->dateForma($row->date),
-        number_format($row->amount, 2, ',', ''),
-        str_replace('"', '""', trim($row->description)),
-        $row->category ? str_replace('"', '""', $row->category->descrizione) : '',
+        $this->dateForma($row->getDate()),
+        number_format($row->getAmount(), 2, ',', ''),
+        str_replace('"', '""', trim($row->getDescription())),
+        $category ? str_replace('"', '""', $category->getDescrizione()) : '',
     ]) . '"' . PHP_EOL;
 }

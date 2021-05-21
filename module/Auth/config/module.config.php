@@ -2,20 +2,24 @@
 
 declare(strict_types=1);
 
+use Auth\Controller\RegistrationController;
+use Auth\Controller\UserController;
+use Interop\Container\ContainerInterface;
 use Laminas\Authentication\AuthenticationService;
+use Laminas\ServiceManager\ServiceManager;
 
 return [
     'controllers' => [
         'factories' => [
-            Auth\Controller\UserController::class => function (Laminas\ServiceManager\ServiceManager $controllerManager) {
-                return new Auth\Controller\UserController(
+            UserController::class => function (ServiceManager $controllerManager) {
+                return new UserController(
                     $controllerManager->get(AuthenticationService::class)->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager->get(Auth\Service\AuthManager::class)
                 );
             },
-            Auth\Controller\RegistrationController::class => function (Laminas\ServiceManager\ServiceManager $controllerManager) {
-                return new Auth\Controller\RegistrationController(
+            RegistrationController::class => function (ServiceManager $controllerManager) {
+                return new RegistrationController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager
                 );
@@ -28,7 +32,7 @@ return [
                 'type' => 'segment',
                 'options' => [
                     'constraints' => ['action' => '[a-zA-Z][a-zA-Z0-9_-]+', 'id' => '[\w]+'],
-                    'defaults' => ['controller' => Auth\Controller\UserController::class, 'action' => 'index'],
+                    'defaults' => ['controller' => UserController::class, 'action' => 'index'],
                     'route' => '/auth/user[/:action][/:id]',
                 ],
             ],
@@ -36,7 +40,7 @@ return [
                 'type' => 'segment',
                 'options' => [
                     'constraints' => ['action' => '[a-zA-Z][a-zA-Z0-9_-]+', 'id' => '[\w]+'],
-                    'defaults' => ['controller' => Auth\Controller\RegistrationController::class, 'action' => 'index'],
+                    'defaults' => ['controller' => RegistrationController::class, 'action' => 'index'],
                     'route' => '/auth/registration[/:action][/:id]',
                 ],
             ],
@@ -47,20 +51,24 @@ return [
         // This code should be moved to a module to allow Doctrine to overwrite it
         'aliases' => [],
         'factories' => [
-            Auth\Service\AuthAdapter::class => function (Interop\Container\ContainerInterface $controllerManager) {
+            Auth\Service\AuthAdapter::class => function (ContainerInterface $controllerManager) {
                 return new Auth\Service\AuthAdapter($controllerManager->get('doctrine.entitymanager.orm_default'));
             },
-            Auth\Service\AuthManager::class => function (Interop\Container\ContainerInterface $container) {
+            Auth\Service\AuthManager::class => function (ContainerInterface $container) {
                 return new Auth\Service\AuthManager(
                     $container->get(AuthenticationService::class),
-                    $container->get(Laminas\Session\SessionManager::class),
                     $container->get(Auth\Service\UserData::class)
                 );
             },
-            AuthenticationService::class => Auth\Service\Factory\AuthenticationServiceFactory::class,
+            AuthenticationService::class => function (ContainerInterface $container): AuthenticationService {
+                return new AuthenticationService(
+                    new Laminas\Authentication\Storage\Session(),
+                    $container->get(Auth\Service\AuthAdapter::class)
+                );
+            },
         ],
         'invokables' => [
-            'user_data' => 'Auth\Service\UserData',
+            'user_data' => Auth\Service\UserData::class,
         ],
     ],
     'view_manager' => [

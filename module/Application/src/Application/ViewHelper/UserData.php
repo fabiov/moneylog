@@ -19,13 +19,13 @@ class UserData extends AbstractHelper
         return $this;
     }
 
-    public function getFullName(): string
+    public function getFullName(): ?string
     {
-        return $this->data->getName() . ' ' . $this->data->getSurname();
+        return $this->data ? $this->data->getName() . ' ' . $this->data->getSurname() : null;
     }
 
-    public function hasStored(): bool
+    public function hasStored(): ?bool
     {
-        return (bool) $this->data->getSettings()['stored'];
+        return $this->data ? (bool) $this->data->getSettings()['stored'] : null;
     }
 }

@@ -1,14 +1,18 @@
 <?php
-$this->form->setAttribute('action', $this->url('accantona_categoria', array('action' => 'edit', 'id' => $this->id)));
-$this->form->prepare();
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var MoneyLog\Form\CategoriaForm $form
+ */
+$form->setAttribute('action', $this->url('accantona_categoria', array('action' => 'add')));
+$form->prepare();
 ?>
-<?php echo $this->pageHeader('Modifica categorie'); ?>
+<?php echo $this->pageHeader('Aggiungi categoria'); ?>
 <div class="row">
     <div class="col-lg-4"></div>
     <div class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Modifica categoria di spesa
+                Nuova categoria di spesa
             </div>
             <div class="panel-body">
                 <?php echo $this->form()->openTag($form); ?>

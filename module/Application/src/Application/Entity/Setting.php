@@ -3,6 +3,7 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Laminas\Filter\ToInt;
 use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
@@ -10,10 +11,6 @@ use Laminas\InputFilter\InputFilterInterface;
 /**
  * @ORM\Entity
  * @ORM\Table(name="setting")
- * @property int $userId
- * @property int $payDay
- * @property int $monthsRetrospective
- * @property int $stored
  */
 class Setting implements InputFilterAwareInterface
 {
@@ -24,75 +21,69 @@ class Setting implements InputFilterAwareInterface
 
     /**
      * @ORM\Id
-     * @ORM\Column(name="userId", type="integer", options={"unsigned"=true});
-     * @var int
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @var User
      */
-    protected $userId;
+    protected $user;
 
     /**
-     * @ORM\Column(name="payDay", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\Column(name="payDay", type="smallint", nullable=false, options={"unsigned"=true, "default"=1})
      * @var int
      */
-    protected $payDay = 0;
+    protected $payDay = 1;
 
     /**
-     * @ORM\Column(name="monthsRetrospective", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\Column(name="monthsRetrospective", type="smallint", nullable=false, options={"unsigned"=true, "default"=12})
      * @var int
      */
     protected $monthsRetrospective = 12;
 
     /**
-     * @ORM\Column(name="`stored`", type="boolean", nullable=false)
+     * @ORM\Column(name="`stored`", type="boolean", nullable=false, options={"default"=false})
      * @var boolean
      */
     protected $stored = false;
 
-    /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
-    public function __get($property)
+    public function __construct(User $user)
     {
-        return $this->$property;
+        $this->user = $user;
     }
 
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     */
-    public function __set($property, $value)
+    public function getPayDay(): int
     {
-        $this->$property = $value;
+        return $this->payDay;
     }
 
-    /**
-     * @return boolean
-     */
-    public function hasStored()
+    public function setPayDay(int $payDay): void
+    {
+        if ($payDay < 1 || $payDay > 28) {
+            throw new \RuntimeException("Invalid payDay value: $payDay");
+        }
+        $this->payDay = $payDay;
+    }
+
+    public function getMonthsRetrospective(): int
+    {
+        return $this->monthsRetrospective;
+    }
+
+    public function setMonthsRetrospective(int $monthsRetrospective): void
+    {
+        $this->monthsRetrospective = $monthsRetrospective;
+    }
+
+    public function hasStored(): bool
     {
         return $this->stored;
     }
 
-    /**
-     * @param boolean $stored
-     * @return $this
-     */
-    public function setStored($stored)
+    public function setStored(bool $stored): void
     {
-        $this->stored = (bool) $stored;
-        return $this;
+        $this->stored = $stored;
     }
 
-    /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
-    public function getArrayCopy()
+    public function getArrayCopy(): array
     {
         return get_object_vars($this);
     }
@@ -103,25 +94,26 @@ class Setting implements InputFilterAwareInterface
      * @param array $data
      * @return Setting
      */
-    public function exchangeArray(array $data)
+    public function exchangeArray(array $data): self
     {
-        $this->userId              = isset($data['userId']) ? $data['userId'] : null;
-        $this->payDay              = isset($data['payDay']) ? $data['payDay'] : null;
-        $this->monthsRetrospective = isset($data['monthsRetrospective']) ? $data['monthsRetrospective'] : null;
-
-        if (array_key_exists('stored', $data)) {
-            $this->setStored($data['stored']);
+        if (isset($data['payDay'])) {
+            $this->setPayDay((int) $data['payDay']);
+        }
+        if (isset($data['monthsRetrospective'])) {
+            $this->setMonthsRetrospective((int) $data['monthsRetrospective']);
+        }
+        if (isset($data['stored'])) {
+            $this->setStored((bool) $data['stored']);
         }
         return $this;
     }
 
     /**
      * Set input filter
-     *
-     * @param  InputFilterInterface $inputFilter
-     * @return InputFilterAwareInterface
+     * @param \Laminas\InputFilter\InputFilterInterface $inputFilter
+     * @return $this
      */
-    public function setInputFilter(InputFilterInterface $inputFilter)
+    public function setInputFilter(InputFilterInterface $inputFilter): self
     {
         $this->inputFilter = $inputFilter;
         return $this;
@@ -132,17 +124,17 @@ class Setting implements InputFilterAwareInterface
         if (!$this->inputFilter) {
             $this->inputFilter = new InputFilter();
             $this->inputFilter->add([
-                'filters'  => [['name' => 'Laminas\Filter\ToInt']],
+                'filters'  => [['name' => ToInt::class]],
                 'name'     => 'payDay',
                 'required' => true,
             ]);
             $this->inputFilter->add([
-                'filters'  => [['name' => 'Laminas\Filter\ToInt']],
+                'filters'  => [['name' => ToInt::class]],
                 'name'     => 'monthsRetrospective',
                 'required' => true,
             ]);
             $this->inputFilter->add([
-                'filters'  => [['name' => 'Laminas\Filter\ToInt']],
+                'filters'  => [['name' => ToInt::class]],
                 'name'     => 'stored',
                 'required' => true,
             ]);

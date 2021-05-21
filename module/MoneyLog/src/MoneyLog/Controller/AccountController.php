@@ -40,9 +40,15 @@ class AccountController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+
+                /** @var User $user */
+                $user = $this->em->find(User::class, $this->user->id);
+
+                /** @var array $data */
                 $data = $form->getData();
-                $data['user'] = $this->em->find(User::class, $this->user->id);
+
                 $account->exchangeArray($data);
+                $account->setUser($user);
                 $this->em->persist($account);
                 $this->em->flush();
 
@@ -155,7 +161,10 @@ class AccountController extends AbstractActionController
         $routeName   = $this->getRequest()->getPost('forward');
         $id          = (int) $this->params()->fromRoute('id', 0);
 
-        $account = $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
+        /** @var ?Account $account */
+        $account = $this->em
+            ->getRepository(Account::class)
+            ->findOneBy(['id' => $id, 'user' => $this->user->id]);
 
         if ($account) {
 
@@ -164,10 +173,10 @@ class AccountController extends AbstractActionController
 
             $currentBalance = $movementRepository->getBalance($id, new \DateTime());
 
-            $movement              = new Movement();
-            $movement->account     = $account;
-            $movement->amount      = $amount - $currentBalance;
-            $movement->description = $description;
+            $movement = new Movement();
+            $movement->setAccount($account);
+            $movement->setAmount($amount - $currentBalance);
+            $movement->setDescription($description);
             $movement->setDate(new \DateTime());
             $this->em->persist($movement);
             $this->em->flush();

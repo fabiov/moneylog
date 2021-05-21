@@ -1,6 +1,8 @@
 <?php
 /**
  * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var \MoneyLog\Form\SettingsForm $form
+ * @var string $message
  */
 echo $this->pageHeader('Impostazioni');
 ?>
@@ -10,9 +12,9 @@ echo $this->pageHeader('Impostazioni');
         <div class="panel panel-default">
             <div class="panel-heading">Modifica Impostazioni</div>
             <div class="panel-body">
-                <?php $this->form->setAttribute('action', $this->url()); ?>
-                <?php $this->form->prepare(); ?>
-                <?php echo $this->form()->openTag($this->form); ?>
+                <?php $form->setAttribute('action', $this->url()); ?>
+                <?php $form->prepare(); ?>
+                <?php echo $this->form()->openTag($form); ?>
 
                 <?php echo $this->sbaFormRow($form->get('payDay'), 'Se impostato, viene visualizzato nel cruscotto il calcolo dei giorni mancanti al prossimo stipendio e il budget medio giornaliero fino al prossimo stipendio.'); ?>
                 <?php echo $this->sbaFormRow($form->get('monthsRetrospective'), 'Numero di mesi utilizzatto per la statistica della media delle spese.'); ?>

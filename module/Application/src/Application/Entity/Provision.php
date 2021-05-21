@@ -28,10 +28,12 @@ class Provision implements InputFilterAwareInterface
     private $id;
 
     /**
-     * @ORM\Column(name="userId", type="integer", options={"unsigned"=true});
-     * @var int
+     * Many provisions have one user. This is the owning side.
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @var User
      */
-    private $userId;
+    private $user;
 
     /**
      * @ORM\Column(name="valuta", type="date")
@@ -51,31 +53,19 @@ class Provision implements InputFilterAwareInterface
      */
     private $descrizione;
 
-    /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
-    public function __get(string $property)
+    public function getId(): int
     {
-        return $this->$property;
+        return $this->id;
     }
 
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     */
-    public function __set(string $property, $value)
+    public function setUser(User $user): void
     {
-        $this->$property = $value;
+        $this->user = $user;
     }
 
-    public function setUserId(int $userId): void
+    public function getValuta(): \DateTime
     {
-        $this->userId = $userId;
+        return $this->valuta;
     }
 
     public function setValuta(\DateTime $valuta): void
@@ -83,9 +73,19 @@ class Provision implements InputFilterAwareInterface
         $this->valuta = $valuta;
     }
 
+    public function getImporto(): float
+    {
+        return $this->importo;
+    }
+
     public function setImporto(float $importo): void
     {
         $this->importo = $importo;
+    }
+
+    public function getDescrizione(): string
+    {
+        return $this->descrizione;
     }
 
     public function setDescrizione(string $descrizione): void
@@ -107,9 +107,11 @@ class Provision implements InputFilterAwareInterface
             $this->id = $data['id'];
         }
         if (isset($data['userId'])) {
-            $this->userId = $data['userId'];
+            $this->user = $data['userId'];
         }
-        $this->valuta = isset($data['valuta']) ? new \DateTime($data['valuta']) : null;
+        if (isset($data['valuta'])) {
+            $this->valuta = new \DateTime($data['valuta']);
+        }
         $this->importo = $data['importo'] ?? null;
         $this->descrizione = $data['descrizione'] ?? null;
     }

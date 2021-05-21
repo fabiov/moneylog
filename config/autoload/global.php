@@ -24,16 +24,18 @@ return [
     'service_manager' => [
         'factories' => ['Laminas\Db\Adapter\Adapter' => 'Laminas\Db\Adapter\AdapterServiceFactory'],
     ],
-    'session_config'  => [                  // Session configuration.
-        'cookie_lifetime' => 3600,          // Session cookie will expire in 1 hour.
-        'gc_maxlifetime'  => 3600 * 24 * 30,// Session data will be stored on server maximum for 30 days.
+    'session_config'  => [
+        'cookie_lifetime' => 3600,      // Session cookie will expire in 1 hour.
+        'gc_maxlifetime'  => 3600 * 24, // Session data will be stored on server maximum for 30 days.
     ],
-    'session_manager' => [                                          // Session manager configuration.
+    'session_manager' => [
         // Session validators (used for security).
         'validators' => [
-//            RemoteAddr::class,
-//            HttpUserAgent::class,
+            // RemoteAddr::class,
+            // HttpUserAgent::class,
         ]
     ],
-    'session_storage' => ['type' => SessionArrayStorage::class],    // Session storage configuration.
+    'session_storage' => [
+        'type' => Laminas\Session\Storage\SessionArrayStorage::class
+    ],
 ];

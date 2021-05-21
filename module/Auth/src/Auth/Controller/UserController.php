@@ -58,6 +58,10 @@ class UserController extends AbstractActionController
      */
     public function updateAction()
     {
+        if (!$this->user) {
+            return $this->redirect()->toRoute('auth', ['action' => 'login']);
+        }
+
         /** @var ?User $user */
         $user = $this->em->find(User::class, $this->user->id);
         if (!$user) {
@@ -104,6 +108,8 @@ class UserController extends AbstractActionController
             $form->setInputFilter($authFormFilters->getInputFilter());
             $form->setData($request->getPost());
             if ($form->isValid()) {
+
+                /** @var array $data */
                 $data = $form->getData();
 
                 // Perform login attempt.
@@ -140,11 +146,17 @@ class UserController extends AbstractActionController
      */
     public function changePasswordAction()
     {
-        /* @var User $user*/
-        $user = $this->em->find(User::class, $this->user->id)->setInputFilter(new UserFilter());
+        if (!$this->user) {
+            return $this->redirect()->toRoute('auth', ['action' => 'login']);
+        }
+
+        /** @var ?User $user */
+        $user = $this->em->find(User::class, $this->user->id);
         if (!$user) {
             return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
         }
+
+        $user->setInputFilter(new UserFilter());
 
         $form     = new ChangePasswordForm();
         $error    = false;
@@ -159,8 +171,8 @@ class UserController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-                if (md5($data['current'] . $user->salt) == $user->password) {
-                    $user->password = md5($data['password'] . $user->salt);
+                if (md5($data['current'] . $user->getSalt()) == $user->getPassword()) {
+                    $user->setPassword(md5($data['password'] . $user->getSalt()));
                     $this->em->persist($user);
                     $this->em->flush();
 

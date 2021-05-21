@@ -22,10 +22,12 @@ class SynopsisFilters extends AbstractHelper
         if ($filters['dateMin'] || $filters['dateMax']) {
             $pieces['date'] = '';
             if ($filters['dateMin']) {
-                $pieces['date'] .= 'dal <strong>' . date('d/m/Y', strtotime($filters['dateMin'])) . '</strong>';
+                $fromDate = date('d/m/Y', (int) strtotime($filters['dateMin']));
+                $pieces['date'] .= "dal <strong>$fromDate</strong>";
             }
             if ($filters['dateMax']) {
-                $pieces['date'] .= ' al <strong>' . date('d/m/Y', strtotime($filters['dateMax'])) . '</strong>';
+                $toDate = date('d/m/Y', (int) strtotime($filters['dateMax']));
+                $pieces['date'] .= " al <strong>$toDate</strong>";
             }
         }
 
@@ -45,9 +47,9 @@ class SynopsisFilters extends AbstractHelper
 
         if ($filters['category']) {
             $category = '';
-            foreach ($categories as $category) {
-                if ($category->getId() == $filters['category']) {
-                    $category = $category->getDescrizione();
+            foreach ($categories as $c) {
+                if ($c->getId() == $filters['category']) {
+                    $category = $c->getDescrizione();
                 }
             }
 

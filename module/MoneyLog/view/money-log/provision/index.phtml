@@ -1,12 +1,14 @@
 <?php
 /**
  * @var Laminas\View\Renderer\PhpRenderer $this
- * @var \Accantona\Form\AccantonatoForm $form
+ * @var array<\Application\Entity\Provision> $rows
+ * @var array<string> $searchParams
+ * @var float $balance
  */
+echo $this->pageHeader('Accantonati');
 ?>
-<?php echo $this->pageHeader('Accantonati'); ?>
 <div class="row">
-    <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '12', 'fa' => 'eur', 'label' => 'Saldo', 'text' => $this->currencyForma($this->balance)]); ?>
+    <?php echo $this->widgetText(['color' => 'green', 'col-lg' => '12', 'fa' => 'eur', 'label' => 'Saldo', 'text' => $this->currencyForma($balance)]); ?>
 </div>
 <div class="row">
     <div class="col-lg-12">
@@ -52,14 +54,14 @@
                     <tbody>
                         <?php foreach ($rows as $row): ?>
                         <tr>
-                            <td class="date"><?php echo $this->dateForma($row->valuta); ?></td>
-                            <td class="amount text-right"><?php echo $this->currencyForma($row->importo); ?></td>
-                            <td class="description"><?php echo $row->descrizione; ?></td>
+                            <td class="date"><?php echo $this->dateForma($row->getValuta()); ?></td>
+                            <td class="amount text-right"><?php echo $this->currencyForma($row->getImporto()); ?></td>
+                            <td class="description"><?php echo $row->getDescrizione(); ?></td>
                             <td class="text-right">
-                                <a href="<?php echo $this->url('accantona_accantonato', ['action' => 'edit', 'id' => $row->id], ['query' => $searchParams]); ?>" class="btn btn-default" title="Modifica">
+                                <a href="<?php echo $this->url('accantona_accantonato', ['action' => 'edit', 'id' => $row->getId()], ['query' => $searchParams]); ?>" class="btn btn-default" title="Modifica">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                 </a>
-                                <span data-href="<?php echo $this->url('accantona_accantonato', ['action' => 'delete', 'id' => $row->id], ['query' => $searchParams]); ?>" class="btn btn-default delete-item" title="Elimina">
+                                <span data-href="<?php echo $this->url('accantona_accantonato', ['action' => 'delete', 'id' => $row->getId()], ['query' => $searchParams]); ?>" class="btn btn-default delete-item" title="Elimina">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                 </span>
                             </td>

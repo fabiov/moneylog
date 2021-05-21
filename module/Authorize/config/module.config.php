@@ -19,18 +19,18 @@ return [
                     'password-change-success' => 'guest',
                     'registration-success' => 'guest',
                 ],
-                MoneyLog\Controller\RecapController::class => [
+                MoneyLog\Controller\DashboardController::class => [
                     'add'   => 'user',
                     'edit'  => 'user',
                     'index' => 'user',
                 ],
-                MoneyLog\Controller\CategoriaController::class => [
+                MoneyLog\Controller\CategoryController::class => [
                     'add'       => 'user',
                     'delete'    => 'user',
                     'edit'      => 'user',
                     'index'     => 'user',
                 ],
-                MoneyLog\Controller\AccantonatoController::class => [
+                MoneyLog\Controller\ProvisionController::class => [
                     'add'       => 'user',
                     'delete'    => 'user',
                     'edit'      => 'user',

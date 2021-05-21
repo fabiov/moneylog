@@ -1,9 +1,10 @@
 parameters:
-    level: 6
+    level: 8
     parallel:
         processTimeout: 180.0
     fileExtensions:
         - php
+        - phtml
     paths:
         - %currentWorkingDirectory%/module
     ignoreErrors:
@@ -15,26 +16,27 @@ parameters:
         - '/Call to an undefined method Laminas\\EventManager\\EventInterface::getRouteMatch\(\)\./'
         - '/Call to an undefined method Laminas\\EventManager\\EventInterface::getRouter\(\)\./'
         - '/Call to an undefined method Laminas\\Form\\ElementInterface::setDisableInArrayValidator\(\)\./'
+        - '/Call to an undefined method Laminas\\Form\\ElementInterface::setLabelAttributes\(\)\./'
         - '/Call to an undefined method Laminas\\Form\\ElementInterface::setValueOptions\(\)\./'
         - '/Call to an undefined method Laminas\\Stdlib\\RequestInterface::getPost\(\)\./'
         - '/Call to an undefined method Laminas\\Stdlib\\RequestInterface::getServer\(\)\./'
         - '/Call to an undefined method Laminas\\Stdlib\\RequestInterface::isPost\(\)\./'
         - '/Call to an undefined method Laminas\\Stdlib\\ResponseInterface::getHeaders\(\)\./'
+        - '/Call to an undefined method Laminas\\View\\Helper\\HeadTitle::setSeparator\(\)\./'
+        - '/Call to an undefined method Laminas\\View\\Renderer\\PhpRenderer::\w+\(\)\./'
         - '/Call to an undefined method Laminas\\View\\Renderer\\RendererInterface::\w+\(\)\./'
-        - '/Method Application\\Entity\\Account::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array\./'
-        - '/Method Application\\Entity\\Category::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array\./'
-        - '/Method Application\\Entity\\Movement::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array\./'
-        - '/Method Application\\Entity\\Provision::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array\./'
-        - '/Method Application\\Entity\\Setting::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array./'
-        - '/Method Application\\Entity\\User::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array\./'
-        - '/Method Application\\Repository\\MovementRepository::search\(\) has parameter \$params with no value type specified in iterable type array\./'
-        - '/Method Application\\Repository\\ProvisionRepository::search\(\) has parameter \$params with no value type specified in iterable type array\./'
-        - '/Method Auth\\Controller\\RegistrationController::prepareData\(\) has parameter \$data with no value type specified in iterable type array\./'
-        - '/Method Auth\\Model\\Auth::exchangeArray\(\) has parameter \$data with no value type specified in iterable type array\./'
-        - '/Method Auth\\Service\\Factory\\AuthenticationServiceFactory::__invoke\(\) has parameter \$options with no value type specified in iterable type array\./'
-        - '/Method Authorize\\Acl\\Acl::__construct\(\) has parameter \$config with no value type specified in iterable type array\./'
-        - '/Method Authorize\\Acl\\Acl::_addResources\(\) has parameter \$resources with no value type specified in iterable type array\./'
-        - '/Method Authorize\\Acl\\Acl::_addRoles\(\) has parameter \$roles with no value type specified in iterable type array\./'
+        - '/Method [\w\\]+::\w+\(\) has parameter \$\w+ with no value type specified in iterable type array\./'
         - '/Method [\w\\]+::\w+\(\) return type has no value type specified in iterable type [\w\$\(\)\\]+\./'
         - '/Method \w+\\Controller\\\w+Controller::\w+Action\(\) has no return typehint specified\./'
+        - '/PHPDoc tag @var for variable \$data has no value type specified in iterable type array\./'
+        - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type Auth\\Form\\AuthForm\./'
+        - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type Auth\\Form\\ForgottenPasswordForm\./'
+        - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type Auth\\Form\\RegistrationForm\./'
+        - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type Laminas\\Form\\Form\./'
+        - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type MoneyLog\\Form\\AccantonatoForm\./'
+        - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type MoneyLog\\Form\\CategoriaForm\./'
+        - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type MoneyLog\\Form\\MovementForm\./'
+        - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type MoneyLog\\Form\\SettingsForm\./'
+        - '/PHPDoc tag @var for variable \$formData has no value type specified in iterable type array\./'
+        - '/Parameter #1 \(Laminas\\View\\Helper\\Partial\|string\) of echo cannot be converted to string\./'
         - '/Property Auth\\Service\\UserData::\$data type has no value type specified in iterable type Laminas\\Session\\Container\./'

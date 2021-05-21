@@ -1,17 +1,19 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('data/DoctrineORMModule')
+    ->exclude('data')
+    ->exclude('docker')
     ->exclude('vendor')
 //    ->notPath('src/Symfony/Component/Translation/Tests/fixtures/resources.php')
-    ->in(__DIR__)
-;
+    ->in(__DIR__);
 
 $config = new PhpCsFixer\Config();
 return $config->setRules([
     '@PSR12' => true,
+    'array_indentation' => true,
     'array_syntax' => ['syntax' => 'short'],
     'no_unused_imports' => true,
+    'visibility_required' => ['property', 'method', 'const'],
     // 'compact_nullable_typehint' => true,
     // 'dir_constant' => true,
     // 'ereg_to_preg' => true,
@@ -28,10 +30,7 @@ return $config->setRules([
     // 'no_useless_else' => true,
     // 'no_useless_return' => true,
     // 'self_accessor' => false,
-    // 'strict_param' => true,
     // 'ternary_to_null_coalescing' => true,
-    // 'visibility_required' => ['property', 'method', 'const'],
     // 'void_return' => false,
 ])
-    ->setFinder($finder)
-    ;
+    ->setFinder($finder);

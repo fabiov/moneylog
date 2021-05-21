@@ -1,5 +1,10 @@
-<?php /* @var $this \Laminas\View\View */ ?>
-<?php echo $this->pageHeader('Aggiungi accantonamento'); ?>
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var \MoneyLog\Form\AccantonatoForm $form
+ */
+echo $this->pageHeader('Aggiungi accantonamento');
+?>
 <div class="row">
     <div class="col-lg-4">
     </div>
@@ -9,8 +14,8 @@
                 Aggiungi accantonamento
             </div>
             <div class="panel-body">
-                <?php $this->form->setAttribute('action', $this->url('accantona_accantonato', array('action' => 'add')))->prepare(); ?>
-                <?php echo $this->form()->openTag($this->form); ?>
+                <?php $form->setAttribute('action', $this->url('accantona_accantonato', array('action' => 'add')))->prepare(); ?>
+                <?php echo $this->form()->openTag($form); ?>
                     <?php echo $this->sbaFormRow($form->get('valuta')); ?>
                     <?php echo $this->sbaFormRow($form->get('importo')); ?>
                     <?php echo $this->sbaFormRow($form->get('descrizione')); ?>
