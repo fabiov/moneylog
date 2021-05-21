@@ -13,7 +13,6 @@ return $config->setRules([
     'array_indentation' => true,
     'array_syntax' => ['syntax' => 'short'],
     'no_unused_imports' => true,
-    'strict_param' => true,
     'visibility_required' => ['property', 'method', 'const'],
     // 'compact_nullable_typehint' => true,
     // 'dir_constant' => true,

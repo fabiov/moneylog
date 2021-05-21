@@ -41,11 +41,11 @@ if ($zf2Path) {
         $loader->add('Laminas\Xml', $zf2Path);
     } else {
         include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
-        Laminas\Loader\AutoloaderFactory::factory(array(
-            'Laminas\Loader\StandardAutoloader' => array(
+        Laminas\Loader\AutoloaderFactory::factory([
+            'Laminas\Loader\StandardAutoloader' => [
                 'autoregister_zf' => true
-            )
-        ));
+            ]
+        ]);
     }
 }
 

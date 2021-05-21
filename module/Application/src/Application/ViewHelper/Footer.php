@@ -15,7 +15,7 @@ class Footer extends AbstractHelper
     public function __invoke()
     {
         $year = date('Y');
-        $href = $this->view->url('page', array('action' => 'privacy-policy'));
+        $href = $this->view->url('page', ['action' => 'privacy-policy']);
         return <<< EOC
 <footer>
     <p class="text-center">

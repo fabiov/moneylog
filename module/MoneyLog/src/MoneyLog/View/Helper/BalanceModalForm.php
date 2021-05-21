@@ -18,7 +18,7 @@ class BalanceModalForm extends AbstractHelper
     public function __invoke($accountId = 0, $routeName)
     {
         // if account id id empty the correct action will be updated by javascript
-        $action = $accountId ? $this->view->url('accantonaAccount', array('action' => 'balance', 'id' => $accountId)) : '';
+        $action = $accountId ? $this->view->url('accantonaAccount', ['action' => 'balance', 'id' => $accountId]) : '';
         return <<< eoc
 <div class="modal fade" id="modal-balance" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
