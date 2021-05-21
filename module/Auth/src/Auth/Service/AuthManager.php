@@ -48,16 +48,12 @@ class AuthManager
      */
     public function login(string $email, string $password, bool $rememberMe): Result
     {
-        // Check if user has already logged in. If so, do not allow to log in twice.
-//        if ($this->authService->getIdentity() != null) {
-//            throw new \Exception('Already logged in');
-//        }
-
         /** @var \Auth\Service\AuthAdapter $authAdapter */
         $authAdapter = $this->authService->getAdapter();
 
         // Authenticate with login/password.
-        $authAdapter->setEmail($email)->setPassword($password);
+        $authAdapter->setEmail($email);
+        $authAdapter->setPassword($password);
         $result = $this->authService->authenticate();
 
         // If user wants to "remember him", we will make session to expire in one month.
