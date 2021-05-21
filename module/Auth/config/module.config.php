@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-use Auth\Controller\UserController;
-use Laminas\Authentication\AuthenticationService;
 use Auth\Controller\RegistrationController;
+use Auth\Controller\UserController;
+use Interop\Container\ContainerInterface;
+use Laminas\Authentication\AuthenticationService;
 use Laminas\ServiceManager\ServiceManager;
 
 return [
@@ -50,16 +51,16 @@ return [
         // This code should be moved to a module to allow Doctrine to overwrite it
         'aliases' => [],
         'factories' => [
-            Auth\Service\AuthAdapter::class => function (Interop\Container\ContainerInterface $controllerManager) {
+            Auth\Service\AuthAdapter::class => function (ContainerInterface $controllerManager) {
                 return new Auth\Service\AuthAdapter($controllerManager->get('doctrine.entitymanager.orm_default'));
             },
-            Auth\Service\AuthManager::class => function (Interop\Container\ContainerInterface $container) {
+            Auth\Service\AuthManager::class => function (ContainerInterface $container) {
                 return new Auth\Service\AuthManager(
                     $container->get(AuthenticationService::class),
                     $container->get(Auth\Service\UserData::class)
                 );
             },
-            AuthenticationService::class => function (Interop\Container\ContainerInterface $container): AuthenticationService {
+            AuthenticationService::class => function (ContainerInterface $container): AuthenticationService {
                 return new AuthenticationService(
                     new Laminas\Authentication\Storage\Session(),
                     $container->get(Auth\Service\AuthAdapter::class)

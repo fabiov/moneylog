@@ -75,15 +75,15 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
         done
     fi
 
-#    ./dc phpunit
-#    STATUS=$?
-#
-#    if [[ "$STATUS" -eq 0 ]]; then
-#        echo -e "\e[42mPHP Unit Tests Suite is OK\e[m"
-#    else
-#        echo "Pay attention! Unit Tests are broken."
-#        exit 1
-#    fi
+    docker-compose exec web vendor/bin/phpunit < /dev/tty
+    STATUS=$?
+
+    if [[ "$STATUS" -eq 0 ]]; then
+        echo -e "\e[42mPHP Unit Tests Suite is OK\e[m"
+    else
+        echo "Pay attention! Unit Tests are broken."
+        exit 1
+    fi
 
 else
     echo -e "\e[42mNo PHP staged files.\e[m"
