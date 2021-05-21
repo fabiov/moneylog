@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
+use Auth\Controller\UserController;
 use Laminas\Authentication\AuthenticationService;
 
 return [
     'controllers' => [
         'factories' => [
-            Auth\Controller\UserController::class => function (Laminas\ServiceManager\ServiceManager $controllerManager) {
-                return new Auth\Controller\UserController(
+            UserController::class => function (Laminas\ServiceManager\ServiceManager $controllerManager) {
+                return new UserController(
                     $controllerManager->get(AuthenticationService::class)->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager->get(Auth\Service\AuthManager::class)
@@ -28,7 +29,7 @@ return [
                 'type' => 'segment',
                 'options' => [
                     'constraints' => ['action' => '[a-zA-Z][a-zA-Z0-9_-]+', 'id' => '[\w]+'],
-                    'defaults' => ['controller' => Auth\Controller\UserController::class, 'action' => 'index'],
+                    'defaults' => ['controller' => UserController::class, 'action' => 'index'],
                     'route' => '/auth/user[/:action][/:id]',
                 ],
             ],
@@ -57,7 +58,12 @@ return [
                     $container->get(Auth\Service\UserData::class)
                 );
             },
-            AuthenticationService::class => Auth\Service\Factory\AuthenticationServiceFactory::class,
+            AuthenticationService::class => function (Interop\Container\ContainerInterface $container): AuthenticationService {
+                return new AuthenticationService(
+                    new Laminas\Authentication\Storage\Session(),
+                    $container->get(Auth\Service\AuthAdapter::class)
+                );
+            },
         ],
         'invokables' => [
             'user_data' => 'Auth\Service\UserData',
