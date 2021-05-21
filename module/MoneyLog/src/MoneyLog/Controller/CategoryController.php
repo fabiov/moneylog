@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace MoneyLog\Controller;
 
-use Application\Entity\Provision;
 use Application\Entity\Category;
+use Application\Entity\Provision;
 use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Laminas\Http\Response;
-use MoneyLog\Form\CategoriaForm;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use MoneyLog\Form\CategoriaForm;
 
 class CategoryController extends AbstractActionController
 {
@@ -50,7 +50,8 @@ class CategoryController extends AbstractActionController
                 /** @var array $data */
                 $data = $form->getData();
 
-                $category->exchangeArray($data);
+                $category->setDescription($data['description']);
+                $category->setStatus((int) $data['status']);
                 $category->setUser($user);
                 $this->em->persist($category);
                 $this->em->flush();
@@ -71,7 +72,7 @@ class CategoryController extends AbstractActionController
 
     public function editAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = (int) $this->params()->fromRoute('id');
 
         /** @var ?Category $category */
         $category = $this->em->getRepository(Category::class)
@@ -120,7 +121,7 @@ class CategoryController extends AbstractActionController
             if ($sum) {
                 $provision = new Provision();
                 $provision->setUser($category->getUser());
-                $provision->setDescrizione('Conguaglio rimozione categoria ' . $category->getDescrizione());
+                $provision->setDescrizione('Conguaglio rimozione categoria ' . $category->getDescription());
                 $provision->setImporto($sum);
                 $provision->setValuta(new \DateTime());
                 $this->em->persist($provision);

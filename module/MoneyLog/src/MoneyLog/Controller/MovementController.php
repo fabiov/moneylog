@@ -7,11 +7,11 @@ use Application\Entity\Category;
 use Application\Entity\Movement;
 use Application\Repository\AccountRepository;
 use Doctrine\ORM\EntityManager;
-use MoneyLog\Form\MoveForm;
-use MoneyLog\Form\MovementForm;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use MoneyLog\Form\MoveForm;
+use MoneyLog\Form\MovementForm;
 
 class MovementController extends AbstractActionController
 {
@@ -104,7 +104,7 @@ class MovementController extends AbstractActionController
         }
 
         $categories = $this->em->getRepository(Category::class)
-            ->findBy(['status' => 1, 'user' => $this->user->id], ['descrizione' => 'ASC']);
+            ->findBy(['status' => 1, 'user' => $this->user->id], ['description' => 'ASC']);
 
         /** @var \Application\Repository\MovementRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Movement::class);

@@ -19,7 +19,7 @@ class CategoriaForm extends Form
         ]);
         $this->add([
             'attributes' => ['class' => 'form-control'],
-            'name' => 'descrizione',
+            'name' => 'description',
             'type' => 'Text',
             'options' => ['label' => 'Descrizione'],
         ]);
