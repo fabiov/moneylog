@@ -5,18 +5,19 @@ declare(strict_types=1);
 use Auth\Controller\UserController;
 use Laminas\Authentication\AuthenticationService;
 use Auth\Controller\RegistrationController;
+use Laminas\ServiceManager\ServiceManager;
 
 return [
     'controllers' => [
         'factories' => [
-            UserController::class => function (Laminas\ServiceManager\ServiceManager $controllerManager) {
+            UserController::class => function (ServiceManager $controllerManager) {
                 return new UserController(
                     $controllerManager->get(AuthenticationService::class)->getIdentity(),
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager->get(Auth\Service\AuthManager::class)
                 );
             },
-            RegistrationController::class => function (Laminas\ServiceManager\ServiceManager $controllerManager) {
+            RegistrationController::class => function (ServiceManager $controllerManager) {
                 return new RegistrationController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
                     $controllerManager

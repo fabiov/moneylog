@@ -45,9 +45,9 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
 #                    php-cs-fixer fix $(git diff --name-only --cached --diff-filter=ACMR -- '*.php') --show-progress=dots --path-mode=override \
 #                        && git add $(git diff --name-only --cached --diff-filter=ACMR -- '*.php')
 
-                    git diff --name-only --cached --diff-filter=ACMR -- '*.php' | while read line; do
-                        php-cs-fixer fix -q "$line"
-                        git add "$line" && echo "Add file $line to stage"
+                    for staged in $PHP_STAGED_FILES; do
+                        php-cs-fixer fix -q "$staged"
+                        git add "$staged" && echo "CS-FIXED file $staged"
                     done
                     break
                     ;;
