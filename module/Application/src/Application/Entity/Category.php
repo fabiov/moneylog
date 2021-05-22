@@ -105,14 +105,9 @@ class Category implements InputFilterAwareInterface
         }
     }
 
-    /**
-     * @param InputFilterInterface $inputFilter
-     * @return $this
-     */
-    public function setInputFilter(InputFilterInterface $inputFilter): Category
+    public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        $this->inputFilter = $inputFilter;
-        return $this;
+        throw new \Exception('Not used');
     }
 
     public function getInputFilter(): InputFilterInterface
