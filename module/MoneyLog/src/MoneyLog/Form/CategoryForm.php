@@ -6,7 +6,7 @@ namespace MoneyLog\Form;
 
 use Laminas\Form\Form;
 
-class CategoriaForm extends Form
+class CategoryForm extends Form
 {
     public function __construct()
     {

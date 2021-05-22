@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
-use MoneyLog\Form\CategoriaForm;
+use MoneyLog\Form\CategoryForm;
 
 class CategoryController extends AbstractActionController
 {
@@ -33,7 +33,7 @@ class CategoryController extends AbstractActionController
 
     public function addAction()
     {
-        $form = new CategoriaForm();
+        $form = new CategoryForm();
         $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
@@ -82,7 +82,7 @@ class CategoryController extends AbstractActionController
             return $this->redirect()->toRoute('accantona_categoria', ['action' => 'index']);
         }
 
-        $form = new CategoriaForm();
+        $form = new CategoryForm();
         $form->bind($category);
 
         $request = $this->getRequest();
