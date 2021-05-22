@@ -142,7 +142,7 @@ class Movement implements InputFilterAwareInterface
         }
     }
 
-    public function setInputFilter(InputFilterInterface $inputFilter): void
+    public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception('Not used');
     }
