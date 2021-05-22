@@ -45,23 +45,20 @@ class MovementTest extends TestCase
     {
         $movement = new Movement();
 
-//        $account = new Account();
-        $category = new Category();
-//        $date = new \DateTime();
         $amount = 78.54;
+        $category = new Category();
+        $description = 'Description';
 
         $movement->exchangeArray([
-            //            'account' => $account,
-            'category' => $category,
-            //            'date' => $date,
             'amount' => $amount,
+            'category' => $category,
+            'description' => $description,
         ]);
 
         $copy = $movement->getArrayCopy();
 
-//        self::assertSame($copy['account'], $movement->getAccount());
-        self::assertSame($copy['category'], $movement->getCategory());
-//        self::assertSame($copy['date'], $movement->getDate());
         self::assertSame($copy['amount'], $movement->getAmount());
+        self::assertSame($copy['category'], $movement->getCategory());
+        self::assertSame($copy['description'], $movement->getDescription());
     }
 }

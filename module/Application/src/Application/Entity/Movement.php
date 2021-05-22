@@ -8,7 +8,6 @@ use Laminas\InputFilter\InputFilterInterface;
 use MoneyLog\Form\Filter\MovementFilter;
 
 /**
- *
  * @ORM\Entity(repositoryClass="Application\Repository\MovementRepository")
  * @ORM\Table(name="movement")
  */
