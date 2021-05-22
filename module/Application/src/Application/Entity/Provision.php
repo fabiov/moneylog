@@ -30,25 +30,25 @@ class Provision implements InputFilterAwareInterface
     /**
      * Many provisions have one user. This is the owning side.
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id", nullable=false)
      * @var User
      */
     private $user;
 
     /**
-     * @ORM\Column(name="valuta", type="date")
+     * @ORM\Column(name="valuta", type="date", nullable=false)
      * @var \DateTime
      */
     private $valuta;
 
     /**
-     * @ORM\Column(name="importo", type="decimal", precision=8, scale=2)
+     * @ORM\Column(name="importo", type="decimal", precision=8, scale=2, nullable=false)
      * @var float
      */
     private $importo;
 
     /**
-     * @ORM\Column(name="descrizione", type="string")
+     * @ORM\Column(name="descrizione", type="string", nullable=false)
      * @var string
      */
     private $descrizione;
