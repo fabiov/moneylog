@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Application\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
-use Laminas\InputFilter\InputFilter;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\AccountRepository")
@@ -19,7 +18,7 @@ class Account implements InputFilterAwareInterface
     /**
      * @var ?InputFilterInterface
      */
-    protected $inputFilter;
+    private $inputFilter;
 
     /**
      * @ORM\Id
@@ -32,7 +31,7 @@ class Account implements InputFilterAwareInterface
     /**
      * Many accounts have one user. This is the owning side.
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id", nullable=false)
      * @var User
      */
     private $user;
@@ -53,18 +52,7 @@ class Account implements InputFilterAwareInterface
      * @ORM\Column(name="closed", type="boolean", nullable=false, options={"default": false})
      * @var bool
      */
-    protected $closed = false;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Movement", mappedBy="account")
-     * @var ArrayCollection<int, Movement>
-     */
-    protected $movements;
-
-    public function __construct()
-    {
-        $this->movements = new ArrayCollection();
-    }
+    private $closed = false;
 
     public function getId(): int
     {
@@ -128,7 +116,7 @@ class Account implements InputFilterAwareInterface
         throw new \Exception("Not used");
     }
 
-    public function getInputFilter()
+    public function getInputFilter(): InputFilterInterface
     {
         if (!$this->inputFilter) {
             $this->inputFilter = new InputFilter();
