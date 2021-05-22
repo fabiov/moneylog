@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Application\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterAwareInterface;
@@ -53,6 +54,12 @@ class Account implements InputFilterAwareInterface
      * @var bool
      */
     private $closed = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Movement", mappedBy="account")
+     * @var ArrayCollection<int, Movement>
+     */
+    private $movements;
 
     public function getId(): int
     {

@@ -32,7 +32,7 @@ class Category implements InputFilterAwareInterface
     /**
      * Many categories have one user. This is the owning side.
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id", nullable=false)
      * @var User
      */
     private $user;
@@ -44,7 +44,7 @@ class Category implements InputFilterAwareInterface
     private $description;
 
     /**
-     * @ORM\Column(name="status", type="smallint")
+     * @ORM\Column(name="status", type="smallint", nullable=false)
      * @var int
      */
     private $status = 1;
