@@ -36,22 +36,22 @@ class Provision implements InputFilterAwareInterface
     private $user;
 
     /**
-     * @ORM\Column(name="valuta", type="date", nullable=false)
+     * @ORM\Column(name="date", type="date", nullable=false)
      * @var \DateTime
      */
-    private $valuta;
+    private $date;
 
     /**
-     * @ORM\Column(name="importo", type="decimal", precision=8, scale=2, nullable=false)
+     * @ORM\Column(name="amount", type="decimal", precision=8, scale=2, nullable=false)
      * @var float
      */
-    private $importo;
+    private $amount;
 
     /**
-     * @ORM\Column(name="descrizione", type="string", nullable=false)
+     * @ORM\Column(name="description", type="string", nullable=false)
      * @var string
      */
-    private $descrizione;
+    private $description;
 
     public function getId(): int
     {
@@ -63,34 +63,34 @@ class Provision implements InputFilterAwareInterface
         $this->user = $user;
     }
 
-    public function getValuta(): \DateTime
+    public function getDate(): \DateTime
     {
-        return $this->valuta;
+        return $this->date;
     }
 
-    public function setValuta(\DateTime $valuta): void
+    public function setDate(\DateTime $date): void
     {
-        $this->valuta = $valuta;
+        $this->date = $date;
     }
 
-    public function getImporto(): float
+    public function getAmount(): float
     {
-        return $this->importo;
+        return $this->amount;
     }
 
-    public function setImporto(float $importo): void
+    public function setAmount(float $amount): void
     {
-        $this->importo = $importo;
+        $this->amount = $amount;
     }
 
-    public function getDescrizione(): string
+    public function getDescription(): string
     {
-        return $this->descrizione;
+        return $this->description;
     }
 
-    public function setDescrizione(string $descrizione): void
+    public function setDescription(string $description): void
     {
-        $this->descrizione = $descrizione;
+        $this->description = $description;
     }
 
     public function getArrayCopy(): array
@@ -98,9 +98,6 @@ class Provision implements InputFilterAwareInterface
         return get_object_vars($this);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function exchangeArray(array $data = []): void
     {
         if (isset($data['id'])) {
@@ -110,17 +107,16 @@ class Provision implements InputFilterAwareInterface
             $this->user = $data['userId'];
         }
         if (isset($data['valuta'])) {
-            $this->valuta = new \DateTime($data['valuta']);
+            $this->date = new \DateTime($data['valuta']);
         }
-        $this->importo = $data['importo'] ?? null;
-        $this->descrizione = $data['descrizione'] ?? null;
+        if (isset($data['importo'])) {
+            $this->amount = $data['importo'];
+        }
+        if (isset($data['descrizione'])) {
+            $this->description = $data['descrizione'];
+        }
     }
 
-    /**
-     * @param \Laminas\InputFilter\InputFilterInterface $inputFilter
-     * @return \Laminas\InputFilter\InputFilterAwareInterface
-     * @throws \Exception
-     */
     public function setInputFilter(InputFilterInterface $inputFilter): InputFilterAwareInterface
     {
         throw new \Exception('Not used');
