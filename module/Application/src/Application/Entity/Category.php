@@ -38,10 +38,10 @@ class Category implements InputFilterAwareInterface
     private $user;
 
     /**
-     * @ORM\Column(name="descrizione", type="string")
+     * @ORM\Column(name="description", type="string", nullable=false)
      * @var string
      */
-    private $descrizione;
+    private $description;
 
     /**
      * @ORM\Column(name="status", type="smallint")
@@ -64,14 +64,14 @@ class Category implements InputFilterAwareInterface
         $this->user = $user;
     }
 
-    public function getDescrizione(): string
+    public function getDescription(): string
     {
-        return $this->descrizione;
+        return $this->description;
     }
 
-    public function setDescrizione(string $descrizione): void
+    public function setDescription(string $description): void
     {
-        $this->descrizione = $descrizione;
+        $this->description = $description;
     }
 
     public function getStatus(): int
@@ -79,26 +79,30 @@ class Category implements InputFilterAwareInterface
         return $this->status;
     }
 
-    /**
-     * Convert the object to an array.
-     */
+    public function setStatus(int $status): void
+    {
+        if (!in_array($status, [self::STATUS_INACTIVE, self::STATUS_ACTIVE])) {
+            throw new \RuntimeException("Invalid status value: $status");
+        }
+        $this->status = $status;
+    }
+
     public function getArrayCopy(): array
     {
         return get_object_vars($this);
     }
 
-    /**
-     * Populate from an array.
-     *
-     * @param array $data
-     */
     public function exchangeArray(array $data = []): void
     {
         if (isset($data['user'])) {
             $this->user = $data['user'];
         }
-        $this->descrizione = $data['descrizione'] ?? null;
-        $this->status      = empty($data['status']) ? 0 : 1;
+        if (isset($data['description'])) {
+            $this->setDescription($data['description']);
+        }
+        if (isset($data['status'])) {
+            $this->setStatus((int) $data['status']);
+        }
     }
 
     /**
@@ -117,7 +121,7 @@ class Category implements InputFilterAwareInterface
             $inputFilter = new InputFilter();
 
             $inputFilter->add([
-                'name'     => 'descrizione',
+                'name' => 'description',
                 'required' => true,
                 'filters'  => [['name' => 'StringTrim']],
             ]);

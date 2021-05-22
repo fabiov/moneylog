@@ -3,6 +3,8 @@
 PHP_STAGED_FILES=$(git diff --name-only --cached --diff-filter=ACMR -- '*.php' | sed 's| |\\ |g')
 CS_ERROR=0
 
+TO_FIX=()
+
 if [[ -n "$PHP_STAGED_FILES" ]]; then
 
 
@@ -19,8 +21,8 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
         STATUS=$?
 
         if [[ "$STATUS" -ne 0 ]]; then
+            TO_FIX+=("$staged")
             CS_ERROR=1
-            break;
         fi
     done
 
@@ -42,12 +44,9 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
                     exit 1
                     ;;
                 [Ff]* )
-#                    php-cs-fixer fix $(git diff --name-only --cached --diff-filter=ACMR -- '*.php') --show-progress=dots --path-mode=override \
-#                        && git add $(git diff --name-only --cached --diff-filter=ACMR -- '*.php')
-
-                    for staged in $PHP_STAGED_FILES; do
+                    for staged in "${TO_FIX[@]}"; do
                         php-cs-fixer fix -q "$staged"
-                        git add "$staged" && echo "CS-FIXED file $staged"
+                        git add "$staged" && echo "CS-FIXED $staged"
                     done
                     break
                     ;;

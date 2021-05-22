@@ -1,7 +1,7 @@
 <?php
 /**
  * @var Laminas\View\Renderer\PhpRenderer $this
- * @var MoneyLog\Form\CategoriaForm $form
+ * @var MoneyLog\Form\CategoryForm $form
  */
 $form->setAttribute('action', $this->url('accantona_categoria', array('action' => 'add')));
 $form->prepare();
@@ -18,7 +18,7 @@ $form->prepare();
                 <?php echo $this->form()->openTag($form); ?>
 
                     <?php echo $this->formHidden($form->get('id')); ?>
-                    <?php echo $this->sbaFormRow($form->get('descrizione')); ?>
+                    <?php echo $this->sbaFormRow($form->get('description')); ?>
 
                     <?php
                     $element = $form->get('status');

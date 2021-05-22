@@ -22,7 +22,7 @@ echo $this->pageHeader('Categorie di spesa');
                     </thead>
                     <?php foreach ($rows as $row) : ?>
                     <tr>
-                        <td class="description"><?php echo $this->escapeHtml($row->getDescrizione()); ?></td>
+                        <td class="description"><?php echo $this->escapeHtml($row->getDescription()); ?></td>
                         <td class="status"><?php echo $row->getStatus() ? 'Sì' : 'No'; ?></td>
                         <td class="text-right">
                             <a href="<?php echo $this->url('accantona_categoria', ['action' => 'edit', 'id' => $row->getId()]); ?>" class="btn btn-default btn-xs" title="Modifica">

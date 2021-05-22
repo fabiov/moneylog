@@ -49,7 +49,7 @@ class SynopsisFilters extends AbstractHelper
             $category = '';
             foreach ($categories as $c) {
                 if ($c->getId() == $filters['category']) {
-                    $category = $c->getDescrizione();
+                    $category = $c->getDescription();
                 }
             }
 

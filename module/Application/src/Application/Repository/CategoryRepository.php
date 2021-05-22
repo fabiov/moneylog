@@ -48,10 +48,10 @@ class CategoryRepository extends EntityRepository
                 }
             }
             $data[] = [
-                'average'       => $average,
-                'description'   => $row['descrizione'],
-                'id'            => $row['id'],
-                'status'        => $row['status'],
+                'average'     => $average,
+                'description' => $row['description'],
+                'id'          => $row['id'],
+                'status'      => $row['status'],
             ];
         }
         return $data;
@@ -68,7 +68,7 @@ class CategoryRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
-            ->select('c.id, c.descrizione, MIN(m.date) AS date, c.status')
+            ->select('c.id, c.description, MIN(m.date) AS date, c.status')
             ->from(Category::class, 'c', 'c.id')
             ->leftJoin(Movement::class, 'm', 'WITH', 'c.id=m.category')
             ->where("c.user=$userId")

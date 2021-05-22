@@ -21,17 +21,23 @@ class ChangePasswordForm extends Form
 
         $this
             ->add([
-                'attributes' => ['id' => 'current', 'maxlength' => 16, 'required' => true, 'type'  => 'password'],
+                'attributes' => [
+                    'id' => 'current', 'maxlength' => 16, 'required' => true, 'type'  => 'password'
+                ],
                 'name'       => 'current',
                 'options'    => ['label' => 'Password corrente'],
             ])
             ->add([
-                'attributes' => ['id' => 'password_confirm', 'maxlength' => 16, 'required' => true, 'type' => 'password'],
+                'attributes' => [
+                    'id' => 'password_confirm', 'maxlength' => 16, 'required' => true, 'type' => 'password'
+                ],
                 'name'       => 'password',
                 'options'    => ['label' => 'Nuova password'],
             ])
             ->add([
-                'attributes' => ['id' => 'password_confirm', 'maxlength' => 16, 'required' => true, 'type' => 'password'],
+                'attributes' => [
+                    'id' => 'password_confirm', 'maxlength' => 16, 'required' => true, 'type' => 'password'
+                ],
                 'name'       => 'password_confirm',
                 'options'    => ['label' => 'Conferma nuova password'],
             ])

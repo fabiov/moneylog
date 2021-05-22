@@ -18,6 +18,6 @@ foreach ($rows as $row) {
         $this->dateForma($row->getDate()),
         number_format($row->getAmount(), 2, ',', ''),
         str_replace('"', '""', trim($row->getDescription())),
-        $category ? str_replace('"', '""', $category->getDescrizione()) : '',
+        $category ? str_replace('"', '""', $category->getDescription()) : '',
     ]) . '"' . PHP_EOL;
 }

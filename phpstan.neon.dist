@@ -34,7 +34,7 @@ parameters:
         - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type Auth\\Form\\RegistrationForm\./'
         - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type Laminas\\Form\\Form\./'
         - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type MoneyLog\\Form\\AccantonatoForm\./'
-        - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type MoneyLog\\Form\\CategoriaForm\./'
+        - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type MoneyLog\\Form\\CategoryForm\./'
         - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type MoneyLog\\Form\\MovementForm\./'
         - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type MoneyLog\\Form\\SettingsForm\./'
         - '/PHPDoc tag @var for variable \$formData has no value type specified in iterable type array\./'

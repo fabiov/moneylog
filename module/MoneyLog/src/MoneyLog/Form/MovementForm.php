@@ -70,13 +70,13 @@ class MovementForm extends Form
                     'name'   => 'findBy',
                     'params' => [
                         'criteria' => ['user' => $userId, 'status' => Category::STATUS_ACTIVE],
-                        'orderBy'  => ['descrizione' => 'ASC']
+                        'orderBy'  => ['description' => 'ASC']
                     ]
                 ],
                 'label'                     => 'Categoria',
                 'object_manager'            => $this->em,
                 'target_class'              => Category::class,
-                'property'                  => 'descrizione',
+                'property'                  => 'description',
             ],
             'required' => false,
             'type'     => 'DoctrineModule\Form\Element\ObjectSelect',

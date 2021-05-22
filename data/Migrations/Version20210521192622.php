@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Migrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+final class Version20210521192622 extends AbstractMigration
+{
+    public function up(Schema $schema): void
+    {
+        $this->abortIf(
+            $this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'Migration can only be executed safely on \'mysql\'.'
+        );
+
+        $this->addSql('ALTER TABLE category CHANGE 
+            status status SMALLINT NOT NULL, 
+            CHANGE descrizione description VARCHAR(255) NOT NULL');
+    }
+
+    public function down(Schema $schema): void
+    {
+        $this->abortIf(
+            $this->connection->getDatabasePlatform()->getName() !== 'mysql',
+            'Migration can only be executed safely on \'mysql\'.'
+        );
+
+        $this->addSql('ALTER TABLE category CHANGE 
+            status status INT NOT NULL, 
+            CHANGE description descrizione VARCHAR(255) CHARACTER SET utf8 NOT NULL COLLATE `utf8_unicode_ci`');
+    }
+}

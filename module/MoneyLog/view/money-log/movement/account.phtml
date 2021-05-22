@@ -59,7 +59,7 @@ $morrisData = array();
                                     <option></option>
                                     <?php foreach ($categories as $category): ?>
                                         <option value="<?php echo $category->getId(); ?>"<?php if ($category->getId() == $searchParams['category']) echo ' selected="selected"'?>>
-                                            <?php echo $category->getDescrizione(); ?>
+                                            <?php echo $category->getDescription(); ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
@@ -143,7 +143,7 @@ $morrisData = array();
                             <td class="date"><?php echo $this->dateForma($row->getDate()); ?></td>
                             <td class="text-right amount"><?php echo $this->currencyForma($row->getAmount()); ?></td>
                             <td class="description"><?php echo $row->getDescription(); ?></td>
-                            <td class="description"><?php echo null !== ($c = $row->getCategory()) ? $c->getDescrizione() : ''; ?></td>
+                            <td class="description"><?php echo null !== ($c = $row->getCategory()) ? $c->getDescription() : ''; ?></td>
                             <td class="text-right">
                                 <a href="<?php echo $this->url('accantonaMovement', ['action' => 'edit', 'id' => $row->getId()], ['query' => $searchParams]); ?>" class="btn btn-default btn-xs" title="Modifica">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>

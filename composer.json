@@ -87,6 +87,8 @@
     "scripts": {
         "migrations-diff": "vendor/bin/doctrine-module migrations:diff",
         "migrations-migrate": "vendor/bin/doctrine-module migrations:migrate",
-        "migrations-status": "vendor/bin/doctrine-module migrations:status"
+        "migrations-status": "vendor/bin/doctrine-module migrations:status",
+        "schema-create": "vendor/bin/doctrine-module orm:schema-tool:create",
+        "schema-drop": "vendor/bin/doctrine-module orm:schema-tool:drop --force"
     }
 }

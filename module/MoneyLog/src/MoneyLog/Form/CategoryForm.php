@@ -6,7 +6,7 @@ namespace MoneyLog\Form;
 
 use Laminas\Form\Form;
 
-class CategoriaForm extends Form
+class CategoryForm extends Form
 {
     public function __construct()
     {
@@ -19,7 +19,7 @@ class CategoriaForm extends Form
         ]);
         $this->add([
             'attributes' => ['class' => 'form-control'],
-            'name' => 'descrizione',
+            'name' => 'description',
             'type' => 'Text',
             'options' => ['label' => 'Descrizione'],
         ]);

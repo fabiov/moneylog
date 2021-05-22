@@ -9,7 +9,7 @@ $this->headTitle($title);
 ?>
 <?php echo $this->pageHeader($title); ?>
  <p>
-     Are you sure that you want to delete '<?php echo $this->escapeHtml($category->getDescrizione()); ?>'?
+     Are you sure that you want to delete '<?php echo $this->escapeHtml($category->getDescription()); ?>'?
  </p>
  <?php
  $url = $this->url('accantona_categoria', array('action' => 'delete', 'id' => $id));
