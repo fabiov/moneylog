@@ -35,12 +35,11 @@ class AccountRepository extends EntityRepository
      */
     public function getTotals(int $userId, bool $onlyRecap = false, $date = null): array
     {
-        $qb = $this->getEntityManager()
-                   ->createQueryBuilder()
-                   ->select('a.id', 'a.name', 'a.recap', 'a.closed', 'COALESCE(SUM(m.amount), 0) AS total')
-                   ->from(Account::class, 'a')
-                   ->leftJoin('a.movements', 'm')
-                   ->where("a.user=$userId");
+        $qb = $this->getEntityManager()->createQueryBuilder()
+           ->select('a.id', 'a.name', 'a.recap', 'a.closed', 'COALESCE(SUM(m.amount), 0) AS total')
+           ->from(Account::class, 'a')
+           ->leftJoin('a.movements', 'm')
+           ->where("a.user=$userId");
 
         if ($date) {
             $qb->andWhere('m.date<=:date')
