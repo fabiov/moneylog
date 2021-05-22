@@ -2,10 +2,10 @@
 
 namespace Application\Entity;
 
-use MoneyLog\Form\Filter\MovementFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
+use MoneyLog\Form\Filter\MovementFilter;
 
 /**
  *
@@ -47,19 +47,19 @@ class Movement implements InputFilterAwareInterface
     private $category;
 
     /**
-     * @ORM\Column(name="date", type="date")
+     * @ORM\Column(name="date", type="date", nullable=false)
      * @var \DateTime
      */
     private $date;
 
     /**
-     * @ORM\Column(name="amount", type="float")
+     * @ORM\Column(name="amount", type="float", nullable=false)
      * @var float
      */
     private $amount;
 
     /**
-     * @ORM\Column(name="description", type="string")
+     * @ORM\Column(name="description", type="string", nullable=false)
      * @var string
      */
     private $description;
