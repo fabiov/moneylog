@@ -118,38 +118,33 @@ class Movement implements InputFilterAwareInterface
         $this->description = $description;
     }
 
-    /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
-    public function getArrayCopy()
+    public function getArrayCopy(): array
     {
         return get_object_vars($this);
     }
 
     public function exchangeArray(array $data): void
     {
-        if (isset($data['id'])) {
-            $this->id = $data['id'];
-        }
         if (isset($data['accountId'])) {
             $this->account = $data['accountId'];
         }
-        if (array_key_exists('category', $data)) {
+        if (isset($data['category'])) {
             $this->category = $data['category'];
         }
         if (isset($data['date'])) {
             $this->date = new \DateTime($data['date']);
         }
-        $this->amount      = $data['amount'] ?? null;
-        $this->description = $data['description'] ?? null;
+        if (isset($data['amount'])) {
+            $this->setAmount($this->amount = $data['amount']);
+        }
+        if (isset($data['description'])) {
+            $this->setDescription($data['description']);
+        }
     }
 
-    public function setInputFilter(InputFilterInterface $inputFilter): self
+    public function setInputFilter(InputFilterInterface $inputFilter): void
     {
-        $this->inputFilter = $inputFilter;
-        return $this;
+        throw new \Exception('Not used');
     }
 
     public function getInputFilter(): InputFilterInterface
