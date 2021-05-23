@@ -100,20 +100,17 @@ class Provision implements InputFilterAwareInterface
 
     public function exchangeArray(array $data = []): void
     {
-        if (isset($data['id'])) {
-            $this->id = $data['id'];
+        if (isset($data['user'])) {
+            $this->user = $data['user'];
         }
-        if (isset($data['userId'])) {
-            $this->user = $data['userId'];
+        if (isset($data['date'])) {
+            $this->date = new \DateTime($data['date']);
         }
-        if (isset($data['valuta'])) {
-            $this->date = new \DateTime($data['valuta']);
+        if (isset($data['amount'])) {
+            $this->amount = $data['amount'];
         }
-        if (isset($data['importo'])) {
-            $this->amount = $data['importo'];
-        }
-        if (isset($data['descrizione'])) {
-            $this->description = $data['descrizione'];
+        if (isset($data['description'])) {
+            $this->description = $data['description'];
         }
     }
 
@@ -128,17 +125,17 @@ class Provision implements InputFilterAwareInterface
             $inputFilter = new InputFilter();
 
             $inputFilter->add([
-                'name' => 'valuta',
+                'name' => 'date',
                 'required' => true,
                 'filters' => [['name' => StringTrim::class]],
             ]);
             $inputFilter->add([
-                'name' => 'importo',
+                'name' => 'amount',
                 'required' => true,
                 'filters' => [['name' => StringTrim::class]],
             ]);
             $inputFilter->add([
-                'name' => 'descrizione',
+                'name' => 'description',
                 'required' => true,
                 'filters' => [['name' => StringTrim::class]],
             ]);

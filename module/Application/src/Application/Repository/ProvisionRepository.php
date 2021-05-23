@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Application\Repository;
 
-use Application\Entity\Provision;
 use Application\Entity\Movement;
+use Application\Entity\Provision;
 use Doctrine\ORM\EntityRepository;
 
 class ProvisionRepository extends EntityRepository
@@ -15,7 +15,7 @@ class ProvisionRepository extends EntityRepository
         $em = $this->getEntityManager();
         $qb = $em
             ->createQueryBuilder()
-            ->select('COALESCE(SUM(Provision.importo), 0) AS total')
+            ->select('COALESCE(SUM(Provision.amount), 0) AS total')
             ->from(Provision::class, 'Provision')
             ->where('Provision.user=:userId')
             ->setParameter(':userId', $userId);
@@ -40,11 +40,11 @@ class ProvisionRepository extends EntityRepository
             $cleanParams['userId'] = $params['userId'];
         }
         if (!empty($params['dateMin'])) {
-            $qb->andWhere('Provision.valuta >= :dateMin');
+            $qb->andWhere('Provision.date >= :dateMin');
             $cleanParams['dateMin'] = $params['dateMin'];
         }
         if (!empty($params['dateMax'])) {
-            $qb->andWhere('Provision.valuta <= :dateMax');
+            $qb->andWhere('Provision.date <= :dateMax');
             $cleanParams['dateMax'] = $params['dateMax'];
         }
         if (!empty($params['description'])) {
@@ -52,7 +52,7 @@ class ProvisionRepository extends EntityRepository
             $cleanParams['description'] = '%' . $params['description'] . '%';
         }
 
-        $query = $qb->setParameters($cleanParams)->orderBy('Provision.valuta', 'DESC')->getQuery();
+        $query = $qb->setParameters($cleanParams)->orderBy('Provision.date', 'DESC')->getQuery();
         return $query->getResult();
     }
 
@@ -66,7 +66,7 @@ class ProvisionRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder()
-                 ->select('COALESCE(SUM(Provision.importo), 0) AS total')
+                 ->select('COALESCE(SUM(Provision.amount), 0) AS total')
                  ->from(Provision::class, 'Provision')
                  ->where('Provision.user=:userId')
                  ->setParameter(':userId', $userId);
