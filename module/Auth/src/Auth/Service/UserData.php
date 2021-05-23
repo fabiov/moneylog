@@ -49,9 +49,9 @@ class UserData
     public function setSettings(Setting $settings): self
     {
         $this->data->settings = [
-            'payDay' => $settings->getPayDay(),
-            'monthsRetrospective' => $settings->getMonthsRetrospective(),
-            'stored' => $settings->hasStored(),
+            'payDay' => $settings->getPayday(),
+            'monthsRetrospective' => $settings->getMonths(),
+            'stored' => $settings->hasProvisioning(),
         ];
         return $this;
     }

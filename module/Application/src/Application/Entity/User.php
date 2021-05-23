@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilter;
+use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
 
 /**
@@ -102,47 +102,37 @@ class User implements InputFilterAwareInterface
         return get_object_vars($this);
     }
 
-    /**
-     * Populate from an array.
-     *
-     * @param array $data
-     */
     public function exchangeArray(array $data = []): void
     {
-        $this->id = $data['id'] ?? null;
-        $this->name = $data['name'] ?? null;
-        $this->surname = $data['surname'] ?? null;
-
-        if (array_key_exists('email', $data)) {
-            $this->email = $data['email'];
+        if (isset($data['name'])) {
+            $this->setName($data['name']);
         }
-        if (array_key_exists('password', $data)) {
-            $this->password = $data['password'];
+        if (isset($data['surname'])) {
+            $this->setSurname($data['surname']);
         }
-        if (array_key_exists('salt', $data)) {
-            $this->salt = $data['salt'];
+        if (isset($data['email'])) {
+            $this->setEmail($data['email']);
         }
-        if (array_key_exists('status', $data)) {
-            $this->status = $data['status'];
+        if (isset($data['password'])) {
+            $this->setPassword($data['password']);
         }
-        if (array_key_exists('role', $data)) {
-            $this->role = $data['role'];
+        if (isset($data['salt'])) {
+            $this->setSalt($data['salt']);
         }
-        if (array_key_exists('registrationToken', $data)) {
+        if (isset($data['status'])) {
+            $this->setStatus((int) $data['status']);
+        }
+        if (isset($data['role'])) {
+            $this->setRole($data['role']);
+        }
+        if (isset($data['registrationToken'])) {
             $this->registrationToken = $data['registrationToken'];
         }
     }
 
-    /**
-     * ATTENZIONE: filtri e form devono avere esattamente gli stessi campi
-     *
-     * @param InputFilterInterface $inputFilter
-     * @return $this
-     */
-    public function setInputFilter(InputFilterInterface $inputFilter): self
+    public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        $this->inputFilter = $inputFilter;
-        return $this;
+        throw new \Exception('Not implemented');
     }
 
     public function getInputFilter(): InputFilterInterface
@@ -190,21 +180,14 @@ class User implements InputFilterAwareInterface
         return $this->id;
     }
 
-    public function setId(int $id): self
-    {
-        $this->id = $id;
-        return $this;
-    }
-
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): void
     {
         $this->email = $email;
-        return $this;
     }
 
     public function getName(): string
@@ -212,10 +195,9 @@ class User implements InputFilterAwareInterface
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): void
     {
         $this->name = $name;
-        return $this;
     }
 
     public function getSurname(): string
@@ -223,10 +205,9 @@ class User implements InputFilterAwareInterface
         return $this->surname;
     }
 
-    public function setSurname(string $surname): self
+    public function setSurname(string $surname): void
     {
         $this->surname = $surname;
-        return $this;
     }
 
     public function getRole(): string
@@ -234,16 +215,14 @@ class User implements InputFilterAwareInterface
         return $this->role;
     }
 
-    public function setRole(string $role): self
+    public function setRole(string $role): void
     {
         $this->role = $role;
-        return $this;
     }
 
-    public function setLastLogin(\DateTime $date): self
+    public function setLastLogin(\DateTime $date): void
     {
         $this->lastLogin = $date;
-        return $this;
     }
 
     public function getLastLogin(): \DateTime
@@ -256,10 +235,9 @@ class User implements InputFilterAwareInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): void
     {
         $this->password = $password;
-        return $this;
     }
 
     public function getSalt(): string
@@ -267,10 +245,9 @@ class User implements InputFilterAwareInterface
         return $this->salt;
     }
 
-    public function setSalt(string $salt): self
+    public function setSalt(string $salt): void
     {
         $this->salt = $salt;
-        return $this;
     }
 
     public function getStatus(): int
@@ -278,10 +255,12 @@ class User implements InputFilterAwareInterface
         return $this->status;
     }
 
-    public function setStatus(int $status): self
+    public function setStatus(int $status): void
     {
+        if (!in_array($status, [self::STATUS_NOT_CONFIRMED, self::STATUS_CONFIRMED])) {
+            throw new \Exception("Invalid status: $status");
+        }
         $this->status = $status;
-        return $this;
     }
 
     public function getSetting(): Setting
@@ -289,10 +268,9 @@ class User implements InputFilterAwareInterface
         return $this->setting;
     }
 
-    public function setSetting(Setting $setting): self
+    public function setSetting(Setting $setting): void
     {
         $this->setting = $setting;
-        return $this;
     }
 
     public function getRegistrationToken(): string
