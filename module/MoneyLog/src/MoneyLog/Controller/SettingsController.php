@@ -8,9 +8,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\TransactionRequiredException;
-use Laminas\View\Model\ViewModel;
-use MoneyLog\Form\SettingsForm;
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
+use MoneyLog\Form\SettingForm;
 
 class SettingsController extends AbstractActionController
 {
@@ -47,7 +47,7 @@ class SettingsController extends AbstractActionController
         $setting = $this->em->find(Setting::class, $this->user->id);
         $message = '';
 
-        $form = new SettingsForm();
+        $form = new SettingForm();
         $form->bind($setting);
 
         $request = $this->getRequest();

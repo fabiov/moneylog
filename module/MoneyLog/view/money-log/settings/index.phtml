@@ -1,7 +1,7 @@
 <?php
 /**
  * @var Laminas\View\Renderer\PhpRenderer $this
- * @var \MoneyLog\Form\SettingsForm $form
+ * @var \MoneyLog\Form\SettingForm $form
  * @var string $message
  */
 echo $this->pageHeader('Impostazioni');
@@ -16,9 +16,9 @@ echo $this->pageHeader('Impostazioni');
                 <?php $form->prepare(); ?>
                 <?php echo $this->form()->openTag($form); ?>
 
-                <?php echo $this->sbaFormRow($form->get('payDay'), 'Se impostato, viene visualizzato nel cruscotto il calcolo dei giorni mancanti al prossimo stipendio e il budget medio giornaliero fino al prossimo stipendio.'); ?>
-                <?php echo $this->sbaFormRow($form->get('monthsRetrospective'), 'Numero di mesi utilizzatto per la statistica della media delle spese.'); ?>
-                <?php echo $this->sbaFormRow($form->get('stored'), 'L\'accantonamento è una quota del budget che serve a coprire le spese categorizzate'); ?>
+                <?php echo $this->sbaFormRow($form->get('payday'), 'Se impostato, viene visualizzato nel cruscotto il calcolo dei giorni mancanti al prossimo stipendio e il budget medio giornaliero fino al prossimo stipendio.'); ?>
+                <?php echo $this->sbaFormRow($form->get('months'), 'Numero di mesi utilizzatto per la statistica della media delle spese.'); ?>
+                <?php echo $this->sbaFormRow($form->get('provisioning'), 'L\'accantonamento è una quota del budget che serve a coprire le spese categorizzate'); ?>
 
                 <div class="text-right">
                     <input class="form-control btn-primary" type="submit" value="Salva" />
