@@ -95,7 +95,13 @@ class Provision implements InputFilterAwareInterface
 
     public function getArrayCopy(): array
     {
-        return get_object_vars($this);
+        return [
+            'id' => $this->id,
+            'user' => $this->user,
+            'date' => $this->date,
+            'amount' => $this->amount,
+            'description' => $this->description,
+        ];
     }
 
     public function exchangeArray(array $data = []): void

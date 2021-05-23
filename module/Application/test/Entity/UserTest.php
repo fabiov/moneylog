@@ -49,10 +49,9 @@ class UserTest extends TestCase
         $user->setSurname($surname);
         self::assertSame($surname, $user->getSurname());
 
-        self::assertInstanceOf(InputFilter::class, $user->getInputFilter());
-
-        self::expectException(\Exception::class);
-        $user->setInputFilter(new InputFilter());
+        $inputFilter = new InputFilter();
+        $user->setInputFilter($inputFilter);
+        self::assertSame($inputFilter, $user->getInputFilter());
     }
 
     public function testArrayExchangeAndCopy(): void

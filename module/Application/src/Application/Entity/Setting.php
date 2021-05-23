@@ -87,7 +87,12 @@ class Setting implements InputFilterAwareInterface
 
     public function getArrayCopy(): array
     {
-        return get_object_vars($this);
+        return [
+            'user' => $this->user,
+            'payday' => $this->payday,
+            'months' => $this->months,
+            'provisioning' => $this->provisioning,
+        ];
     }
 
     public function exchangeArray(array $data): void

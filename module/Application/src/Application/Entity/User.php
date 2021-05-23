@@ -92,14 +92,21 @@ class User implements InputFilterAwareInterface
      */
     private $setting;
 
-    /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
     public function getArrayCopy(): array
     {
-        return get_object_vars($this);
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'name' => $this->name,
+            'surname' => $this->surname,
+            'password' => $this->password,
+            'salt' => $this->salt,
+            'status' => $this->status,
+            'role' => $this->role,
+            'registrationToken' => $this->registrationToken,
+            'lastLogin' => $this->lastLogin,
+            'setting' => $this->setting,
+        ];
     }
 
     public function exchangeArray(array $data = []): void
@@ -132,7 +139,7 @@ class User implements InputFilterAwareInterface
 
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        throw new \Exception('Not implemented');
+        $this->inputFilter = $inputFilter;
     }
 
     public function getInputFilter(): InputFilterInterface

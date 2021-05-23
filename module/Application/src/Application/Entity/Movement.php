@@ -119,7 +119,14 @@ class Movement implements InputFilterAwareInterface
 
     public function getArrayCopy(): array
     {
-        return get_object_vars($this);
+        return [
+            'id' => $this->id,
+            'account' => $this->amount,
+            'category' => $this->category,
+            'date' => $this->date,
+            'amount' => $this->amount,
+            'description' => $this->description,
+        ];
     }
 
     public function exchangeArray(array $data): void
