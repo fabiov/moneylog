@@ -80,7 +80,8 @@ class UserController extends AbstractActionController
             if ($form->isValid()) {
                 /** @var User $data */
                 $data = $form->getData();
-                $user->setName($data->getName())->setSurname($data->getSurname());
+                $user->setName($data->getName());
+                $user->setSurname($data->getSurname());
                 $this->em->persist($user);
                 $this->em->flush();
                 $message = 'I tuoi dati sono stati salvati correttamente';
