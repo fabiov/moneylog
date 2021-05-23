@@ -54,9 +54,9 @@ echo $this->pageHeader('Accantonati');
                     <tbody>
                         <?php foreach ($rows as $row): ?>
                         <tr>
-                            <td class="date"><?php echo $this->dateForma($row->getValuta()); ?></td>
-                            <td class="amount text-right"><?php echo $this->currencyForma($row->getImporto()); ?></td>
-                            <td class="description"><?php echo $row->getDescrizione(); ?></td>
+                            <td class="date"><?php echo $this->dateForma($row->getDate()); ?></td>
+                            <td class="amount text-right"><?php echo $this->currencyForma($row->getAmount()); ?></td>
+                            <td class="description"><?php echo $row->getDescription(); ?></td>
                             <td class="text-right">
                                 <a href="<?php echo $this->url('accantona_accantonato', ['action' => 'edit', 'id' => $row->getId()], ['query' => $searchParams]); ?>" class="btn btn-default" title="Modifica">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>

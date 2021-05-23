@@ -14,11 +14,11 @@ echo $this->pageHeader('Aggiungi accantonamento');
                 Aggiungi accantonamento
             </div>
             <div class="panel-body">
-                <?php $form->setAttribute('action', $this->url('accantona_accantonato', array('action' => 'add')))->prepare(); ?>
+                <?php $form->setAttribute('action', $this->url('accantona_accantonato', ['action' => 'add']))->prepare(); ?>
                 <?php echo $this->form()->openTag($form); ?>
-                    <?php echo $this->sbaFormRow($form->get('valuta')); ?>
-                    <?php echo $this->sbaFormRow($form->get('importo')); ?>
-                    <?php echo $this->sbaFormRow($form->get('descrizione')); ?>
+                    <?php echo $this->sbaFormRow($form->get('date')); ?>
+                    <?php echo $this->sbaFormRow($form->get('amount')); ?>
+                    <?php echo $this->sbaFormRow($form->get('description')); ?>
                     <div class="text-right">
                         <a class="btn btn-default" href="<?= $this->url('accantona_accantonato') ?>">Annulla</a>
                         <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-save"></span> Salva</button>
