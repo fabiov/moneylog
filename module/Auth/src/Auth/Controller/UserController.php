@@ -6,6 +6,7 @@ use Application\Entity\User;
 use Auth\Form\AuthForm;
 use Auth\Form\ChangePasswordForm;
 use Auth\Form\Filter\ChangePasswordFilter;
+use Auth\Form\Filter\LoginFilter;
 use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
 use Auth\Model\Auth;
@@ -105,8 +106,7 @@ class UserController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $authFormFilters = new Auth();
-            $form->setInputFilter($authFormFilters->getInputFilter());
+            $form->setInputFilter(new LoginFilter());
             $form->setData($request->getPost());
             if ($form->isValid()) {
 
