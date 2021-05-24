@@ -9,7 +9,6 @@ use Auth\Form\Filter\ChangePasswordFilter;
 use Auth\Form\Filter\LoginFilter;
 use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
-use Auth\Model\Auth;
 use Auth\Service\AuthManager;
 use Doctrine\ORM;
 use Laminas\Authentication\Result;
