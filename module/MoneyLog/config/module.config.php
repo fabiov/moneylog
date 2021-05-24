@@ -16,8 +16,7 @@ return [
                 /* @var Laminas\Mvc\Controller\ControllerManager $controllerManager */
                 return new MoneyLog\Controller\SettingsController(
                     $controllerManager->get('doctrine.entitymanager.orm_default'),
-                    $controllerManager->get(Laminas\Authentication\AuthenticationService::class)->getIdentity(),
-                    $controllerManager->get('user_data')
+                    $controllerManager->get(Laminas\Authentication\AuthenticationService::class)->getIdentity()
                 );
             },
             MoneyLog\Controller\AccountController::class => function ($controllerManager) {

@@ -8,9 +8,6 @@ parameters:
     paths:
         - %currentWorkingDirectory%/module
     ignoreErrors:
-        - '/Access to an undefined property Laminas\\Session\\Container::\$settings\./'
-        - '/Access to an undefined property Laminas\\Session\\Container::\$surname\./'
-        - '/Access to protected property Laminas\\Session\\Container::\$name\./'
         - '/Call to an undefined method Laminas\\EventManager\\EventInterface::getApplication\(\)\./'
         - '/Call to an undefined method Laminas\\EventManager\\EventInterface::getResponse\(\)\./'
         - '/Call to an undefined method Laminas\\EventManager\\EventInterface::getRouteMatch\(\)\./'
@@ -39,4 +36,3 @@ parameters:
         - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type MoneyLog\\Form\\SettingForm\./'
         - '/PHPDoc tag @var for variable \$formData has no value type specified in iterable type array\./'
         - '/Parameter #1 \(Laminas\\View\\Helper\\Partial\|string\) of echo cannot be converted to string\./'
-        - '/Property Auth\\Service\\UserData::\$data type has no value type specified in iterable type Laminas\\Session\\Container\./'

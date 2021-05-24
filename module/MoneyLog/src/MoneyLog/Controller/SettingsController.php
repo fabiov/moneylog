@@ -3,7 +3,6 @@
 namespace MoneyLog\Controller;
 
 use Application\Entity\Setting;
-use Auth\Service\UserData;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -24,16 +23,10 @@ class SettingsController extends AbstractActionController
      */
     private $user;
 
-    /**
-     * @var UserData
-     */
-    private $userData;
-
-    public function __construct(EntityManager $em, \stdClass $user, UserData $userData)
+    public function __construct(EntityManager $em, \stdClass $user)
     {
-        $this->em       = $em;
-        $this->user     = $user;
-        $this->userData = $userData;
+        $this->em   = $em;
+        $this->user = $user;
     }
 
     /**
@@ -58,7 +51,6 @@ class SettingsController extends AbstractActionController
             if ($form->isValid()) {
                 $this->em->flush();
 
-                $this->userData->setSettings($setting);
                 $message = 'Impostazioni salvate correttamente.';
             }
         }
