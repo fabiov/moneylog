@@ -137,9 +137,10 @@ class User implements InputFilterAwareInterface
         }
     }
 
-    public function setInputFilter(InputFilterInterface $inputFilter)
+    public function setInputFilter(InputFilterInterface $inputFilter): self
     {
         $this->inputFilter = $inputFilter;
+        return $this;
     }
 
     public function getInputFilter(): InputFilterInterface
