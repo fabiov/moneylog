@@ -6,9 +6,9 @@ use Application\Entity\User;
 use Auth\Form\AuthForm;
 use Auth\Form\ChangePasswordForm;
 use Auth\Form\Filter\ChangePasswordFilter;
+use Auth\Form\Filter\LoginFilter;
 use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
-use Auth\Model\Auth;
 use Auth\Service\AuthManager;
 use Doctrine\ORM;
 use Laminas\Authentication\Result;
@@ -80,7 +80,8 @@ class UserController extends AbstractActionController
             if ($form->isValid()) {
                 /** @var User $data */
                 $data = $form->getData();
-                $user->setName($data->getName())->setSurname($data->getSurname());
+                $user->setName($data->getName());
+                $user->setSurname($data->getSurname());
                 $this->em->persist($user);
                 $this->em->flush();
                 $message = 'I tuoi dati sono stati salvati correttamente';
@@ -104,8 +105,7 @@ class UserController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $authFormFilters = new Auth();
-            $form->setInputFilter($authFormFilters->getInputFilter());
+            $form->setInputFilter(new LoginFilter());
             $form->setData($request->getPost());
             if ($form->isValid()) {
 

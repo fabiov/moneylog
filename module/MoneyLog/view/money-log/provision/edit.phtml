@@ -17,9 +17,9 @@ echo $this->pageHeader('Modifica accantonamento');
                 <?php $form->prepare(); ?>
                 <?php echo $this->form()->openTag($form); ?>
 
-                    <?php echo $this->sbaFormRow($form->get('valuta')); ?>
-                    <?php echo $this->sbaFormRow($form->get('importo')); ?>
-                    <?php echo $this->sbaFormRow($form->get('descrizione')); ?>
+                    <?php echo $this->sbaFormRow($form->get('date')); ?>
+                    <?php echo $this->sbaFormRow($form->get('amount')); ?>
+                    <?php echo $this->sbaFormRow($form->get('description')); ?>
 
                     <div class="text-right">
                         <a class="btn btn-default" href="<?php echo $this->url('accantona_accantonato', ['action' => 'index'], ['query' => $searchParams]) ?>">Annulla</a>

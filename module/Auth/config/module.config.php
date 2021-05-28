@@ -55,10 +55,7 @@ return [
                 return new Auth\Service\AuthAdapter($controllerManager->get('doctrine.entitymanager.orm_default'));
             },
             Auth\Service\AuthManager::class => function (ContainerInterface $container) {
-                return new Auth\Service\AuthManager(
-                    $container->get(AuthenticationService::class),
-                    $container->get(Auth\Service\UserData::class)
-                );
+                return new Auth\Service\AuthManager($container->get(AuthenticationService::class));
             },
             AuthenticationService::class => function (ContainerInterface $container): AuthenticationService {
                 return new AuthenticationService(
@@ -68,7 +65,6 @@ return [
             },
         ],
         'invokables' => [
-            'user_data' => Auth\Service\UserData::class,
         ],
     ],
     'view_manager' => [

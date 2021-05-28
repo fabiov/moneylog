@@ -88,7 +88,14 @@ class Account implements InputFilterAwareInterface
 
     public function getArrayCopy(): array
     {
-        return get_object_vars($this);
+        return [
+            'id' => $this->id,
+            'user' => $this->user,
+            'name' => $this->name,
+            'recap' => $this->recap,
+            'closed' => $this->closed,
+            'movements' => $this->movements,
+        ];
     }
 
     public function exchangeArray(array $data = []): self

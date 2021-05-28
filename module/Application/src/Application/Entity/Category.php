@@ -89,7 +89,12 @@ class Category implements InputFilterAwareInterface
 
     public function getArrayCopy(): array
     {
-        return get_object_vars($this);
+        return [
+            'id' => $this->id,
+            'user' => $this->user,
+            'description' => $this->description,
+            'status' => $this->status,
+        ];
     }
 
     public function exchangeArray(array $data = []): void

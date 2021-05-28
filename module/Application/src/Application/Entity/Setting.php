@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -28,95 +30,87 @@ class Setting implements InputFilterAwareInterface
     protected $user;
 
     /**
-     * @ORM\Column(name="payDay", type="smallint", nullable=false, options={"unsigned"=true, "default"=1})
+     * @ORM\Column(name="paypay", type="smallint", nullable=false, options={"unsigned"=true, "default"=1})
      * @var int
      */
-    protected $payDay = 1;
+    protected $payday = 1;
 
     /**
-     * @ORM\Column(name="monthsRetrospective", type="smallint", nullable=false, options={"unsigned"=true, "default"=12})
+     * @ORM\Column(name="months", type="smallint", nullable=false, options={"unsigned"=true, "default"=12})
      * @var int
      */
-    protected $monthsRetrospective = 12;
+    protected $months = 12;
 
     /**
-     * @ORM\Column(name="`stored`", type="boolean", nullable=false, options={"default"=false})
+     * @ORM\Column(name="provisioning", type="boolean", nullable=false, options={"default"=false})
      * @var boolean
      */
-    protected $stored = false;
+    protected $provisioning = false;
 
     public function __construct(User $user)
     {
         $this->user = $user;
     }
 
-    public function getPayDay(): int
+    public function getPayday(): int
     {
-        return $this->payDay;
+        return $this->payday;
     }
 
-    public function setPayDay(int $payDay): void
+    public function setPayday(int $payday): void
     {
-        if ($payDay < 1 || $payDay > 28) {
-            throw new \RuntimeException("Invalid payDay value: $payDay");
+        if ($payday < 1 || $payday > 28) {
+            throw new \RuntimeException("Invalid payDay value: $payday");
         }
-        $this->payDay = $payDay;
+        $this->payday = $payday;
     }
 
-    public function getMonthsRetrospective(): int
+    public function getMonths(): int
     {
-        return $this->monthsRetrospective;
+        return $this->months;
     }
 
-    public function setMonthsRetrospective(int $monthsRetrospective): void
+    public function setMonths(int $months): void
     {
-        $this->monthsRetrospective = $monthsRetrospective;
+        $this->months = $months;
     }
 
-    public function hasStored(): bool
+    public function hasProvisioning(): bool
     {
-        return $this->stored;
+        return $this->provisioning;
     }
 
-    public function setStored(bool $stored): void
+    public function setProvisioning(bool $provisioning): void
     {
-        $this->stored = $stored;
+        $this->provisioning = $provisioning;
     }
 
     public function getArrayCopy(): array
     {
-        return get_object_vars($this);
+        return [
+            'user' => $this->user,
+            'payday' => $this->payday,
+            'months' => $this->months,
+            'provisioning' => $this->provisioning,
+        ];
     }
 
-    /**
-     * Populate from an array.
-     *
-     * @param array $data
-     * @return Setting
-     */
-    public function exchangeArray(array $data): self
+    public function exchangeArray(array $data): void
     {
-        if (isset($data['payDay'])) {
-            $this->setPayDay((int) $data['payDay']);
+        if (isset($data['payday'])) {
+            $this->setPayday((int) $data['payday']);
         }
-        if (isset($data['monthsRetrospective'])) {
-            $this->setMonthsRetrospective((int) $data['monthsRetrospective']);
+        if (isset($data['months'])) {
+            $this->setMonths((int) $data['months']);
         }
-        if (isset($data['stored'])) {
-            $this->setStored((bool) $data['stored']);
+        if (isset($data['provisioning'])) {
+            $this->setProvisioning((bool) $data['provisioning']);
         }
-        return $this;
     }
 
-    /**
-     * Set input filter
-     * @param \Laminas\InputFilter\InputFilterInterface $inputFilter
-     * @return $this
-     */
-    public function setInputFilter(InputFilterInterface $inputFilter): self
+    public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        $this->inputFilter = $inputFilter;
-        return $this;
+        throw new \Exception('Not used');
     }
 
     public function getInputFilter(): InputFilterInterface
@@ -124,18 +118,18 @@ class Setting implements InputFilterAwareInterface
         if (!$this->inputFilter) {
             $this->inputFilter = new InputFilter();
             $this->inputFilter->add([
-                'filters'  => [['name' => ToInt::class]],
-                'name'     => 'payDay',
+                'filters' => [['name' => ToInt::class]],
+                'name' => 'payday',
                 'required' => true,
             ]);
             $this->inputFilter->add([
-                'filters'  => [['name' => ToInt::class]],
-                'name'     => 'monthsRetrospective',
+                'filters' => [['name' => ToInt::class]],
+                'name' => 'months',
                 'required' => true,
             ]);
             $this->inputFilter->add([
-                'filters'  => [['name' => ToInt::class]],
-                'name'     => 'stored',
+                'filters' => [['name' => ToInt::class]],
+                'name' => 'provisioning',
                 'required' => true,
             ]);
         }

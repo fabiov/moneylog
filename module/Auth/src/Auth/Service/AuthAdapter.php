@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Auth\Service;
 
 use Application\Entity\User;
@@ -8,9 +10,8 @@ use Laminas\Authentication\Adapter\AdapterInterface;
 use Laminas\Authentication\Result;
 
 /**
- * Adapter used for authenticating user. It takes login and password on input
- * and checks the database if there is a user with such login (email) and password.
- * If such user exists, the service returns his identity (email).
+ * Adapter used for authenticating user. It takes login and password on input and checks the database
+ * if there is a user with such login (email) and password. If such user exists, the service returns his identity.
  */
 class AuthAdapter implements AdapterInterface
 {

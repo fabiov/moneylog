@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoneyLog\Controller;
 
-use Application\Entity\Provision;
 use Application\Entity\Account;
 use Application\Entity\Category;
 use Application\Entity\Movement;
+use Application\Entity\Provision;
 use Application\Entity\Setting;
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -48,7 +48,7 @@ class DashboardController extends AbstractActionController
         /** @var Setting $setting */
         $setting = $this->em->find(Setting::class, $this->user->id);
 
-        $since = new \DateTime('-' . $setting->getMonthsRetrospective() . ' MONTH');
+        $since = new \DateTime('-' . $setting->getMonths() . ' MONTH');
         $avgPerCategory = $categoryRepository->getAverages($this->user->id, $since);
 
         usort($avgPerCategory, static function ($a, $b) {
@@ -61,8 +61,8 @@ class DashboardController extends AbstractActionController
         $donutSpends    = [];
         $donutAccounts  = [];
         $currentDay     = date('j');
-        $monthBudget    = $stored > 0 && $setting->hasStored() ? 0 - $stored : 0;
-        $payDay         = $setting->getPayDay();
+        $monthBudget    = $stored > 0 && $setting->hasProvisioning() ? 0 - $stored : 0;
+        $payDay         = $setting->getPayday();
 
         foreach ($avgPerCategory as $category) {
             if ($category['average'] < 0) {
@@ -77,7 +77,7 @@ class DashboardController extends AbstractActionController
 
         if ($payDay) {
             if ($currentDay < $payDay) {
-                $remainingDays = $setting->getPayDay() - $currentDay;
+                $remainingDays = $setting->getPayday() - $currentDay;
                 $begin = date("Y-m-$payDay", (int) strtotime('last month'));
             } else {
                 $remainingDays = date('t') - $currentDay + $payDay;

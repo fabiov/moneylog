@@ -13,8 +13,8 @@ class AccantonatoForm extends Form
 
         $this->add([
             'attributes' => ['class' => 'form-control', 'value' => date('Y-m-d')],
-            'name' => 'valuta',
-            'options' => ['label' => 'Valuta'],
+            'name' => 'date',
+            'options' => ['label' => 'Data'],
             'required' => true,
             'type' => 'Date',
         ]);
@@ -25,7 +25,7 @@ class AccantonatoForm extends Form
                 'placeholder' => '0.00',
                 'step' => 0.01
             ],
-            'name' => 'importo',
+            'name' => 'amount',
             'options' => ['label' => 'Importo'],
             'required' => true,
             'type' => 'Number',
@@ -33,7 +33,7 @@ class AccantonatoForm extends Form
         $this->add([
             'attributes' => ['class' => 'form-control', 'maxlength' => 255, 'placeholder' => 'Descrizione'],
             'filters'  => [['name' => 'Laminas\Filter\StringTrim']],
-            'name' => 'descrizione',
+            'name' => 'description',
             'options' => ['label' => 'Descrizione'],
             'required' => true,
             'type' => 'Text',

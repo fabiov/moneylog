@@ -7,25 +7,25 @@ use Laminas\View\Helper\AbstractHelper;
 class UserData extends AbstractHelper
 {
     /**
-     * @var ?\Auth\Service\UserData
+     * @var ?\stdClass
      */
-    private $data;
+    private $identity;
 
     public function __invoke(): self
     {
-        if (!$this->data) {
-            $this->data = new \Auth\Service\UserData();
+        if (!$this->identity) {
+            $this->identity = $this->view->identity();
         }
         return $this;
     }
 
     public function getFullName(): ?string
     {
-        return $this->data ? $this->data->getName() . ' ' . $this->data->getSurname() : null;
+        return $this->identity ? $this->identity->name . ' ' . $this->identity->surname : null;
     }
 
     public function hasStored(): ?bool
     {
-        return $this->data ? (bool) $this->data->getSettings()['stored'] : null;
+        return $this->identity ? (bool) $this->identity->setting->hasProvisioning() : null;
     }
 }

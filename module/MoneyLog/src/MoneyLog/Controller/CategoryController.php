@@ -121,9 +121,9 @@ class CategoryController extends AbstractActionController
             if ($sum) {
                 $provision = new Provision();
                 $provision->setUser($category->getUser());
-                $provision->setDescrizione('Conguaglio rimozione categoria ' . $category->getDescription());
-                $provision->setImporto($sum);
-                $provision->setValuta(new \DateTime());
+                $provision->setDescription('Conguaglio rimozione categoria ' . $category->getDescription());
+                $provision->setAmount($sum);
+                $provision->setDate(new \DateTime());
                 $this->em->persist($provision);
             }
             $this->em->remove($category);

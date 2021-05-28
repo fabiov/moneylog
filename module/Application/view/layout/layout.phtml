@@ -2,7 +2,9 @@
 /**
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var string $content
+ * @var stdClass $identity
  */
+$identity = $this->identity();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,16 +90,12 @@
                     <a class="navbar-brand" href="<?php echo $this->url('accantona_recap'); ?>"><img alt="" src="/img/wallet.svg" style="display: inline; vertical-align: middle; width: 30px;" /> <span style="vertical-align: middle;">MoneyLog</span></a>
                 </div>
                 <!-- /.navbar-header -->
-                <?php
-                /* @var stdClass $identity */
-                $identity = $this->identity();
-                ?>
                 <?php if ($this->identity()): ?>
                 <ul class="nav navbar-top-links navbar-right">
                     <!-- /.dropdown -->
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-user fa-fw"></i> <?php echo $this->userData()->getFullName(); ?> <i class="fa fa-caret-down"></i>
+                            <i class="fa fa-user fa-fw"></i> <?php echo $this->userData()->getFullName($identity); ?> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-user">
                             <li><a href="<?php echo $this->url('auth', ['action' => 'update']); ?>"><i class="fa fa-edit fa-fw"></i> Utente</a></li>
