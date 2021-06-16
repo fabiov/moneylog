@@ -10,6 +10,19 @@ use PHPUnit\Framework\TestCase;
 
 class AccountTest extends TestCase
 {
+    public function testGettersWithoutSetter(): void
+    {
+        $id = 1;
+        $account = new Account();
+        $reflectionClass = new \ReflectionClass($account);
+        $reflectedProperty = $reflectionClass->getProperty('id');
+        $reflectedProperty->setAccessible(true);
+
+        $reflectedProperty->setValue($account, $id);
+
+        self::assertSame($id, $account->getId());
+    }
+
     public function testSetter(): void
     {
         $user = new User();

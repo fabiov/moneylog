@@ -62,4 +62,13 @@ class SettingTest extends TestCase
         self::assertSame($payday, $copy['payday']);
         self::assertSame($provisioning, $copy['provisioning']);
     }
+
+    public function testInvalidPayDay(): void
+    {
+        $user = new User();
+        $setting = new Setting($user);
+
+        self::expectException(\InvalidArgumentException::class);
+        $setting->setPayday(29);
+    }
 }

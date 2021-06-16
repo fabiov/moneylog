@@ -60,7 +60,7 @@ class Setting implements InputFilterAwareInterface
     public function setPayday(int $payday): void
     {
         if ($payday < 1 || $payday > 28) {
-            throw new \RuntimeException("Invalid payDay value: $payday");
+            throw new \InvalidArgumentException("Invalid payDay value: $payday");
         }
         $this->payday = $payday;
     }

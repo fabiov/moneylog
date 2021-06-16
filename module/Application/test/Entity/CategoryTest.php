@@ -10,6 +10,19 @@ use PHPUnit\Framework\TestCase;
 
 class CategoryTest extends TestCase
 {
+    public function testGettersWithoutSetter(): void
+    {
+        $id = 1;
+        $category = new Category();
+        $reflectionClass = new \ReflectionClass($category);
+        $reflectedProperty = $reflectionClass->getProperty('id');
+        $reflectedProperty->setAccessible(true);
+
+        $reflectedProperty->setValue($category, $id);
+
+        self::assertSame($id, $category->getId());
+    }
+
     public function testSetterAndGetters(): void
     {
         $category = new Category();
