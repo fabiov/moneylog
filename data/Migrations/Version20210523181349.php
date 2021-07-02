@@ -19,7 +19,7 @@ final class Version20210523181349 extends AbstractMigration
         $this->addSql('ALTER TABLE setting 
             CHANGE payday paypay SMALLINT UNSIGNED DEFAULT 1 NOT NULL, 
             CHANGE monthsretrospective months SMALLINT UNSIGNED DEFAULT 12 NOT NULL, 
-            CHANGE stored provisioning TINYINT(1) DEFAULT 0 NOT NULL');
+            CHANGE `stored` `provisioning` TINYINT(1) DEFAULT 0 NOT NULL');
     }
 
     public function down(Schema $schema): void
@@ -32,6 +32,6 @@ final class Version20210523181349 extends AbstractMigration
         $this->addSql('ALTER TABLE setting 
             CHANGE paypay payDay SMALLINT UNSIGNED DEFAULT 1 NOT NULL, 
             CHANGE months monthsRetrospective SMALLINT UNSIGNED DEFAULT 12 NOT NULL, 
-            CHANGE provisioning stored TINYINT(1) DEFAULT 0 NOT NULL');
+            CHANGE `provisioning` `stored` TINYINT(1) DEFAULT 0 NOT NULL');
     }
 }

@@ -11,6 +11,19 @@ use PHPUnit\Framework\TestCase;
 
 class MovementTest extends TestCase
 {
+    public function testGettersWithoutSetter(): void
+    {
+        $id = 1;
+        $movement = new Movement();
+        $reflectionClass = new \ReflectionClass($movement);
+        $reflectedProperty = $reflectionClass->getProperty('id');
+        $reflectedProperty->setAccessible(true);
+
+        $reflectedProperty->setValue($movement, $id);
+
+        self::assertSame($id, $movement->getId());
+    }
+
     public function testSettersAndGetters(): void
     {
         $movement = new Movement();
@@ -45,13 +58,17 @@ class MovementTest extends TestCase
     {
         $movement = new Movement();
 
+        $accountId = 78;
         $amount = 78.54;
         $category = new Category();
+        $date = '2021-06-16';
         $description = 'Description';
 
         $movement->exchangeArray([
+            'accountId' => $accountId,
             'amount' => $amount,
             'category' => $category,
+            'date' => $date,
             'description' => $description,
         ]);
 
@@ -59,6 +76,7 @@ class MovementTest extends TestCase
 
         self::assertSame($copy['amount'], $movement->getAmount());
         self::assertSame($copy['category'], $movement->getCategory());
+        self::assertSame($copy['date'], $movement->getDate());
         self::assertSame($copy['description'], $movement->getDescription());
     }
 }

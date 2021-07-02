@@ -3,12 +3,37 @@
 namespace ApplicationTest\Entity;
 
 use Application\Entity\Provision;
+use Application\Entity\User;
 use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterInterface;
 use PHPUnit\Framework\TestCase;
 
 class ProvisionTest extends TestCase
 {
+    public function testGettersWithoutSetter(): void
+    {
+        $provision = new Provision();
+        $reflectionClass = new \ReflectionClass($provision);
+
+        $id = 1;
+        $reflectedProperty = $reflectionClass->getProperty('id');
+        $reflectedProperty->setAccessible(true);
+        $reflectedProperty->setValue($provision, $id);
+        self::assertSame($id, $provision->getId());
+    }
+
+    public function testSettersWithoutGetter(): void
+    {
+        $provision = new Provision();
+        $reflectionClass = new \ReflectionClass($provision);
+
+        $user = new User();
+        $provision->setUser($user);
+        $reflectedProperty = $reflectionClass->getProperty('user');
+        $reflectedProperty->setAccessible(true);
+        self::assertSame($user, $reflectedProperty->getValue($provision));
+    }
+
     public function testGettersAndSetters(): void
     {
         $provision = new Provision();

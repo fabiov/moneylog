@@ -266,7 +266,7 @@ class User implements InputFilterAwareInterface
     public function setStatus(int $status): void
     {
         if (!in_array($status, [self::STATUS_NOT_CONFIRMED, self::STATUS_CONFIRMED])) {
-            throw new \Exception("Invalid status: $status");
+            throw new \InvalidArgumentException("Invalid status: $status");
         }
         $this->status = $status;
     }

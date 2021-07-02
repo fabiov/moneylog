@@ -9,6 +9,19 @@ use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
 {
+    public function testGettersWithoutSetter(): void
+    {
+        $id = 1;
+        $user = new User();
+        $reflectionClass = new \ReflectionClass($user);
+        $reflectedProperty = $reflectionClass->getProperty('id');
+        $reflectedProperty->setAccessible(true);
+
+        $reflectedProperty->setValue($user, $id);
+
+        self::assertSame($id, $user->getId());
+    }
+
     public function testGettersAndSetters(): void
     {
         $user = new User();
@@ -84,9 +97,23 @@ class UserTest extends TestCase
         self::assertSame($name, $copy['name']);
         self::assertSame($password, $copy['password']);
         self::assertSame($registrationToken, $copy['registrationToken']);
+        self::assertSame($registrationToken, $user->getRegistrationToken());
         self::assertSame($role, $copy['role']);
         self::assertSame($salt, $copy['salt']);
         self::assertSame($status, $copy['status']);
         self::assertSame($surname, $copy['surname']);
+    }
+
+    public function testSetStatusException(): void
+    {
+        self::expectException(\InvalidArgumentException::class);
+        $user = new User();
+        $user->setStatus(2);
+    }
+
+    public function testGetUnsetInputFilter(): void
+    {
+        $user = new User();
+        self::assertInstanceOf(InputFilter::class, $user->getInputFilter());
     }
 }
