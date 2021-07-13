@@ -67,7 +67,7 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
             read -p $'\e[31mDo you really want to commit ignoring Static Analysis errors? y/n \e[0m: ' yn < /dev/tty
             case $yn in
                 #[Yy]* ) exit 0; break;; # Si commit
-                [Yy]* ) echo ""; echo "Please consider fixing psalm errors"; break;;
+                [Yy]* ) echo ""; echo "Please consider fixing static analysis errors"; break;;
                 [Nn]* ) exit 1;; # No commit
                 * ) echo "Please answer y or n.";;
             esac
