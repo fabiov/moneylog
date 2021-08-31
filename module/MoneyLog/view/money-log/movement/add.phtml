@@ -8,18 +8,18 @@
 echo $this->pageHeader('Aggiungi movimento');
 ?>
 <div class="row">
-    <div class="col-lg-4">
-    </div>
-    <div class="col-lg-4">
+    <div class="col-lg-4 col-lg-offset-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 Aggiungi movimento in <?php echo $sourceAccount->getName(); ?>
             </div>
             <div class="panel-body">
-                <?php echo $this->partial('money-log/movement/partials/movement', ['form' => $form, 'accountId' => $sourceAccount->getId(), 'isRepeatable' => true, 'searchParams' => $searchParams]); ?>
+                <?php echo $this->partial('money-log/movement/partials/movement', [
+                    'accountId' => $sourceAccount->getId(),
+                    'form' => $form,
+                    'searchParams' => $searchParams,
+                ]); ?>
             </div>
         </div>
-    </div>
-    <div class="col-lg-4">
     </div>
 </div>

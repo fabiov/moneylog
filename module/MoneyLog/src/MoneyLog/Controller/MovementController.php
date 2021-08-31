@@ -6,7 +6,7 @@ use Application\Entity\Account;
 use Application\Entity\Category;
 use Application\Entity\Movement;
 use Application\Repository\AccountRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
@@ -15,22 +15,19 @@ use MoneyLog\Form\MovementForm;
 
 class MovementController extends AbstractActionController
 {
-    /**
-     * @var \stdClass
-     */
-    private $user;
+    private \stdClass $user;
 
-    /**
-     * @var EntityManager
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    public function __construct(\stdClass $user, EntityManager $em)
+    public function __construct(\stdClass $user, EntityManagerInterface $em)
     {
         $this->user = $user;
         $this->em   = $em;
     }
 
+    /**
+     * @return array<string, mixed>|\Laminas\Http\Response
+     */
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -75,10 +72,16 @@ class MovementController extends AbstractActionController
             }
         }
 
+        $form->setAttribute('action', $this->url()->fromRoute(
+            'accantonaMovement',
+            ['action' => 'edit', 'id' => $item->getId()],
+            ['query' => $searchParams]
+        ));
         return ['item' => $item, 'form' => $form, 'searchParams' => $searchParams];
     }
 
     /**
+     * @return \Laminas\Http\Response|\Laminas\View\Model\ViewModel
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function accountAction()
@@ -198,6 +201,10 @@ class MovementController extends AbstractActionController
         );
     }
 
+    /**
+     * @return array<string, mixed>|\Laminas\Http\Response
+     * @throws \Exception
+     */
     public function moveAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -227,7 +234,7 @@ class MovementController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                /** @var array $data */
+                /** @var array<string, mixed> $data */
                 $data = $form->getData();
 
                 /** @var ?Account $targetAccount */
@@ -271,8 +278,7 @@ class MovementController extends AbstractActionController
     }
 
     /**
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Exception
+     * @return array<string, mixed>|\Laminas\Http\Response
      */
     public function addAction()
     {

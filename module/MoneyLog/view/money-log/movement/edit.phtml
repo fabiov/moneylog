@@ -8,16 +8,18 @@
 echo $this->pageHeader('Modifica movimento');
 ?>
 <div class="row">
-    <div class="col-lg-4"></div>
-    <div class="col-lg-4">
+    <div class="col-lg-4 col-lg-offset-4">
         <div class="panel panel-default">
-            <div class="panel-heading">Modifica movimento in <?php echo $item->getAccount()->getName(); ?></div>
+            <div class="panel-heading">
+                Modifica movimento in <?php echo $item->getAccount()->getName(); ?>
+            </div>
             <div class="panel-body">
-                <?php $form->setAttribute('action', $this->url('accantonaMovement', ['action' => 'edit', 'id' => $item->getId()], ['query' => $searchParams])); ?>
-                <?php $form->prepare(); ?>
-                <?php echo $this->partial('money-log/movement/partials/movement', ['form' => $form, 'accountId' => $item->getAccount()->getId(), 'isRepeatable' => false, 'searchParams' => $searchParams]); ?>
+                <?php echo $this->partial('money-log/movement/partials/movement', [
+                    'accountId' => $item->getAccount()->getId(),
+                    'form' => $form,
+                    'searchParams' => $searchParams,
+                ]); ?>
             </div>
         </div>
     </div>
-    <div class="col-lg-4"></div>
 </div>
