@@ -1,27 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MoneyLog\Form;
 
+use Application\Entity\Account;
 use Application\Entity\Category;
 use Application\Entity\Movement;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use DoctrineModule\Form\Element\ObjectSelect;
 use Laminas\Form\Element\Select;
 use Laminas\Form\Form;
 
 class MovementForm extends Form
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    /**
-     * MovementForm constructor.
-     * @param string $name
-     * @param \Doctrine\ORM\EntityManager $em
-     * @param int $userId
-     */
-    public function __construct(string $name, EntityManager $em, int $userId)
+    public function __construct(string $name, EntityManagerInterface $em, int $userId)
     {
         parent::__construct($name);
 
@@ -55,7 +50,6 @@ class MovementForm extends Form
         ]);
         $this->add([
             'attributes'    => ['class' => 'form-control', 'placeholder' => 'Descrizione'],
-            'filters'       => [['name' => 'Laminas\Filter\StringTrim']],
             'name'          => 'description',
             'options'       => ['label' => 'Descrizione'],
             'required'      => true,
@@ -79,7 +73,27 @@ class MovementForm extends Form
                 'property'                  => 'description',
             ],
             'required' => false,
-            'type'     => 'DoctrineModule\Form\Element\ObjectSelect',
+            'type' => ObjectSelect::class,
+        ]);
+        $this->add([
+            'name' => 'account',
+            'options' => [
+                'disable_inarray_validator' => true,
+                'display_empty_item' => false,
+                'find_method' => [
+                    'name' => 'findBy',
+                    'params' => [
+                        'criteria' => ['user' => $userId, 'closed' => false],
+                        'orderBy' => ['name' => 'ASC']
+                    ]
+                ],
+                'label' => 'Conto',
+                'object_manager' => $this->em,
+                'target_class' => Account::class,
+                'property' => 'name',
+            ],
+            'required' => true,
+            'type' => ObjectSelect::class,
         ]);
         $this->get('category')->setDisableInArrayValidator(true);
     }

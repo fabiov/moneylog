@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoneyLog;
 
-use Laminas\ModuleManager\Feature\AutoloaderProviderInterface;
-use Laminas\ModuleManager\Feature\ConfigProviderInterface;
 use Laminas\Loader\ClassMapAutoloader;
 use Laminas\Loader\StandardAutoloader;
+use Laminas\ModuleManager\Feature\AutoloaderProviderInterface;
+use Laminas\ModuleManager\Feature\ConfigProviderInterface;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {

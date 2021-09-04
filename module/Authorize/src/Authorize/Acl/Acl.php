@@ -3,8 +3,8 @@
 namespace Authorize\Acl;
 
 use Laminas\Permissions\Acl\Acl as LaminasAcl;
-use Laminas\Permissions\Acl\Role\GenericRole as Role;
 use Laminas\Permissions\Acl\Resource\GenericResource as Resource;
+use Laminas\Permissions\Acl\Role\GenericRole as Role;
 
 /**
  * Class Acl to handle Access Control List, loading ACL defined in a config

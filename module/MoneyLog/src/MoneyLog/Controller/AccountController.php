@@ -7,10 +7,10 @@ use Application\Entity\Movement;
 use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
-use MoneyLog\Form\AccountForm;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use MoneyLog\Form\AccountForm;
 
 class AccountController extends AbstractActionController
 {

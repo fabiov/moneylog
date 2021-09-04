@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -131,17 +133,14 @@ class Movement implements InputFilterAwareInterface
 
     public function exchangeArray(array $data): void
     {
-        if (isset($data['accountId'])) {
-            $this->account = $data['accountId'];
+        if (isset($data['amount'])) {
+            $this->setAmount((float) $data['amount']);
         }
         if (isset($data['category'])) {
             $this->category = $data['category'];
         }
         if (isset($data['date'])) {
             $this->date = new \DateTime($data['date']);
-        }
-        if (isset($data['amount'])) {
-            $this->setAmount($this->amount = $data['amount']);
         }
         if (isset($data['description'])) {
             $this->setDescription($data['description']);

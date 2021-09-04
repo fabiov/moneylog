@@ -2,10 +2,10 @@
 
 namespace Auth;
 
+use Laminas\Loader\StandardAutoloader;
 use Laminas\Mail\Transport\Smtp;
 use Laminas\Mail\Transport\SmtpOptions;
 use Laminas\ServiceManager\ServiceManager;
-use Laminas\Loader\StandardAutoloader;
 
 class Module
 {
