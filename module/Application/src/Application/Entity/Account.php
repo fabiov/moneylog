@@ -86,6 +86,9 @@ class Account implements InputFilterAwareInterface
         return $this->closed;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getArrayCopy(): array
     {
         return [
@@ -98,6 +101,10 @@ class Account implements InputFilterAwareInterface
         ];
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return $this
+     */
     public function exchangeArray(array $data = []): self
     {
         if (isset($data['user'])) {

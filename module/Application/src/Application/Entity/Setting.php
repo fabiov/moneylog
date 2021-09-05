@@ -85,6 +85,9 @@ class Setting implements InputFilterAwareInterface
         $this->provisioning = $provisioning;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getArrayCopy(): array
     {
         return [
@@ -95,6 +98,9 @@ class Setting implements InputFilterAwareInterface
         ];
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function exchangeArray(array $data): void
     {
         if (isset($data['payday'])) {

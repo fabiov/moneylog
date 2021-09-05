@@ -93,6 +93,9 @@ class Provision implements InputFilterAwareInterface
         $this->description = $description;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getArrayCopy(): array
     {
         return [
@@ -104,6 +107,10 @@ class Provision implements InputFilterAwareInterface
         ];
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @throws \Exception
+     */
     public function exchangeArray(array $data = []): void
     {
         if (isset($data['user'])) {

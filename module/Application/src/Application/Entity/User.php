@@ -92,6 +92,9 @@ class User implements InputFilterAwareInterface
      */
     private $setting;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getArrayCopy(): array
     {
         return [
@@ -109,6 +112,9 @@ class User implements InputFilterAwareInterface
         ];
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function exchangeArray(array $data = []): void
     {
         if (isset($data['name'])) {

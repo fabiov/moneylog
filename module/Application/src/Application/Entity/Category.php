@@ -87,6 +87,9 @@ class Category implements InputFilterAwareInterface
         $this->status = $status;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getArrayCopy(): array
     {
         return [
@@ -97,6 +100,9 @@ class Category implements InputFilterAwareInterface
         ];
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function exchangeArray(array $data = []): void
     {
         if (isset($data['user'])) {

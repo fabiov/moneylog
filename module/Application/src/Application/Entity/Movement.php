@@ -119,6 +119,9 @@ class Movement
         $this->description = $description;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getArrayCopy(): array
     {
         return [
