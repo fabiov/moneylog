@@ -1,4 +1,5 @@
 parameters:
+    checkGenericClassInNonGenericObjectType: false
     level: 8
     parallel:
         processTimeout: 180.0
@@ -8,6 +9,8 @@ parameters:
     paths:
         - %currentWorkingDirectory%/module
     ignoreErrors:
+        - '/Call to an undefined method Laminas\\View\\Helper\\HeadTitle::setSeparator\(\)\./'
+        - '/Call to an undefined method Laminas\\EventManager\\EventInterface::\w+\(\)\./'
         - '/Call to an undefined method Laminas\\Form\\ElementInterface::\w+\(\)\./'
         - '/Call to an undefined method Laminas\\Stdlib\\RequestInterface::\w+\(\)./'
         - '/Call to an undefined method Laminas\\Stdlib\\ResponseInterface::getHeaders\(\)\./'

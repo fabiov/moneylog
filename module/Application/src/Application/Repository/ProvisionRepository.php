@@ -26,6 +26,10 @@ class ProvisionRepository extends EntityRepository
         return $qb->getQuery()->getSingleScalarResult() + $movementRepository->getTotalExpense($userId);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     * @return array<int, mixed>
+     */
     public function search(array $params = []): array
     {
         $cleanParams  = [];

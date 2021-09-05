@@ -38,7 +38,7 @@ class RegistrationController extends AbstractActionController
     }
 
     /**
-     * @return \Laminas\Http\Response|\Laminas\View\Model\ViewModel
+     * @return \Laminas\Http\Response|ViewModel<mixed>
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -53,7 +53,7 @@ class RegistrationController extends AbstractActionController
 
             if ($form->isValid()) {
 
-                /** @var array $formData */
+                /** @var array<string, mixed> $formData */
                 $formData = $form->getData();
                 $data = $this->prepareData($formData);
 
@@ -71,6 +71,9 @@ class RegistrationController extends AbstractActionController
         return new ViewModel(['form' => $form]);
     }
 
+    /**
+     * @return ViewModel<mixed>
+     */
     public function registrationSuccessAction(): ViewModel
     {
         $userEmail = null;
@@ -85,7 +88,7 @@ class RegistrationController extends AbstractActionController
     }
 
     /**
-     * @return \Laminas\View\Model\ViewModel
+     * @return \Laminas\View\Model\ViewModel<mixed>
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -114,7 +117,7 @@ class RegistrationController extends AbstractActionController
     }
 
     /**
-     * @return \Laminas\Http\Response|\Laminas\View\Model\ViewModel
+     * @return \Laminas\Http\Response|ViewModel<mixed>
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -128,7 +131,7 @@ class RegistrationController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                /** @var array $data */
+                /** @var array<string, mixed> $data */
                 $data = $form->getData();
 
                 $password = $this->getRandomString(10);
@@ -148,6 +151,9 @@ class RegistrationController extends AbstractActionController
         return new ViewModel(['form' => $form]);
     }
 
+    /**
+     * @return ViewModel<mixed>
+     */
     public function passwordChangeSuccessAction(): ViewModel
     {
         $userEmail = null;
@@ -161,6 +167,11 @@ class RegistrationController extends AbstractActionController
         return new ViewModel(['userEmail' => $userEmail]);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     * @throws \Exception
+     */
     private static function prepareData(array $data): array
     {
         $data['salt'] = self::getRandomString(4);
