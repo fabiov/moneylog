@@ -23,16 +23,15 @@ class MovementForm extends Form
         $this->em = $em;
 
         $this->add([
-            'name'     => 'type',
-            'options'  => [
+            'name' => 'type',
+            'options' => [
                 'disable_inarray_validator' => false,
-                'display_empty_item'        => false,
-                'label'                     => 'Tipo',
-                'property'                  => 'descrizione',
-                'value_options'             => [Movement::OUT => 'Uscita', Movement::IN => 'Entrata'],
+                'display_empty_item' => false,
+                'label' => 'Tipo',
+                'value_options' => [Movement::OUT => 'Uscita', Movement::IN => 'Entrata'],
             ],
             'required' => true,
-            'type'     => Select::class,
+            'type' => Select::class,
         ]);
         $this->add([
             'attributes'    => ['class' => 'form-control', 'value' => date('Y-m-d')],
@@ -42,11 +41,13 @@ class MovementForm extends Form
             'type'          => 'date',
         ]);
         $this->add([
-            'attributes'    => ['class' => 'form-control text-right', 'min' => 0.01, 'placeholder' => '0.00', 'step' => 0.01],
-            'name'          => 'amount',
-            'options'       => ['label' => 'Importo'],
-            'required'      => true,
-            'type'          => 'number',
+            'attributes' => [
+                'class' => 'form-control text-right', 'min' => 0.01, 'placeholder' => '0.00', 'step' => 0.01
+            ],
+            'name' => 'amount',
+            'options' => ['label' => 'Importo'],
+            'required' => true,
+            'type' => 'number',
         ]);
         $this->add([
             'attributes'    => ['class' => 'form-control', 'placeholder' => 'Descrizione'],

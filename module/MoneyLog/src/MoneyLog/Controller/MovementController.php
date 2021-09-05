@@ -275,13 +275,14 @@ class MovementController extends AbstractActionController
             return $this->getRedirectToDashboard();
         }
 
-        $type = $movement->getAmount() < 0 ? -1 : 1;
-        $movement->setAmount(abs($movement->getAmount()));
-
         $form = new MovementForm('movement', $this->em, $this->user->id);
-        $form->bind($movement);
-        $form->get('account')->setValue($movement->getAccount());
-        $form->get('type')->setValue($type);
+        $form->setData([
+            'account' => $movement->getAccount(),
+            'amount' => abs($movement->getAmount()),
+            'category' => $movement->getCategory(),
+            'description' => $movement->getDescription(),
+            'type' => $movement->getAmount() < 0 ? Movement::OUT : Movement::IN,
+        ]);
 
         $request = $this->getRequest();
         $searchParams = $this->params()->fromQuery();
@@ -298,8 +299,9 @@ class MovementController extends AbstractActionController
                 }
 
                 $movement->setAccount($account);
-                $movement->setAmount($movement->getAmount() * $data['type']);
+                $movement->setAmount($data['amount'] * $data['type']);
                 $movement->setCategory($this->getCategory((int) $data['category']));
+                $movement->setDescription($data['description']);
                 $this->em->flush();
 
                 return $this->redirect()->toRoute(
