@@ -3,6 +3,7 @@
 return [
     // This should be an array of module namespaces used in the application.
     'modules' => [
+        'Application',
         'Authorize',
         'MoneyLog',
         'Laminas\I18n',
@@ -10,7 +11,6 @@ return [
         'Laminas\Session',
         'Laminas\Form',
         'Laminas\Router',
-        'Application',
         'Auth',
         'DoctrineModule',
         'DoctrineORMModule',

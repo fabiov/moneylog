@@ -6,9 +6,9 @@ namespace Auth\Controller;
 
 use Application\Entity\Setting;
 use Application\Entity\User;
+use Auth\Form\Filter\RegistrationFilter;
 use Auth\Form\ForgottenPasswordFilter;
 use Auth\Form\ForgottenPasswordForm;
-use Auth\Form\Filter\RegistrationFilter;
 use Auth\Form\RegistrationForm;
 use Doctrine\ORM\EntityManager;
 use Laminas\Mail\Message;

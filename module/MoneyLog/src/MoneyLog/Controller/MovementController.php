@@ -6,79 +6,28 @@ use Application\Entity\Account;
 use Application\Entity\Category;
 use Application\Entity\Movement;
 use Application\Repository\AccountRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use MoneyLog\Form\Filter\MovementFilter;
 use MoneyLog\Form\MoveForm;
 use MoneyLog\Form\MovementForm;
 
 class MovementController extends AbstractActionController
 {
-    /**
-     * @var \stdClass
-     */
-    private $user;
+    private \stdClass $user;
 
-    /**
-     * @var EntityManager
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    public function __construct(\stdClass $user, EntityManager $em)
+    public function __construct(\stdClass $user, EntityManagerInterface $em)
     {
         $this->user = $user;
         $this->em   = $em;
     }
 
-    public function editAction()
-    {
-        $id = (int) $this->params()->fromRoute('id', 0);
-
-        /** @var ?Movement $item */
-        $item = $this->em->getRepository(Movement::class)->findOneBy(['id' => $id]);
-
-        if (!$item || $item->getAccount()->getUser()->getId() != $this->user->id) {
-            return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
-        }
-
-        $type = $item->getAmount() < 0 ? -1 : 1;
-        $item->setAmount(abs($item->getAmount()));
-
-        $form = new MovementForm('movement', $this->em, $this->user->id);
-        $form->bind($item);
-        $form->get('type')->setValue($type);
-
-        $request = $this->getRequest();
-        $searchParams = $this->params()->fromQuery();
-        if ($request->isPost()) {
-            $data = $request->getPost();
-            $form->setInputFilter($item->getInputFilter());
-            $form->setData($data);
-
-            if ($form->isValid()) {
-
-                /** @var ?Category $category */
-                $category = $this->em
-                    ->getRepository(Category::class)
-                    ->findOneBy(['id' => $data['category'], 'user' => $this->user->id]);
-
-                $item->setAmount($item->getAmount() * $data['type']);
-                $item->setCategory($category) ;
-                $this->em->flush();
-
-                return $this->redirect()->toRoute(
-                    'accantonaMovement',
-                    ['action' => 'account', 'id' => $item->getAccount()->getId()],
-                    ['query' => $searchParams]
-                );
-            }
-        }
-
-        return ['item' => $item, 'form' => $form, 'searchParams' => $searchParams];
-    }
-
     /**
+     * @return \Laminas\Http\Response|\Laminas\View\Model\ViewModel
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function accountAction()
@@ -100,7 +49,7 @@ class MovementController extends AbstractActionController
         $account = $this->em->getRepository(Account::class)->findOneBy($criteria);
 
         if (!$account) {
-            return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
+            return $this->getRedirectToDashboard();
         }
 
         $categories = $this->em->getRepository(Category::class)
@@ -164,7 +113,7 @@ class MovementController extends AbstractActionController
             ->findOneBy(['id' => $accountId, 'user' => $this->user->id]);
 
         if (!$account) {
-            return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
+            return $this->getRedirectToDashboard();
         }
 
         /** @var \Application\Repository\MovementRepository $movementRepository */
@@ -198,6 +147,10 @@ class MovementController extends AbstractActionController
         );
     }
 
+    /**
+     * @return array<string, mixed>|\Laminas\Http\Response
+     * @throws \Exception
+     */
     public function moveAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -210,7 +163,7 @@ class MovementController extends AbstractActionController
         $sourceAccount = $accountRepository->find($id);
 
         if (!$sourceAccount || $sourceAccount->getUser()->getId() != $this->user->id) {
-            return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
+            return $this->getRedirectToDashboard();
         }
 
         $accountOptions = ['' => ''];
@@ -227,35 +180,23 @@ class MovementController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                /** @var array $data */
+                /** @var array<string, mixed> $data */
                 $data = $form->getData();
 
                 /** @var ?Account $targetAccount */
                 $targetAccount = $accountRepository->find($data['targetAccountId']);
 
                 if (!$targetAccount || $targetAccount->getUser()->getId() != $this->user->id) {
-                    return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
+                    return $this->getRedirectToDashboard();
                 }
 
-                $outcoming = new Movement();
-                $outcoming->setDate(new \DateTime($data['date']));
-                $outcoming->exchangeArray([
-                    'date'        => $data['date'],
-                    'amount'      => $data['amount'] * -1,
-                    'description' => $data['description'],
-                ]);
-                $outcoming->setAccount($sourceAccount);
-                $this->em->persist($outcoming);
+                $date = new \DateTime($data['date']);
 
-                $incoming = new Movement();
-                $incoming->exchangeArray([
-                    'accountId'   => $targetAccount->getId(),
-                    'date'        => $data['date'],
-                    'amount'      => $data['amount'],
-                    'description' => $data['description'],
-                ]);
-                $incoming->setAccount($targetAccount);
-                $this->em->persist($incoming);
+                $outComing = new Movement($sourceAccount, $data['amount'] * -1, $date, $data['description']);
+                $this->em->persist($outComing);
+
+                $inComing = new Movement($targetAccount, $data['amount'], $date, $data['description']);
+                $this->em->persist($inComing);
 
                 $this->em->flush();
 
@@ -271,56 +212,42 @@ class MovementController extends AbstractActionController
     }
 
     /**
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return array<mixed>|\Laminas\Http\Response
      * @throws \Exception
      */
     public function addAction()
     {
-        $accountId = (int) $this->params()->fromRoute('id');
+        $accountIdFromRoute = (int) $this->params()->fromRoute('id');
         $searchParams = $this->params()->fromQuery();
-
-        /** @var ?Account $account */
-        $account = $this->em->getRepository(Account::class)->find($accountId);
-
-        if (!$account || $account->getUser()->getId() != $this->user->id) {
-            return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
-        }
 
         $request = $this->getRequest();
         $form = new MovementForm('movement', $this->em, $this->user->id);
         if ($request->isPost()) {
-            $movement = new Movement();
             $data = $request->getPost();
-            $form->setInputFilter($movement->getInputFilter());
+            $form->setInputFilter(new MovementFilter());
             $form->setData($data);
 
             if ($form->isValid()) {
-                $repetitionNumber = (int) $data['repetitionNumber'];
-                $repetitionNumber = !empty($data['repetition']) &&
-                                    in_array($data['repetitionPeriod'], ['month', 'week']) &&
-                                    $repetitionNumber > 0 && $repetitionNumber < 13 ? $repetitionNumber : 1;
+                $account = $this->getAccount($data['account']);
 
-                $category = $this->em->getRepository(Category::class)
-                    ->findOneBy(['id' => $data['category'], 'user' => $this->user->id]);
-
-                for ($i = 0; $i < $repetitionNumber; $i++) {
-                    $movement = new Movement();
-                    $timestamp = (int) strtotime("{$data['date']} +$i {$data['repetitionPeriod']}");
-                    $movement->exchangeArray([
-                        'date'          => date('Y-m-d', $timestamp),
-                        'amount'        => $data['amount'] * $data['type'],
-                        'description'   => $data['description'],
-                        'category'      => $category,
-                    ]);
-                    $movement->setAccount($account);
-
-                    $this->em->persist($movement);
-                    $this->em->flush();
+                if (!$account) {
+                    return $this->getRedirectToDashboard();
                 }
+
+                $movement = new Movement(
+                    $account,
+                    $data['amount'] * $data['type'],
+                    new \DateTime($data['date']),
+                    $data['description'],
+                    $this->getCategory($data['category'])
+                );
+
+                $this->em->persist($movement);
+                $this->em->flush();
 
                 return $this->redirect()->toRoute(
                     'accantonaMovement',
-                    ['action' => 'account', 'id' => $accountId],
+                    ['action' => 'account', 'id' => $data['account']],
                     ['query' => $searchParams]
                 );
             }
@@ -328,9 +255,83 @@ class MovementController extends AbstractActionController
 
         $form->setAttribute('action', $this->url()->fromRoute(
             'accantonaMovement',
-            ['action' => 'add', 'id' => $account->getId()],
+            ['action' => 'add', 'id' => $accountIdFromRoute],
             ['query' => $searchParams]
         ));
-        return ['sourceAccount' => $account, 'form' => $form, 'searchParams' => $searchParams];
+        return ['accountId' => $accountIdFromRoute, 'form' => $form, 'searchParams' => $searchParams];
+    }
+
+    /**
+     * @return array<string, mixed>|\Laminas\Http\Response
+     */
+    public function editAction()
+    {
+        $movementId = (int) $this->params()->fromRoute('id', 0);
+
+        /** @var ?Movement $movement */
+        $movement = $this->em->getRepository(Movement::class)->findOneBy(['id' => $movementId]);
+
+        if (!$movement || $movement->getAccount()->getUser()->getId() != $this->user->id) {
+            return $this->getRedirectToDashboard();
+        }
+
+        $form = new MovementForm('movement', $this->em, $this->user->id);
+        $form->setData([
+            'account' => $movement->getAccount(),
+            'amount' => abs($movement->getAmount()),
+            'category' => $movement->getCategory(),
+            'description' => $movement->getDescription(),
+            'type' => $movement->getAmount() < 0 ? Movement::OUT : Movement::IN,
+        ]);
+
+        $request = $this->getRequest();
+        $searchParams = $this->params()->fromQuery();
+        if ($request->isPost()) {
+            $data = $request->getPost();
+            $form->setInputFilter(new MovementFilter());
+            $form->setData($data);
+
+            if ($form->isValid()) {
+                $account = $this->getAccount($data['account']);
+
+                if (!$account) {
+                    return $this->getRedirectToDashboard();
+                }
+
+                $movement->setAccount($account);
+                $movement->setAmount($data['amount'] * $data['type']);
+                $movement->setCategory($this->getCategory((int) $data['category']));
+                $movement->setDescription($data['description']);
+                $this->em->flush();
+
+                return $this->redirect()->toRoute(
+                    'accantonaMovement',
+                    ['action' => 'account', 'id' => $movement->getAccount()->getId()],
+                    ['query' => $searchParams]
+                );
+            }
+        }
+
+        $form->setAttribute('action', $this->url()->fromRoute(
+            'accantonaMovement',
+            ['action' => 'edit', 'id' => $this->params()->fromRoute('id')],
+            ['query' => $searchParams]
+        ));
+        return ['item' => $movement, 'form' => $form, 'searchParams' => $searchParams];
+    }
+
+    private function getAccount(int $id): ?Account
+    {
+        return $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
+    }
+
+    private function getCategory(int $id): ?Category
+    {
+        return $this->em->getRepository(Category::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
+    }
+
+    private function getRedirectToDashboard(): Response
+    {
+        return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
     }
 }

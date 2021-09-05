@@ -5,8 +5,6 @@ namespace ApplicationTest\Entity;
 use Application\Entity\Account;
 use Application\Entity\Category;
 use Application\Entity\Movement;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterInterface;
 use PHPUnit\Framework\TestCase;
 
 class MovementTest extends TestCase
@@ -14,7 +12,7 @@ class MovementTest extends TestCase
     public function testGettersWithoutSetter(): void
     {
         $id = 1;
-        $movement = new Movement();
+        $movement = new Movement(new Account(), 0, new \DateTime(), '');
         $reflectionClass = new \ReflectionClass($movement);
         $reflectedProperty = $reflectionClass->getProperty('id');
         $reflectedProperty->setAccessible(true);
@@ -26,7 +24,7 @@ class MovementTest extends TestCase
 
     public function testSettersAndGetters(): void
     {
-        $movement = new Movement();
+        $movement = new Movement(new Account(), 0, new \DateTime(), '');
 
         $description = 'Description';
         $movement->setDescription($description);
@@ -47,36 +45,5 @@ class MovementTest extends TestCase
         $date = new \DateTime();
         $movement->setDate($date);
         self:: assertSame($date, $movement->getDate());
-
-        self::assertInstanceOf(InputFilterInterface::class, $movement->getInputFilter());
-
-        self::expectException(\Exception::class);
-        $movement->setInputFilter(new InputFilter());
-    }
-
-    public function testArrayExchangeAndCopy(): void
-    {
-        $movement = new Movement();
-
-        $accountId = 78;
-        $amount = 78.54;
-        $category = new Category();
-        $date = '2021-06-16';
-        $description = 'Description';
-
-        $movement->exchangeArray([
-            'accountId' => $accountId,
-            'amount' => $amount,
-            'category' => $category,
-            'date' => $date,
-            'description' => $description,
-        ]);
-
-        $copy = $movement->getArrayCopy();
-
-        self::assertSame($copy['amount'], $movement->getAmount());
-        self::assertSame($copy['category'], $movement->getCategory());
-        self::assertSame($copy['date'], $movement->getDate());
-        self::assertSame($copy['description'], $movement->getDescription());
     }
 }

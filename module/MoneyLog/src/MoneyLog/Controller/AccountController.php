@@ -6,11 +6,10 @@ use Application\Entity\Account;
 use Application\Entity\Movement;
 use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\OptimisticLockException;
-use MoneyLog\Form\AccountForm;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use MoneyLog\Form\AccountForm;
 
 class AccountController extends AbstractActionController
 {
@@ -30,6 +29,12 @@ class AccountController extends AbstractActionController
         $this->em   = $em;
     }
 
+    /**
+     * @return \Laminas\Http\Response|\MoneyLog\Form\AccountForm[]
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     */
     public function addAction()
     {
         $form = new AccountForm();
@@ -44,7 +49,7 @@ class AccountController extends AbstractActionController
                 /** @var User $user */
                 $user = $this->em->find(User::class, $this->user->id);
 
-                /** @var array $data */
+                /** @var array<mixed> $data */
                 $data = $form->getData();
 
                 $account->exchangeArray($data);
@@ -90,6 +95,11 @@ class AccountController extends AbstractActionController
         return new ViewModel(['rows' => $data]);
     }
 
+    /**
+     * @return array<int|AccountForm>|\Laminas\Http\Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -118,8 +128,9 @@ class AccountController extends AbstractActionController
     }
 
     /**
-     * @return Response
-     * @throws OptimisticLockException
+     * @return \Laminas\Http\Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function deleteAction(): Response
     {
@@ -173,11 +184,7 @@ class AccountController extends AbstractActionController
 
             $currentBalance = $movementRepository->getBalance($id, new \DateTime());
 
-            $movement = new Movement();
-            $movement->setAccount($account);
-            $movement->setAmount($amount - $currentBalance);
-            $movement->setDescription($description);
-            $movement->setDate(new \DateTime());
+            $movement = new Movement($account, $amount - $currentBalance, new \DateTime(), $description);
             $this->em->persist($movement);
             $this->em->flush();
         }

@@ -5,9 +5,10 @@ namespace MoneyLog\Controller;
 use Application\Entity\Provision;
 use Application\Entity\User;
 use Doctrine\ORM\EntityManager;
-use MoneyLog\Form\AccantonatoForm;
+use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use MoneyLog\Form\AccantonatoForm;
 
 class ProvisionController extends AbstractActionController
 {
@@ -28,9 +29,10 @@ class ProvisionController extends AbstractActionController
     }
 
     /**
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return \Laminas\Http\Response|\Laminas\View\Model\ViewModel
      * @throws \Doctrine\ORM\ORMException
-     * @throws \Exception
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
      */
     public function addAction()
     {
@@ -46,7 +48,7 @@ class ProvisionController extends AbstractActionController
                 /** @var User $user */
                 $user = $this->em->find(User::class, $this->user->id);
 
-                /** @var array $data */
+                /** @var array<mixed> $data */
                 $data = $form->getData();
 
                 $provision->exchangeArray($data);
@@ -78,6 +80,11 @@ class ProvisionController extends AbstractActionController
         ]);
     }
 
+    /**
+     * @return array<string, mixed>|\Laminas\Http\Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -107,7 +114,7 @@ class ProvisionController extends AbstractActionController
         return ['id' => $id, 'form' => $form, 'searchParams' => $searchParams];
     }
 
-    public function deleteAction()
+    public function deleteAction(): Response
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         $spend = $this->em->getRepository(Provision::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);

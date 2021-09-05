@@ -3,8 +3,8 @@
 namespace Authorize\Acl;
 
 use Laminas\Permissions\Acl\Acl as LaminasAcl;
-use Laminas\Permissions\Acl\Role\GenericRole as Role;
 use Laminas\Permissions\Acl\Resource\GenericResource as Resource;
+use Laminas\Permissions\Acl\Role\GenericRole as Role;
 
 /**
  * Class Acl to handle Access Control List, loading ACL defined in a config
@@ -25,7 +25,7 @@ class Acl extends LaminasAcl
     /**
      * Constructor
      *
-     * @param array $config
+     * @param array<array> $config
      * @return void
      * @throws \Exception
      */
@@ -46,7 +46,7 @@ class Acl extends LaminasAcl
     /**
      * Adds Roles to ACL
      *
-     * @param array $roles
+     * @param array<string, string> $roles
      * @return $this
      */
     protected function _addRoles(array $roles): self
@@ -69,7 +69,7 @@ class Acl extends LaminasAcl
     /**
      * Adds Resources to ACL
      *
-     * @param array $resources
+     * @param array<string, mixed> $resources
      * @return $this
      * @throws \Exception
      */

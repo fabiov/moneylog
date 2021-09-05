@@ -31,6 +31,11 @@ class CategoryController extends AbstractActionController
         $this->user = $user;
     }
 
+    /**
+     * @return \Laminas\Http\Response|\MoneyLog\Form\CategoryForm[]
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function addAction()
     {
         $form = new CategoryForm();
@@ -47,7 +52,7 @@ class CategoryController extends AbstractActionController
                 /** @var User $user */
                 $user = $this->em->getRepository(User::class)->find($this->user->id);
 
-                /** @var array $data */
+                /** @var array<string> $data */
                 $data = $form->getData();
 
                 $category->setDescription($data['description']);
@@ -70,6 +75,11 @@ class CategoryController extends AbstractActionController
         ]);
     }
 
+    /**
+     * @return array<string,int|\MoneyLog\Form\CategoryForm>|\Laminas\Http\Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id');
