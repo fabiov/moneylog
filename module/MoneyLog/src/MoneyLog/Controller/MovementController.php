@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use MoneyLog\Form\Filter\MovementFilter;
 use MoneyLog\Form\MoveForm;
 use MoneyLog\Form\MovementForm;
 
@@ -189,25 +190,13 @@ class MovementController extends AbstractActionController
                     return $this->getRedirectToDashboard();
                 }
 
-                $outcoming = new Movement();
-                $outcoming->setDate(new \DateTime($data['date']));
-                $outcoming->exchangeArray([
-                    'date'        => $data['date'],
-                    'amount'      => $data['amount'] * -1,
-                    'description' => $data['description'],
-                ]);
-                $outcoming->setAccount($sourceAccount);
-                $this->em->persist($outcoming);
+                $date = new \DateTime($data['date']);
 
-                $incoming = new Movement();
-                $incoming->exchangeArray([
-                    'accountId'   => $targetAccount->getId(),
-                    'date'        => $data['date'],
-                    'amount'      => $data['amount'],
-                    'description' => $data['description'],
-                ]);
-                $incoming->setAccount($targetAccount);
-                $this->em->persist($incoming);
+                $outComing = new Movement($sourceAccount, $data['amount'] * -1, $date, $data['description']);
+                $this->em->persist($outComing);
+
+                $inComing = new Movement($targetAccount, $data['amount'], $date, $data['description']);
+                $this->em->persist($inComing);
 
                 $this->em->flush();
 
@@ -223,7 +212,8 @@ class MovementController extends AbstractActionController
     }
 
     /**
-     * @return array<string, mixed>|\Laminas\Http\Response
+     * @return array<mixed>|\Laminas\Http\Response
+     * @throws \Exception
      */
     public function addAction()
     {
@@ -233,9 +223,8 @@ class MovementController extends AbstractActionController
         $request = $this->getRequest();
         $form = new MovementForm('movement', $this->em, $this->user->id);
         if ($request->isPost()) {
-            $movement = new Movement();
             $data = $request->getPost();
-            $form->setInputFilter($movement->getInputFilter());
+            $form->setInputFilter(new MovementFilter());
             $form->setData($data);
 
             if ($form->isValid()) {
@@ -245,15 +234,13 @@ class MovementController extends AbstractActionController
                     return $this->getRedirectToDashboard();
                 }
 
-                $movement = new Movement();
-                $movement->setAccount($account);
-                $movement->exchangeArray([
-                    'date' => $data['date'],
-                    'amount' => $data['amount'] * $data['type'],
-                    'description' => $data['description'],
-                    'category' => $this->getCategory($data['category']),
-                ]);
-
+                $movement = new Movement(
+                    $account,
+                    $data['amount'] * $data['type'],
+                    new \DateTime($data['date']),
+                    $data['description'],
+                    $this->getCategory($data['category'])
+                );
 
                 $this->em->persist($movement);
                 $this->em->flush();
@@ -300,7 +287,7 @@ class MovementController extends AbstractActionController
         $searchParams = $this->params()->fromQuery();
         if ($request->isPost()) {
             $data = $request->getPost();
-            $form->setInputFilter($movement->getInputFilter());
+            $form->setInputFilter(new MovementFilter());
             $form->setData($data);
 
             if ($form->isValid()) {
