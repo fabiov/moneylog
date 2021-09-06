@@ -41,20 +41,17 @@ class SettingTest extends TestCase
         $setting->setPayday(29);
     }
 
-    public function testArrayExchangeAndCopy(): void
+    public function testArrayCopy(): void
     {
         $user = new User();
-        $setting = new Setting($user);
-
         $months = 54;
         $payday = 12;
         $provisioning = true;
 
-        $setting->exchangeArray([
-            'months' => $months,
-            'payday' => $payday,
-            'provisioning' => $provisioning,
-        ]);
+        $setting = new Setting($user);
+        $setting->setMonths($months);
+        $setting->setPayday($payday);
+        $setting->setProvisioning($provisioning);
 
         $copy = $setting->getArrayCopy();
 

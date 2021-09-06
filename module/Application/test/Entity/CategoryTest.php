@@ -56,7 +56,7 @@ class CategoryTest extends TestCase
         $category->setStatus(2);
     }
 
-    public function testArrayExchangeAndCopy(): void
+    public function testArrayCopy(): void
     {
         $category = new Category();
 
