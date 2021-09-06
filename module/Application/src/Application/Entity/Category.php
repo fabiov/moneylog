@@ -3,6 +3,8 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Laminas\Filter\StringTrim;
+use Laminas\Filter\ToInt;
 use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
@@ -100,22 +102,6 @@ class Category implements InputFilterAwareInterface
         ];
     }
 
-    /**
-     * @param array<string, mixed> $data
-     */
-    public function exchangeArray(array $data = []): void
-    {
-        if (isset($data['user'])) {
-            $this->user = $data['user'];
-        }
-        if (isset($data['description'])) {
-            $this->setDescription($data['description']);
-        }
-        if (isset($data['status'])) {
-            $this->setStatus((int) $data['status']);
-        }
-    }
-
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception('Not used');
@@ -129,11 +115,11 @@ class Category implements InputFilterAwareInterface
             $inputFilter->add([
                 'name' => 'description',
                 'required' => true,
-                'filters'  => [['name' => 'StringTrim']],
+                'filters'  => [['name' => StringTrim::class]],
             ]);
             $inputFilter->add([
                 'name'     => 'status',
-                'filters'  => [['name' => 'Int']],
+                'filters'  => [['name' => ToInt::class]],
             ]);
 
             $this->inputFilter = $inputFilter;

@@ -7,7 +7,7 @@ namespace MoneyLog\Controller;
 use Application\Entity\Category;
 use Application\Entity\Provision;
 use Application\Entity\User;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
@@ -15,26 +15,18 @@ use MoneyLog\Form\CategoryForm;
 
 class CategoryController extends AbstractActionController
 {
-    /**
-     * @var \stdClass
-     */
-    private $user;
+    private \stdClass $user;
 
-    /**
-     * @var EntityManager
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    public function __construct(\stdClass $user, EntityManager $em)
+    public function __construct(\stdClass $user, EntityManagerInterface $em)
     {
         $this->em   = $em;
         $this->user = $user;
     }
 
     /**
-     * @return \Laminas\Http\Response|\MoneyLog\Form\CategoryForm[]
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return Response|array<CategoryForm>
      */
     public function addAction()
     {
@@ -76,9 +68,7 @@ class CategoryController extends AbstractActionController
     }
 
     /**
-     * @return array<string,int|\MoneyLog\Form\CategoryForm>|\Laminas\Http\Response
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return array<string, mixed>|\Laminas\Http\Response
      */
     public function editAction()
     {
@@ -93,7 +83,10 @@ class CategoryController extends AbstractActionController
         }
 
         $form = new CategoryForm();
-        $form->bind($category);
+        $form->setData([
+            'description' => $category->getDescription(),
+            'status' => $category->getStatus(),
+        ]);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -101,6 +94,10 @@ class CategoryController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                /** @var array<string, mixed> $data */
+                $data = $form->getData();
+                $category->setDescription($data['description']);
+                $category->setStatus($data['status']);
                 $this->em->flush();
                 return $this->redirect()->toRoute('accantona_categoria');
             }
@@ -109,10 +106,9 @@ class CategoryController extends AbstractActionController
     }
 
     /**
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return \Laminas\Http\Response
      * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function deleteAction(): Response
     {
