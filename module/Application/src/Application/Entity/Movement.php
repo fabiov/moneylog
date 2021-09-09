@@ -125,8 +125,8 @@ class Movement
     public function getArrayCopy(): array
     {
         return [
-            'id' => $this->id,
-            'account' => $this->amount,
+            'id' => $this->id ?? null,
+            'account' => $this->account,
             'category' => $this->category,
             'date' => $this->date,
             'amount' => $this->amount,
