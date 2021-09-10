@@ -107,26 +107,6 @@ class Provision implements InputFilterAwareInterface
         ];
     }
 
-    /**
-     * @param array<string, mixed> $data
-     * @throws \Exception
-     */
-    public function exchangeArray(array $data = []): void
-    {
-        if (isset($data['user'])) {
-            $this->user = $data['user'];
-        }
-        if (isset($data['date'])) {
-            $this->date = new \DateTime($data['date']);
-        }
-        if (isset($data['amount'])) {
-            $this->amount = $data['amount'];
-        }
-        if (isset($data['description'])) {
-            $this->description = $data['description'];
-        }
-    }
-
     public function setInputFilter(InputFilterInterface $inputFilter): InputFilterAwareInterface
     {
         throw new \Exception('Not used');

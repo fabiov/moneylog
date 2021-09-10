@@ -4,7 +4,7 @@ namespace MoneyLog\Controller;
 
 use Application\Entity\Provision;
 use Application\Entity\User;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
@@ -12,27 +12,19 @@ use MoneyLog\Form\AccantonatoForm;
 
 class ProvisionController extends AbstractActionController
 {
-    /**
-     * @var \stdClass
-     */
-    private $user;
+    private \stdClass $user;
 
-    /**
-     * @var EntityManager
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    public function __construct(\stdClass $user, EntityManager $em)
+    public function __construct(\stdClass $user, EntityManagerInterface $em)
     {
         $this->user = $user;
-        $this->em   = $em;
+        $this->em = $em;
     }
 
     /**
-     * @return \Laminas\Http\Response|\Laminas\View\Model\ViewModel
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @return Response|ViewModel
+     * @throws \Exception
      */
     public function addAction()
     {
@@ -48,11 +40,14 @@ class ProvisionController extends AbstractActionController
                 /** @var User $user */
                 $user = $this->em->find(User::class, $this->user->id);
 
-                /** @var array<mixed> $data */
+                /** @var array<string, mixed> $data */
                 $data = $form->getData();
 
-                $provision->exchangeArray($data);
+                $provision->setDescription($data['description']);
+                $provision->setAmount($data['amount']);
+                $provision->setDate(new \DateTime($data['date']));
                 $provision->setUser($user);
+
                 $this->em->persist($provision);
                 $this->em->flush();
 
@@ -81,9 +76,8 @@ class ProvisionController extends AbstractActionController
     }
 
     /**
-     * @return array<string, mixed>|\Laminas\Http\Response
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return array<string, mixed>|Response
+     * @throws \Exception
      */
     public function editAction()
     {
@@ -97,7 +91,11 @@ class ProvisionController extends AbstractActionController
         }
 
         $form = new AccantonatoForm('accantonati');
-        $form->bind($provision);
+        $form->setData([
+            'date' => $provision->getDate(),
+            'amount' => $provision->getAmount(),
+            'description' => $provision->getDescription(),
+        ]);
 
         $request = $this->getRequest();
         $searchParams = $this->params()->fromQuery();
@@ -106,9 +104,15 @@ class ProvisionController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                /** @var array<string, mixed> $validatedData */
+                $validatedData = $form->getData();
+
+                $provision->setDate(new \DateTime($validatedData['date']));
+                $provision->setAmount($validatedData['amount']);
+                $provision->setDescription($validatedData['description']);
+
                 $this->em->flush();
-                return $this->redirect()
-                    ->toRoute('accantona_accantonato', [], ['query' => $searchParams]);
+                return $this->redirect()->toRoute('accantona_accantonato', [], ['query' => $searchParams]);
             }
         }
         return ['id' => $id, 'form' => $form, 'searchParams' => $searchParams];
