@@ -12,6 +12,7 @@ use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use MoneyLog\Form\CategoryForm;
+use MoneyLog\Form\Filter\CategoryFilter;
 
 class CategoryController extends AbstractActionController
 {
@@ -36,7 +37,7 @@ class CategoryController extends AbstractActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $category = new Category();
-            $form->setInputFilter($category->getInputFilter());
+            $form->setInputFilter(new CategoryFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
@@ -90,7 +91,7 @@ class CategoryController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($category->getInputFilter());
+            $form->setInputFilter(new CategoryFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {

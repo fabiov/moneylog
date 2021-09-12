@@ -3,25 +3,15 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Laminas\Filter\StringTrim;
-use Laminas\Filter\ToInt;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterAwareInterface;
-use Laminas\InputFilter\InputFilterInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\CategoryRepository")
  * @ORM\Table(name="category")
  */
-class Category implements InputFilterAwareInterface
+class Category
 {
     public const STATUS_INACTIVE = 0;
     public const STATUS_ACTIVE = 1;
-
-    /**
-     * @var ?InputFilterInterface
-     */
-    private $inputFilter;
 
     /**
      * @ORM\Id
@@ -100,31 +90,5 @@ class Category implements InputFilterAwareInterface
             'description' => $this->description,
             'status' => $this->status,
         ];
-    }
-
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception('Not used');
-    }
-
-    public function getInputFilter(): InputFilterInterface
-    {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-
-            $inputFilter->add([
-                'name' => 'description',
-                'required' => true,
-                'filters'  => [['name' => StringTrim::class]],
-            ]);
-            $inputFilter->add([
-                'name'     => 'status',
-                'filters'  => [['name' => ToInt::class]],
-            ]);
-
-            $this->inputFilter = $inputFilter;
-        }
-
-        return $this->inputFilter;
     }
 }
