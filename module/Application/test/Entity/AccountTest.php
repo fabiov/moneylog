@@ -41,26 +41,4 @@ class AccountTest extends TestCase
         $account->setClosed($closed);
         self::assertSame($closed, $account->isClosed());
     }
-
-    public function testArrayExchangeAndCopy(): void
-    {
-        $user = new User();
-        $name = 'test';
-        $recap = 1;
-        $closed = false;
-
-        $account = new Account();
-
-        $account->setUser($user);
-        $account->setName($name);
-        $account->setRecap($recap);
-        $account->setClosed($closed);
-
-        $copy = $account->getArrayCopy();
-
-        self::assertSame($copy['user'], $user);
-        self::assertSame($copy['name'], $name);
-        self::assertSame($copy['recap'], $recap);
-        self::assertSame($copy['closed'], $closed);
-    }
 }

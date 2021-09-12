@@ -44,23 +44,4 @@ class CategoryTest extends TestCase
         self::expectException(\Exception::class);
         $category->setStatus(2);
     }
-
-    public function testArrayCopy(): void
-    {
-        $category = new Category();
-
-        $user = new User();
-        $description = 'description';
-        $status = Category::STATUS_INACTIVE;
-
-        $category->setUser($user);
-        $category->setDescription($description);
-        $category->setStatus($status);
-
-        $copy = $category->getArrayCopy();
-
-        self::assertSame($copy['user'], $user);
-        self::assertSame($copy['description'], $description);
-        self::assertSame($copy['status'], $status);
-    }
 }

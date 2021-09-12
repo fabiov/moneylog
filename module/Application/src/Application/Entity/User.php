@@ -84,26 +84,6 @@ class User
      */
     private $setting;
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function getArrayCopy(): array
-    {
-        return [
-            'id' => $this->id,
-            'email' => $this->email,
-            'name' => $this->name,
-            'surname' => $this->surname,
-            'password' => $this->password,
-            'salt' => $this->salt,
-            'status' => $this->status,
-            'role' => $this->role,
-            'registrationToken' => $this->registrationToken,
-            'lastLogin' => $this->lastLogin,
-            'setting' => $this->setting,
-        ];
-    }
-
     public function getId(): int
     {
         return $this->id;

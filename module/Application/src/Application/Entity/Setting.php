@@ -75,17 +75,4 @@ class Setting
     {
         $this->provisioning = $provisioning;
     }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getArrayCopy(): array
-    {
-        return [
-            'user' => $this->user,
-            'payday' => $this->payday,
-            'months' => $this->months,
-            'provisioning' => $this->provisioning,
-        ];
-    }
 }

@@ -97,19 +97,4 @@ class Account
     {
         $this->recap = $recap;
     }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getArrayCopy(): array
-    {
-        return [
-            'id' => $this->id,
-            'user' => $this->user,
-            'name' => $this->name,
-            'recap' => $this->recap,
-            'closed' => $this->closed,
-            'movements' => $this->movements,
-        ];
-    }
 }

@@ -83,18 +83,4 @@ class Provision
     {
         $this->description = $description;
     }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getArrayCopy(): array
-    {
-        return [
-            'id' => $this->id,
-            'user' => $this->user,
-            'date' => $this->date,
-            'amount' => $this->amount,
-            'description' => $this->description,
-        ];
-    }
 }

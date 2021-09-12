@@ -48,26 +48,4 @@ class ProvisionTest extends TestCase
         $provision->setDescription($description);
         self::assertSame($description, $provision->getDescription());
     }
-
-    public function testArrayCopy(): void
-    {
-        $provision = new Provision();
-
-        $amount = 23.34;
-        $date = new \DateTime();
-        $description = 'Description';
-        $user = new User();
-
-        $provision->setAmount($amount);
-        $provision->setDate($date);
-        $provision->setDescription($description);
-        $provision->setUser($user);
-
-        $copy = $provision->getArrayCopy();
-
-        self::assertSame($amount, $copy['amount']);
-        self::assertSame($date, $copy['date']);
-        self::assertSame($description, $copy['description']);
-        self::assertSame($user, $copy['user']);
-    }
 }

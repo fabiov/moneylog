@@ -78,17 +78,4 @@ class Category
         }
         $this->status = $status;
     }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getArrayCopy(): array
-    {
-        return [
-            'id' => $this->id,
-            'user' => $this->user,
-            'description' => $this->description,
-            'status' => $this->status,
-        ];
-    }
 }

@@ -35,25 +35,6 @@ class SettingTest extends TestCase
         $setting->setPayday(29);
     }
 
-    public function testArrayCopy(): void
-    {
-        $user = new User();
-        $months = 54;
-        $payday = 12;
-        $provisioning = true;
-
-        $setting = new Setting($user);
-        $setting->setMonths($months);
-        $setting->setPayday($payday);
-        $setting->setProvisioning($provisioning);
-
-        $copy = $setting->getArrayCopy();
-
-        self::assertSame($months, $copy['months']);
-        self::assertSame($payday, $copy['payday']);
-        self::assertSame($provisioning, $copy['provisioning']);
-    }
-
     public function testInvalidPayDay(): void
     {
         $user = new User();

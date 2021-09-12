@@ -60,40 +60,10 @@ class UserTest extends TestCase
         $surname = 'surname';
         $user->setSurname($surname);
         self::assertSame($surname, $user->getSurname());
-    }
 
-    public function testArrayCopy(): void
-    {
-        $email = 'email';
-        $name = 'name';
-        $password = 'password';
         $registrationToken = 'registrationToken';
-        $role = 'role';
-        $salt = 'salt';
-        $status = User::STATUS_NOT_CONFIRMED;
-        $surname = 'surname';
-
-        $user = new User();
-        $user->setEmail($email);
-        $user->setName($name);
-        $user->setPassword($password);
         $user->setRegistrationToken($registrationToken);
-        $user->setRole($role);
-        $user->setSalt($salt);
-        $user->setStatus($status);
-        $user->setSurname($surname);
-
-        $copy = $user->getArrayCopy();
-
-        self::assertSame($email, $copy['email']);
-        self::assertSame($name, $copy['name']);
-        self::assertSame($password, $copy['password']);
-        self::assertSame($registrationToken, $copy['registrationToken']);
         self::assertSame($registrationToken, $user->getRegistrationToken());
-        self::assertSame($role, $copy['role']);
-        self::assertSame($salt, $copy['salt']);
-        self::assertSame($status, $copy['status']);
-        self::assertSame($surname, $copy['surname']);
     }
 
     public function testSetStatusException(): void
