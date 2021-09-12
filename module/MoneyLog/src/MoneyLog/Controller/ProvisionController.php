@@ -9,6 +9,7 @@ use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use MoneyLog\Form\AccantonatoForm;
+use MoneyLog\Form\Filter\ProvisionFilter;
 
 class ProvisionController extends AbstractActionController
 {
@@ -32,7 +33,7 @@ class ProvisionController extends AbstractActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $provision = new Provision();
-            $form->setInputFilter($provision->getInputFilter());
+            $form->setInputFilter(new ProvisionFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
@@ -100,7 +101,7 @@ class ProvisionController extends AbstractActionController
         $request = $this->getRequest();
         $searchParams = $this->params()->fromQuery();
         if ($request->isPost()) {
-            $form->setInputFilter($provision->getInputFilter());
+            $form->setInputFilter(new ProvisionFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
