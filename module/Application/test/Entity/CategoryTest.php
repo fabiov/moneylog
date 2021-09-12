@@ -56,7 +56,7 @@ class CategoryTest extends TestCase
         $category->setStatus(2);
     }
 
-    public function testArrayExchangeAndCopy(): void
+    public function testArrayCopy(): void
     {
         $category = new Category();
 
@@ -64,11 +64,9 @@ class CategoryTest extends TestCase
         $description = 'description';
         $status = Category::STATUS_INACTIVE;
 
-        $category->exchangeArray([
-            'user' => $user,
-            'description' => $description,
-            'status' => $status,
-        ]);
+        $category->setUser($user);
+        $category->setDescription($description);
+        $category->setStatus($status);
 
         $copy = $category->getArrayCopy();
 

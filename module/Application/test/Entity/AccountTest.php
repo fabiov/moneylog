@@ -23,13 +23,25 @@ class AccountTest extends TestCase
         self::assertSame($id, $account->getId());
     }
 
-    public function testSetter(): void
+    public function testSetterAndGetter(): void
     {
-        $user = new User();
         $account = new Account();
 
+        $user = new User();
         $account->setUser($user);
         self::assertSame($user, $account->getUser());
+
+        $name = 'test';
+        $account->setName($name);
+        self::assertSame($name, $account->getName());
+
+        $recap = 1;
+        $account->setRecap($recap);
+        self::assertSame($recap, $account->getRecap());
+
+        $closed = false;
+        $account->setClosed($closed);
+        self::assertSame($closed, $account->isClosed());
 
         self::assertInstanceOf(InputFilterInterface::class, $account->getInputFilter());
 
@@ -37,40 +49,19 @@ class AccountTest extends TestCase
         $account->setInputFilter(new InputFilter());
     }
 
-    public function testGetters(): void
-    {
-        $user = new User();
-        $name = 'test';
-        $closed = true;
-
-        $account = new Account();
-
-        $account->exchangeArray([
-            'user' => $user,
-            'name' => $name,
-            'closed' => $closed,
-        ]);
-
-        self::assertSame($account->getUser(), $user);
-        self::assertSame($account->getName(), $name);
-        self::assertSame($account->isClosed(), $closed);
-    }
-
     public function testArrayExchangeAndCopy(): void
     {
         $user = new User();
         $name = 'test';
-        $recap = true;
+        $recap = 1;
         $closed = false;
 
         $account = new Account();
 
-        $account->exchangeArray([
-            'user' => $user,
-            'name' => $name,
-            'recap' => $recap,
-            'closed' => $closed,
-        ]);
+        $account->setUser($user);
+        $account->setName($name);
+        $account->setRecap($recap);
+        $account->setClosed($closed);
 
         $copy = $account->getArrayCopy();
 

@@ -98,22 +98,6 @@ class Setting implements InputFilterAwareInterface
         ];
     }
 
-    /**
-     * @param array<string, mixed> $data
-     */
-    public function exchangeArray(array $data): void
-    {
-        if (isset($data['payday'])) {
-            $this->setPayday((int) $data['payday']);
-        }
-        if (isset($data['months'])) {
-            $this->setMonths((int) $data['months']);
-        }
-        if (isset($data['provisioning'])) {
-            $this->setProvisioning((bool) $data['provisioning']);
-        }
-    }
-
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception('Not used');

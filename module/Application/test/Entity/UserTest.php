@@ -67,10 +67,8 @@ class UserTest extends TestCase
         self::assertSame($inputFilter, $user->getInputFilter());
     }
 
-    public function testArrayExchangeAndCopy(): void
+    public function testArrayCopy(): void
     {
-        $user = new User();
-
         $email = 'email';
         $name = 'name';
         $password = 'password';
@@ -80,16 +78,15 @@ class UserTest extends TestCase
         $status = User::STATUS_NOT_CONFIRMED;
         $surname = 'surname';
 
-        $user->exchangeArray([
-            'email' => $email,
-            'name' => $name,
-            'password' => $password,
-            'registrationToken' => $registrationToken,
-            'role' => $role,
-            'salt' => $salt,
-            'status' => $status,
-            'surname' => $surname,
-        ]);
+        $user = new User();
+        $user->setEmail($email);
+        $user->setName($name);
+        $user->setPassword($password);
+        $user->setRegistrationToken($registrationToken);
+        $user->setRole($role);
+        $user->setSalt($salt);
+        $user->setStatus($status);
+        $user->setSurname($surname);
 
         $copy = $user->getArrayCopy();
 

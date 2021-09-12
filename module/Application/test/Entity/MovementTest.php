@@ -46,4 +46,23 @@ class MovementTest extends TestCase
         $movement->setDate($date);
         self:: assertSame($date, $movement->getDate());
     }
+
+    public function testArrayCopy(): void
+    {
+        $account = new Account();
+        $category = new Category();
+        $date = new \DateTime();
+        $amount = 10.23;
+        $description = 'Description';
+
+        $movement = new Movement($account, $amount, $date, $description, $category);
+
+        $copy = $movement->getArrayCopy();
+
+        self:: assertSame($account, $copy['account']);
+        self:: assertSame($category, $copy['category']);
+        self:: assertSame($date, $copy['date']);
+        self:: assertSame($amount, $copy['amount']);
+        self:: assertSame($description, $copy['description']);
+    }
 }

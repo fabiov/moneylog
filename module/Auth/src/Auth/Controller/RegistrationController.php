@@ -10,7 +10,7 @@ use Auth\Form\Filter\RegistrationFilter;
 use Auth\Form\ForgottenPasswordFilter;
 use Auth\Form\ForgottenPasswordForm;
 use Auth\Form\RegistrationForm;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Mail\Message;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\ServiceManager\ServiceManager;
@@ -21,26 +21,19 @@ use Laminas\View\Model\ViewModel;
  */
 class RegistrationController extends AbstractActionController
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    /**
-     * @var ServiceManager
-     */
-    private $sm;
+    private ServiceManager $sm;
 
-    public function __construct(EntityManager $em, ServiceManager $sm)
+    public function __construct(EntityManagerInterface $em, ServiceManager $sm)
     {
         $this->em = $em;
         $this->sm = $sm;
     }
 
     /**
-     * @return \Laminas\Http\Response|ViewModel<mixed>
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return \Laminas\Http\Response|ViewModel<RegistrationForm>
+     * @throws \Exception
      */
     public function indexAction()
     {
@@ -53,12 +46,21 @@ class RegistrationController extends AbstractActionController
 
             if ($form->isValid()) {
 
-                /** @var array<string, mixed> $formData */
-                $formData = $form->getData();
-                $data = $this->prepareData($formData);
+                /** @var array<string, mixed> $data */
+                $data = $form->getData();
+
+                $salt = self::getRandomString(4);
 
                 $user = new User();
-                $user->exchangeArray($data);
+                $user->setName($data['name']);
+                $user->setSurname($data['surname']);
+                $user->setEmail($data['email']);
+                $user->setSalt($salt);
+                $user->setPassword(self::encriptPassword($data['password'], $salt));
+                $user->setStatus(User::STATUS_NOT_CONFIRMED);
+                $user->setRole('user');
+                $user->setRegistrationToken(self::getRandomString(8));
+
                 $this->em->persist($user);
                 $this->em->flush();
                 $this->sendConfirmationEmail($user);
@@ -165,21 +167,6 @@ class RegistrationController extends AbstractActionController
         }
         $this->layout('layout/unlogged');
         return new ViewModel(['userEmail' => $userEmail]);
-    }
-
-    /**
-     * @param array<string, mixed> $data
-     * @return array<string, mixed>
-     * @throws \Exception
-     */
-    private static function prepareData(array $data): array
-    {
-        $data['salt'] = self::getRandomString(4);
-        $data['password'] = self::encriptPassword($data['password'], $data['salt']);
-        $data['status'] = 0;
-        $data['role'] = 'user';
-        $data['registrationToken'] = self::getRandomString(8);
-        return $data;
     }
 
     /**
