@@ -5,22 +5,13 @@ declare(strict_types=1);
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Laminas\Filter\ToInt;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterAwareInterface;
-use Laminas\InputFilter\InputFilterInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="setting")
  */
-class Setting implements InputFilterAwareInterface
+class Setting
 {
-    /**
-     * @var ?InputFilterInterface
-     */
-    protected $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="User")
@@ -96,33 +87,5 @@ class Setting implements InputFilterAwareInterface
             'months' => $this->months,
             'provisioning' => $this->provisioning,
         ];
-    }
-
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception('Not used');
-    }
-
-    public function getInputFilter(): InputFilterInterface
-    {
-        if (!$this->inputFilter) {
-            $this->inputFilter = new InputFilter();
-            $this->inputFilter->add([
-                'filters' => [['name' => ToInt::class]],
-                'name' => 'payday',
-                'required' => true,
-            ]);
-            $this->inputFilter->add([
-                'filters' => [['name' => ToInt::class]],
-                'name' => 'months',
-                'required' => true,
-            ]);
-            $this->inputFilter->add([
-                'filters' => [['name' => ToInt::class]],
-                'name' => 'provisioning',
-                'required' => true,
-            ]);
-        }
-        return $this->inputFilter;
     }
 }

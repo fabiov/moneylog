@@ -10,7 +10,7 @@ use Auth\Form\Filter\LoginFilter;
 use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
 use Auth\Service\AuthManager;
-use Doctrine\ORM;
+use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Authentication\Result;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -20,30 +20,13 @@ use Laminas\Mvc\Controller\AbstractActionController;
  */
 class UserController extends AbstractActionController
 {
-    /**
-     * @var ORM\EntityManager
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    /**
-     * @var ?\stdClass
-     */
-    private $user;
+    private ?\stdClass$user;
 
-    /**
-     * Auth manager.
-     * @var AuthManager
-     */
-    private $authManager;
+    private AuthManager $authManager;
 
-    /**
-     * UserController constructor.
-     *
-     * @param ?\stdClass $user
-     * @param ORM\EntityManager $em
-     * @param AuthManager $authManager
-     */
-    public function __construct(?\stdClass $user, ORM\EntityManager $em, AuthManager $authManager)
+    public function __construct(?\stdClass $user, EntityManagerInterface $em, AuthManager $authManager)
     {
         $this->authManager = $authManager;
         $this->em          = $em;
@@ -52,9 +35,6 @@ class UserController extends AbstractActionController
 
     /**
      * @return array|\Laminas\Http\Response|mixed
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
      */
     public function updateAction()
     {
@@ -67,14 +47,13 @@ class UserController extends AbstractActionController
         if (!$user) {
             return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
         }
-        $user->setInputFilter(new UserFilter());
 
         $form = new UserForm();
         $form->bind($user);
         $message = '';
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($user->getInputFilter());
+            $form->setInputFilter(new UserFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
@@ -155,8 +134,6 @@ class UserController extends AbstractActionController
         if (!$user) {
             return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
         }
-
-        $user->setInputFilter(new UserFilter());
 
         $form     = new ChangePasswordForm();
         $error    = false;

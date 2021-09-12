@@ -4,8 +4,6 @@ namespace ApplicationTest\Entity;
 
 use Application\Entity\Category;
 use Application\Entity\User;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterInterface;
 use PHPUnit\Framework\TestCase;
 
 class CategoryTest extends TestCase
@@ -38,15 +36,6 @@ class CategoryTest extends TestCase
         $status = Category::STATUS_ACTIVE;
         $category->setStatus($status);
         self::assertSame($status, $category->getStatus());
-
-        self::assertInstanceOf(InputFilterInterface::class, $category->getInputFilter());
-    }
-
-    public function testSetInputFilterException(): void
-    {
-        $category = new Category();
-        self::expectException(\Exception::class);
-        $category->setInputFilter(new InputFilter());
     }
 
     public function testStatusException(): void

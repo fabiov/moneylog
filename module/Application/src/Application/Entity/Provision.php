@@ -3,22 +3,13 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Laminas\Filter\StringTrim;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterAwareInterface;
-use Laminas\InputFilter\InputFilterInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\ProvisionRepository")
  * @ORM\Table(name="provision")
  */
-class Provision implements InputFilterAwareInterface
+class Provision
 {
-    /**
-     * @var ?InputFilterInterface
-     */
-    private $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
@@ -105,36 +96,5 @@ class Provision implements InputFilterAwareInterface
             'amount' => $this->amount,
             'description' => $this->description,
         ];
-    }
-
-    public function setInputFilter(InputFilterInterface $inputFilter): InputFilterAwareInterface
-    {
-        throw new \Exception('Not used');
-    }
-
-    public function getInputFilter(): InputFilterInterface
-    {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-
-            $inputFilter->add([
-                'name' => 'date',
-                'required' => true,
-                'filters' => [['name' => StringTrim::class]],
-            ]);
-            $inputFilter->add([
-                'name' => 'amount',
-                'required' => true,
-                'filters' => [['name' => StringTrim::class]],
-            ]);
-            $inputFilter->add([
-                'name' => 'description',
-                'required' => true,
-                'filters' => [['name' => StringTrim::class]],
-            ]);
-
-            $this->inputFilter = $inputFilter;
-        }
-        return $this->inputFilter;
     }
 }

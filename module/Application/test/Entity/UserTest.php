@@ -4,7 +4,6 @@ namespace ApplicationTest\Entity;
 
 use Application\Entity\Setting;
 use Application\Entity\User;
-use Laminas\InputFilter\InputFilter;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
@@ -61,10 +60,6 @@ class UserTest extends TestCase
         $surname = 'surname';
         $user->setSurname($surname);
         self::assertSame($surname, $user->getSurname());
-
-        $inputFilter = new InputFilter();
-        $user->setInputFilter($inputFilter);
-        self::assertSame($inputFilter, $user->getInputFilter());
     }
 
     public function testArrayCopy(): void
@@ -106,11 +101,5 @@ class UserTest extends TestCase
         self::expectException(\InvalidArgumentException::class);
         $user = new User();
         $user->setStatus(2);
-    }
-
-    public function testGetUnsetInputFilter(): void
-    {
-        $user = new User();
-        self::assertInstanceOf(InputFilter::class, $user->getInputFilter());
     }
 }

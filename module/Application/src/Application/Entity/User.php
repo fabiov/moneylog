@@ -5,23 +5,15 @@ declare(strict_types=1);
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterAwareInterface;
-use Laminas\InputFilter\InputFilterInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name = "user", uniqueConstraints = {@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
  */
-class User implements InputFilterAwareInterface
+class User
 {
     public const STATUS_NOT_CONFIRMED = 0;
     public const STATUS_CONFIRMED = 1;
-
-    /**
-     * @var ?InputFilterInterface
-     */
-    private $inputFilter;
 
     /**
      * @ORM\Column(type="integer", options={"unsigned"=true});
@@ -110,49 +102,6 @@ class User implements InputFilterAwareInterface
             'lastLogin' => $this->lastLogin,
             'setting' => $this->setting,
         ];
-    }
-
-    public function setInputFilter(InputFilterInterface $inputFilter): self
-    {
-        $this->inputFilter = $inputFilter;
-        return $this;
-    }
-
-    public function getInputFilter(): InputFilterInterface
-    {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-
-            $inputFilter->add([
-                'name'     => 'email',
-                'required' => true,
-                'filters' => [['name' => 'StringTrim']]
-            ]);
-            $inputFilter->add([
-                'name' => 'name',
-                'required' => true,
-                'filters' => [['name' => 'StringTrim']]
-            ]);
-            $inputFilter->add([
-                'name' => 'surname',
-                'required' => true,
-                'filters' => [['name' => 'StringTrim']]
-            ]);
-            $inputFilter->add([
-                'name'     => 'password',
-                'required' => true,
-                'filters'  => [['name' => 'StringTrim']],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        'options' => ['encoding' => 'UTF-8', 'min' => 1],
-                    ],
-                ],
-            ]);
-
-            $this->inputFilter = $inputFilter;
-        }
-        return $this->inputFilter;
     }
 
     public function getId(): int

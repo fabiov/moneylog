@@ -4,7 +4,6 @@ namespace ApplicationTest\Entity;
 
 use Application\Entity\Setting;
 use Application\Entity\User;
-use Laminas\InputFilter\InputFilter;
 use PHPUnit\Framework\TestCase;
 
 class SettingTest extends TestCase
@@ -25,11 +24,6 @@ class SettingTest extends TestCase
         $provisioning = true;
         $setting->setProvisioning($provisioning);
         self::assertSame($provisioning, $setting->hasProvisioning());
-
-        self::assertInstanceOf(InputFilter::class, $setting->getInputFilter());
-
-        self::expectException(\Exception::class);
-        $setting->setInputFilter(new InputFilter());
     }
 
     public function setPaydayException(): void

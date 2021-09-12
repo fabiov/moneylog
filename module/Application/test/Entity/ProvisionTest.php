@@ -4,8 +4,6 @@ namespace ApplicationTest\Entity;
 
 use Application\Entity\Provision;
 use Application\Entity\User;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterInterface;
 use PHPUnit\Framework\TestCase;
 
 class ProvisionTest extends TestCase
@@ -49,11 +47,6 @@ class ProvisionTest extends TestCase
         $description = 'Description';
         $provision->setDescription($description);
         self::assertSame($description, $provision->getDescription());
-
-        self::assertInstanceOf(InputFilterInterface::class, $provision->getInputFilter());
-
-        self::expectException(\Exception::class);
-        $provision->setInputFilter(new InputFilter());
     }
 
     public function testArrayCopy(): void
