@@ -56,26 +56,24 @@ class ProvisionTest extends TestCase
         $provision->setInputFilter(new InputFilter());
     }
 
-    public function testArrayExchangeAndCopy(): void
+    public function testArrayCopy(): void
     {
         $provision = new Provision();
 
         $amount = 23.34;
-        $date = '2021-04-13';
+        $date = new \DateTime();
         $description = 'Description';
-        $user = 1;
+        $user = new User();
 
-        $provision->exchangeArray([
-            'amount' => $amount,
-            'date' => $date,
-            'description' => $description,
-            'user' => $user,
-        ]);
+        $provision->setAmount($amount);
+        $provision->setDate($date);
+        $provision->setDescription($description);
+        $provision->setUser($user);
 
         $copy = $provision->getArrayCopy();
 
         self::assertSame($amount, $copy['amount']);
-        self::assertSame($date, $copy['date']->format('Y-m-d'));
+        self::assertSame($date, $copy['date']);
         self::assertSame($description, $copy['description']);
         self::assertSame($user, $copy['user']);
     }

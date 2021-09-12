@@ -92,6 +92,9 @@ class User implements InputFilterAwareInterface
      */
     private $setting;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getArrayCopy(): array
     {
         return [
@@ -107,34 +110,6 @@ class User implements InputFilterAwareInterface
             'lastLogin' => $this->lastLogin,
             'setting' => $this->setting,
         ];
-    }
-
-    public function exchangeArray(array $data = []): void
-    {
-        if (isset($data['name'])) {
-            $this->setName($data['name']);
-        }
-        if (isset($data['surname'])) {
-            $this->setSurname($data['surname']);
-        }
-        if (isset($data['email'])) {
-            $this->setEmail($data['email']);
-        }
-        if (isset($data['password'])) {
-            $this->setPassword($data['password']);
-        }
-        if (isset($data['salt'])) {
-            $this->setSalt($data['salt']);
-        }
-        if (isset($data['status'])) {
-            $this->setStatus((int) $data['status']);
-        }
-        if (isset($data['role'])) {
-            $this->setRole($data['role']);
-        }
-        if (isset($data['registrationToken'])) {
-            $this->registrationToken = $data['registrationToken'];
-        }
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter): self
@@ -166,10 +141,7 @@ class User implements InputFilterAwareInterface
             $inputFilter->add([
                 'name'     => 'password',
                 'required' => true,
-                'filters'  => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
+                'filters'  => [['name' => 'StringTrim']],
                 'validators' => [
                     [
                         'name' => 'StringLength',
@@ -284,5 +256,10 @@ class User implements InputFilterAwareInterface
     public function getRegistrationToken(): string
     {
         return $this->registrationToken;
+    }
+
+    public function setRegistrationToken(string $registrationToken): void
+    {
+        $this->registrationToken = $registrationToken;
     }
 }

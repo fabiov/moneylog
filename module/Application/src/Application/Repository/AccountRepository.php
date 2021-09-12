@@ -31,7 +31,7 @@ class AccountRepository extends EntityRepository
      * @param int $userId
      * @param bool $onlyRecap
      * @param \DateTime|null|string $date
-     * @return array
+     * @return array<array>
      */
     public function getTotals(int $userId, bool $onlyRecap = false, $date = null): array
     {

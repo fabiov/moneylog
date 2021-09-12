@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MoneyLog\Form;
 
 use Laminas\Form\Form;

@@ -2,18 +2,24 @@
 
 namespace Auth;
 
+use Laminas\Loader\StandardAutoloader;
 use Laminas\Mail\Transport\Smtp;
 use Laminas\Mail\Transport\SmtpOptions;
 use Laminas\ServiceManager\ServiceManager;
-use Laminas\Loader\StandardAutoloader;
 
 class Module
 {
+    /**
+     * @return array<string, array>
+     */
     public function getConfig(): array
     {
         return include __DIR__ . '/config/module.config.php';
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function getAutoloaderConfig(): array
     {
         return [
@@ -25,6 +31,9 @@ class Module
         ];
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function getServiceConfig(): array
     {
         return [

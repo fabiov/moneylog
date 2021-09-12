@@ -3,35 +3,18 @@
  * @var Laminas\View\Renderer\PhpRenderer $this
  * @var MoneyLog\Form\MovementForm $form
  * @var array<string> $searchParams
- * @var bool $isRepeatable;
- * @var int $accountId;
+ * @var bool $isRepeatable
+ * @var int $accountId
  */
 ?>
 <?php echo $this->form()->openTag($form); ?>
 
+    <?php echo $this->sbaFormRow($form->get('account')); ?>
     <?php echo $this->sbaFormRow($form->get('type')); ?>
     <?php echo $this->sbaFormRow($form->get('date')); ?>
     <?php echo $this->sbaFormRow($form->get('amount')); ?>
     <?php echo $this->sbaFormRow($form->get('description')); ?>
     <?php echo $this->sbaFormRow($form->get('category')); ?>
-
-    <?php if ($isRepeatable): ?>
-    <div class="form-group">
-        <div class="checkbox">
-            <label>
-                <input name="repetition" type="checkbox" value="1" onchange="$('#repeat-data').slideToggle(200);">Ripeti
-            </label>
-        </div>
-        <div class="form-inline" id="repeat-data" style="display:none;">
-            Ripeti ogni
-            <select class="form-control" name="repetitionPeriod">
-                <option value="month">Mese</option>
-                <option value="week">Settimana</option>
-            </select>
-            per <input class="form-control" name="repetitionNumber" type="number" step="1" min="2" max="12" value="2"> volte
-        </div>
-    </div>
-    <?php endif; ?>
 
     <div class="text-right">
         <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $accountId], ['query' => $searchParams]); ?>">

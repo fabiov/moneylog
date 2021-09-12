@@ -1,69 +1,71 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Laminas\InputFilter\InputFilterAwareInterface;
-use Laminas\InputFilter\InputFilterInterface;
-use MoneyLog\Form\Filter\MovementFilter;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\MovementRepository")
  * @ORM\Table(name="movement")
  */
-class Movement implements InputFilterAwareInterface
+class Movement
 {
     public const IN = 1;
     public const OUT = -1;
 
     /**
-     * @var ?InputFilterInterface
-     */
-    protected $inputFilter;
-
-    /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
      */
-    private $id;
+    private ?int $id;
 
     /**
      * Many movements have one account. This is the owning side.
      * @ORM\ManyToOne(targetEntity="Account", inversedBy="movements")
      * @ORM\JoinColumn(name="accountId", referencedColumnName="id", nullable=false)
-     * @var Account
      */
-    private $account;
+    private Account $account;
 
     /**
      * Many movements have one category. This is the owning side.
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="movements")
      * @ORM\JoinColumn(name="categoryId", referencedColumnName="id", nullable=true, onDelete="SET NULL")
-     * @var ?Category
      */
-    private $category;
+    private ?Category $category;
 
     /**
      * @ORM\Column(name="date", type="date", nullable=false)
-     * @var \DateTime
      */
-    private $date;
+    private \DateTime $date;
 
     /**
      * @ORM\Column(name="amount", type="float", nullable=false)
-     * @var float
      */
-    private $amount;
+    private float $amount;
 
     /**
      * @ORM\Column(name="description", type="string", nullable=false)
-     * @var string
      */
-    private $description;
+    private string $description;
 
-    public function getId(): int
+    public function __construct(
+        Account $account,
+        float $amount,
+        \DateTime $date,
+        string $description,
+        ?Category $category = null
+    ) {
+        $this->account = $account;
+        $this->amount = $amount;
+        $this->date = $date;
+        $this->description = $description;
+        $this->category = $category;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -117,47 +119,18 @@ class Movement implements InputFilterAwareInterface
         $this->description = $description;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getArrayCopy(): array
     {
         return [
-            'id' => $this->id,
-            'account' => $this->amount,
+            'id' => $this->id ?? null,
+            'account' => $this->account,
             'category' => $this->category,
             'date' => $this->date,
             'amount' => $this->amount,
             'description' => $this->description,
         ];
-    }
-
-    public function exchangeArray(array $data): void
-    {
-        if (isset($data['accountId'])) {
-            $this->account = $data['accountId'];
-        }
-        if (isset($data['category'])) {
-            $this->category = $data['category'];
-        }
-        if (isset($data['date'])) {
-            $this->date = new \DateTime($data['date']);
-        }
-        if (isset($data['amount'])) {
-            $this->setAmount($this->amount = $data['amount']);
-        }
-        if (isset($data['description'])) {
-            $this->setDescription($data['description']);
-        }
-    }
-
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception('Not used');
-    }
-
-    public function getInputFilter(): InputFilterInterface
-    {
-        if (!$this->inputFilter) {
-            $this->inputFilter = new MovementFilter();
-        }
-        return $this->inputFilter;
     }
 }

@@ -48,11 +48,9 @@ class MoveForm extends Form
 
     /**
      * @param array<string> $accounts
-     * @return $this
      */
-    public function setAccountOptions(array $accounts): self
+    public function setAccountOptions(array $accounts): void
     {
         $this->get('targetAccountId')->setValueOptions($accounts);
-        return $this;
     }
 }

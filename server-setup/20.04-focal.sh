@@ -1,26 +1,23 @@
 #!/usr/bin/env bash
 
-# This setup is valid for: 
-#   - Ubuntu 16.04 LTS Xenial Xerus 
-#   - Ubuntu 17.04 Zesty Zapus
+apt-get update
 
-apt update
-apt updrade
-
-# install mysql 5.7
-debconf-set-selections <<< 'mysql-server-5.7 mysql-server/root_password password root'
-debconf-set-selections <<< 'mysql-server-5.7 mysql-server/root_password_again password root'
-apt-get -y install mysql-server-5.7
+# install mysql server
+#debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
+#debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
+apt-get -y install mysql-server
 mysql -uroot -proot -e "CREATE DATABASE moneylog DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
+mysql -uroot -proot -e "CREATE USER 'moneylog'@'localhost' IDENTIFIED BY 'password'";
+mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'localhost'";
 
-apt install -y git-core
-apt install -y unzip
-apt install -y apache2
-apt install -y libapache2-mod-php7.0 php7.0 php7.0-mysql php7.0-intl php-xml php7.0-mbstring
+apt-get install -y apache2 git unzip
+apt-get install -y libapache2-mod-php7.4 php7.4 php7.4-mysql php7.4-intl php-xml php7.4-mbstring
 
 mkdir /var/www/moneylog
 
+adduser --ingroup www-data fabio
 chown -R www-data:www-data /var/www/moneylog
+chmod -R g+w /var/www/moneylog
 
 cat << EOF >  /etc/apache2/sites-available/moneylog.conf
 <VirtualHost *:80>
@@ -42,7 +39,6 @@ EOF
 a2ensite moneylog
 a2enmod rewrite
 service apache2 restart
-usermod -a -G www-data ubuntu
 
 # create swap file 
 # https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04
@@ -54,6 +50,10 @@ swapon /swapfile
 if ! grep -q "swapfile" /etc/fstab; then
     echo "/swapfile none swap sw 0 0" >> /etc/fstab
 fi
+
+curl "https://raw.githubusercontent.com/andreafabrizi/Dropbox-Uploader/master/dropbox_uploader.sh" -o /hom/fabio/dropbox_uploader.sh
+chown fabio /hom/fabio/dropbox_uploader.sh
+chmod +x /hom/fabio/dropbox_uploader.sh
 
 ###############################
 # FOR DEVELOPMENT ENVIRONMENT #

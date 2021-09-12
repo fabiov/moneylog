@@ -13,7 +13,7 @@ class CategoryRepository extends EntityRepository
      *
      * @param int $userId
      * @param \DateTime $since
-     * @return array
+     * @return array<int, array<string, mixed>>
      */
     public function getAverages(int $userId, \DateTime $since): array
     {
@@ -62,7 +62,7 @@ class CategoryRepository extends EntityRepository
      *
      * @param int $userId
      * @param int|null $status null for all statuses
-     * @return array
+     * @return array<int, array>
      */
     public function oldestMovements(int $userId, int $status = null): array
     {

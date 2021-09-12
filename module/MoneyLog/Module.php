@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace MoneyLog;
 
-use Laminas\ModuleManager\Feature\AutoloaderProviderInterface;
-use Laminas\ModuleManager\Feature\ConfigProviderInterface;
 use Laminas\Loader\ClassMapAutoloader;
 use Laminas\Loader\StandardAutoloader;
+use Laminas\ModuleManager\Feature\AutoloaderProviderInterface;
+use Laminas\ModuleManager\Feature\ConfigProviderInterface;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
+    /**
+     * @return array<string, array>
+     */
     public function getAutoloaderConfig(): array
     {
         return [
@@ -23,11 +26,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
         ];
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function getConfig(): array
     {
         return include __DIR__ . '/config/module.config.php';
     }
 
+    /**
+     * @return array<string, array>
+     */
     public function getServiceConfig(): array
     {
         return ['factories' => []];

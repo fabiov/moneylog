@@ -14,7 +14,6 @@ use Doctrine\ORM;
 use Laminas\Authentication\Result;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\View\Model\ViewModel;
 
 /**
  * @method \Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger flashMessenger()
@@ -52,9 +51,10 @@ class UserController extends AbstractActionController
     }
 
     /**
-     * @throws ORM\OptimisticLockException
-     * @throws ORM\TransactionRequiredException
-     * @throws ORM\ORMException
+     * @return array|\Laminas\Http\Response|mixed
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
      */
     public function updateAction()
     {
@@ -92,8 +92,7 @@ class UserController extends AbstractActionController
     }
 
     /**
-     * @return Response|ViewModel
-     * @throws \Exception
+     * @return array<string, mixed>|\Laminas\Http\Response
      */
     public function loginAction()
     {
@@ -109,7 +108,7 @@ class UserController extends AbstractActionController
             $form->setData($request->getPost());
             if ($form->isValid()) {
 
-                /** @var array $data */
+                /** @var array<string, mixed> $data */
                 $data = $form->getData();
 
                 // Perform login attempt.
@@ -127,7 +126,7 @@ class UserController extends AbstractActionController
             }
         }
         $this->layout('layout/unlogged');
-        return new ViewModel(['form' => $form, 'messages' => $messages]);
+        return ['form' => $form, 'messages' => $messages];
     }
 
     /**
@@ -140,9 +139,10 @@ class UserController extends AbstractActionController
     }
 
     /**
-     * @throws ORM\OptimisticLockException
-     * @throws ORM\TransactionRequiredException
-     * @throws ORM\ORMException
+     * @return array|\Laminas\Http\Response|mixed
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
      */
     public function changePasswordAction()
     {

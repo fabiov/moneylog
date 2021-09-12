@@ -1,35 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MoneyLog\Controller;
 
 use Application\Entity\Account;
 use Application\Entity\Movement;
 use Application\Entity\User;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\OptimisticLockException;
-use MoneyLog\Form\AccountForm;
+use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use MoneyLog\Form\AccountForm;
 
 class AccountController extends AbstractActionController
 {
-    /**
-     * @var \stdClass
-     */
-    private $user;
+    private \stdClass $user;
 
-    /**
-     * @var EntityManager
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    public function __construct(\stdClass $user, EntityManager $em)
+    public function __construct(\stdClass $user, EntityManagerInterface $em)
     {
         $this->user = $user;
-        $this->em   = $em;
+        $this->em = $em;
     }
 
+    /**
+     * @return Response|array<AccountForm>
+     */
     public function addAction()
     {
         $form = new AccountForm();
@@ -44,11 +42,14 @@ class AccountController extends AbstractActionController
                 /** @var User $user */
                 $user = $this->em->find(User::class, $this->user->id);
 
-                /** @var array $data */
+                /** @var array<string, mixed> $data */
                 $data = $form->getData();
 
-                $account->exchangeArray($data);
+                $account->setClosed((bool) $data['closed']);
+                $account->setName($data['name']);
+                $account->setRecap($data['recap']);
                 $account->setUser($user);
+
                 $this->em->persist($account);
                 $this->em->flush();
 
@@ -58,9 +59,6 @@ class AccountController extends AbstractActionController
         return ['form' => $form];
     }
 
-    /**
-     * @return ViewModel
-     */
     public function indexAction(): ViewModel
     {
         $data = [];
@@ -90,6 +88,9 @@ class AccountController extends AbstractActionController
         return new ViewModel(['rows' => $data]);
     }
 
+    /**
+     * @return array<string, mixed>|Response
+     */
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -102,14 +103,27 @@ class AccountController extends AbstractActionController
         }
 
         $form = new AccountForm();
-        $form->bind($account);
+        $form->setData([
+            'name' => $account->getName(),
+            'recap' => $account->getRecap(),
+            'closed' => $account->isClosed(),
+        ]);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
+            $data = $request->getPost();
             $form->setInputFilter($account->getInputFilter());
-            $form->setData($request->getPost());
+            $form->setData($data);
 
             if ($form->isValid()) {
+
+                /** @var array<string, mixed> $validatedData */
+                $validatedData = $form->getData();
+
+                $account->setName($validatedData['name']);
+                $account->setRecap($validatedData['recap']);
+                $account->setClosed((bool) $validatedData['closed']);
+
                 $this->em->flush();
                 return $this->redirect()->toRoute('accantonaAccount'); // Redirect to list
             }
@@ -119,7 +133,6 @@ class AccountController extends AbstractActionController
 
     /**
      * @return Response
-     * @throws OptimisticLockException
      */
     public function deleteAction(): Response
     {
@@ -150,8 +163,6 @@ class AccountController extends AbstractActionController
     /**
      * @return \Laminas\Http\Response
      * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function balanceAction(): Response
     {
@@ -173,11 +184,7 @@ class AccountController extends AbstractActionController
 
             $currentBalance = $movementRepository->getBalance($id, new \DateTime());
 
-            $movement = new Movement();
-            $movement->setAccount($account);
-            $movement->setAmount($amount - $currentBalance);
-            $movement->setDescription($description);
-            $movement->setDate(new \DateTime());
+            $movement = new Movement($account, $amount - $currentBalance, new \DateTime(), $description);
             $this->em->persist($movement);
             $this->em->flush();
         }

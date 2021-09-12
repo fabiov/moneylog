@@ -1,4 +1,5 @@
 parameters:
+    checkGenericClassInNonGenericObjectType: false
     level: 8
     parallel:
         processTimeout: 180.0
@@ -7,3 +8,14 @@ parameters:
         - phtml
     paths:
         - %currentWorkingDirectory%/module
+    ignoreErrors:
+        - '/Call to an undefined method Laminas\\View\\Helper\\HeadTitle::setSeparator\(\)\./'
+        - '/Call to an undefined method Laminas\\EventManager\\EventInterface::\w+\(\)\./'
+        - '/Call to an undefined method Laminas\\Form\\ElementInterface::\w+\(\)\./'
+        - '/Call to an undefined method Laminas\\Stdlib\\RequestInterface::\w+\(\)./'
+        - '/Call to an undefined method Laminas\\Stdlib\\ResponseInterface::getHeaders\(\)\./'
+        - '/Call to an undefined method Laminas\\View\\Renderer\\PhpRenderer::\w+\(\)\./'
+        - '/Call to an undefined method Laminas\\View\\Renderer\\RendererInterface::\w+\(\)\./'
+        - '/Method MoneyLog\\Controller\\\w+::\w+\(\) return type has no value type specified in iterable type Laminas\\View\\Model\\ViewModel\./'
+        - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type \w+\\Form\\\w+\./'
+        - '/Parameter #1 \(Laminas\\View\\Helper\\Partial\|string\) of echo cannot be converted to string\./'

@@ -6,6 +6,8 @@ namespace Application\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Laminas\Filter\StringTrim;
+use Laminas\Filter\ToInt;
 use Laminas\InputFilter\InputFilter;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
@@ -71,6 +73,11 @@ class Account implements InputFilterAwareInterface
         return $this->name;
     }
 
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
     public function getUser(): User
     {
         return $this->user;
@@ -86,6 +93,24 @@ class Account implements InputFilterAwareInterface
         return $this->closed;
     }
 
+    public function setClosed(bool $closed): void
+    {
+        $this->closed = $closed;
+    }
+
+    public function getRecap(): int
+    {
+        return $this->recap;
+    }
+
+    public function setRecap(int $recap): void
+    {
+        $this->recap = $recap;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
     public function getArrayCopy(): array
     {
         return [
@@ -96,27 +121,6 @@ class Account implements InputFilterAwareInterface
             'closed' => $this->closed,
             'movements' => $this->movements,
         ];
-    }
-
-    public function exchangeArray(array $data = []): self
-    {
-        if (isset($data['user'])) {
-            $this->user = $data['user'];
-        }
-
-        if (isset($data['name'])) {
-            $this->name = $data['name'];
-        }
-
-        if (isset($data['recap'])) {
-            $this->recap = $data['recap'];
-        }
-
-        if (isset($data['closed'])) {
-            $this->closed = (bool) $data['closed'];
-        }
-
-        return $this;
     }
 
     /**
@@ -134,6 +138,23 @@ class Account implements InputFilterAwareInterface
     {
         if (!$this->inputFilter) {
             $this->inputFilter = new InputFilter();
+
+            $this->inputFilter->add([
+                'name' => 'name',
+                'required' => true,
+                'filters' => [['name' => StringTrim::class]],
+            ]);
+            $this->inputFilter->add([
+                'name' => 'recap',
+                'required' => false,
+                'filters' => [['name' => ToInt::class]],
+            ]);
+            // with following filter the validation fails
+//            $this->inputFilter->add([
+//                'name' => 'closed',
+//                'required' => false,
+//                'filters' => [['name' => Boolean::class]],
+//            ]);
         }
         return $this->inputFilter;
     }

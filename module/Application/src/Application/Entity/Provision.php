@@ -93,6 +93,9 @@ class Provision implements InputFilterAwareInterface
         $this->description = $description;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getArrayCopy(): array
     {
         return [
@@ -102,22 +105,6 @@ class Provision implements InputFilterAwareInterface
             'amount' => $this->amount,
             'description' => $this->description,
         ];
-    }
-
-    public function exchangeArray(array $data = []): void
-    {
-        if (isset($data['user'])) {
-            $this->user = $data['user'];
-        }
-        if (isset($data['date'])) {
-            $this->date = new \DateTime($data['date']);
-        }
-        if (isset($data['amount'])) {
-            $this->amount = $data['amount'];
-        }
-        if (isset($data['description'])) {
-            $this->description = $data['description'];
-        }
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter): InputFilterAwareInterface
