@@ -43,6 +43,7 @@ class SettingsController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
+                /** @var array<string, mixed> $data */
                 $data = $form->getData();
 
                 $setting->setPayday($data['payday']);
