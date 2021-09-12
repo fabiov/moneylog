@@ -48,6 +48,13 @@ return [
 //                'host'              => 'authsmtp.securemail.pro',
 //                'name'              => 'authsmtp.securemail.pro',
 //                'port'              => '465',
+
+                //mailtrap
+//                'name'              => 'smtp.mailtrap.io',
+//                'host'              => 'smtp.mailtrap.io',
+//                'port'              => 2525
+//                'connection_class'  => 'crammd5',
+//                'connection_config' => ['username' => '','password' => ''],
             ],
         ],
     ],
