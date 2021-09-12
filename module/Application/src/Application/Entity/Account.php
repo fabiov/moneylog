@@ -6,23 +6,13 @@ namespace Application\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Laminas\Filter\StringTrim;
-use Laminas\Filter\ToInt;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterAwareInterface;
-use Laminas\InputFilter\InputFilterInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\AccountRepository")
  * @ORM\Table(name="account")
  */
-class Account implements InputFilterAwareInterface
+class Account
 {
-    /**
-     * @var ?InputFilterInterface
-     */
-    private $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
@@ -121,41 +111,5 @@ class Account implements InputFilterAwareInterface
             'closed' => $this->closed,
             'movements' => $this->movements,
         ];
-    }
-
-    /**
-     * Not used
-     *
-     * @param  InputFilterInterface $inputFilter
-     * @throws \Exception
-     */
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception("Not used");
-    }
-
-    public function getInputFilter(): InputFilterInterface
-    {
-        if (!$this->inputFilter) {
-            $this->inputFilter = new InputFilter();
-
-            $this->inputFilter->add([
-                'name' => 'name',
-                'required' => true,
-                'filters' => [['name' => StringTrim::class]],
-            ]);
-            $this->inputFilter->add([
-                'name' => 'recap',
-                'required' => false,
-                'filters' => [['name' => ToInt::class]],
-            ]);
-            // with following filter the validation fails
-//            $this->inputFilter->add([
-//                'name' => 'closed',
-//                'required' => false,
-//                'filters' => [['name' => Boolean::class]],
-//            ]);
-        }
-        return $this->inputFilter;
     }
 }

@@ -12,6 +12,7 @@ use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use MoneyLog\Form\AccountForm;
+use MoneyLog\Form\Filter\AccountFilter;
 
 class AccountController extends AbstractActionController
 {
@@ -34,7 +35,7 @@ class AccountController extends AbstractActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $account = new Account();
-            $form->setInputFilter($account->getInputFilter());
+            $form->setInputFilter(new AccountFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
@@ -112,7 +113,7 @@ class AccountController extends AbstractActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $request->getPost();
-            $form->setInputFilter($account->getInputFilter());
+            $form->setInputFilter(new AccountFilter());
             $form->setData($data);
 
             if ($form->isValid()) {

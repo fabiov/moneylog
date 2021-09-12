@@ -4,8 +4,6 @@ namespace ApplicationTest\Entity;
 
 use Application\Entity\Account;
 use Application\Entity\User;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterInterface;
 use PHPUnit\Framework\TestCase;
 
 class AccountTest extends TestCase
@@ -42,11 +40,6 @@ class AccountTest extends TestCase
         $closed = false;
         $account->setClosed($closed);
         self::assertSame($closed, $account->isClosed());
-
-        self::assertInstanceOf(InputFilterInterface::class, $account->getInputFilter());
-
-        $this->expectException(\Exception::class);
-        $account->setInputFilter(new InputFilter());
     }
 
     public function testArrayExchangeAndCopy(): void
