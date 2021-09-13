@@ -228,7 +228,9 @@ class MovementController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-                $account = $this->getAccount($data['account']);
+                /** @var array<string, mixed> $validatedData */
+                $validatedData = $form->getData();
+                $account = $this->getAccount($validatedData['account']);
 
                 if (!$account) {
                     return $this->getRedirectToDashboard();
@@ -236,10 +238,10 @@ class MovementController extends AbstractActionController
 
                 $movement = new Movement(
                     $account,
-                    $data['amount'] * $data['type'],
-                    new \DateTime($data['date']),
-                    $data['description'],
-                    $this->getCategory($data['category'])
+                    $validatedData['amount'] * $validatedData['type'],
+                    new \DateTime($validatedData['date']),
+                    $validatedData['description'],
+                    $this->getCategory($validatedData['category'])
                 );
 
                 $this->em->persist($movement);
