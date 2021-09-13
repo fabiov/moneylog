@@ -7,6 +7,7 @@ namespace MoneyLog\Controller;
 use Application\Entity\Account;
 use Application\Entity\Movement;
 use Application\Entity\User;
+use Auth\Model\LoggedUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -16,11 +17,11 @@ use MoneyLog\Form\Filter\AccountFilter;
 
 class AccountController extends AbstractActionController
 {
-    private \stdClass $user;
+    private LoggedUser $user;
 
     private EntityManagerInterface $em;
 
-    public function __construct(\stdClass $user, EntityManagerInterface $em)
+    public function __construct(LoggedUser $user, EntityManagerInterface $em)
     {
         $this->user = $user;
         $this->em = $em;
@@ -41,7 +42,7 @@ class AccountController extends AbstractActionController
             if ($form->isValid()) {
 
                 /** @var User $user */
-                $user = $this->em->find(User::class, $this->user->id);
+                $user = $this->em->find(User::class, $this->user->getId());
 
                 /** @var array<string, mixed> $data */
                 $data = $form->getData();
@@ -69,7 +70,7 @@ class AccountController extends AbstractActionController
 
         // i dati in un record set potrebbero non essere nell'altro e vice versa
 
-        $accountAvailable = $accountRepository->getTotals($this->user->id, false, new \DateTime());
+        $accountAvailable = $accountRepository->getTotals($this->user->getId(), false, new \DateTime());
         foreach ($accountAvailable as $i) {
             $data[$i['id']]['id']        = $i['id'];
             $data[$i['id']]['name']      = $i['name'];
@@ -78,7 +79,7 @@ class AccountController extends AbstractActionController
             $data[$i['id']]['available'] = $i['total'];
         }
 
-        $accountBalances  = $accountRepository->getTotals($this->user->id, false);
+        $accountBalances  = $accountRepository->getTotals($this->user->getId(), false);
         foreach ($accountBalances as $i) {
             $data[$i['id']]['id']        = $i['id'];
             $data[$i['id']]['name']      = $i['name'];
@@ -97,7 +98,7 @@ class AccountController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         /** @var ?Account $account */
-        $account = $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
+        $account = $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
 
         if (!$account) {
             return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
@@ -146,7 +147,7 @@ class AccountController extends AbstractActionController
         if ($request->isPost()) {
 
             /* @var Account $account */
-            $account = $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
+            $account = $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
             if ($account) {
                 $this->em->createQueryBuilder()
                     ->delete(Movement::class, 'm')
@@ -176,7 +177,7 @@ class AccountController extends AbstractActionController
         /** @var ?Account $account */
         $account = $this->em
             ->getRepository(Account::class)
-            ->findOneBy(['id' => $id, 'user' => $this->user->id]);
+            ->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
 
         if ($account) {
 

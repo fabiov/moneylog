@@ -9,23 +9,18 @@ use Application\Entity\Category;
 use Application\Entity\Movement;
 use Application\Entity\Provision;
 use Application\Entity\Setting;
+use Auth\Model\LoggedUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
 class DashboardController extends AbstractActionController
 {
-    /**
-     * @var \stdClass
-     */
-    private $user;
+    private LoggedUser $user;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em, \stdClass $user)
+    public function __construct(EntityManagerInterface $em, LoggedUser $user)
     {
         $this->em   = $em;
         $this->user = $user;
@@ -46,18 +41,18 @@ class DashboardController extends AbstractActionController
         $categoryRepository = $this->em->getRepository(Category::class);
 
         /** @var Setting $setting */
-        $setting = $this->em->find(Setting::class, $this->user->id);
+        $setting = $this->em->find(Setting::class, $this->user->getId());
 
         $since = new \DateTime('-' . $setting->getMonths() . ' MONTH');
-        $avgPerCategory = $categoryRepository->getAverages($this->user->id, $since);
+        $avgPerCategory = $categoryRepository->getAverages($this->user->getId(), $since);
 
         usort($avgPerCategory, static function ($a, $b) {
             return ($a['average'] ?? 0) <=> ($b['average'] ?? 0);
         });
 
-        $totalExpense   = $movementRepository->getTotalExpense($this->user->id);
-        $stored         = $provisionRepository->getSum($this->user->id) + $totalExpense;
-        $accounts       = $accountRepository->getTotals($this->user->id, true, new \DateTime());
+        $totalExpense   = $movementRepository->getTotalExpense($this->user->getId());
+        $stored         = $provisionRepository->getSum($this->user->getId()) + $totalExpense;
+        $accounts       = $accountRepository->getTotals($this->user->getId(), true, new \DateTime());
         $donutSpends    = [];
         $donutAccounts  = [];
         $currentDay     = date('j');
@@ -97,7 +92,7 @@ class DashboardController extends AbstractActionController
             /** @var \DateTime $i */
             $monthlyOverviewData[$i->format('Y-m-d')] = ['date' => $i->format('d/m/Y'), 'amount' => 0];
         }
-        foreach ($movementRepository->getMovementByDay($this->user->id, $begin, $end) as $item) {
+        foreach ($movementRepository->getMovementByDay($this->user->getId(), $begin, $end) as $item) {
             /** @var \DateTime $date */
             $date = $item['date'];
             $monthlyOverviewData[$date->format('Y-m-d')] = [

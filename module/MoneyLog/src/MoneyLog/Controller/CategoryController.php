@@ -7,6 +7,7 @@ namespace MoneyLog\Controller;
 use Application\Entity\Category;
 use Application\Entity\Provision;
 use Application\Entity\User;
+use Auth\Model\LoggedUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -16,11 +17,11 @@ use MoneyLog\Form\Filter\CategoryFilter;
 
 class CategoryController extends AbstractActionController
 {
-    private \stdClass $user;
+    private LoggedUser $user;
 
     private EntityManagerInterface $em;
 
-    public function __construct(\stdClass $user, EntityManagerInterface $em)
+    public function __construct(LoggedUser $user, EntityManagerInterface $em)
     {
         $this->em   = $em;
         $this->user = $user;
@@ -43,7 +44,7 @@ class CategoryController extends AbstractActionController
             if ($form->isValid()) {
 
                 /** @var User $user */
-                $user = $this->em->getRepository(User::class)->find($this->user->id);
+                $user = $this->em->getRepository(User::class)->find($this->user->getId());
 
                 /** @var array<string> $data */
                 $data = $form->getData();
@@ -64,7 +65,7 @@ class CategoryController extends AbstractActionController
     public function indexAction()
     {
         return new ViewModel([
-            'rows' => $this->em->getRepository(Category::class)->findBy(['user' => $this->user->id])
+            'rows' => $this->em->getRepository(Category::class)->findBy(['user' => $this->user->getId()])
         ]);
     }
 
@@ -77,7 +78,7 @@ class CategoryController extends AbstractActionController
 
         /** @var ?Category $category */
         $category = $this->em->getRepository(Category::class)
-            ->findOneBy(['id' => $id, 'user' => $this->user->id]);
+            ->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
 
         if (!$category) {
             return $this->redirect()->toRoute('accantona_categoria', ['action' => 'index']);
@@ -121,7 +122,7 @@ class CategoryController extends AbstractActionController
         /** @var ?Category $category */
         $category = $categoryRepository->find($id);
 
-        if ($category && $category->getUser()->getId() === $this->user->id) {
+        if ($category && $category->getUser()->getId() === $this->user->getId()) {
             $sum = $categoryRepository->getSum($id);
 
             $this->em->beginTransaction();

@@ -60,7 +60,13 @@ class Module
         $acl = new Acl($config);
 
         // The default role is guest $acl everyone is guest untill it gets logged in
-        $role = $auth->hasIdentity() ? $auth->getIdentity()->role : Acl::DEFAULT_ROLE;
+        if ($auth->hasIdentity()) {
+            /** @var \Auth\Model\LoggedUser $loggedUser */
+            $loggedUser = $auth->getIdentity();
+            $role = $loggedUser->getRole();
+        } else {
+            $role = Acl::DEFAULT_ROLE;
+        }
 
         $controller = $routeMatch->getParam('controller');
         $action = $routeMatch->getParam('action');
