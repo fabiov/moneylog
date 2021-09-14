@@ -35,7 +35,6 @@ class AccountController extends AbstractActionController
         $form = new AccountForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $account = new Account();
             $form->setInputFilter(new AccountFilter());
             $form->setData($request->getPost());
 
@@ -47,10 +46,7 @@ class AccountController extends AbstractActionController
                 /** @var array<string, mixed> $data */
                 $data = $form->getData();
 
-                $account->setClosed((bool) $data['closed']);
-                $account->setName($data['name']);
-                $account->setRecap($data['recap']);
-                $account->setUser($user);
+                $account = new Account($user, $data['name'], $data['recap'], false);
 
                 $this->em->persist($account);
                 $this->em->flush();
