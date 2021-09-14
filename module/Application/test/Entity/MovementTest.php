@@ -5,6 +5,7 @@ namespace ApplicationTest\Entity;
 use Application\Entity\Account;
 use Application\Entity\Category;
 use Application\Entity\Movement;
+use Application\Entity\User;
 use PHPUnit\Framework\TestCase;
 
 class MovementTest extends TestCase
@@ -38,7 +39,7 @@ class MovementTest extends TestCase
         $movement->setAmount($amount);
         self:: assertSame($amount, $movement->getAmount());
 
-        $category = new Category();
+        $category = new Category(new User(), '', Category::STATUS_ACTIVE);
         $movement->setCategory($category);
         self:: assertSame($category, $movement->getCategory());
 

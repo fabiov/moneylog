@@ -28,7 +28,7 @@ class CategoryController extends AbstractActionController
     }
 
     /**
-     * @return Response|array<CategoryForm>
+     * @return Response|array<string, CategoryForm>
      */
     public function addAction()
     {
@@ -37,7 +37,6 @@ class CategoryController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $category = new Category();
             $form->setInputFilter(new CategoryFilter());
             $form->setData($request->getPost());
 
@@ -49,9 +48,8 @@ class CategoryController extends AbstractActionController
                 /** @var array<string> $data */
                 $data = $form->getData();
 
-                $category->setDescription($data['description']);
-                $category->setStatus((int) $data['status']);
-                $category->setUser($user);
+                $category = new Category($user, $data['description'], (int) $data['status']);
+
                 $this->em->persist($category);
                 $this->em->flush();
 
@@ -62,7 +60,7 @@ class CategoryController extends AbstractActionController
         return ['form' => $form];
     }
 
-    public function indexAction()
+    public function indexAction(): ViewModel
     {
         return new ViewModel([
             'rows' => $this->em->getRepository(Category::class)->findBy(['user' => $this->user->getId()])
