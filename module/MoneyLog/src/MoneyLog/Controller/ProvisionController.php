@@ -33,7 +33,6 @@ class ProvisionController extends AbstractActionController
         $form = new AccantonatoForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $provision = new Provision();
             $form->setInputFilter(new ProvisionFilter());
             $form->setData($request->getPost());
 
@@ -45,10 +44,7 @@ class ProvisionController extends AbstractActionController
                 /** @var array<string, mixed> $data */
                 $data = $form->getData();
 
-                $provision->setDescription($data['description']);
-                $provision->setAmount($data['amount']);
-                $provision->setDate(new \DateTime($data['date']));
-                $provision->setUser($user);
+                $provision = new Provision($user, new \DateTime($data['date']), $data['amount'], $data['description']);
 
                 $this->em->persist($provision);
                 $this->em->flush();

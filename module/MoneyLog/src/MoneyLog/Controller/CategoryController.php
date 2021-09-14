@@ -112,7 +112,7 @@ class CategoryController extends AbstractActionController
      */
     public function deleteAction(): Response
     {
-        $id   = (int) $this->params()->fromRoute('id');
+        $id = (int) $this->params()->fromRoute('id');
 
         /** @var \Application\Repository\CategoryRepository $categoryRepository */
         $categoryRepository = $this->em->getRepository(Category::class);
@@ -125,11 +125,12 @@ class CategoryController extends AbstractActionController
 
             $this->em->beginTransaction();
             if ($sum) {
-                $provision = new Provision();
-                $provision->setUser($category->getUser());
-                $provision->setDescription('Conguaglio rimozione categoria ' . $category->getDescription());
-                $provision->setAmount($sum);
-                $provision->setDate(new \DateTime());
+                $provision = new Provision(
+                    $category->getUser(),
+                    new \DateTime(),
+                    $sum,
+                    'Conguaglio rimozione categoria ' . $category->getDescription()
+                );
                 $this->em->persist($provision);
             }
             $this->em->remove($category);
