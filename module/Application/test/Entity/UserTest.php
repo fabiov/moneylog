@@ -53,7 +53,7 @@ class UserTest extends TestCase
         $user->setSalt($salt);
         self::assertSame($salt, $user->getSalt());
 
-        $setting = new Setting($user);
+        $setting = new Setting($user, 1, 2, true);
         $user->setSetting($setting);
         self::assertSame($setting, $user->getSetting());
 

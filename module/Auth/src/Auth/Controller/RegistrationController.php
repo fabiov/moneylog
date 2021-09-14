@@ -91,8 +91,6 @@ class RegistrationController extends AbstractActionController
 
     /**
      * @return \Laminas\View\Model\ViewModel<mixed>
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function confirmEmailAction(): ViewModel
     {
@@ -119,9 +117,8 @@ class RegistrationController extends AbstractActionController
     }
 
     /**
-     * @return \Laminas\Http\Response|ViewModel<mixed>
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return \Laminas\Http\Response|\Laminas\View\Model\ViewModel<mixed>
+     * @throws \Exception
      */
     public function forgottenPasswordAction()
     {

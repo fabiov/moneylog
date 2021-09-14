@@ -16,31 +16,30 @@ class Setting
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="User")
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")
-     * @var User
      */
-    protected $user;
+    protected User $user;
 
     /**
      * @ORM\Column(name="paypay", type="smallint", nullable=false, options={"unsigned"=true, "default"=1})
-     * @var int
      */
-    protected $payday = 1;
+    protected int $payday = 1;
 
     /**
      * @ORM\Column(name="months", type="smallint", nullable=false, options={"unsigned"=true, "default"=12})
-     * @var int
      */
-    protected $months = 12;
+    protected int $months;
 
     /**
      * @ORM\Column(name="provisioning", type="boolean", nullable=false, options={"default"=false})
-     * @var boolean
      */
-    protected $provisioning = false;
+    protected bool $provisioning;
 
-    public function __construct(User $user)
+    public function __construct(User $user, int $payday = 1, int $months = 12, bool $provisioning = false)
     {
         $this->user = $user;
+        $this->payday = $payday;
+        $this->months = $months;
+        $this->provisioning = $provisioning;
     }
 
     public function getPayday(): int
