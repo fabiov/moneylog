@@ -9,6 +9,7 @@ use Auth\Form\Filter\ChangePasswordFilter;
 use Auth\Form\Filter\LoginFilter;
 use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
+use Auth\Model\LoggedUser;
 use Auth\Service\AuthManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Authentication\Result;
@@ -22,11 +23,11 @@ class UserController extends AbstractActionController
 {
     private EntityManagerInterface $em;
 
-    private ?\stdClass$user;
+    private ?LoggedUser $user;
 
     private AuthManager $authManager;
 
-    public function __construct(?\stdClass $user, EntityManagerInterface $em, AuthManager $authManager)
+    public function __construct(?LoggedUser $user, EntityManagerInterface $em, AuthManager $authManager)
     {
         $this->authManager = $authManager;
         $this->em          = $em;
@@ -43,13 +44,14 @@ class UserController extends AbstractActionController
         }
 
         /** @var ?User $user */
-        $user = $this->em->find(User::class, $this->user->id);
+        $user = $this->em->find(User::class, $this->user->getId());
         if (!$user) {
             return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
         }
 
         $form = new UserForm();
-        $form->bind($user);
+        $form->setData(['name' => $user->getName(), 'surname' => $user->getSurname()]);
+
         $message = '';
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -57,10 +59,10 @@ class UserController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                /** @var User $data */
+                /** @var array<string, string> $data */
                 $data = $form->getData();
-                $user->setName($data->getName());
-                $user->setSurname($data->getSurname());
+                $user->setName($data['name']);
+                $user->setSurname($data['surname']);
                 $this->em->persist($user);
                 $this->em->flush();
                 $message = 'I tuoi dati sono stati salvati correttamente';
@@ -130,7 +132,7 @@ class UserController extends AbstractActionController
         }
 
         /** @var ?User $user */
-        $user = $this->em->find(User::class, $this->user->id);
+        $user = $this->em->find(User::class, $this->user->getId());
         if (!$user) {
             return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
         }

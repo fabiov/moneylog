@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Auth\Service;
 
 use Application\Entity\User;
+use Auth\Model\LoggedUser;
+use Auth\Model\LoggedUserSettings;
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Authentication\Adapter\AdapterInterface;
 use Laminas\Authentication\Result;
@@ -15,20 +17,9 @@ use Laminas\Authentication\Result;
  */
 class AuthAdapter implements AdapterInterface
 {
-    /**
-     * @var string
-     */
-    private $email;
-
-    /**
-     * @var string
-     */
-    private $password;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private ?string $email;
+    private ?string $password;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -69,14 +60,15 @@ class AuthAdapter implements AdapterInterface
             $this->entityManager->flush();
 
             // Great! The password hash matches. Return user identity (email) to be saved in session for later use.
-            return new Result(Result::SUCCESS, (object) [
-                'id'      => $user->getId(),
-                'name'    => $user->getName(),
-                'surname' => $user->getSurname(),
-                'email'   => $user->getEmail(),
-                'role'    => $user->getRole(),
-                'setting' => $user->getSetting(),
-            ], ['Authenticated successfully.']);
+            $settings = $user->getSetting();
+            return new Result(Result::SUCCESS, new LoggedUser(
+                $user->getId(),
+                $user->getName(),
+                $user->getSurname(),
+                $user->getEmail(),
+                $user->getRole(),
+                new LoggedUserSettings($settings->getPayday(), $settings->getMonths(), $settings->hasProvisioning())
+            ), ['Authenticated successfully.']);
         }
 
         // If password check didn't pass return 'Invalid Credential' failure status.
