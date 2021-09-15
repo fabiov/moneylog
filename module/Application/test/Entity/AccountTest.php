@@ -11,7 +11,7 @@ class AccountTest extends TestCase
     public function testGettersWithoutSetter(): void
     {
         $id = 1;
-        $account = new Account(new User(), '');
+        $account = new Account(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), '');
         $reflectionClass = new \ReflectionClass($account);
         $reflectedProperty = $reflectionClass->getProperty('id');
         $reflectedProperty->setAccessible(true);
@@ -23,7 +23,7 @@ class AccountTest extends TestCase
 
     public function testSetterAndGetter(): void
     {
-        $user = new User();
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
         $name = 'test';
         $account = new Account($user, $name);
 

@@ -11,7 +11,7 @@ class CategoryTest extends TestCase
     public function testGettersWithoutSetter(): void
     {
         $id = 1;
-        $category = new Category(new User(), '', Category::STATUS_ACTIVE);
+        $category = new Category(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), '', Category::STATUS_ACTIVE);
         $reflectionClass = new \ReflectionClass($category);
         $reflectedProperty = $reflectionClass->getProperty('id');
         $reflectedProperty->setAccessible(true);
@@ -23,7 +23,7 @@ class CategoryTest extends TestCase
 
     public function testSetterAndGetters(): void
     {
-        $user = new User();
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
         $description = 'Description';
         $status = Category::STATUS_ACTIVE;
 

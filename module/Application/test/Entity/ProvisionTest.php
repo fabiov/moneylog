@@ -10,7 +10,7 @@ class ProvisionTest extends TestCase
 {
     public function testGettersWithoutSetter(): void
     {
-        $provision = new Provision(new User(), new \DateTime(), 23.9, '');
+        $provision = new Provision(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), new \DateTime(), 23.9, '');
         $reflectionClass = new \ReflectionClass($provision);
 
         $id = 1;
@@ -22,7 +22,7 @@ class ProvisionTest extends TestCase
 
     public function testGettersAndSetters(): void
     {
-        $user = new User();
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
         $date = new \DateTime();
         $amount = 67.65;
         $description = 'Description';
