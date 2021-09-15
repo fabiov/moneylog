@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Application\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,43 +18,46 @@ class Account
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
      */
-    private $id;
+    private ?int $id;
 
     /**
      * Many accounts have one user. This is the owning side.
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="userId", referencedColumnName="id", nullable=false)
-     * @var User
      */
-    private $user;
+    private User $user;
 
     /**
      * @ORM\Column(type="string", length=255, unique=false, nullable=false)
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
-     * @var int
      */
-    private $recap = 0;
+    private int $recap;
 
     /**
      * @ORM\Column(name="closed", type="boolean", nullable=false, options={"default": false})
-     * @var bool
      */
-    private $closed = false;
+    private bool $closed;
 
     /**
      * @ORM\OneToMany(targetEntity="Movement", mappedBy="account")
-     * @var ArrayCollection<int, Movement>
      */
-    private $movements;
+    private Collection $movements;
 
-    public function getId(): int
+    public function __construct(User $user, string $name, int $recap = 0, bool $closed = false)
+    {
+        $this->user = $user;
+        $this->name = $name;
+        $this->recap = $recap;
+        $this->closed = $closed;
+        $this->movements = new ArrayCollection();
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -71,11 +75,6 @@ class Account
     public function getUser(): User
     {
         return $this->user;
-    }
-
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
     }
 
     public function isClosed(): bool

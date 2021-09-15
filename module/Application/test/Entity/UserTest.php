@@ -11,7 +11,7 @@ class UserTest extends TestCase
     public function testGettersWithoutSetter(): void
     {
         $id = 1;
-        $user = new User();
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
         $reflectionClass = new \ReflectionClass($user);
         $reflectedProperty = $reflectionClass->getProperty('id');
         $reflectedProperty->setAccessible(true);
@@ -23,7 +23,7 @@ class UserTest extends TestCase
 
     public function testGettersAndSetters(): void
     {
-        $user = new User();
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
 
         $status = User::STATUS_CONFIRMED;
         $user->setStatus($status);
@@ -53,7 +53,7 @@ class UserTest extends TestCase
         $user->setSalt($salt);
         self::assertSame($salt, $user->getSalt());
 
-        $setting = new Setting($user);
+        $setting = new Setting($user, 1, 2, true);
         $user->setSetting($setting);
         self::assertSame($setting, $user->getSetting());
 
@@ -69,7 +69,7 @@ class UserTest extends TestCase
     public function testSetStatusException(): void
     {
         self::expectException(\InvalidArgumentException::class);
-        $user = new User();
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
         $user->setStatus(2);
     }
 }

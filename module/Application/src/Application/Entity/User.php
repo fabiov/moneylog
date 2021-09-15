@@ -19,72 +19,81 @@ class User
      * @ORM\Column(type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Id
-     * @var int
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string")
-     * @var string
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="string", nullable=false)
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", nullable=false)
-     * @var string
      */
-    private $surname;
+    private string $surname;
 
     /**
      * @ORM\Column(type="string", nullable=false, length=32, options={"fixed" = true})
-     * @var string
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", nullable=false, length=4, options={"fixed" = true})
-     * @var string
      */
-    private $salt;
+    private string $salt;
 
     /**
      * @ORM\Column(type="integer", nullable=false, options={"unsigned"=true})
-     * @var int
      */
-    private $status = 0;
+    private int $status = 0;
 
     /**
      * @ORM\Column(type="string", nullable=false)
-     * @var string
      */
-    private $role;
+    private string $role;
 
     /**
      * @ORM\Column(type="string", nullable=false, length=8, options={"fixed" = true})
-     * @var string
      */
-    private $registrationToken;
+    private string $registrationToken;
 
     /**
      * @ORM\Column(name="lastLogin", nullable=true, type="datetime", nullable=true)
-     * @var \DateTime
      */
-    private $lastLogin;
+    private \DateTime $lastLogin;
 
     /**
-     * One user has One settings.
-     * @var Setting
+     * One user has One setting.
      * @ORM\OneToOne(targetEntity="Setting", mappedBy="user")
      */
-    private $setting;
+    private Setting $setting;
 
-    public function getId(): int
+    public function __construct(
+        string $email,
+        string $name,
+        string $surname,
+        string $password,
+        string $salt,
+        int $status,
+        string $role,
+        string $registrationToken
+    ) {
+        $this->email = $email;
+        $this->name = $name;
+        $this->surname = $surname;
+        $this->password = $password;
+        $this->salt = $salt;
+        $this->status = $status;
+        $this->role = $role;
+        $this->registrationToken = $registrationToken;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }

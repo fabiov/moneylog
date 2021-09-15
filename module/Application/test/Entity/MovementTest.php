@@ -5,6 +5,7 @@ namespace ApplicationTest\Entity;
 use Application\Entity\Account;
 use Application\Entity\Category;
 use Application\Entity\Movement;
+use Application\Entity\User;
 use PHPUnit\Framework\TestCase;
 
 class MovementTest extends TestCase
@@ -12,7 +13,7 @@ class MovementTest extends TestCase
     public function testGettersWithoutSetter(): void
     {
         $id = 1;
-        $movement = new Movement(new Account(), 0, new \DateTime(), '');
+        $movement = new Movement(new Account(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), ''), 0, new \DateTime(), '');
         $reflectionClass = new \ReflectionClass($movement);
         $reflectedProperty = $reflectionClass->getProperty('id');
         $reflectedProperty->setAccessible(true);
@@ -24,13 +25,13 @@ class MovementTest extends TestCase
 
     public function testSettersAndGetters(): void
     {
-        $movement = new Movement(new Account(), 0, new \DateTime(), '');
+        $movement = new Movement(new Account(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), ''), 0, new \DateTime(), '');
 
         $description = 'Description';
         $movement->setDescription($description);
         self:: assertSame($description, $movement->getDescription());
 
-        $account = new Account();
+        $account = new Account(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), '');
         $movement->setAccount($account);
         self:: assertSame($account, $movement->getAccount());
 
@@ -38,7 +39,7 @@ class MovementTest extends TestCase
         $movement->setAmount($amount);
         self:: assertSame($amount, $movement->getAmount());
 
-        $category = new Category();
+        $category = new Category(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), '', Category::STATUS_ACTIVE);
         $movement->setCategory($category);
         self:: assertSame($category, $movement->getCategory());
 

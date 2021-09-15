@@ -11,7 +11,7 @@ class CategoryTest extends TestCase
     public function testGettersWithoutSetter(): void
     {
         $id = 1;
-        $category = new Category();
+        $category = new Category(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), '', Category::STATUS_ACTIVE);
         $reflectionClass = new \ReflectionClass($category);
         $reflectedProperty = $reflectionClass->getProperty('id');
         $reflectedProperty->setAccessible(true);
@@ -23,24 +23,24 @@ class CategoryTest extends TestCase
 
     public function testSetterAndGetters(): void
     {
-        $category = new Category();
-
-        $user = new User();
-        $category->setUser($user);
-        self::assertSame($user, $category->getUser());
-
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
         $description = 'Description';
-        $category->setDescription($description);
-        self::assertSame($description, $category->getDescription());
-
         $status = Category::STATUS_ACTIVE;
-        $category->setStatus($status);
-        self::assertSame($status, $category->getStatus());
-    }
 
-    public function testStatusException(): void
-    {
-        $category = new Category();
+        $category = new Category($user, $description, $status);
+
+        self::assertSame($user, $category->getUser());
+        self::assertSame($description, $category->getDescription());
+        self::assertSame($status, $category->getStatus());
+
+        $description = 'Description 2';
+        $status = Category::STATUS_INACTIVE;
+
+        $category->setDescription($description);
+        $category->setStatus($status);
+        self::assertSame($description, $category->getDescription());
+        self::assertSame($status, $category->getStatus());
+
         self::expectException(\Exception::class);
         $category->setStatus(2);
     }

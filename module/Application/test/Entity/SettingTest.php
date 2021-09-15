@@ -10,26 +10,35 @@ class SettingTest extends TestCase
 {
     public function testGettersAndSetters(): void
     {
-        $user = new User();
-        $setting = new Setting($user);
-
-        $months = 12;
-        $setting->setMonths($months);
-        self::assertSame($months, $setting->getMonths());
-
         $payday = 2;
+        $months = 12;
+        $provisioning = true;
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
+        $setting = new Setting($user, $payday, $months, $provisioning);
+
+        self::assertSame($months, $setting->getMonths());
+        self::assertSame($payday, $setting->getPayday());
+        self::assertSame($provisioning, $setting->hasProvisioning());
+
+        $payday = 4;
         $setting->setPayday($payday);
         self::assertSame($payday, $setting->getPayday());
 
-        $provisioning = true;
+        $months = 13;
+        $setting->setMonths($months);
+        self::assertSame($months, $setting->getMonths());
+
+        $provisioning = false;
         $setting->setProvisioning($provisioning);
         self::assertSame($provisioning, $setting->hasProvisioning());
+
+        self::expectException(\Exception::class);
+        $setting->setPayday(29);
     }
 
     public function setPaydayException(): void
     {
-        $user = new User();
-        $setting = new Setting($user);
+        $setting = new Setting(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), 1, 2, true);
 
         self::expectException(\Exception::class);
         $setting->setPayday(29);
@@ -37,8 +46,7 @@ class SettingTest extends TestCase
 
     public function testInvalidPayDay(): void
     {
-        $user = new User();
-        $setting = new Setting($user);
+        $setting = new Setting(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), 1, 2, true);
 
         self::expectException(\InvalidArgumentException::class);
         $setting->setPayday(29);

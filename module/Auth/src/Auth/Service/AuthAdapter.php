@@ -60,9 +60,11 @@ class AuthAdapter implements AdapterInterface
             $this->entityManager->flush();
 
             // Great! The password hash matches. Return user identity (email) to be saved in session for later use.
+            /** @var int $userId */
+            $userId = $user->getId();
             $settings = $user->getSetting();
             return new Result(Result::SUCCESS, new LoggedUser(
-                $user->getId(),
+                $userId,
                 $user->getName(),
                 $user->getSurname(),
                 $user->getEmail(),

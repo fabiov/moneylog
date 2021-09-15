@@ -14,44 +14,47 @@ class Provision
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
      */
-    private $id;
+    private ?int $id;
 
     /**
      * Many provisions have one user. This is the owning side.
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="userId", referencedColumnName="id", nullable=false)
-     * @var User
      */
-    private $user;
+    private User $user;
 
     /**
      * @ORM\Column(name="date", type="date", nullable=false)
-     * @var \DateTime
      */
-    private $date;
+    private \DateTime $date;
 
     /**
      * @ORM\Column(name="amount", type="decimal", precision=8, scale=2, nullable=false)
-     * @var float
      */
-    private $amount;
+    private float $amount;
 
     /**
      * @ORM\Column(name="description", type="string", nullable=false)
-     * @var string
      */
-    private $description;
+    private string $description;
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function setUser(User $user): void
+    public function __construct(User $user, \DateTime $date, float $amount, string $description)
     {
         $this->user = $user;
+        $this->date = $date;
+        $this->amount = $amount;
+        $this->description = $description;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getDate(): \DateTime

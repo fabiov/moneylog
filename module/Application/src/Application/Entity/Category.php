@@ -17,31 +17,34 @@ class Category
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
      */
-    private $id;
+    private ?int $id;
 
     /**
      * Many categories have one user. This is the owning side.
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="userId", referencedColumnName="id", nullable=false)
-     * @var User
      */
-    private $user;
+    private User $user;
 
     /**
      * @ORM\Column(name="description", type="string", nullable=false)
-     * @var string
      */
-    private $description;
+    private string $description;
 
     /**
      * @ORM\Column(name="status", type="smallint", nullable=false)
-     * @var int
      */
-    private $status = 1;
+    private int $status = 1;
 
-    public function getId(): int
+    public function __construct(User $user, string $description, int $status)
+    {
+        $this->user = $user;
+        $this->description = $description;
+        $this->status = $status;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -49,11 +52,6 @@ class Category
     public function getUser(): User
     {
         return $this->user;
-    }
-
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
     }
 
     public function getDescription(): string
