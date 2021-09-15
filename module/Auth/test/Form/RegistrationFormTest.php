@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class RegistrationFormTest extends TestCase
 {
-    public function testElements()
+    public static function testElements(): void
     {
         $form = new RegistrationForm();
 

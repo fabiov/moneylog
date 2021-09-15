@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class UserFormTest extends TestCase
 {
-    public function testElements()
+    public static function testElements(): void
     {
         $form = new UserForm();
 
