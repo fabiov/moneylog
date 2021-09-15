@@ -39,7 +39,7 @@ class MovementTest extends TestCase
         $movement->setAmount($amount);
         self:: assertSame($amount, $movement->getAmount());
 
-        $category = new Category(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), '', Category::STATUS_ACTIVE);
+        $category = new Category(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), '');
         $movement->setCategory($category);
         self:: assertSame($category, $movement->getCategory());
 

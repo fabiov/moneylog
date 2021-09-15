@@ -54,7 +54,7 @@ class MovementController extends AbstractActionController
         }
 
         $categories = $this->em->getRepository(Category::class)
-            ->findBy(['status' => 1, 'user' => $this->user->getId()], ['description' => 'ASC']);
+            ->findBy(['active' => true, 'user' => $this->user->getId()], ['description' => 'ASC']);
 
         /** @var \Application\Repository\MovementRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Movement::class);
@@ -325,12 +325,22 @@ class MovementController extends AbstractActionController
 
     private function getAccount(int $id): ?Account
     {
-        return $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
+        /** @var ?Account $account */
+        $account = $this->em
+            ->getRepository(Account::class)
+            ->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
+
+        return $account;
     }
 
     private function getCategory(int $id): ?Category
     {
-        return $this->em->getRepository(Category::class)->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
+        /** @var ?Category $category */
+        $category = $this->em
+            ->getRepository(Category::class)
+            ->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
+
+        return $category;
     }
 
     private function getRedirectToDashboard(): Response

@@ -135,7 +135,7 @@ echo $this->pageHeader('Cruscotto');
 
                     <tbody>
                     <?php foreach ($avgPerCategory as $row) : ?>
-                        <?php if ($row['status'] == \Application\Entity\Category::STATUS_ACTIVE): ?>
+                        <?php if ($row['active'] == true): ?>
                         <tr>
                             <td><?php echo $this->escapeHtml($row['description']); ?></td>
                             <td class="text-right">

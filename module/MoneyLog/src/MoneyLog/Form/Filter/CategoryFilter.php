@@ -18,7 +18,7 @@ class CategoryFilter extends InputFilter
             'filters'  => [['name' => StringTrim::class]],
         ]);
         $this->add([
-            'name'     => 'status',
+            'name' => 'active',
             'filters'  => [['name' => ToInt::class]],
         ]);
     }

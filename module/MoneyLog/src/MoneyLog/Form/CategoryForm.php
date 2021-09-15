@@ -25,7 +25,7 @@ class CategoryForm extends Form
         ]);
         $this->add([
             'attributes' => ['value' => 1, 'id' => 'categotyStatus'],
-            'name' => 'status',
+            'name' => 'active',
             'options' => [
                 'label' => 'Attivo',
                 'use_hidden_element' => true,
