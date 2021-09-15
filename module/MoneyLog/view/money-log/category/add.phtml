@@ -21,7 +21,7 @@ $form->prepare();
                     <?php echo $this->sbaFormRow($form->get('description')); ?>
 
                     <?php
-                    $element = $form->get('status');
+                    $element = $form->get('active');
                     $element->setLabelAttributes(array('for' => 'categotyStatus'));
                     $errors = $this->formElementErrors($element);
                     ?>

@@ -54,7 +54,7 @@ class MovementController extends AbstractActionController
         }
 
         $categories = $this->em->getRepository(Category::class)
-            ->findBy(['status' => 1, 'user' => $this->user->getId()], ['description' => 'ASC']);
+            ->findBy(['active' => true, 'user' => $this->user->getId()], ['description' => 'ASC']);
 
         /** @var \Application\Repository\MovementRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Movement::class);

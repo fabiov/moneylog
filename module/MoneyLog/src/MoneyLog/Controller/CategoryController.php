@@ -48,9 +48,7 @@ class CategoryController extends AbstractActionController
                 /** @var array<string> $data */
                 $data = $form->getData();
 
-                $category = new Category($user, $data['description'], (int) $data['status']);
-
-                $this->em->persist($category);
+                $this->em->persist(new Category($user, $data['description'], (bool) $data['active']));
                 $this->em->flush();
 
                 // Redirect to list of categories
@@ -85,7 +83,7 @@ class CategoryController extends AbstractActionController
         $form = new CategoryForm();
         $form->setData([
             'description' => $category->getDescription(),
-            'status' => $category->getStatus(),
+            'active' => $category->isActive(),
         ]);
 
         $request = $this->getRequest();
@@ -97,7 +95,7 @@ class CategoryController extends AbstractActionController
                 /** @var array<string, mixed> $data */
                 $data = $form->getData();
                 $category->setDescription($data['description']);
-                $category->setStatus($data['status']);
+                $category->setActive((bool) $data['active']);
                 $this->em->flush();
                 return $this->redirect()->toRoute('accantona_categoria');
             }

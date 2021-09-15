@@ -10,9 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
-    public const STATUS_INACTIVE = 0;
-    public const STATUS_ACTIVE = 1;
-
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
@@ -33,15 +30,15 @@ class Category
     private string $description;
 
     /**
-     * @ORM\Column(name="status", type="smallint", nullable=false)
+     * @ORM\Column(name="active", type="boolean", nullable=false)
      */
-    private int $status = 1;
+    private bool $active;
 
-    public function __construct(User $user, string $description, int $status)
+    public function __construct(User $user, string $description, bool $active = true)
     {
         $this->user = $user;
         $this->description = $description;
-        $this->status = $status;
+        $this->active = $active;
     }
 
     public function getId(): ?int
@@ -64,16 +61,13 @@ class Category
         $this->description = $description;
     }
 
-    public function getStatus(): int
+    public function isActive(): bool
     {
-        return $this->status;
+        return $this->active;
     }
 
-    public function setStatus(int $status): void
+    public function setActive(bool $active): void
     {
-        if (!in_array($status, [self::STATUS_INACTIVE, self::STATUS_ACTIVE])) {
-            throw new \RuntimeException("Invalid status value: $status");
-        }
-        $this->status = $status;
+        $this->active = $active;
     }
 }

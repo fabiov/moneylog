@@ -64,7 +64,7 @@ class MovementForm extends Form
                 'find_method'               => [
                     'name'   => 'findBy',
                     'params' => [
-                        'criteria' => ['user' => $userId, 'status' => Category::STATUS_ACTIVE],
+                        'criteria' => ['user' => $userId, 'active' => true],
                         'orderBy'  => ['description' => 'ASC']
                     ]
                 ],
