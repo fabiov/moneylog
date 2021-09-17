@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace MoneyLogTest\Form;
 
-use MoneyLog\Form\AccantonatoForm;
+use MoneyLog\Form\ProvisionForm;
 use PHPUnit\Framework\TestCase;
 
-class AccantonatoFormTest extends TestCase
+class ProvisionFormTest extends TestCase
 {
     public static function testElements(): void
     {
-        $form = new AccantonatoForm();
+        $form = new ProvisionForm();
 
         self::assertCount(3, $form->getElements());
     }

@@ -9,8 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
-use MoneyLog\Form\AccantonatoForm;
 use MoneyLog\Form\Filter\ProvisionFilter;
+use MoneyLog\Form\ProvisionForm;
 
 class ProvisionController extends AbstractActionController
 {
@@ -30,7 +30,7 @@ class ProvisionController extends AbstractActionController
      */
     public function addAction()
     {
-        $form = new AccantonatoForm();
+        $form = new ProvisionForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setInputFilter(new ProvisionFilter());
@@ -90,7 +90,7 @@ class ProvisionController extends AbstractActionController
             return $this->redirect()->toRoute('accantona_accantonato', ['action' => 'index']);
         }
 
-        $form = new AccantonatoForm('accantonati');
+        $form = new ProvisionForm('accantonati');
         $form->setData([
             'date' => $provision->getDate(),
             'amount' => $provision->getAmount(),
