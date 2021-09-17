@@ -74,6 +74,7 @@
         "psr-4": {
             "ApplicationTest\\": "module/Application/test/",
             "AuthTest\\": "module/Auth/test/",
+            "AuthorizeTest\\": "module/Authorize/test/",
             "MoneyLogTest\\": "module/MoneyLog/test/"
         }
     },

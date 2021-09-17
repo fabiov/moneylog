@@ -17,9 +17,9 @@
     <testsuite name="Auth">
       <directory>./module/Auth/test</directory>
     </testsuite>
-    <!-- testsuite name="Authorize">
+    <testsuite name="Authorize">
       <directory>./module/Authorize/test</directory>
-    </testsuite -->
+    </testsuite>
     <testsuite name="MoneyLog">
       <directory>./module/MoneyLog/test</directory>
     </testsuite>
