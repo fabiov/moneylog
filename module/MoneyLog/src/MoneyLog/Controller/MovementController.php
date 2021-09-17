@@ -24,7 +24,7 @@ class MovementController extends AbstractActionController
     public function __construct(LoggedUser $user, EntityManagerInterface $em)
     {
         $this->user = $user;
-        $this->em   = $em;
+        $this->em = $em;
     }
 
     public function indexAction(): ViewModel
@@ -32,13 +32,19 @@ class MovementController extends AbstractActionController
         $dateMin = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
         $dateMax = $this->params()->fromQuery('dateMax', date('Y-m-d'));
         $searchParams = [
+            'account' => $this->params()->fromQuery('account'),
             'amountMax' => $this->params()->fromQuery('amountMax'),
             'amountMin' => $this->params()->fromQuery('amountMin'),
             'category' => $this->params()->fromQuery('category'),
             'dateMax' => $dateMax,
             'dateMin' => $dateMin,
             'description' => $this->params()->fromQuery('description'),
+            'user' => $this->user->getId(),
         ];
+
+        $accounts = $this->em
+            ->getRepository(Account::class)
+            ->findBy(['closed' => false, 'user' => $this->user->getId()], ['name' => 'ASC']);
 
         $categories = $this->em
             ->getRepository(Category::class)
@@ -47,10 +53,8 @@ class MovementController extends AbstractActionController
         /** @var \Application\Repository\MovementRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Movement::class);
 
-//        var_dump($movementRepository->search($searchParams));
-//        die;
-
         return new ViewModel([
+            'accounts' => $accounts,
             'categories' => $categories,
             'rows' => $movementRepository->search($searchParams),
             'searchParams' => $searchParams,
@@ -67,13 +71,14 @@ class MovementController extends AbstractActionController
         $dateMin      = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
         $dateMax      = $this->params()->fromQuery('dateMax', date('Y-m-d'));
         $searchParams = [
-            'accountId'   => $accountId,
-            'amountMax'   => $this->params()->fromQuery('amountMax'),
-            'amountMin'   => $this->params()->fromQuery('amountMin'),
-            'category'    => $this->params()->fromQuery('category'),
-            'dateMax'     => $dateMax,
-            'dateMin'     => $dateMin,
+            'account' => $accountId,
+            'amountMax' => $this->params()->fromQuery('amountMax'),
+            'amountMin' => $this->params()->fromQuery('amountMin'),
+            'category' => $this->params()->fromQuery('category'),
+            'dateMax' => $dateMax,
+            'dateMin' => $dateMin,
             'description' => $this->params()->fromQuery('description'),
+            'user' => $this->user->getId(),
         ];
 
         $criteria = ['id' => $accountId, 'user' => $this->user->getId()];

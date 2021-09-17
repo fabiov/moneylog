@@ -1,11 +1,11 @@
 <?php
 /**
  * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var array<\Application\Entity\Account> $accounts
  * @var array<\Application\Entity\Category> $categories
  * @var array<\Application\Entity\Movement> $rows
  * @var array<string> $searchParams
  */
-$chartData = array();
 ?>
 <style type="text/css">
     .has-error ul {
@@ -39,7 +39,20 @@ $chartData = array();
                                 <input name="description" type="text" class="form-control" placeholder="Descrizione" value="<?php echo $searchParams['description']; ?>">
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6">
+                        <div class="col-lg-3 col-md-3">
+                            <div class="form-group">
+                                <label>Conto</label>
+                                <select class="form-control" name="account">
+                                    <option></option>
+                                    <?php foreach ($accounts as $account): ?>
+                                        <option value="<?php echo $account->getId(); ?>"<?php if ($account->getId() == $searchParams['account']) echo ' selected="selected"'?>>
+                                            <?php echo $account->getName(); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3">
                             <div class="form-group">
                                 <label>Categoria</label>
                                 <select class="form-control" name="category">
@@ -110,6 +123,7 @@ $chartData = array();
                     <thead>
                         <tr>
                             <th>Data</th>
+                            <th>Conto</th>
                             <th>Importo</th>
                             <th>Descrizione</th>
                             <th>Categoria</th>
@@ -118,16 +132,9 @@ $chartData = array();
                     </thead>
                     <tbody>
                         <?php foreach ($rows as $row): ?>
-                            <?php
-                            $strDate = $row->getDate()->format('Y-m-d');
-                            if (!isset($chartData[$strDate])) {
-                                $chartData[$strDate] = ['in' => 0, 'out' => 0];
-                            }
-                            $row->getAmount() > 0 ? $chartData[$strDate]['in']  += $row->getAmount()
-                                                  : $chartData[$strDate]['out'] += $row->getAmount();
-                            ?>
                         <tr>
                             <td class="date"><?php echo $this->dateForma($row->getDate()); ?></td>
+                            <td class="account"><?php echo $row->getAccount()->getName(); ?></td>
                             <td class="text-right amount"><?php echo $this->currencyForma($row->getAmount()); ?></td>
                             <td class="description"><?php echo $row->getDescription(); ?></td>
                             <td class="description"><?php echo null !== ($c = $row->getCategory()) ? $c->getDescription() : ''; ?></td>

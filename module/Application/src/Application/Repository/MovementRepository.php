@@ -2,6 +2,7 @@
 
 namespace Application\Repository;
 
+use Application\Entity\Account;
 use Application\Entity\Movement;
 use Doctrine\ORM\EntityRepository;
 
@@ -31,7 +32,7 @@ class MovementRepository extends EntityRepository
     }
 
     /**
-     * @param array<string, string> $params
+     * @param array<string, mixed> $params
      * @return array<Movement>
      */
     public function search(array $params = []): array
@@ -41,11 +42,14 @@ class MovementRepository extends EntityRepository
             ->createQueryBuilder()
             ->select('m')
             ->from(Movement::class, 'm')
-            ->where('1=1');
+            ->join(Account::class, 'a');
 
-        if (!empty($params['accountId'])) {
-            $qb->andWhere('m.account = :accountId');
-            $cleanParams['accountId'] = $params['accountId'];
+        $qb->where('a.user=:user');
+        $cleanParams['user'] = (int) $params['user'];
+
+        if (!empty($params['account'])) {
+            $qb->andWhere('m.account = :account');
+            $cleanParams['account'] = (int) $params['account'];
         }
         if (!empty($params['dateMin'])) {
             $qb->andWhere('m.date >= :dateMin');
@@ -57,7 +61,7 @@ class MovementRepository extends EntityRepository
         }
         if (!empty($params['category'])) {
             $qb->andWhere('m.category = :category');
-            $cleanParams['category'] = $params['category'];
+            $cleanParams['category'] = (int) $params['category'];
         }
         if (!empty($params['description'])) {
             $qb->andWhere('m.description LIKE :description');
