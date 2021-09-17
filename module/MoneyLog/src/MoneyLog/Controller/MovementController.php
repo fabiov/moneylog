@@ -27,6 +27,36 @@ class MovementController extends AbstractActionController
         $this->em   = $em;
     }
 
+    public function indexAction(): ViewModel
+    {
+        $dateMin = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
+        $dateMax = $this->params()->fromQuery('dateMax', date('Y-m-d'));
+        $searchParams = [
+            'amountMax' => $this->params()->fromQuery('amountMax'),
+            'amountMin' => $this->params()->fromQuery('amountMin'),
+            'category' => $this->params()->fromQuery('category'),
+            'dateMax' => $dateMax,
+            'dateMin' => $dateMin,
+            'description' => $this->params()->fromQuery('description'),
+        ];
+
+        $categories = $this->em
+            ->getRepository(Category::class)
+            ->findBy(['active' => true, 'user' => $this->user->getId()], ['description' => 'ASC']);
+
+        /** @var \Application\Repository\MovementRepository $movementRepository */
+        $movementRepository = $this->em->getRepository(Movement::class);
+
+//        var_dump($movementRepository->search($searchParams));
+//        die;
+
+        return new ViewModel([
+            'categories' => $categories,
+            'rows' => $movementRepository->search($searchParams),
+            'searchParams' => $searchParams,
+        ]);
+    }
+
     /**
      * @return \Laminas\Http\Response|\Laminas\View\Model\ViewModel
      * @throws \Doctrine\ORM\NonUniqueResultException
