@@ -9,8 +9,9 @@ use Auth\Form\Filter\ChangePasswordFilter;
 use Auth\Form\Filter\LoginFilter;
 use Auth\Form\Filter\UserFilter;
 use Auth\Form\UserForm;
+use Auth\Model\LoggedUser;
 use Auth\Service\AuthManager;
-use Doctrine\ORM;
+use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Authentication\Result;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -20,30 +21,13 @@ use Laminas\Mvc\Controller\AbstractActionController;
  */
 class UserController extends AbstractActionController
 {
-    /**
-     * @var ORM\EntityManager
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    /**
-     * @var ?\stdClass
-     */
-    private $user;
+    private ?LoggedUser $user;
 
-    /**
-     * Auth manager.
-     * @var AuthManager
-     */
-    private $authManager;
+    private AuthManager $authManager;
 
-    /**
-     * UserController constructor.
-     *
-     * @param ?\stdClass $user
-     * @param ORM\EntityManager $em
-     * @param AuthManager $authManager
-     */
-    public function __construct(?\stdClass $user, ORM\EntityManager $em, AuthManager $authManager)
+    public function __construct(?LoggedUser $user, EntityManagerInterface $em, AuthManager $authManager)
     {
         $this->authManager = $authManager;
         $this->em          = $em;
@@ -52,9 +36,6 @@ class UserController extends AbstractActionController
 
     /**
      * @return array|\Laminas\Http\Response|mixed
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
      */
     public function updateAction()
     {
@@ -63,25 +44,25 @@ class UserController extends AbstractActionController
         }
 
         /** @var ?User $user */
-        $user = $this->em->find(User::class, $this->user->id);
+        $user = $this->em->find(User::class, $this->user->getId());
         if (!$user) {
             return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
         }
-        $user->setInputFilter(new UserFilter());
 
         $form = new UserForm();
-        $form->bind($user);
+        $form->setData(['name' => $user->getName(), 'surname' => $user->getSurname()]);
+
         $message = '';
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($user->getInputFilter());
+            $form->setInputFilter(new UserFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                /** @var User $data */
+                /** @var array<string, string> $data */
                 $data = $form->getData();
-                $user->setName($data->getName());
-                $user->setSurname($data->getSurname());
+                $user->setName($data['name']);
+                $user->setSurname($data['surname']);
                 $this->em->persist($user);
                 $this->em->flush();
                 $message = 'I tuoi dati sono stati salvati correttamente';
@@ -151,12 +132,10 @@ class UserController extends AbstractActionController
         }
 
         /** @var ?User $user */
-        $user = $this->em->find(User::class, $this->user->id);
+        $user = $this->em->find(User::class, $this->user->getId());
         if (!$user) {
             return $this->forward()->dispatch(UserController::class, ['action' => 'logout']);
         }
-
-        $user->setInputFilter(new UserFilter());
 
         $form     = new ChangePasswordForm();
         $error    = false;

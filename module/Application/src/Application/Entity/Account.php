@@ -5,65 +5,59 @@ declare(strict_types=1);
 namespace Application\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Laminas\Filter\StringTrim;
-use Laminas\Filter\ToInt;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterAwareInterface;
-use Laminas\InputFilter\InputFilterInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\AccountRepository")
  * @ORM\Table(name="account")
  */
-class Account implements InputFilterAwareInterface
+class Account
 {
-    /**
-     * @var ?InputFilterInterface
-     */
-    private $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
      */
-    private $id;
+    private ?int $id;
 
     /**
      * Many accounts have one user. This is the owning side.
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="userId", referencedColumnName="id", nullable=false)
-     * @var User
      */
-    private $user;
+    private User $user;
 
     /**
      * @ORM\Column(type="string", length=255, unique=false, nullable=false)
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
-     * @var int
      */
-    private $recap = 0;
+    private int $recap;
 
     /**
      * @ORM\Column(name="closed", type="boolean", nullable=false, options={"default": false})
-     * @var bool
      */
-    private $closed = false;
+    private bool $closed;
 
     /**
      * @ORM\OneToMany(targetEntity="Movement", mappedBy="account")
-     * @var ArrayCollection<int, Movement>
      */
-    private $movements;
+    private Collection $movements;
 
-    public function getId(): int
+    public function __construct(User $user, string $name, int $recap = 0, bool $closed = false)
+    {
+        $this->user = $user;
+        $this->name = $name;
+        $this->recap = $recap;
+        $this->closed = $closed;
+        $this->movements = new ArrayCollection();
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -81,11 +75,6 @@ class Account implements InputFilterAwareInterface
     public function getUser(): User
     {
         return $this->user;
-    }
-
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
     }
 
     public function isClosed(): bool
@@ -106,56 +95,5 @@ class Account implements InputFilterAwareInterface
     public function setRecap(int $recap): void
     {
         $this->recap = $recap;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getArrayCopy(): array
-    {
-        return [
-            'id' => $this->id,
-            'user' => $this->user,
-            'name' => $this->name,
-            'recap' => $this->recap,
-            'closed' => $this->closed,
-            'movements' => $this->movements,
-        ];
-    }
-
-    /**
-     * Not used
-     *
-     * @param  InputFilterInterface $inputFilter
-     * @throws \Exception
-     */
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception("Not used");
-    }
-
-    public function getInputFilter(): InputFilterInterface
-    {
-        if (!$this->inputFilter) {
-            $this->inputFilter = new InputFilter();
-
-            $this->inputFilter->add([
-                'name' => 'name',
-                'required' => true,
-                'filters' => [['name' => StringTrim::class]],
-            ]);
-            $this->inputFilter->add([
-                'name' => 'recap',
-                'required' => false,
-                'filters' => [['name' => ToInt::class]],
-            ]);
-            // with following filter the validation fails
-//            $this->inputFilter->add([
-//                'name' => 'closed',
-//                'required' => false,
-//                'filters' => [['name' => Boolean::class]],
-//            ]);
-        }
-        return $this->inputFilter;
     }
 }

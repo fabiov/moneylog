@@ -6,6 +6,7 @@ use Application\Entity\Account;
 use Application\Entity\Category;
 use Application\Entity\Movement;
 use Application\Repository\AccountRepository;
+use Auth\Model\LoggedUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -16,11 +17,11 @@ use MoneyLog\Form\MovementForm;
 
 class MovementController extends AbstractActionController
 {
-    private \stdClass $user;
+    private LoggedUser $user;
 
     private EntityManagerInterface $em;
 
-    public function __construct(\stdClass $user, EntityManagerInterface $em)
+    public function __construct(LoggedUser $user, EntityManagerInterface $em)
     {
         $this->user = $user;
         $this->em   = $em;
@@ -45,7 +46,7 @@ class MovementController extends AbstractActionController
             'description' => $this->params()->fromQuery('description'),
         ];
 
-        $criteria = ['id' => $accountId, 'user' => $this->user->id];
+        $criteria = ['id' => $accountId, 'user' => $this->user->getId()];
         $account = $this->em->getRepository(Account::class)->findOneBy($criteria);
 
         if (!$account) {
@@ -53,7 +54,7 @@ class MovementController extends AbstractActionController
         }
 
         $categories = $this->em->getRepository(Category::class)
-            ->findBy(['status' => 1, 'user' => $this->user->id], ['description' => 'ASC']);
+            ->findBy(['active' => true, 'user' => $this->user->getId()], ['description' => 'ASC']);
 
         /** @var \Application\Repository\MovementRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Movement::class);
@@ -110,7 +111,7 @@ class MovementController extends AbstractActionController
 
         /** @var ?Account $account */
         $account = $this->em->getRepository(Account::class)
-            ->findOneBy(['id' => $accountId, 'user' => $this->user->id]);
+            ->findOneBy(['id' => $accountId, 'user' => $this->user->getId()]);
 
         if (!$account) {
             return $this->getRedirectToDashboard();
@@ -134,7 +135,7 @@ class MovementController extends AbstractActionController
         /** @var ?Movement $item */
         $item = $this->em->getRepository(Movement::class)->findOneBy(['id' => $id]);
 
-        if (!$item || $item->getAccount()->getUser()->getId() != $this->user->id) {
+        if (!$item || $item->getAccount()->getUser()->getId() != $this->user->getId()) {
             return $this->redirect()->toRoute('accantona_recap');
         }
 
@@ -162,12 +163,12 @@ class MovementController extends AbstractActionController
         /** @var ?Account $sourceAccount */
         $sourceAccount = $accountRepository->find($id);
 
-        if (!$sourceAccount || $sourceAccount->getUser()->getId() != $this->user->id) {
+        if (!$sourceAccount || $sourceAccount->getUser()->getId() != $this->user->getId()) {
             return $this->getRedirectToDashboard();
         }
 
         $accountOptions = ['' => ''];
-        foreach ($accountRepository->getUserAccounts($this->user->id) as $account) {
+        foreach ($accountRepository->getUserAccounts($this->user->getId()) as $account) {
             if ($account->getId() != $sourceAccount->getId() && !$account->isClosed()) {
                 $accountOptions[$account->getId()] = $account->getName();
             }
@@ -186,7 +187,7 @@ class MovementController extends AbstractActionController
                 /** @var ?Account $targetAccount */
                 $targetAccount = $accountRepository->find($data['targetAccountId']);
 
-                if (!$targetAccount || $targetAccount->getUser()->getId() != $this->user->id) {
+                if (!$targetAccount || $targetAccount->getUser()->getId() != $this->user->getId()) {
                     return $this->getRedirectToDashboard();
                 }
 
@@ -221,7 +222,7 @@ class MovementController extends AbstractActionController
         $searchParams = $this->params()->fromQuery();
 
         $request = $this->getRequest();
-        $form = new MovementForm('movement', $this->em, $this->user->id);
+        $form = new MovementForm('movement', $this->em, $this->user->getId());
         if ($request->isPost()) {
             $data = $request->getPost();
             $form->setInputFilter(new MovementFilter());
@@ -273,11 +274,11 @@ class MovementController extends AbstractActionController
         /** @var ?Movement $movement */
         $movement = $this->em->getRepository(Movement::class)->findOneBy(['id' => $movementId]);
 
-        if (!$movement || $movement->getAccount()->getUser()->getId() != $this->user->id) {
+        if (!$movement || $movement->getAccount()->getUser()->getId() != $this->user->getId()) {
             return $this->getRedirectToDashboard();
         }
 
-        $form = new MovementForm('movement', $this->em, $this->user->id);
+        $form = new MovementForm('movement', $this->em, $this->user->getId());
         $form->setData([
             'account' => $movement->getAccount(),
             'amount' => abs($movement->getAmount()),
@@ -324,12 +325,22 @@ class MovementController extends AbstractActionController
 
     private function getAccount(int $id): ?Account
     {
-        return $this->em->getRepository(Account::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
+        /** @var ?Account $account */
+        $account = $this->em
+            ->getRepository(Account::class)
+            ->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
+
+        return $account;
     }
 
     private function getCategory(int $id): ?Category
     {
-        return $this->em->getRepository(Category::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
+        /** @var ?Category $category */
+        $category = $this->em
+            ->getRepository(Category::class)
+            ->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
+
+        return $category;
     }
 
     private function getRedirectToDashboard(): Response

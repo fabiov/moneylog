@@ -3,64 +3,58 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Laminas\Filter\StringTrim;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterAwareInterface;
-use Laminas\InputFilter\InputFilterInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Repository\ProvisionRepository")
  * @ORM\Table(name="provision")
  */
-class Provision implements InputFilterAwareInterface
+class Provision
 {
-    /**
-     * @var ?InputFilterInterface
-     */
-    private $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
      */
-    private $id;
+    private ?int $id;
 
     /**
      * Many provisions have one user. This is the owning side.
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="userId", referencedColumnName="id", nullable=false)
-     * @var User
      */
-    private $user;
+    private User $user;
 
     /**
      * @ORM\Column(name="date", type="date", nullable=false)
-     * @var \DateTime
      */
-    private $date;
+    private \DateTime $date;
 
     /**
      * @ORM\Column(name="amount", type="decimal", precision=8, scale=2, nullable=false)
-     * @var float
      */
-    private $amount;
+    private float $amount;
 
     /**
      * @ORM\Column(name="description", type="string", nullable=false)
-     * @var string
      */
-    private $description;
+    private string $description;
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function setUser(User $user): void
+    public function __construct(User $user, \DateTime $date, float $amount, string $description)
     {
         $this->user = $user;
+        $this->date = $date;
+        $this->amount = $amount;
+        $this->description = $description;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getDate(): \DateTime
@@ -91,50 +85,5 @@ class Provision implements InputFilterAwareInterface
     public function setDescription(string $description): void
     {
         $this->description = $description;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getArrayCopy(): array
-    {
-        return [
-            'id' => $this->id,
-            'user' => $this->user,
-            'date' => $this->date,
-            'amount' => $this->amount,
-            'description' => $this->description,
-        ];
-    }
-
-    public function setInputFilter(InputFilterInterface $inputFilter): InputFilterAwareInterface
-    {
-        throw new \Exception('Not used');
-    }
-
-    public function getInputFilter(): InputFilterInterface
-    {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-
-            $inputFilter->add([
-                'name' => 'date',
-                'required' => true,
-                'filters' => [['name' => StringTrim::class]],
-            ]);
-            $inputFilter->add([
-                'name' => 'amount',
-                'required' => true,
-                'filters' => [['name' => StringTrim::class]],
-            ]);
-            $inputFilter->add([
-                'name' => 'description',
-                'required' => true,
-                'filters' => [['name' => StringTrim::class]],
-            ]);
-
-            $this->inputFilter = $inputFilter;
-        }
-        return $this->inputFilter;
     }
 }

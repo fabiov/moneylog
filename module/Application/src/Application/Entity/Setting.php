@@ -5,51 +5,41 @@ declare(strict_types=1);
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Laminas\Filter\ToInt;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterAwareInterface;
-use Laminas\InputFilter\InputFilterInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="setting")
  */
-class Setting implements InputFilterAwareInterface
+class Setting
 {
-    /**
-     * @var ?InputFilterInterface
-     */
-    protected $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="User")
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")
-     * @var User
      */
-    protected $user;
+    protected User $user;
 
     /**
      * @ORM\Column(name="paypay", type="smallint", nullable=false, options={"unsigned"=true, "default"=1})
-     * @var int
      */
-    protected $payday = 1;
+    protected int $payday = 1;
 
     /**
      * @ORM\Column(name="months", type="smallint", nullable=false, options={"unsigned"=true, "default"=12})
-     * @var int
      */
-    protected $months = 12;
+    protected int $months;
 
     /**
      * @ORM\Column(name="provisioning", type="boolean", nullable=false, options={"default"=false})
-     * @var boolean
      */
-    protected $provisioning = false;
+    protected bool $provisioning;
 
-    public function __construct(User $user)
+    public function __construct(User $user, int $payday = 1, int $months = 12, bool $provisioning = false)
     {
         $this->user = $user;
+        $this->payday = $payday;
+        $this->months = $months;
+        $this->provisioning = $provisioning;
     }
 
     public function getPayday(): int
@@ -83,46 +73,5 @@ class Setting implements InputFilterAwareInterface
     public function setProvisioning(bool $provisioning): void
     {
         $this->provisioning = $provisioning;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getArrayCopy(): array
-    {
-        return [
-            'user' => $this->user,
-            'payday' => $this->payday,
-            'months' => $this->months,
-            'provisioning' => $this->provisioning,
-        ];
-    }
-
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception('Not used');
-    }
-
-    public function getInputFilter(): InputFilterInterface
-    {
-        if (!$this->inputFilter) {
-            $this->inputFilter = new InputFilter();
-            $this->inputFilter->add([
-                'filters' => [['name' => ToInt::class]],
-                'name' => 'payday',
-                'required' => true,
-            ]);
-            $this->inputFilter->add([
-                'filters' => [['name' => ToInt::class]],
-                'name' => 'months',
-                'required' => true,
-            ]);
-            $this->inputFilter->add([
-                'filters' => [['name' => ToInt::class]],
-                'name' => 'provisioning',
-                'required' => true,
-            ]);
-        }
-        return $this->inputFilter;
     }
 }

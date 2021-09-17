@@ -4,7 +4,7 @@ namespace MoneyLog\Form;
 
 use Laminas\Form\Form;
 
-class AccantonatoForm extends Form
+class ProvisionForm extends Form
 {
     public function __construct($name = 'accantona')
     {

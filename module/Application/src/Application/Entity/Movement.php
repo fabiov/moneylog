@@ -118,19 +118,4 @@ class Movement
     {
         $this->description = $description;
     }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getArrayCopy(): array
-    {
-        return [
-            'id' => $this->id ?? null,
-            'account' => $this->account,
-            'category' => $this->category,
-            'date' => $this->date,
-            'amount' => $this->amount,
-            'description' => $this->description,
-        ];
-    }
 }

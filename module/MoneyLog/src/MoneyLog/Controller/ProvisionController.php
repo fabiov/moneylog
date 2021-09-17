@@ -4,19 +4,21 @@ namespace MoneyLog\Controller;
 
 use Application\Entity\Provision;
 use Application\Entity\User;
+use Auth\Model\LoggedUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
-use MoneyLog\Form\AccantonatoForm;
+use MoneyLog\Form\Filter\ProvisionFilter;
+use MoneyLog\Form\ProvisionForm;
 
 class ProvisionController extends AbstractActionController
 {
-    private \stdClass $user;
+    private LoggedUser $user;
 
     private EntityManagerInterface $em;
 
-    public function __construct(\stdClass $user, EntityManagerInterface $em)
+    public function __construct(LoggedUser $user, EntityManagerInterface $em)
     {
         $this->user = $user;
         $this->em = $em;
@@ -28,25 +30,21 @@ class ProvisionController extends AbstractActionController
      */
     public function addAction()
     {
-        $form = new AccantonatoForm();
+        $form = new ProvisionForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $provision = new Provision();
-            $form->setInputFilter($provision->getInputFilter());
+            $form->setInputFilter(new ProvisionFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
 
                 /** @var User $user */
-                $user = $this->em->find(User::class, $this->user->id);
+                $user = $this->em->find(User::class, $this->user->getId());
 
                 /** @var array<string, mixed> $data */
                 $data = $form->getData();
 
-                $provision->setDescription($data['description']);
-                $provision->setAmount($data['amount']);
-                $provision->setDate(new \DateTime($data['date']));
-                $provision->setUser($user);
+                $provision = new Provision($user, new \DateTime($data['date']), $data['amount'], $data['description']);
 
                 $this->em->persist($provision);
                 $this->em->flush();
@@ -69,9 +67,9 @@ class ProvisionController extends AbstractActionController
         $provisionRepository = $this->em->getRepository(Provision::class);
 
         return new ViewModel([
-            'balance'       => $provisionRepository->getBalance($this->user->id),
-            'searchParams'  => $searchParams,
-            'rows'          => $provisionRepository->search(array_merge($searchParams, ['userId' => $this->user->id])),
+            'balance' => $provisionRepository->getBalance($this->user->getId()),
+            'searchParams' => $searchParams,
+            'rows' => $provisionRepository->search(array_merge($searchParams, ['userId' => $this->user->getId()])),
         ]);
     }
 
@@ -84,13 +82,15 @@ class ProvisionController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         /** @var ?Provision $provision */
-        $provision = $this->em->getRepository(Provision::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
+        $provision = $this->em
+            ->getRepository(Provision::class)
+            ->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
 
         if (!$provision) {
             return $this->redirect()->toRoute('accantona_accantonato', ['action' => 'index']);
         }
 
-        $form = new AccantonatoForm('accantonati');
+        $form = new ProvisionForm('accantonati');
         $form->setData([
             'date' => $provision->getDate(),
             'amount' => $provision->getAmount(),
@@ -100,7 +100,7 @@ class ProvisionController extends AbstractActionController
         $request = $this->getRequest();
         $searchParams = $this->params()->fromQuery();
         if ($request->isPost()) {
-            $form->setInputFilter($provision->getInputFilter());
+            $form->setInputFilter(new ProvisionFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
@@ -121,7 +121,7 @@ class ProvisionController extends AbstractActionController
     public function deleteAction(): Response
     {
         $id = (int) $this->params()->fromRoute('id', 0);
-        $spend = $this->em->getRepository(Provision::class)->findOneBy(['id' => $id, 'user' => $this->user->id]);
+        $spend = $this->em->getRepository(Provision::class)->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
 
         if ($spend) {
             $this->em->remove($spend);

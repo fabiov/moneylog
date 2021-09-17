@@ -25,9 +25,9 @@ class CategoryRepository extends EntityRepository
             ->from(Category::class, 'c', 'c.id')
             ->innerJoin(Movement::class, 'm', 'WITH', 'c.id=m.category')
             ->where("c.user=$userId")
-            ->andWhere('c.status=:status')
+            ->andWhere('c.active=:active')
             ->andWhere('m.date >= :since')
-            ->setParameters([':since'  => $since->format('Y-m-d'), ':status' => Category::STATUS_ACTIVE])
+            ->setParameters([':since'  => $since->format('Y-m-d'), ':active' => true])
             ->groupBy('c.id');
 
         $rs = $qb->getQuery()->getResult();
@@ -48,10 +48,10 @@ class CategoryRepository extends EntityRepository
                 }
             }
             $data[] = [
-                'average'     => $average,
+                'average' => $average,
                 'description' => $row['description'],
-                'id'          => $row['id'],
-                'status'      => $row['status'],
+                'id' => $row['id'],
+                'active' => $row['active'],
             ];
         }
         return $data;
@@ -61,20 +61,20 @@ class CategoryRepository extends EntityRepository
      * Get the averages for categories
      *
      * @param int $userId
-     * @param int|null $status null for all statuses
+     * @param bool|null $active null for all
      * @return array<int, array>
      */
-    public function oldestMovements(int $userId, int $status = null): array
+    public function oldestMovements(int $userId, bool $active = null): array
     {
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
-            ->select('c.id, c.description, MIN(m.date) AS date, c.status')
+            ->select('c.id, c.description, MIN(m.date) AS date, c.active')
             ->from(Category::class, 'c', 'c.id')
             ->leftJoin(Movement::class, 'm', 'WITH', 'c.id=m.category')
             ->where("c.user=$userId")
             ->groupBy('c.id');
-        if ($status !== null) {
-            $qb->andWhere("c.status=$status");
+        if ($active !== null) {
+            $qb->andWhere("c.active=:active")->setParameter(':active', $active);
         }
         return $qb->getQuery()->getResult();
     }

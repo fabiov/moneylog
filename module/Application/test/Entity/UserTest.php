@@ -4,7 +4,6 @@ namespace ApplicationTest\Entity;
 
 use Application\Entity\Setting;
 use Application\Entity\User;
-use Laminas\InputFilter\InputFilter;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
@@ -12,7 +11,7 @@ class UserTest extends TestCase
     public function testGettersWithoutSetter(): void
     {
         $id = 1;
-        $user = new User();
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
         $reflectionClass = new \ReflectionClass($user);
         $reflectedProperty = $reflectionClass->getProperty('id');
         $reflectedProperty->setAccessible(true);
@@ -24,7 +23,7 @@ class UserTest extends TestCase
 
     public function testGettersAndSetters(): void
     {
-        $user = new User();
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
 
         $status = User::STATUS_CONFIRMED;
         $user->setStatus($status);
@@ -54,7 +53,7 @@ class UserTest extends TestCase
         $user->setSalt($salt);
         self::assertSame($salt, $user->getSalt());
 
-        $setting = new Setting($user);
+        $setting = new Setting($user, 1, 2, true);
         $user->setSetting($setting);
         self::assertSame($setting, $user->getSetting());
 
@@ -62,55 +61,15 @@ class UserTest extends TestCase
         $user->setSurname($surname);
         self::assertSame($surname, $user->getSurname());
 
-        $inputFilter = new InputFilter();
-        $user->setInputFilter($inputFilter);
-        self::assertSame($inputFilter, $user->getInputFilter());
-    }
-
-    public function testArrayCopy(): void
-    {
-        $email = 'email';
-        $name = 'name';
-        $password = 'password';
         $registrationToken = 'registrationToken';
-        $role = 'role';
-        $salt = 'salt';
-        $status = User::STATUS_NOT_CONFIRMED;
-        $surname = 'surname';
-
-        $user = new User();
-        $user->setEmail($email);
-        $user->setName($name);
-        $user->setPassword($password);
         $user->setRegistrationToken($registrationToken);
-        $user->setRole($role);
-        $user->setSalt($salt);
-        $user->setStatus($status);
-        $user->setSurname($surname);
-
-        $copy = $user->getArrayCopy();
-
-        self::assertSame($email, $copy['email']);
-        self::assertSame($name, $copy['name']);
-        self::assertSame($password, $copy['password']);
-        self::assertSame($registrationToken, $copy['registrationToken']);
         self::assertSame($registrationToken, $user->getRegistrationToken());
-        self::assertSame($role, $copy['role']);
-        self::assertSame($salt, $copy['salt']);
-        self::assertSame($status, $copy['status']);
-        self::assertSame($surname, $copy['surname']);
     }
 
     public function testSetStatusException(): void
     {
         self::expectException(\InvalidArgumentException::class);
-        $user = new User();
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
         $user->setStatus(2);
-    }
-
-    public function testGetUnsetInputFilter(): void
-    {
-        $user = new User();
-        self::assertInstanceOf(InputFilter::class, $user->getInputFilter());
     }
 }

@@ -7,26 +7,28 @@ namespace MoneyLog\Controller;
 use Application\Entity\Category;
 use Application\Entity\Provision;
 use Application\Entity\User;
+use Auth\Model\LoggedUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use MoneyLog\Form\CategoryForm;
+use MoneyLog\Form\Filter\CategoryFilter;
 
 class CategoryController extends AbstractActionController
 {
-    private \stdClass $user;
+    private LoggedUser $user;
 
     private EntityManagerInterface $em;
 
-    public function __construct(\stdClass $user, EntityManagerInterface $em)
+    public function __construct(LoggedUser $user, EntityManagerInterface $em)
     {
         $this->em   = $em;
         $this->user = $user;
     }
 
     /**
-     * @return Response|array<CategoryForm>
+     * @return Response|array<string, CategoryForm>
      */
     public function addAction()
     {
@@ -35,22 +37,18 @@ class CategoryController extends AbstractActionController
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $category = new Category();
-            $form->setInputFilter($category->getInputFilter());
+            $form->setInputFilter(new CategoryFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
 
                 /** @var User $user */
-                $user = $this->em->getRepository(User::class)->find($this->user->id);
+                $user = $this->em->getRepository(User::class)->find($this->user->getId());
 
                 /** @var array<string> $data */
                 $data = $form->getData();
 
-                $category->setDescription($data['description']);
-                $category->setStatus((int) $data['status']);
-                $category->setUser($user);
-                $this->em->persist($category);
+                $this->em->persist(new Category($user, $data['description'], (bool) $data['active']));
                 $this->em->flush();
 
                 // Redirect to list of categories
@@ -60,10 +58,10 @@ class CategoryController extends AbstractActionController
         return ['form' => $form];
     }
 
-    public function indexAction()
+    public function indexAction(): ViewModel
     {
         return new ViewModel([
-            'rows' => $this->em->getRepository(Category::class)->findBy(['user' => $this->user->id])
+            'rows' => $this->em->getRepository(Category::class)->findBy(['user' => $this->user->getId()])
         ]);
     }
 
@@ -76,7 +74,7 @@ class CategoryController extends AbstractActionController
 
         /** @var ?Category $category */
         $category = $this->em->getRepository(Category::class)
-            ->findOneBy(['id' => $id, 'user' => $this->user->id]);
+            ->findOneBy(['id' => $id, 'user' => $this->user->getId()]);
 
         if (!$category) {
             return $this->redirect()->toRoute('accantona_categoria', ['action' => 'index']);
@@ -85,19 +83,19 @@ class CategoryController extends AbstractActionController
         $form = new CategoryForm();
         $form->setData([
             'description' => $category->getDescription(),
-            'status' => $category->getStatus(),
+            'active' => $category->isActive(),
         ]);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($category->getInputFilter());
+            $form->setInputFilter(new CategoryFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
                 /** @var array<string, mixed> $data */
                 $data = $form->getData();
                 $category->setDescription($data['description']);
-                $category->setStatus($data['status']);
+                $category->setActive((bool) $data['active']);
                 $this->em->flush();
                 return $this->redirect()->toRoute('accantona_categoria');
             }
@@ -112,7 +110,7 @@ class CategoryController extends AbstractActionController
      */
     public function deleteAction(): Response
     {
-        $id   = (int) $this->params()->fromRoute('id');
+        $id = (int) $this->params()->fromRoute('id');
 
         /** @var \Application\Repository\CategoryRepository $categoryRepository */
         $categoryRepository = $this->em->getRepository(Category::class);
@@ -120,16 +118,17 @@ class CategoryController extends AbstractActionController
         /** @var ?Category $category */
         $category = $categoryRepository->find($id);
 
-        if ($category && $category->getUser()->getId() === $this->user->id) {
+        if ($category && $category->getUser()->getId() === $this->user->getId()) {
             $sum = $categoryRepository->getSum($id);
 
             $this->em->beginTransaction();
             if ($sum) {
-                $provision = new Provision();
-                $provision->setUser($category->getUser());
-                $provision->setDescription('Conguaglio rimozione categoria ' . $category->getDescription());
-                $provision->setAmount($sum);
-                $provision->setDate(new \DateTime());
+                $provision = new Provision(
+                    $category->getUser(),
+                    new \DateTime(),
+                    $sum,
+                    'Conguaglio rimozione categoria ' . $category->getDescription()
+                );
                 $this->em->persist($provision);
             }
             $this->em->remove($category);

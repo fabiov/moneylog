@@ -51,15 +51,16 @@ class RegistrationController extends AbstractActionController
 
                 $salt = self::getRandomString(4);
 
-                $user = new User();
-                $user->setName($data['name']);
-                $user->setSurname($data['surname']);
-                $user->setEmail($data['email']);
-                $user->setSalt($salt);
-                $user->setPassword(self::encriptPassword($data['password'], $salt));
-                $user->setStatus(User::STATUS_NOT_CONFIRMED);
-                $user->setRole('user');
-                $user->setRegistrationToken(self::getRandomString(8));
+                $user = new User(
+                    $data['email'],
+                    $data['name'],
+                    $data['surname'],
+                    self::encriptPassword($data['password'], $salt),
+                    $salt,
+                    User::STATUS_NOT_CONFIRMED,
+                    'user',
+                    self::getRandomString(8)
+                );
 
                 $this->em->persist($user);
                 $this->em->flush();
@@ -91,8 +92,6 @@ class RegistrationController extends AbstractActionController
 
     /**
      * @return \Laminas\View\Model\ViewModel<mixed>
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function confirmEmailAction(): ViewModel
     {
@@ -119,9 +118,8 @@ class RegistrationController extends AbstractActionController
     }
 
     /**
-     * @return \Laminas\Http\Response|ViewModel<mixed>
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return \Laminas\Http\Response|\Laminas\View\Model\ViewModel<mixed>
+     * @throws \Exception
      */
     public function forgottenPasswordAction()
     {

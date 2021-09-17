@@ -4,8 +4,6 @@ namespace ApplicationTest\Entity;
 
 use Application\Entity\Account;
 use Application\Entity\User;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterInterface;
 use PHPUnit\Framework\TestCase;
 
 class AccountTest extends TestCase
@@ -13,7 +11,7 @@ class AccountTest extends TestCase
     public function testGettersWithoutSetter(): void
     {
         $id = 1;
-        $account = new Account();
+        $account = new Account(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), '');
         $reflectionClass = new \ReflectionClass($account);
         $reflectedProperty = $reflectionClass->getProperty('id');
         $reflectedProperty->setAccessible(true);
@@ -25,13 +23,16 @@ class AccountTest extends TestCase
 
     public function testSetterAndGetter(): void
     {
-        $account = new Account();
-
-        $user = new User();
-        $account->setUser($user);
-        self::assertSame($user, $account->getUser());
-
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
         $name = 'test';
+        $account = new Account($user, $name);
+
+        self::assertSame($user, $account->getUser());
+        self::assertSame($name, $account->getName());
+        self::assertSame(0, $account->getRecap());
+        self::assertSame(false, $account->isClosed());
+
+        $name = 'test2';
         $account->setName($name);
         self::assertSame($name, $account->getName());
 
@@ -39,35 +40,8 @@ class AccountTest extends TestCase
         $account->setRecap($recap);
         self::assertSame($recap, $account->getRecap());
 
-        $closed = false;
+        $closed = true;
         $account->setClosed($closed);
         self::assertSame($closed, $account->isClosed());
-
-        self::assertInstanceOf(InputFilterInterface::class, $account->getInputFilter());
-
-        $this->expectException(\Exception::class);
-        $account->setInputFilter(new InputFilter());
-    }
-
-    public function testArrayExchangeAndCopy(): void
-    {
-        $user = new User();
-        $name = 'test';
-        $recap = 1;
-        $closed = false;
-
-        $account = new Account();
-
-        $account->setUser($user);
-        $account->setName($name);
-        $account->setRecap($recap);
-        $account->setClosed($closed);
-
-        $copy = $account->getArrayCopy();
-
-        self::assertSame($copy['user'], $user);
-        self::assertSame($copy['name'], $name);
-        self::assertSame($copy['recap'], $recap);
-        self::assertSame($copy['closed'], $closed);
     }
 }

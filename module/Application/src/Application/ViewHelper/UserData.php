@@ -2,14 +2,17 @@
 
 namespace Application\ViewHelper;
 
+use Auth\Model\LoggedUser;
 use Laminas\View\Helper\AbstractHelper;
 
 class UserData extends AbstractHelper
 {
-    /**
-     * @var ?\stdClass
-     */
-    private $identity;
+    private ?LoggedUser $identity;
+
+    public function __construct()
+    {
+        $this->identity = null;
+    }
 
     public function __invoke(): self
     {
@@ -21,11 +24,11 @@ class UserData extends AbstractHelper
 
     public function getFullName(): ?string
     {
-        return $this->identity ? $this->identity->name . ' ' . $this->identity->surname : null;
+        return $this->identity ? $this->identity->getName() . ' ' . $this->identity->getSurname() : null;
     }
 
     public function hasStored(): ?bool
     {
-        return $this->identity ? (bool) $this->identity->setting->hasProvisioning() : null;
+        return $this->identity ? $this->identity->getSettings()->hasProvisioning() : null;
     }
 }

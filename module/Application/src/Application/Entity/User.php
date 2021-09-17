@@ -5,157 +5,95 @@ declare(strict_types=1);
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Laminas\InputFilter\InputFilter;
-use Laminas\InputFilter\InputFilterAwareInterface;
-use Laminas\InputFilter\InputFilterInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name = "user", uniqueConstraints = {@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
  */
-class User implements InputFilterAwareInterface
+class User
 {
     public const STATUS_NOT_CONFIRMED = 0;
     public const STATUS_CONFIRMED = 1;
 
     /**
-     * @var ?InputFilterInterface
-     */
-    private $inputFilter;
-
-    /**
      * @ORM\Column(type="integer", options={"unsigned"=true});
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Id
-     * @var int
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string")
-     * @var string
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="string", nullable=false)
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", nullable=false)
-     * @var string
      */
-    private $surname;
+    private string $surname;
 
     /**
      * @ORM\Column(type="string", nullable=false, length=32, options={"fixed" = true})
-     * @var string
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", nullable=false, length=4, options={"fixed" = true})
-     * @var string
      */
-    private $salt;
+    private string $salt;
 
     /**
      * @ORM\Column(type="integer", nullable=false, options={"unsigned"=true})
-     * @var int
      */
-    private $status = 0;
+    private int $status = 0;
 
     /**
      * @ORM\Column(type="string", nullable=false)
-     * @var string
      */
-    private $role;
+    private string $role;
 
     /**
      * @ORM\Column(type="string", nullable=false, length=8, options={"fixed" = true})
-     * @var string
      */
-    private $registrationToken;
+    private string $registrationToken;
 
     /**
      * @ORM\Column(name="lastLogin", nullable=true, type="datetime", nullable=true)
-     * @var \DateTime
      */
-    private $lastLogin;
+    private \DateTime $lastLogin;
 
     /**
-     * One user has One settings.
-     * @var Setting
+     * One user has One setting.
      * @ORM\OneToOne(targetEntity="Setting", mappedBy="user")
      */
-    private $setting;
+    private Setting $setting;
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function getArrayCopy(): array
-    {
-        return [
-            'id' => $this->id,
-            'email' => $this->email,
-            'name' => $this->name,
-            'surname' => $this->surname,
-            'password' => $this->password,
-            'salt' => $this->salt,
-            'status' => $this->status,
-            'role' => $this->role,
-            'registrationToken' => $this->registrationToken,
-            'lastLogin' => $this->lastLogin,
-            'setting' => $this->setting,
-        ];
+    public function __construct(
+        string $email,
+        string $name,
+        string $surname,
+        string $password,
+        string $salt,
+        int $status,
+        string $role,
+        string $registrationToken
+    ) {
+        $this->email = $email;
+        $this->name = $name;
+        $this->surname = $surname;
+        $this->password = $password;
+        $this->salt = $salt;
+        $this->status = $status;
+        $this->role = $role;
+        $this->registrationToken = $registrationToken;
     }
 
-    public function setInputFilter(InputFilterInterface $inputFilter): self
-    {
-        $this->inputFilter = $inputFilter;
-        return $this;
-    }
-
-    public function getInputFilter(): InputFilterInterface
-    {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-
-            $inputFilter->add([
-                'name'     => 'email',
-                'required' => true,
-                'filters' => [['name' => 'StringTrim']]
-            ]);
-            $inputFilter->add([
-                'name' => 'name',
-                'required' => true,
-                'filters' => [['name' => 'StringTrim']]
-            ]);
-            $inputFilter->add([
-                'name' => 'surname',
-                'required' => true,
-                'filters' => [['name' => 'StringTrim']]
-            ]);
-            $inputFilter->add([
-                'name'     => 'password',
-                'required' => true,
-                'filters'  => [['name' => 'StringTrim']],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        'options' => ['encoding' => 'UTF-8', 'min' => 1],
-                    ],
-                ],
-            ]);
-
-            $this->inputFilter = $inputFilter;
-        }
-        return $this->inputFilter;
-    }
-
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

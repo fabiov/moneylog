@@ -4,66 +4,49 @@ namespace ApplicationTest\Entity;
 
 use Application\Entity\Setting;
 use Application\Entity\User;
-use Laminas\InputFilter\InputFilter;
 use PHPUnit\Framework\TestCase;
 
 class SettingTest extends TestCase
 {
     public function testGettersAndSetters(): void
     {
-        $user = new User();
-        $setting = new Setting($user);
-
-        $months = 12;
-        $setting->setMonths($months);
-        self::assertSame($months, $setting->getMonths());
-
         $payday = 2;
+        $months = 12;
+        $provisioning = true;
+        $user = new User('', '', '', '', '', User::STATUS_CONFIRMED, '', '');
+        $setting = new Setting($user, $payday, $months, $provisioning);
+
+        self::assertSame($months, $setting->getMonths());
+        self::assertSame($payday, $setting->getPayday());
+        self::assertSame($provisioning, $setting->hasProvisioning());
+
+        $payday = 4;
         $setting->setPayday($payday);
         self::assertSame($payday, $setting->getPayday());
 
-        $provisioning = true;
+        $months = 13;
+        $setting->setMonths($months);
+        self::assertSame($months, $setting->getMonths());
+
+        $provisioning = false;
         $setting->setProvisioning($provisioning);
         self::assertSame($provisioning, $setting->hasProvisioning());
-
-        self::assertInstanceOf(InputFilter::class, $setting->getInputFilter());
-
-        self::expectException(\Exception::class);
-        $setting->setInputFilter(new InputFilter());
-    }
-
-    public function setPaydayException(): void
-    {
-        $user = new User();
-        $setting = new Setting($user);
 
         self::expectException(\Exception::class);
         $setting->setPayday(29);
     }
 
-    public function testArrayCopy(): void
+    public function setPaydayException(): void
     {
-        $user = new User();
-        $months = 54;
-        $payday = 12;
-        $provisioning = true;
+        $setting = new Setting(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), 1, 2, true);
 
-        $setting = new Setting($user);
-        $setting->setMonths($months);
-        $setting->setPayday($payday);
-        $setting->setProvisioning($provisioning);
-
-        $copy = $setting->getArrayCopy();
-
-        self::assertSame($months, $copy['months']);
-        self::assertSame($payday, $copy['payday']);
-        self::assertSame($provisioning, $copy['provisioning']);
+        self::expectException(\Exception::class);
+        $setting->setPayday(29);
     }
 
     public function testInvalidPayDay(): void
     {
-        $user = new User();
-        $setting = new Setting($user);
+        $setting = new Setting(new User('', '', '', '', '', User::STATUS_CONFIRMED, '', ''), 1, 2, true);
 
         self::expectException(\InvalidArgumentException::class);
         $setting->setPayday(29);
