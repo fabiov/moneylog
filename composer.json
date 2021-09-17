@@ -73,7 +73,8 @@
     "autoload-dev": {
         "psr-4": {
             "ApplicationTest\\": "module/Application/test/",
-            "AuthTest\\": "module/Auth/test/"
+            "AuthTest\\": "module/Auth/test/",
+            "MoneyLogTest\\": "module/MoneyLog/test/"
         }
     },
     "scripts": {
