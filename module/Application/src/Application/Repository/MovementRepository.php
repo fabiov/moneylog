@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Application\Repository;
 
-use Application\Entity\Account;
 use Application\Entity\Movement;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 
 class MovementRepository extends EntityRepository
 {
@@ -37,15 +39,12 @@ class MovementRepository extends EntityRepository
      */
     public function search(array $params = []): array
     {
-        $cleanParams  = [];
+        $cleanParams = ['user' => (int) $params['user']];
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('m')
             ->from(Movement::class, 'm')
-            ->join(Account::class, 'a');
-
-        $qb->where('a.user=:user');
-        $cleanParams['user'] = (int) $params['user'];
+            ->join('m.account', 'a', Join::WITH, 'a.user=:user');
 
         if (!empty($params['account'])) {
             $qb->andWhere('m.account = :account');

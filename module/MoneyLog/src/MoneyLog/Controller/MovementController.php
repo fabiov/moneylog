@@ -29,33 +29,33 @@ class MovementController extends AbstractActionController
 
     public function indexAction(): ViewModel
     {
-        $dateMin = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
-        $dateMax = $this->params()->fromQuery('dateMax', date('Y-m-d'));
-        $searchParams = [
-            'account' => $this->params()->fromQuery('account'),
-            'amountMax' => $this->params()->fromQuery('amountMax'),
-            'amountMin' => $this->params()->fromQuery('amountMin'),
-            'category' => $this->params()->fromQuery('category'),
-            'dateMax' => $dateMax,
-            'dateMin' => $dateMin,
-            'description' => $this->params()->fromQuery('description'),
-            'user' => $this->user->getId(),
-        ];
+        $userId = $this->user->getId();
 
-        $accounts = $this->em
-            ->getRepository(Account::class)
-            ->findBy(['closed' => false, 'user' => $this->user->getId()], ['name' => 'ASC']);
+        /** @var AccountRepository $accountRepository */
+        $accountRepository = $this->em->getRepository(Account::class);
 
-        $categories = $this->em
-            ->getRepository(Category::class)
-            ->findBy(['active' => true, 'user' => $this->user->getId()], ['description' => 'ASC']);
+        /** @var \Application\Repository\CategoryRepository $categoryRepository */
+        $categoryRepository = $this->em->getRepository(Category::class);
 
         /** @var \Application\Repository\MovementRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Movement::class);
 
+        $params = $this->params();
+        $searchParams = [
+            'account' => $params->fromQuery('account'),
+            'amountMax' => $params->fromQuery('amountMax'),
+            'amountMin' => $params->fromQuery('amountMin'),
+            'category' => $params->fromQuery('category'),
+            'dateMax' => $params->fromQuery('dateMax', date('Y-m-d')),
+            'dateMin' => $params->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months'))),
+            'description' => $params->fromQuery('description'),
+            'user' => $userId,
+        ];
+
         return new ViewModel([
-            'accounts' => $accounts,
-            'categories' => $categories,
+            'accounts' => $accountRepository->findBy(['closed' => false, 'user' => $userId], ['name' => 'ASC']),
+            'balances' => $accountRepository->getUserAccountBalances($userId),
+            'categories' => $categoryRepository->getUserCategories($userId),
             'rows' => $movementRepository->search($searchParams),
             'searchParams' => $searchParams,
         ]);

@@ -4,6 +4,7 @@
  * @var array<\Application\Entity\Account> $accounts
  * @var array<\Application\Entity\Category> $categories
  * @var array<\Application\Entity\Movement> $rows
+ * @var array<array> $balances
  * @var array<string> $searchParams
  */
 ?>
@@ -22,7 +23,23 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">Filtri</h4>
+                <h3 class="panel-title">Saldi</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <?php foreach ($balances as $balance): ?>
+                        <div class="col-lg-3"><strong><?php echo $balance['name']; ?>:</strong> <?php echo $this->currencyForma($balance['balance']); ?></div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Saldi e filtri</h4>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -43,7 +60,7 @@
                             <div class="form-group">
                                 <label>Conto</label>
                                 <select class="form-control" name="account">
-                                    <option></option>
+                                    <option>Tutti</option>
                                     <?php foreach ($accounts as $account): ?>
                                         <option value="<?php echo $account->getId(); ?>"<?php if ($account->getId() == $searchParams['account']) echo ' selected="selected"'?>>
                                             <?php echo $account->getName(); ?>
@@ -56,7 +73,7 @@
                             <div class="form-group">
                                 <label>Categoria</label>
                                 <select class="form-control" name="category">
-                                    <option></option>
+                                    <option>Tutte</option>
                                     <?php foreach ($categories as $category): ?>
                                         <option value="<?php echo $category->getId(); ?>"<?php if ($category->getId() == $searchParams['category']) echo ' selected="selected"'?>>
                                             <?php echo $category->getDescription(); ?>
@@ -119,15 +136,15 @@
                 <h4 class="panel-title">Lista movimenti</h4>
             </div>
             <div class="panel-body table-responsive">
-                <table class="table table-striped table-bordered table-hover responsive" id="my-table" data-page-length="25">
+                <table class="table table-striped table-bordered table-hover responsive">
                     <thead>
                         <tr>
                             <th>Data</th>
                             <th>Conto</th>
-                            <th style="min-width: 70px;">Importo</th>
+                            <th>Importo</th>
                             <th>Descrizione</th>
                             <th>Categoria</th>
-                            <th>Azioni</th>
+                            <th style="width: 69px;">Azioni</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -155,24 +172,12 @@
     </div>
 </div>
 <?php if ($rows): ?>
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Movimenti nel mese
-            </div>
-            <div class="panel-body">
-                <div id="morris" style="height:200px;"></div>
-            </div>
-        </div>
-    </div>
-</div>
 <?php endif; ?>
 <script type="text/javascript">
     $(document).on("click", ".delete-item", function(e) {
         var button = $(this);
 
-        var html = '<h3>Cancellare l\'accantonamento selezionato?</h3>' +
+        var html = '<h3>Cancellare il movimento selezionato?</h3>' +
             '<dl class="dl-horizontal">' +
             '<dt>Descrizione</dt><dd>'  + button.parents('tr').find('.description').html() + '</dd>' +
             '<dt>Importo</dt><dd>'  + button.parents('tr').find('.amount').html() + '</dd>' +
@@ -182,24 +187,6 @@
             if (result) {
                 location.href =  button.data('href');
             }
-        });
-    });
-
-    $(document).ready(function(){
-        $('#my-table').DataTable({
-            "columnDefs": [
-                {"targets": 0, "type": 'date-eu'},      //data
-                {"targets": 1, "type": 'currency-it'},  //importo
-                {"orderable": false, "targets": -1}     //azioni
-            ],
-            "language":{
-                "url": "/js/data-table-Italian.json"
-            },
-            "order": [
-                [0, "desc"]
-            ],
-            "responsive": true,
-            "searching": false
         });
     });
 

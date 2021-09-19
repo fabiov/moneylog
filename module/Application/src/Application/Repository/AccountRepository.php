@@ -4,9 +4,27 @@ namespace Application\Repository;
 
 use Application\Entity\Account;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 
 class AccountRepository extends EntityRepository
 {
+    /**
+     * @param int $userId
+     * @return array<array>
+     */
+    public function getUserAccountBalances(int $userId): array
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder()
+            ->select('a.id', 'a.name', 'a.recap', 'COALESCE(SUM(m.amount), 0) AS balance')
+            ->from(Account::class, 'a')
+            ->join('a.movements', 'm', Join::WITH, 'a.user=:userId')
+            ->where("a.closed=:closed")
+            ->setParameters([':closed' => false, ':userId' => $userId])
+            ->groupBy('a.id');
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * @param int $userId
      * @param bool $onlyRecap
