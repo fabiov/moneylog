@@ -3,7 +3,7 @@ FROM mysql:5.6
 MAINTAINER @fvlgnn
 
 ARG DB_USER
-ARG DB_GROUP
+#ARG DB_GROUP
 
 #NOTE Uncomment below for enable mysql logs
 #RUN sed -i "s/#log-error/log-error/g" /etc/mysql/mysql.conf.d/mysqld.cnf
