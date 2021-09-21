@@ -29,6 +29,8 @@ class MovementController extends AbstractActionController
 
     public function indexAction(): ViewModel
     {
+        $page = (int) $this->getRequest()->getQuery('page', 1);
+        $pageSize = (int) $this->getRequest()->getQuery('limit', 10);
         $userId = $this->user->getId();
 
         /** @var AccountRepository $accountRepository */
@@ -52,12 +54,16 @@ class MovementController extends AbstractActionController
             'user' => $userId,
         ];
 
+        $paginator = $movementRepository->paginator($searchParams, $page, $pageSize);
+        $totalItems = count($paginator);
+
         return new ViewModel([
             'accounts' => $accountRepository->findBy(['closed' => false, 'user' => $userId], ['name' => 'ASC']),
             'balances' => $accountRepository->getUserAccountBalances($userId),
             'categories' => $categoryRepository->getUserCategories($userId),
-            'rows' => $movementRepository->search($searchParams),
+            'paginator' => $paginator,
             'searchParams' => $searchParams,
+            'totalPages' => ceil($totalItems / $pageSize),
         ]);
     }
 

@@ -1,11 +1,12 @@
 <?php
 /**
+ * @var Doctrine\ORM\Tools\Pagination\Paginator<\Application\Entity\Movement> $paginator
  * @var Laminas\View\Renderer\PhpRenderer $this
  * @var array<\Application\Entity\Account> $accounts
  * @var array<\Application\Entity\Category> $categories
- * @var array<\Application\Entity\Movement> $rows
  * @var array<array> $balances
  * @var array<string> $searchParams
+ * @var int $totalPages
  */
 ?>
 <style type="text/css">
@@ -148,7 +149,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($rows as $row): ?>
+                        <?php foreach ($paginator as $row): ?>
                         <tr>
                             <td class="date"><?php echo $this->dateForma($row->getDate()); ?></td>
                             <td class="account"><?php echo $row->getAccount()->getName(); ?></td>
@@ -171,8 +172,6 @@
         </div>
     </div>
 </div>
-<?php if ($rows): ?>
-<?php endif; ?>
 <script type="text/javascript">
     $(document).on("click", ".delete-item", function(e) {
         var button = $(this);
