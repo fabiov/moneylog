@@ -30,7 +30,7 @@ class MovementController extends AbstractActionController
     public function indexAction(): ViewModel
     {
         $page = (int) $this->getRequest()->getQuery('page', 1);
-        $pageSize = (int) $this->getRequest()->getQuery('limit', 10);
+        $pageSize = (int) $this->getRequest()->getQuery('limit', 25);
         $userId = $this->user->getId();
 
         /** @var AccountRepository $accountRepository */
@@ -51,19 +51,15 @@ class MovementController extends AbstractActionController
             'dateMax' => $params->fromQuery('dateMax', date('Y-m-d')),
             'dateMin' => $params->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months'))),
             'description' => $params->fromQuery('description'),
-            'user' => $userId,
         ];
-
-        $paginator = $movementRepository->paginator($searchParams, $page, $pageSize);
-        $totalItems = count($paginator);
 
         return new ViewModel([
             'accounts' => $accountRepository->findBy(['closed' => false, 'user' => $userId], ['name' => 'ASC']),
             'balances' => $accountRepository->getUserAccountBalances($userId),
             'categories' => $categoryRepository->getUserCategories($userId),
-            'paginator' => $paginator,
+            'page' => $page,
+            'paginator' => $movementRepository->paginator(array_merge($searchParams, ['user' => $userId]), $page, $pageSize),
             'searchParams' => $searchParams,
-            'totalPages' => ceil($totalItems / $pageSize),
         ]);
     }
 

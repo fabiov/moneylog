@@ -88,6 +88,7 @@ return [
             'commonJavascript' => Application\ViewHelper\CommonJavascript::class,
             'footer' => Application\ViewHelper\Footer::class,
             'helpTooltip' => Application\ViewHelper\HelpTooltip::class,
+            'pagination' => Application\ViewHelper\Pagination::class,
             'richInlineScript' => Application\ViewHelper\RichInlineScript::class,
             'sbaFormRow' => Application\ViewHelper\SbaFormRow::class,
             'userData' => Application\ViewHelper\UserData::class,
