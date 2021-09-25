@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Application\Repository;
 
 use Application\Entity\Movement;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class MovementRepository extends EntityRepository
 {
@@ -31,48 +36,28 @@ class MovementRepository extends EntityRepository
     }
 
     /**
-     * @param array<string, string> $params
+     * @param array<string, mixed> $searchParams
+     * @param int $page
+     * @param int $limit
+     * @return Paginator<Movement>
+     */
+    public function paginator(array $searchParams, int $page, int $limit): Paginator
+    {
+        $query = $this
+            ->getQuery($searchParams)
+            ->setFirstResult($page > 0 ? $page - 1 : 0)
+            ->setMaxResults($limit > 0 ? $limit : 10);
+
+        return new Paginator($query);
+    }
+
+    /**
+     * @param array<string, mixed> $params
      * @return array<Movement>
      */
     public function search(array $params = []): array
     {
-        $cleanParams  = [];
-        $qb = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->select('m')
-            ->from(Movement::class, 'm')
-            ->where('1=1');
-
-        if (!empty($params['accountId'])) {
-            $qb->andWhere('m.account = :accountId');
-            $cleanParams['accountId'] = $params['accountId'];
-        }
-        if (!empty($params['dateMin'])) {
-            $qb->andWhere('m.date >= :dateMin');
-            $cleanParams['dateMin'] = $params['dateMin'];
-        }
-        if (!empty($params['dateMax'])) {
-            $qb->andWhere('m.date <= :dateMax');
-            $cleanParams['dateMax'] = $params['dateMax'];
-        }
-        if (!empty($params['category'])) {
-            $qb->andWhere('m.category = :category');
-            $cleanParams['category'] = $params['category'];
-        }
-        if (!empty($params['description'])) {
-            $qb->andWhere('m.description LIKE :description');
-            $cleanParams['description'] = '%' . $params['description'] . '%';
-        }
-        if (is_numeric($params['amountMin'])) {
-            $qb->andWhere('m.amount >= :amountMin');
-            $cleanParams['amountMin'] = (float) $params['amountMin'];
-        }
-        if (is_numeric($params['amountMax'])) {
-            $qb->andWhere('m.amount <= :amountMax');
-            $cleanParams['amountMax'] = (float) $params['amountMax'];
-        }
-
-        return $qb->setParameters($cleanParams)->orderBy('m.date', 'DESC')->getQuery()->getResult();
+        return $this->getQuery($params)->getResult();
     }
 
     /**
@@ -116,5 +101,50 @@ class MovementRepository extends EntityRepository
             ->orderBy('m.date');
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param array<string, mixed> $params
+     * @return Query
+     */
+    private function getQuery(array $params): Query
+    {
+        $cleanParams = ['user' => (int)$params['user']];
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('m')
+            ->from(Movement::class, 'm')
+            ->join('m.account', 'a', Join::WITH, 'a.user=:user');
+
+        if (!empty($params['account'])) {
+            $qb->andWhere('m.account = :account');
+            $cleanParams['account'] = (int)$params['account'];
+        }
+        if (!empty($params['dateMin'])) {
+            $qb->andWhere('m.date >= :dateMin');
+            $cleanParams['dateMin'] = $params['dateMin'];
+        }
+        if (!empty($params['dateMax'])) {
+            $qb->andWhere('m.date <= :dateMax');
+            $cleanParams['dateMax'] = $params['dateMax'];
+        }
+        if (!empty($params['category'])) {
+            $qb->andWhere('m.category = :category');
+            $cleanParams['category'] = (int)$params['category'];
+        }
+        if (!empty($params['description'])) {
+            $qb->andWhere('m.description LIKE :description');
+            $cleanParams['description'] = '%' . $params['description'] . '%';
+        }
+        if (is_numeric($params['amountMin'])) {
+            $qb->andWhere('m.amount >= :amountMin');
+            $cleanParams['amountMin'] = (float)$params['amountMin'];
+        }
+        if (is_numeric($params['amountMax'])) {
+            $qb->andWhere('m.amount <= :amountMax');
+            $cleanParams['amountMax'] = (float)$params['amountMax'];
+        }
+
+        return $qb->setParameters($cleanParams)->orderBy('m.date', 'DESC')->getQuery();
     }
 }
