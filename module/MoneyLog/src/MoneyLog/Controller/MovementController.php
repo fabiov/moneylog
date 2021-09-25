@@ -24,7 +24,43 @@ class MovementController extends AbstractActionController
     public function __construct(LoggedUser $user, EntityManagerInterface $em)
     {
         $this->user = $user;
-        $this->em   = $em;
+        $this->em = $em;
+    }
+
+    public function indexAction(): ViewModel
+    {
+        $page = (int) $this->getRequest()->getQuery('page', 1);
+        $pageSize = (int) $this->getRequest()->getQuery('limit', 25);
+        $userId = $this->user->getId();
+
+        /** @var AccountRepository $accountRepository */
+        $accountRepository = $this->em->getRepository(Account::class);
+
+        /** @var \Application\Repository\CategoryRepository $categoryRepository */
+        $categoryRepository = $this->em->getRepository(Category::class);
+
+        /** @var \Application\Repository\MovementRepository $movementRepository */
+        $movementRepository = $this->em->getRepository(Movement::class);
+
+        $params = $this->params();
+        $searchParams = [
+            'account' => $params->fromQuery('account'),
+            'amountMax' => $params->fromQuery('amountMax'),
+            'amountMin' => $params->fromQuery('amountMin'),
+            'category' => $params->fromQuery('category'),
+            'dateMax' => $params->fromQuery('dateMax', date('Y-m-d')),
+            'dateMin' => $params->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months'))),
+            'description' => $params->fromQuery('description'),
+        ];
+
+        return new ViewModel([
+            'accounts' => $accountRepository->findBy(['closed' => false, 'user' => $userId], ['name' => 'ASC']),
+            'balances' => $accountRepository->getUserAccountBalances($userId),
+            'categories' => $categoryRepository->getUserCategories($userId),
+            'page' => $page,
+            'paginator' => $movementRepository->paginator(array_merge($searchParams, ['user' => $userId]), $page, $pageSize),
+            'searchParams' => $searchParams,
+        ]);
     }
 
     /**
@@ -37,13 +73,14 @@ class MovementController extends AbstractActionController
         $dateMin      = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
         $dateMax      = $this->params()->fromQuery('dateMax', date('Y-m-d'));
         $searchParams = [
-            'accountId'   => $accountId,
-            'amountMax'   => $this->params()->fromQuery('amountMax'),
-            'amountMin'   => $this->params()->fromQuery('amountMin'),
-            'category'    => $this->params()->fromQuery('category'),
-            'dateMax'     => $dateMax,
-            'dateMin'     => $dateMin,
+            'account' => $accountId,
+            'amountMax' => $this->params()->fromQuery('amountMax'),
+            'amountMin' => $this->params()->fromQuery('amountMin'),
+            'category' => $this->params()->fromQuery('category'),
+            'dateMax' => $dateMax,
+            'dateMin' => $dateMin,
             'description' => $this->params()->fromQuery('description'),
+            'user' => $this->user->getId(),
         ];
 
         $criteria = ['id' => $accountId, 'user' => $this->user->getId()];

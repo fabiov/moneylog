@@ -5,6 +5,7 @@ namespace Application\Repository;
 use Application\Entity\Category;
 use Application\Entity\Movement;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 
 class CategoryRepository extends EntityRepository
 {
@@ -91,9 +92,19 @@ class CategoryRepository extends EntityRepository
             ->createQueryBuilder()
             ->select('SUM(m.amount)')
             ->from(Category::class, 'c', 'c.id')
-            ->innerJoin(Movement::class, 'm', 'WITH', 'c.id=m.category')
+            ->innerJoin(Movement::class, 'm', Join::WITH, 'c.id=m.category')
             ->where("c.id=$categoryId")
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @param int $userId
+     * @param bool $active
+     * @return array<Category>
+     */
+    public function getUserCategories(int $userId, bool $active = true): array
+    {
+        return $this->findBy(['active' => $active, 'user' => $userId], ['description' => 'ASC']);
     }
 }
