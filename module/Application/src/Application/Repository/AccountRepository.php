@@ -70,4 +70,23 @@ class AccountRepository extends EntityRepository
 
         return $qb->orderBy('total', 'DESC')->groupBy('a.id')->getQuery()->getResult();
     }
+
+    /**
+     * @param int $userId
+     * @return array<Account>
+     */
+    public function getByUsage(int $userId): array
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder()
+            ->select('a')
+            ->from(Account::class, 'a')
+            ->leftJoin('a.movements', 'm')
+            ->where('a.user=:userId')
+            ->andWhere('a.closed=:closed')
+            ->groupBy('m.account')
+            ->orderBy('COUNT(m.account)', 'DESC')
+            ->setParameters([':closed' => false, ':userId' => $userId]);
+
+        return $qb->getQuery()->getResult();
+    }
 }

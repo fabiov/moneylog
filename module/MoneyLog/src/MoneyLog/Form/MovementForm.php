@@ -82,11 +82,8 @@ class MovementForm extends Form
                 'disable_inarray_validator' => true,
                 'display_empty_item' => false,
                 'find_method' => [
-                    'name' => 'findBy',
-                    'params' => [
-                        'criteria' => ['user' => $userId, 'closed' => false],
-                        'orderBy' => ['name' => 'ASC']
-                    ]
+                    'name' => 'getByUsage',
+                    'params' => ['userId' => $userId],
                 ],
                 'label' => 'Conto',
                 'object_manager' => $this->em,
