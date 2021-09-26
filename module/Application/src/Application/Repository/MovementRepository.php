@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Application\Repository;
 
+use Application\Entity\Account;
 use Application\Entity\Movement;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
@@ -87,18 +88,21 @@ class MovementRepository extends EntityRepository
      */
     public function getMovementByDay(int $userId, string $minDate, string $maxDate): array
     {
-        // SELECT date, SUM(amount) AS amount FROM movement INNER JOIN account ON movement.accountId=account.id
-        // WHERE userId=1 AND recap=1 AND date >= '2019-02-10' AND date<='2019-02-25' GROUP BY date
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('m.date, SUM(m.amount) AS amount')
             ->from(Movement::class, 'm')
             ->innerJoin('m.account', 'a')
-            ->where("a.user=$userId AND m.amount < 0 AND a.recap=1 AND m.date BETWEEN :minDate AND :maxDate")
-            ->setParameter(':minDate', $minDate)
-            ->setParameter(':maxDate', $maxDate)
+            ->where("a.user=:userId")
+            ->andWhere('m.amount < 0 AND a.status=:status AND m.date BETWEEN :minDate AND :maxDate')
             ->groupBy('m.date')
-            ->orderBy('m.date');
+            ->orderBy('m.date')
+            ->setParameters([
+                ':maxDate' => $maxDate,
+                ':minDate' => $minDate,
+                ':status' => Account::STATUS_HIGHLIGHT,
+                ':userId' => $userId,
+            ]);
 
         return $qb->getQuery()->getResult();
     }

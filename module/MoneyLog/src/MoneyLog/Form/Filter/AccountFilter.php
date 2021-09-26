@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoneyLog\Form\Filter;
 
 use Laminas\Filter\StringTrim;
-use Laminas\Filter\ToInt;
 use Laminas\InputFilter\InputFilter;
 
 class AccountFilter extends InputFilter
@@ -18,15 +17,8 @@ class AccountFilter extends InputFilter
             'filters' => [['name' => StringTrim::class]],
         ]);
         $this->add([
-            'name' => 'recap',
+            'name' => 'status',
             'required' => false,
-            'filters' => [['name' => ToInt::class]],
         ]);
-        // with following filter the validation fails
-//            $this->inputFilter->add([
-//                'name' => 'closed',
-//                'required' => false,
-//                'filters' => [['name' => Boolean::class]],
-//            ]);
     }
 }

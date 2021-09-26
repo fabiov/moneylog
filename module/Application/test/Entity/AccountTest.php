@@ -4,6 +4,7 @@ namespace ApplicationTest\Entity;
 
 use Application\Entity\Account;
 use Application\Entity\User;
+use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\TestCase;
 
 class AccountTest extends TestCase
@@ -29,19 +30,16 @@ class AccountTest extends TestCase
 
         self::assertSame($user, $account->getUser());
         self::assertSame($name, $account->getName());
-        self::assertSame(0, $account->getRecap());
-        self::assertSame(false, $account->isClosed());
+        self::assertSame(Account::STATUS_OPEN, $account->getStatus());
 
         $name = 'test2';
         $account->setName($name);
         self::assertSame($name, $account->getName());
 
-        $recap = 1;
-        $account->setRecap($recap);
-        self::assertSame($recap, $account->getRecap());
+        $status = Account::STATUS_CLOSED;
+        $account->setStatus($status);
+        self::assertSame($status, $account->getStatus());
 
-        $closed = true;
-        $account->setClosed($closed);
-        self::assertSame($closed, $account->isClosed());
+        self::assertInstanceOf(Collection::class, $account->getMovements());
     }
 }

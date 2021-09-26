@@ -56,19 +56,6 @@ class RegistrationForm extends Form
             ],
         ]);
 
-//        $this->add(array(
-//            'type' => 'Laminas\Form\Element\Captcha',
-//            'name' => 'captcha',
-//            'options' => array(
-//                'label' => 'Please verify you are human',
-//                'captcha' => new \Laminas\Captcha\ReCaptcha(array(
-//                    'pubKey'    => '6LdjpBIUAAAAAGDwoUOVWGSZSudz1U2EYWDOafD7',
-//                    'privKey'   => '6LdjpBIUAAAAANHJptlPZIB5Ty3kXKPS6tmSbc1j',
-//                )),
-//                'class' => 'form-control',
-//            ),
-//        ));
-
         $this->add([
             'name' => 'submit',
             'attributes' => [

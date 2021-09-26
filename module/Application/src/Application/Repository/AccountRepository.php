@@ -15,7 +15,7 @@ class AccountRepository extends EntityRepository
     public function getUserAccountBalances(int $userId): array
     {
         $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('a.id', 'a.name', 'a.recap', 'COALESCE(SUM(m.amount), 0) AS balance')
+            ->select('a.id', 'a.name', 'a.status', 'COALESCE(SUM(m.amount), 0) AS balance')
             ->from(Account::class, 'a')
             ->join('a.movements', 'm', Join::WITH, 'a.user=:userId')
             ->where("a.closed=:closed")
@@ -27,10 +27,10 @@ class AccountRepository extends EntityRepository
 
     /**
      * @param int $userId
-     * @param bool $onlyRecap
+     * @param bool $onlyHighlight
      * @return array<Account>
      */
-    public function getUserAccounts(int $userId, bool $onlyRecap = false): array
+    public function getUserAccounts(int $userId, bool $onlyHighlight = false): array
     {
         $qb = $this->createQueryBuilder('a')
             ->select('a')
@@ -38,8 +38,10 @@ class AccountRepository extends EntityRepository
             ->orderBy('a.name', 'ASC')
             ->setParameter(':userId', $userId);
 
-        if ($onlyRecap) {
-            $qb->andWhere('a.recap=1');
+        if ($onlyHighlight) {
+            $qb->andWhere('a.status=:status')->setParameter(':status', Account::STATUS_HIGHLIGHT);
+        } else {
+            $qb->andWhere('a.status<>:status')->setParameter(':status', Account::STATUS_CLOSED);
         }
 
         return $qb->getQuery()->getResult();
@@ -47,14 +49,14 @@ class AccountRepository extends EntityRepository
 
     /**
      * @param int $userId
-     * @param bool $onlyRecap
+     * @param bool $onlyHighlight
      * @param \DateTime|null|string $date
      * @return array<array>
      */
-    public function getTotals(int $userId, bool $onlyRecap = false, $date = null): array
+    public function getTotals(int $userId, bool $onlyHighlight = false, $date = null): array
     {
         $qb = $this->getEntityManager()->createQueryBuilder()
-           ->select('a.id', 'a.name', 'a.recap', 'a.closed', 'COALESCE(SUM(m.amount), 0) AS total')
+           ->select('a.id', 'a.name', 'a.status', 'COALESCE(SUM(m.amount), 0) AS total')
            ->from(Account::class, 'a')
            ->leftJoin('a.movements', 'm')
            ->where("a.user=$userId");
@@ -64,8 +66,8 @@ class AccountRepository extends EntityRepository
                 ->setParameter(':date', $date instanceof \DateTime ? $date->format('Y-m-d') : $date);
         }
 
-        if ($onlyRecap) {
-            $qb->andWhere('a.recap=1');
+        if ($onlyHighlight) {
+            $qb->andWhere('a.status=:status')->setParameter(':status', Account::STATUS_HIGHLIGHT);
         }
 
         return $qb->orderBy('total', 'DESC')->groupBy('a.id')->getQuery()->getResult();
@@ -82,10 +84,10 @@ class AccountRepository extends EntityRepository
             ->from(Account::class, 'a')
             ->leftJoin('a.movements', 'm')
             ->where('a.user=:userId')
-            ->andWhere('a.closed=:closed')
+            ->andWhere('a.status<>:status')
             ->groupBy('m.account')
             ->orderBy('COUNT(m.account)', 'DESC')
-            ->setParameters([':closed' => false, ':userId' => $userId]);
+            ->setParameters([':status' => Account::STATUS_CLOSED, ':userId' => $userId]);
 
         return $qb->getQuery()->getResult();
     }

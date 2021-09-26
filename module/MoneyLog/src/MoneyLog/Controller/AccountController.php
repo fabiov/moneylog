@@ -46,7 +46,7 @@ class AccountController extends AbstractActionController
                 /** @var array<string, mixed> $data */
                 $data = $form->getData();
 
-                $account = new Account($user, $data['name'], $data['recap'], false);
+                $account = new Account($user, $data['name']);
 
                 $this->em->persist($account);
                 $this->em->flush();
@@ -68,20 +68,18 @@ class AccountController extends AbstractActionController
 
         $accountAvailable = $accountRepository->getTotals($this->user->getId(), false, new \DateTime());
         foreach ($accountAvailable as $i) {
-            $data[$i['id']]['id']        = $i['id'];
-            $data[$i['id']]['name']      = $i['name'];
-            $data[$i['id']]['closed']    = $i['closed'];
-            $data[$i['id']]['recap']     = $i['recap'];
+            $data[$i['id']]['id'] = $i['id'];
+            $data[$i['id']]['name'] = $i['name'];
+            $data[$i['id']]['status'] = $i['status'];
             $data[$i['id']]['available'] = $i['total'];
         }
 
-        $accountBalances  = $accountRepository->getTotals($this->user->getId(), false);
+        $accountBalances = $accountRepository->getTotals($this->user->getId(), false);
         foreach ($accountBalances as $i) {
-            $data[$i['id']]['id']        = $i['id'];
-            $data[$i['id']]['name']      = $i['name'];
-            $data[$i['id']]['closed']    = $i['closed'];
-            $data[$i['id']]['recap']     = $i['recap'];
-            $data[$i['id']]['balance']   = $i['total'];
+            $data[$i['id']]['id'] = $i['id'];
+            $data[$i['id']]['name'] = $i['name'];
+            $data[$i['id']]['status'] = $i['status'];
+            $data[$i['id']]['balance'] = $i['total'];
         }
         return new ViewModel(['rows' => $data]);
     }
@@ -101,11 +99,7 @@ class AccountController extends AbstractActionController
         }
 
         $form = new AccountForm();
-        $form->setData([
-            'name' => $account->getName(),
-            'recap' => $account->getRecap(),
-            'closed' => $account->isClosed(),
-        ]);
+        $form->setData(['name' => $account->getName(), 'status' => $account->getStatus()]);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -119,8 +113,7 @@ class AccountController extends AbstractActionController
                 $validatedData = $form->getData();
 
                 $account->setName($validatedData['name']);
-                $account->setRecap($validatedData['recap']);
-                $account->setClosed((bool) $validatedData['closed']);
+                $account->setStatus($validatedData['status']);
 
                 $this->em->flush();
                 return $this->redirect()->toRoute('accantonaAccount'); // Redirect to list
