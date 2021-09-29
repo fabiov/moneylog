@@ -17,9 +17,7 @@ class AccountRepository extends EntityRepository
         $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('a.id', 'a.name', 'a.status', 'COALESCE(SUM(m.amount), 0) AS balance')
             ->from(Account::class, 'a')
-            ->join('a.movements', 'm', Join::WITH, 'a.user=:userId')
-            ->where("a.closed=:closed")
-            ->setParameters([':closed' => false, ':userId' => $userId])
+            ->join('a.movements', 'm', Join::WITH, "a.user=$userId")
             ->groupBy('a.id');
 
         return $qb->getQuery()->getResult();

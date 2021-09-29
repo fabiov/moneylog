@@ -54,7 +54,7 @@ class MovementController extends AbstractActionController
         ];
 
         return new ViewModel([
-            'accounts' => $accountRepository->findBy(['closed' => false, 'user' => $userId], ['name' => 'ASC']),
+            'accounts' => $accountRepository->findBy(['user' => $userId], ['name' => 'ASC']),
             'balances' => $accountRepository->getUserAccountBalances($userId),
             'categories' => $categoryRepository->getUserCategories($userId),
             'page' => $page,
