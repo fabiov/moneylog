@@ -51,6 +51,8 @@ class MovementController extends AbstractActionController
             'dateMax' => $params->fromQuery('dateMax', date('Y-m-d')),
             'dateMin' => $params->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months'))),
             'description' => $params->fromQuery('description'),
+            'orderField' => $params->fromQuery('orderField', 'date'),
+            'orderType' => $params->fromQuery('orderType', 'DESC'),
         ];
 
         return new ViewModel([

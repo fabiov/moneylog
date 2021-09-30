@@ -113,42 +113,49 @@ class MovementRepository extends EntityRepository
      */
     private function getQuery(array $params): Query
     {
-        $cleanParams = ['user' => (int)$params['user']];
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('m')
             ->from(Movement::class, 'm')
-            ->join('m.account', 'a', Join::WITH, 'a.user=:user');
+            ->join('m.account', 'a', Join::WITH, 'a.user=:user')
+            ->setParameter('user', (int) $params['user']);
 
         if (!empty($params['account'])) {
-            $qb->andWhere('m.account = :account');
-            $cleanParams['account'] = (int)$params['account'];
+            $qb->andWhere('m.account = :account')->setParameter('account', (int) $params['account']);
         }
         if (!empty($params['dateMin'])) {
-            $qb->andWhere('m.date >= :dateMin');
-            $cleanParams['dateMin'] = $params['dateMin'];
+            $qb->andWhere('m.date >= :dateMin')->setParameter('dateMin', $params['dateMin']);
         }
         if (!empty($params['dateMax'])) {
-            $qb->andWhere('m.date <= :dateMax');
-            $cleanParams['dateMax'] = $params['dateMax'];
+            $qb->andWhere('m.date <= :dateMax')->setParameter('dateMax', $params['dateMax']);
         }
         if (!empty($params['category'])) {
-            $qb->andWhere('m.category = :category');
-            $cleanParams['category'] = (int)$params['category'];
+            $qb->andWhere('m.category = :category')->setParameter('category', (int) $params['category']);
         }
         if (!empty($params['description'])) {
-            $qb->andWhere('m.description LIKE :description');
-            $cleanParams['description'] = '%' . $params['description'] . '%';
+            $description = '%' . $params['description'] . '%';
+            $qb->andWhere('m.description LIKE :description')->setParameter('description', $description);
         }
         if (is_numeric($params['amountMin'])) {
-            $qb->andWhere('m.amount >= :amountMin');
-            $cleanParams['amountMin'] = (float)$params['amountMin'];
+            $qb->andWhere('m.amount >= :amountMin')->setParameter('amountMin', (float) $params['amountMin']);
         }
         if (is_numeric($params['amountMax'])) {
-            $qb->andWhere('m.amount <= :amountMax');
-            $cleanParams['amountMax'] = (float)$params['amountMax'];
+            $qb->andWhere('m.amount <= :amountMax')->setParameter('amountMax', (float) $params['amountMax']);
         }
 
-        return $qb->setParameters($cleanParams)->orderBy('m.date', 'DESC')->getQuery();
+        switch ($params['orderField']) {
+            case 'amount':
+            $qb->orderBy('m.amount', $params['orderType'] === 'DESC' ? 'DESC' : 'ASC');
+                break;
+            case 'description':
+                $qb->orderBy('m.description', $params['orderType'] === 'DESC' ? 'DESC' : 'ASC');
+                break;
+            case 'date':
+            default:
+                $qb->orderBy('m.date', $params['orderType'] === 'ASC' ? 'ASC' : 'DESC');
+                break;
+        }
+
+        return $qb->getQuery();
     }
 }
