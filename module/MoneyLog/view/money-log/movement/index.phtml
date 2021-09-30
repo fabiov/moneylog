@@ -140,12 +140,12 @@
                     <table class="table table-striped table-bordered table-hover responsive">
                         <thead>
                             <tr>
-                                <th>Data</th>
+                                <th><?php echo $this->sortLink('Data', 'date', 'accantonaMovement', $searchParams); ?></th>
                                 <th>Conto</th>
-                                <th>Importo</th>
-                                <th>Descrizione</th>
+                                <th><?php echo $this->sortLink('Importo', 'amount', 'accantonaMovement', $searchParams); ?></th>
+                                <th><?php echo $this->sortLink('Descrizione', 'description', 'accantonaMovement', $searchParams); ?></th>
                                 <th>Categoria</th>
-                                <th style="width: 69px;">Azioni</th>
+                                <th style="width: 69px;"></th>
                             </tr>
                         </thead>
                         <tbody>
