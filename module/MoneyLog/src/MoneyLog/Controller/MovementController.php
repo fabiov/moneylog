@@ -197,8 +197,8 @@ class MovementController extends AbstractActionController
             return $this->getRedirectToDashboard();
         }
 
-        $accountOptions = ['' => ''];
-        foreach ($accountRepository->getUserAccounts($this->user->getId()) as $account) {
+        $accountOptions = [];
+        foreach ($accountRepository->getByUsage($this->user->getId()) as $account) {
             if ($account->getId() != $sourceAccount->getId() && $account->getStatus() !== Account::STATUS_CLOSED) {
                 $accountOptions[$account->getId()] = $account->getName();
             }
