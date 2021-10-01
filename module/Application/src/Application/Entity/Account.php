@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Account
 {
+    public const STATUS_OPEN = 'open';
+    public const STATUS_CLOSED = 'closed';
+    public const STATUS_HIGHLIGHT = 'highlight';
+
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true});
@@ -34,26 +38,20 @@ class Account
     private string $name;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="string", columnDefinition="ENUM('closed', 'open', 'highlight') NOT NULL DEFAULT 'open'")
      */
-    private int $recap;
-
-    /**
-     * @ORM\Column(name="closed", type="boolean", nullable=false, options={"default": false})
-     */
-    private bool $closed;
+    private string $status;
 
     /**
      * @ORM\OneToMany(targetEntity="Movement", mappedBy="account")
      */
     private Collection $movements;
 
-    public function __construct(User $user, string $name, int $recap = 0, bool $closed = false)
+    public function __construct(User $user, string $name, string $status = self::STATUS_OPEN)
     {
         $this->user = $user;
         $this->name = $name;
-        $this->recap = $recap;
-        $this->closed = $closed;
+        $this->status = $status;
         $this->movements = new ArrayCollection();
     }
 
@@ -77,23 +75,18 @@ class Account
         return $this->user;
     }
 
-    public function isClosed(): bool
+    public function setStatus(string $status): void
     {
-        return $this->closed;
+        $this->status = $status;
     }
 
-    public function setClosed(bool $closed): void
+    public function getStatus(): string
     {
-        $this->closed = $closed;
+        return $this->status;
     }
 
-    public function getRecap(): int
+    public function getMovements(): Collection
     {
-        return $this->recap;
-    }
-
-    public function setRecap(int $recap): void
-    {
-        $this->recap = $recap;
+        return $this->movements;
     }
 }

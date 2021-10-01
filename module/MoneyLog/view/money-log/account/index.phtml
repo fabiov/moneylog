@@ -6,11 +6,16 @@
 $dataChart      = [];
 $totalAvailable = 0;
 $totalBalance   = 0;
+$stateMap = [
+    \Application\Entity\Account::STATUS_CLOSED => 'Chiuso',
+    \Application\Entity\Account::STATUS_OPEN => 'Aperto',
+    \Application\Entity\Account::STATUS_HIGHLIGHT => 'In evidenza',
+];
 ?>
 <?php echo $this->pageHeader('Conti'); ?>
+<?php if ($rows): ?>
 <div class="row">
-    <?php if ($rows): ?>
-    <div class="col-lg-9 col-md-12">
+    <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 Lista conti
@@ -21,7 +26,6 @@ $totalBalance   = 0;
                         <tr>
                             <th>Nome</th>
                             <th>Stato</th>
-                            <th>Includi nel riepilogo</th>
                             <th class="text-right">Saldo disponibile</th>
                             <th class="text-right">Saldo contabile</th>
                             <th class="text-right">Operazioni</th>
@@ -33,8 +37,8 @@ $totalBalance   = 0;
                         if (!empty($row['available']) && $row['available'] > 0) {
                             $dataChart[] = array($row['name'], (float) $row['available']);
                         }
-                        $totalAvailable += isset($row['available']) ? $row['available'] : 0;
-                        $totalBalance   += isset($row['balance'])   ? $row['balance']   : 0;
+                        $totalAvailable += $row['available'] ?? 0;
+                        $totalBalance   += $row['balance'] ?? 0;
                         ?>
                         <tr>
                             <td class="name">
@@ -42,10 +46,9 @@ $totalBalance   = 0;
                                     <?php echo $this->escapeHtml($row['name']); ?>
                                 </a>
                             </td>
-                            <td><?php echo $row['closed'] ? 'Chiuso' : 'Aperto'; ?></td>
-                            <td><?php echo $row['recap'] ? 'Sì' : 'No'; ?></td>
-                            <td class="text-right total"><?php if (isset($row['available'])) echo $this->currencyForma($row['available']); ?></td>
-                            <td class="text-right total"><?php if (isset($row['balance'])) echo $this->currencyForma($row['balance']); ?></td>
+                            <td><?php echo $stateMap[$row['status']]; ?></td>
+                            <td class="text-right total"><?php echo $this->currencyForma($row['available'] ?? 0); ?></td>
+                            <td class="text-right total"><?php echo $this->currencyForma($row['balance'] ?? 0); ?></td>
                             <td class="text-right">
                                 <?php if (!$row['closed']): ?>
                                 <a href="<?php echo $this->url('accantonaMovement', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
@@ -70,7 +73,7 @@ $totalBalance   = 0;
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3"><strong>Totale</strong></td>
+                            <td colspan="2"><strong>Totale</strong></td>
                             <td class="text-right"><strong><?php echo $this->currencyForma($totalAvailable); ?></strong></td>
                             <td class="text-right"><strong><?php echo $this->currencyForma($totalBalance); ?></strong></td>
                             <td></td>
@@ -80,18 +83,22 @@ $totalBalance   = 0;
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-12">
+</div>
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-4">
         <div class="panel panel-default">
             <div class="panel-heading">Ripartizione conti</div>
             <div id="donut-accounts"></div>
         </div>
     </div>
-    <?php else: ?>
-    <div class="col-lg-12">
-        <i>Nessun conto definito, clicca sul tasto Aggiungi per crearne uno.</i>
-    </div>
-    <?php endif; ?>
 </div>
+<?php else: ?>
+<div class="row">
+    <div class="col-lg-12">
+    <i>Nessun conto definito, clicca sul tasto Aggiungi per crearne uno.</i>
+    </div>
+</div>
+<?php endif; ?>
 <?php
 echo $this->balanceModalForm(0, 'accantonaAccount');
 $js = <<< js

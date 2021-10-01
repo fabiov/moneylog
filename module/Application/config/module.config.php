@@ -91,6 +91,7 @@ return [
             'pagination' => Application\ViewHelper\Pagination::class,
             'richInlineScript' => Application\ViewHelper\RichInlineScript::class,
             'sbaFormRow' => Application\ViewHelper\SbaFormRow::class,
+            'sortLink' => Application\ViewHelper\SortLink::class,
             'userData' => Application\ViewHelper\UserData::class,
         ],
     ],

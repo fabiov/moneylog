@@ -1,0 +1,134 @@
+
+
+Code Coverage Report:       
+  2021-09-30 21:16:19       
+                            
+ Summary:                   
+  Classes: 51.61% (32/62)   
+  Methods: 54.46% (110/202) 
+  Lines:   34.53% (403/1167)
+
+Application\Controller\PageController
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
+Application\Entity\Account
+  Methods: 100.00% ( 8/ 8)   Lines: 100.00% ( 14/ 14)
+Application\Entity\Category
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 12/ 12)
+Application\Entity\Movement
+  Methods: 100.00% (12/12)   Lines: 100.00% ( 22/ 22)
+Application\Entity\Provision
+  Methods: 100.00% ( 9/ 9)   Lines: 100.00% ( 16/ 16)
+Application\Entity\Setting
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 16/ 16)
+Application\Entity\User
+  Methods: 100.00% (22/22)   Lines: 100.00% ( 42/ 42)
+Application\Repository\AccountRepository
+  Methods:   0.00% ( 0/ 4)   Lines:   0.00% (  0/ 16)
+Application\Repository\CategoryRepository
+  Methods:   0.00% ( 0/ 4)   Lines:   0.00% (  0/ 21)
+Application\Repository\MovementRepository
+  Methods:   0.00% ( 0/ 6)   Lines:   0.00% (  0/ 40)
+Application\Repository\ProvisionRepository
+  Methods:   0.00% ( 0/ 3)   Lines:   0.00% (  0/ 23)
+Application\ViewHelper\CommonJavascript
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+Application\ViewHelper\Footer
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  4/  4)
+Application\ViewHelper\HelpTooltip
+  Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/  3)
+Application\ViewHelper\Pagination
+  Methods:   0.00% ( 0/ 2)   Lines:   0.00% (  0/ 22)
+Application\ViewHelper\RichInlineScript
+  Methods:  25.00% ( 1/ 4)   Lines:  46.67% (  7/ 15)
+Application\ViewHelper\SbaFormRow
+  Methods:   0.00% ( 0/ 2)   Lines:   0.00% (  0/ 18)
+Application\ViewHelper\SortLink
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 12/ 12)
+Application\ViewHelper\UserData
+  Methods:   0.00% ( 0/ 4)   Lines:   0.00% (  0/  6)
+Auth\Controller\RegistrationController
+  Methods:  10.00% ( 1/10)   Lines:   8.51% (  8/ 94)
+Auth\Controller\UserController
+  Methods:  20.00% ( 1/ 5)   Lines:  15.71% ( 11/ 70)
+Auth\Form\AuthForm
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 11/ 11)
+Auth\Form\ChangePasswordForm
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  9/  9)
+Auth\Form\Filter\ChangePasswordFilter
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 11/ 11)
+Auth\Form\Filter\LoginFilter
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  5/  5)
+Auth\Form\Filter\RegistrationFilter
+  Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/  3)
+Auth\Form\Filter\UserFilter
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  5/  5)
+Auth\Form\ForgottenPasswordFilter
+  Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/  1)
+Auth\Form\ForgottenPasswordForm
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  7/  7)
+Auth\Form\RegistrationForm
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 15/ 15)
+Auth\Form\UserForm
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  7/  7)
+Auth\Model\LoggedUser
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 13/ 13)
+Auth\Model\LoggedUserSettings
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% (  7/  7)
+Auth\Service\AuthAdapter
+  Methods:  25.00% ( 1/ 4)   Lines:   8.00% (  2/ 25)
+Auth\Service\AuthManager
+  Methods:  33.33% ( 1/ 3)   Lines:  22.22% (  2/  9)
+Authorize\Acl\Acl
+  Methods:  66.67% ( 2/ 3)   Lines:  82.76% ( 24/ 29)
+MoneyLog\Controller\AccountController
+  Methods:   0.00% ( 0/ 6)   Lines:   0.00% (  0/ 76)
+MoneyLog\Controller\CategoryController
+  Methods:   0.00% ( 0/ 5)   Lines:   0.00% (  0/ 46)
+MoneyLog\Controller\DashboardController
+  Methods:   0.00% ( 0/ 2)   Lines:   0.00% (  0/ 46)
+MoneyLog\Controller\MovementController
+  Methods:   0.00% ( 0/11)   Lines:   0.00% (  0/133)
+MoneyLog\Controller\ProvisionController
+  Methods:   0.00% ( 0/ 5)   Lines:   0.00% (  0/ 43)
+MoneyLog\Controller\SettingsController
+  Methods:   0.00% ( 0/ 2)   Lines:   0.00% (  0/ 18)
+MoneyLog\Form\AccountForm
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  6/  6)
+MoneyLog\Form\CategoryForm
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 10/ 10)
+MoneyLog\Form\Filter\AccountFilter
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  5/  5)
+MoneyLog\Form\Filter\CategoryFilter
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  5/  5)
+MoneyLog\Form\Filter\MovementFilter
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 11/ 11)
+MoneyLog\Form\Filter\ProvisionFilter
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  7/  7)
+MoneyLog\Form\Filter\SettingFilter
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  7/  7)
+MoneyLog\Form\MoveForm
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 14/ 14)
+MoneyLog\Form\MovementForm
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 28/ 28)
+MoneyLog\Form\ProvisionForm
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 10/ 10)
+MoneyLog\Form\SettingForm
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  8/  8)
+MoneyLog\View\Helper\BalanceModalForm
+  Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/  2)
+MoneyLog\View\Helper\CurrencyForma
+  Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/  1)
+MoneyLog\View\Helper\DataTable
+  Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/  2)
+MoneyLog\View\Helper\DateForma
+  Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/  1)
+MoneyLog\View\Helper\FloatingButtons
+  Methods:  25.00% ( 1/ 4)   Lines:  26.67% (  4/ 15)
+MoneyLog\View\Helper\Morris
+  Methods:   0.00% ( 0/ 2)   Lines:   0.00% (  0/ 12)
+MoneyLog\View\Helper\PageHeader
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
+MoneyLog\View\Helper\SynopsisFilters
+  Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/ 24)
+MoneyLog\View\Helper\WidgetText
+  Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/  8)

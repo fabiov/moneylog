@@ -10,31 +10,31 @@ $form->setAttribute('action', $this->url('accantonaAccount', array('action' => '
 $form->prepare();
 ?>
 <?php echo $this->pageHeader($title); ?>
-<?php echo $this->form()->openTag($form); ?>
-<?php echo $this->formHidden($form->get('id')); ?>
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <?php echo $title; ?>
+            </div>
+            <div class="panel-body">
+                <?php echo $this->form()->openTag($form); ?>
 
-    <?php $element = $form->get('name'); ?>
-    <?php $errors = $this->formElementErrors($element); ?>
-    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
-        <?= $this->formLabel($element); ?>
-        <?= $this->formInput($element); ?>
-        <?= $errors; ?>
+                    <?php $element = $form->get('name'); ?>
+                    <?php $errors = $this->formElementErrors($element); ?>
+                    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
+                        <?= $this->formLabel($element); ?>
+                        <?= $this->formInput($element); ?>
+                        <?= $errors; ?>
+                    </div>
+
+                    <input type="hidden" name="closed" value="0" />
+
+                    <div class="form-group text-center">
+                        <input type="submit" name="submit" class="btn btn-primary" id="submitbutton" value="Salva">
+                    </div>
+
+                <?php echo $this->form()->closeTag(); ?>
+            </div>
+        </div>
     </div>
-
-    <?php $element = $form->get('recap'); ?>
-    <?php $errors = $this->formElementErrors($element); ?>
-    <div class="form-group <?php if ($errors) echo 'has-error'; ?>">
-        <label><?php echo $this->formCheckbox($element); ?> Includi nel riepilogo</label>
-        <?php echo $errors; ?>
-    </div>
-
-    <input type="hidden" name="closed" value="0" />
-
-    <?php $element = $form->get('submit'); ?>
-    <?php $errors = $this->formElementErrors($element); ?>
-    <div class="form-group text-right <?php if ($errors) echo 'has-error'; ?>">
-        <?= $this->formInput($element); ?>
-        <?= $errors; ?>
-    </div>
-
-<?php echo $this->form()->closeTag(); ?>
+</div>

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace MoneyLog\Form;
 
+use Application\Entity\Account;
+use Laminas\Form\Element\Select;
+use Laminas\Form\Element\Text;
 use Laminas\Form\Form;
 
 class AccountForm extends Form
@@ -17,41 +20,22 @@ class AccountForm extends Form
         parent::__construct($name);
 
         $this->add([
-            'name' => 'id',
-            'type' => 'Hidden',
-        ]);
-        $this->add([
             'attributes' => ['type' => 'text', 'class' => 'form-control'],
             'name' => 'name',
             'options' => ['label' => 'Name'],
-            'type' => 'Text',
+            'type' => Text::class,
         ]);
         $this->add([
-            'attributes' => [],
-            'name' => 'recap',
+            'name' => 'status',
             'options' => [
-                'label' => 'Includi nel riepilogo',
-                'checked_value' => 1,
-                'unchecked_value' => 0,
-                'use_hidden_element' => true,
+                'label' => 'Stato',
+                'value_options' => [
+                    Account::STATUS_CLOSED => 'Chiuso',
+                    Account::STATUS_OPEN => 'Aperto',
+                    Account::STATUS_HIGHLIGHT => 'In evidenza',
+                ],
             ],
-            'type' => 'checkbox',
-        ]);
-        $this->add([
-            'attributes' => [],
-            'name' => 'closed',
-            'options' => [
-                'label' => 'Chiudi il conto',
-                'checked_value' => 1,
-                'unchecked_value' => 0,
-                'use_hidden_element' => true,
-            ],
-            'type' => 'checkbox',
-        ]);
-        $this->add([
-            'attributes' => ['class' => 'btn btn-primary', 'id' => 'submitbutton', 'value' => 'Salva'],
-            'name' => 'submit',
-            'type' => 'Submit',
+            'type' => Select::class,
         ]);
     }
 }

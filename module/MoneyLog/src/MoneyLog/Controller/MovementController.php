@@ -51,10 +51,12 @@ class MovementController extends AbstractActionController
             'dateMax' => $params->fromQuery('dateMax', date('Y-m-d')),
             'dateMin' => $params->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months'))),
             'description' => $params->fromQuery('description'),
+            'orderField' => $params->fromQuery('orderField', 'date'),
+            'orderType' => $params->fromQuery('orderType', 'DESC'),
         ];
 
         return new ViewModel([
-            'accounts' => $accountRepository->findBy(['closed' => false, 'user' => $userId], ['name' => 'ASC']),
+            'accounts' => $accountRepository->findBy(['user' => $userId], ['name' => 'ASC']),
             'balances' => $accountRepository->getUserAccountBalances($userId),
             'categories' => $categoryRepository->getUserCategories($userId),
             'page' => $page,
@@ -206,7 +208,7 @@ class MovementController extends AbstractActionController
 
         $accountOptions = ['' => ''];
         foreach ($accountRepository->getUserAccounts($this->user->getId()) as $account) {
-            if ($account->getId() != $sourceAccount->getId() && !$account->isClosed()) {
+            if ($account->getId() != $sourceAccount->getId() && $account->getStatus() !== Account::STATUS_CLOSED) {
                 $accountOptions[$account->getId()] = $account->getName();
             }
         }

@@ -13,6 +13,6 @@ class AccountFormTest extends TestCase
     {
         $form = new AccountForm();
 
-        self::assertCount(5, $form->getElements());
+        self::assertCount(2, $form->getElements());
     }
 }

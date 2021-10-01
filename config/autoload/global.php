@@ -11,6 +11,13 @@
 return [
     'db'              => ['driver' => 'Pdo'],
     'doctrine' => [
+        'connection' => [
+            'orm_default' => [
+                'doctrine_type_mappings' => [
+                    'enum' => 'string',
+                ],
+            ],
+        ],
         // migrations configuration
         'migrations_configuration' => [
             'orm_default' => [
@@ -22,7 +29,9 @@ return [
         ],
     ],
     'service_manager' => [
-        'factories' => ['Laminas\Db\Adapter\Adapter' => 'Laminas\Db\Adapter\AdapterServiceFactory'],
+        'factories' => [
+            'Laminas\Db\Adapter\Adapter' => 'Laminas\Db\Adapter\AdapterServiceFactory'
+        ],
     ],
     'session_config'  => [
         'cookie_lifetime' => 3600,      // Session cookie will expire in 1 hour.

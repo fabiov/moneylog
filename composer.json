@@ -83,6 +83,8 @@
         "migrations-diff": "vendor/bin/doctrine-module migrations:diff",
         "migrations-migrate": "vendor/bin/doctrine-module migrations:migrate",
         "migrations-status": "vendor/bin/doctrine-module migrations:status",
+        "phpstan-analyze": "vendor/bin/phpstan analyze",
+        "phpstan-clear-cache": "rm -rf $(php -r 'echo sys_get_temp_dir() . \"/phpstan\";')",
         "schema-create": "vendor/bin/doctrine-module orm:schema-tool:create",
         "schema-drop": "vendor/bin/doctrine-module orm:schema-tool:drop --force"
     }
