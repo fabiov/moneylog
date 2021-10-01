@@ -136,30 +136,21 @@ class MovementController extends AbstractActionController
      */
     public function exportAction()
     {
-        $accountId    = $this->params()->fromRoute('id', 0);
-        $dateMin      = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
         $searchParams = [
-            'accountId'   => $accountId,
-            'amountMax'   => $this->params()->fromQuery('amountMax'),
-            'amountMin'   => $this->params()->fromQuery('amountMin'),
-            'category'    => $this->params()->fromQuery('category'),
-            'dateMax'     => $this->params()->fromQuery('dateMax'),
-            'dateMin'     => $dateMin,
+            'accountId' => $this->params()->fromRoute('id'),
+            'amountMax' => $this->params()->fromQuery('amountMax'),
+            'amountMin' => $this->params()->fromQuery('amountMin'),
+            'category' => $this->params()->fromQuery('category'),
+            'dateMax' => $this->params()->fromQuery('dateMax'),
+            'dateMin' => $this->params()->fromQuery('dateMin'),
             'description' => $this->params()->fromQuery('description'),
+            'user' => $this->user->getId(),
         ];
-
-        /** @var ?Account $account */
-        $account = $this->em->getRepository(Account::class)
-            ->findOneBy(['id' => $accountId, 'user' => $this->user->getId()]);
-
-        if (!$account) {
-            return $this->getRedirectToDashboard();
-        }
 
         /** @var \Application\Repository\MovementRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Movement::class);
 
-        $fileName = 'export-' . strtolower($account->getName()) . '.csv';
+        $fileName = 'export-' . date('Y-m-d') . '.csv';
         $this->getResponse()->getHeaders()
             ->addHeaderLine('Content-Disposition: attachment; filename="' . $fileName . '"')
             ->addHeaderLine('Content-Type: text/csv; charset=utf-8');
