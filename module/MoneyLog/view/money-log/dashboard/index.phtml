@@ -79,7 +79,7 @@ echo $this->pageHeader('Cruscotto');
                             <?php foreach ($accounts as $account): ?>
                             <tr>
                                 <td>
-                                    <a href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $account['id']]); ?>"><?php echo $account['name']; ?></a>
+                                    <a href="<?php echo $this->url('accantonaMovement', [], ['query' => ['account' => $account['id']]] ); ?>"><?php echo $account['name']; ?></a>
                                 </td>
                                 <td class="text-right" style="min-width:130px;"><?php echo $this->currencyForma($account['total']); ?></td>
                             </tr>
