@@ -210,6 +210,4 @@
 $i = '<i class="mfb-component__child-icon glyphicon glyphicon-equalizer"></i>';
 $this->floatingButtons()
     ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'add'], ['query' => $searchParams]), 'label' => 'Nuovo movimento', 'icon' => 'plus'])
-    ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'move'], ['query' => $searchParams]), 'label' => 'Giroconto', 'icon' => 'transfer'])
-    ->addRawItem("<span class=\"balance mfb-component__button--child\" data-toggle=\"modal\" data-target=\"#modal-balance\">$i</span>")
     ->addAnchorItem(['href' => $this->url('accantonaMovement', ['action' => 'export'], ['query' => $searchParams]), 'label' => 'Esporta', 'icon' => 'export']);
