@@ -1,12 +1,12 @@
 
 
 Code Coverage Report:       
-  2021-10-01 19:50:53       
+  2021-10-01 21:00:24       
                             
  Summary:                   
   Classes: 51.61% (32/62)   
   Methods: 54.46% (110/202) 
-  Lines:   34.68% (403/1162)
+  Lines:   35.10% (410/1168)
 
 Application\Controller\PageController
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
@@ -129,6 +129,6 @@ MoneyLog\View\Helper\Morris
 MoneyLog\View\Helper\PageHeader
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  3/  3)
 MoneyLog\View\Helper\SynopsisFilters
-  Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/ 24)
+  Methods:   0.00% ( 0/ 1)   Lines:  23.33% (  7/ 30)
 MoneyLog\View\Helper\WidgetText
   Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/  8)
