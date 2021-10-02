@@ -13,11 +13,23 @@ class SynopsisFilters extends AbstractHelper
     /**
      * @param array<string> $filters
      * @param array<\Application\Entity\Category> $categories
+     * @param array<\Application\Entity\Account> $accounts
      * @return string
      */
-    public function __invoke(array $filters, array $categories): string
+    public function __invoke(array $filters, array $categories, array $accounts): string
     {
         $pieces = [];
+
+        if ($filters['account'] && $accounts) {
+            $account = '';
+            foreach ($accounts as $a) {
+                if ($a->getId() == $filters['account']) {
+                    $account = $a->getName();
+                }
+            }
+
+            $pieces['account'] = 'Conto <strong>' . $account . '</strong>';
+        }
 
         if ($filters['dateMin'] || $filters['dateMax']) {
             $pieces['date'] = '';
