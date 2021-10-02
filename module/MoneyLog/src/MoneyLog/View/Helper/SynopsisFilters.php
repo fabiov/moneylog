@@ -20,7 +20,7 @@ class SynopsisFilters extends AbstractHelper
     {
         $pieces = [];
 
-        if ($filters['account']) {
+        if ($filters['account'] && $accounts) {
             $account = '';
             foreach ($accounts as $a) {
                 if ($a->getId() == $filters['account']) {
