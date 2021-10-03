@@ -80,11 +80,11 @@ class AccountRepository extends EntityRepository
         $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('a')
             ->from(Account::class, 'a')
-            ->leftJoin('a.movements', 'm')
+//            ->leftJoin('a.movements', 'm')
             ->where('a.user=:userId')
             ->andWhere('a.status<>:status')
-            ->groupBy('m.account')
-            ->orderBy('COUNT(m.account)', 'DESC')
+//            ->groupBy('m.account')
+//            ->orderBy('COUNT(m.account)', 'DESC')
             ->setParameters([':status' => Account::STATUS_CLOSED, ':userId' => $userId]);
 
         return $qb->getQuery()->getResult();
