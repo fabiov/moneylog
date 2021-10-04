@@ -1,12 +1,12 @@
 
 
 Code Coverage Report:       
-  2021-10-04 19:02:08       
+  2021-10-04 19:47:01       
                             
  Summary:                   
   Classes: 51.61% (32/62)   
   Methods: 54.46% (110/202) 
-  Lines:   35.10% (410/1168)
+  Lines:   35.28% (410/1162)
 
 Application\Controller\PageController
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
@@ -81,7 +81,7 @@ Auth\Service\AuthManager
 Authorize\Acl\Acl
   Methods:  66.67% ( 2/ 3)   Lines:  82.76% ( 24/ 29)
 MoneyLog\Controller\AccountController
-  Methods:   0.00% ( 0/ 6)   Lines:   0.00% (  0/ 76)
+  Methods:   0.00% ( 0/ 6)   Lines:   0.00% (  0/ 70)
 MoneyLog\Controller\CategoryController
   Methods:   0.00% ( 0/ 5)   Lines:   0.00% (  0/ 46)
 MoneyLog\Controller\DashboardController

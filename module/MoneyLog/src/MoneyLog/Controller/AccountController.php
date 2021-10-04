@@ -157,11 +157,9 @@ class AccountController extends AbstractActionController
      */
     public function balanceAction(): Response
     {
-        // check if the user is account owner
         $amount      = (float) $this->getRequest()->getPost('amount');
         $description = $this->getRequest()->getPost('description', 'Conguaglio');
-        $routeName   = $this->getRequest()->getPost('forward');
-        $id          = (int) $this->params()->fromRoute('id', 0);
+        $id          = (int) $this->params()->fromRoute('id');
 
         /** @var ?Account $account */
         $account = $this->em
@@ -180,12 +178,6 @@ class AccountController extends AbstractActionController
             $this->em->flush();
         }
 
-        switch ($routeName) {
-            case 'accantonaMovement':
-                return $this->redirect()->toRoute('accantonaMovement', ['action' => 'account', 'id' => $id]);
-            case 'accantonaAccount':
-            default:
-                return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
-        }
+        return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
     }
 }
