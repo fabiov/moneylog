@@ -21,7 +21,6 @@ services:
             - ./docker/php-apache/logs:/var/log/apache2
         depends_on:
             - db
-
     db:
         image: mysql:8.0.26
         container_name: ${PROJECT_NAME}_db_${VERSION_ID}

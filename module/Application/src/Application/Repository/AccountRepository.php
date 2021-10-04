@@ -77,14 +77,15 @@ class AccountRepository extends EntityRepository
      */
     public function getByUsage(int $userId): array
     {
-        $qb = $this->getEntityManager()->createQueryBuilder()
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder()
             ->select('a')
             ->from(Account::class, 'a')
-//            ->leftJoin('a.movements', 'm')
-            ->where('a.user=:userId')
+            ->leftJoin('a.movements', 'm')
+            ->andWhere('a.user=:userId')
             ->andWhere('a.status<>:status')
-//            ->groupBy('m.account')
-//            ->orderBy('COUNT(m.account)', 'DESC')
+            ->groupBy('a.id')
+            ->orderBy('COUNT(m.id)', 'DESC')
             ->setParameters([':status' => Account::STATUS_CLOSED, ':userId' => $userId]);
 
         return $qb->getQuery()->getResult();
