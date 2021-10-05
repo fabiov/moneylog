@@ -42,13 +42,17 @@ $stateMap = [
                         ?>
                         <tr>
                             <td class="name">
-                                <a href="<?php echo $this->url('accantonaMovement', array('action' => 'account', 'id' => $row['id'])); ?>">
-                                    <?php echo $this->escapeHtml($row['name']); ?>
-                                </a>
+                                <a href="<?php echo $this->url('accantonaMovement', [], ['query' => ['account' => $row['id']]]); ?>"><?php echo $this->escapeHtml($row['name']); ?></a>
                             </td>
-                            <td><?php echo $stateMap[$row['status']]; ?></td>
-                            <td class="text-right total"><?php echo $this->currencyForma($row['available'] ?? 0); ?></td>
-                            <td class="text-right total"><?php echo $this->currencyForma($row['balance'] ?? 0); ?></td>
+                            <td>
+                                <?php echo $stateMap[$row['status']]; ?>
+                            </td>
+                            <td class="text-right total">
+                                <?php echo $this->currencyForma($row['available'] ?? 0); ?>
+                            </td>
+                            <td class="text-right total">
+                                <?php echo $this->currencyForma($row['balance'] ?? 0); ?>
+                            </td>
                             <td class="text-right">
                                 <?php if (!$row['closed']): ?>
                                 <a href="<?php echo $this->url('accantonaMovement', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
