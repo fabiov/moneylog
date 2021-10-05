@@ -238,7 +238,7 @@ class MovementController extends AbstractActionController
     }
 
     /**
-     * @return array<mixed>|\Laminas\Http\Response
+     * @return array<string, mixed>|\Laminas\Http\Response
      * @throws \Exception
      */
     public function addAction()
@@ -273,11 +273,7 @@ class MovementController extends AbstractActionController
                 $this->em->persist($movement);
                 $this->em->flush();
 
-                return $this->redirect()->toRoute(
-                    'accantonaMovement',
-                    ['action' => 'account', 'id' => $data['account']],
-                    ['query' => $searchParams]
-                );
+                return $this->redirect()->toRoute('accantonaMovement', [], ['query' => $searchParams]);
             }
         }
 
