@@ -2,7 +2,6 @@
 /**
  * @var \Application\Entity\Account $sourceAccount
  * @var \Laminas\Form\Form $form
- * @var array<string> $searchParams
  * @var Laminas\View\Renderer\PhpRenderer $this
  */
 echo $this->pageHeader('Giroconto');
@@ -21,7 +20,7 @@ echo $this->pageHeader('Giroconto');
                     <?php echo $this->sbaFormRow($form->get('targetAccountId')); ?>
 
                     <div class="text-right">
-                        <a class="btn btn-default" href="<?php echo $this->url('accantonaMovement', ['action' => 'account', 'id' => $sourceAccount->getId()], ['query' => $searchParams]) ?>">Annulla</a>
+                        <a class="btn btn-default" href="<?php echo $this->url('accantonaAccount') ?>">Annulla</a>
                         <button type="submit" class="btn btn-primary">Sposta</button>
                     </div>
                 <?php echo $this->form()->closeTag(); ?>

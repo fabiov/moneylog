@@ -66,72 +66,6 @@ class MovementController extends AbstractActionController
     }
 
     /**
-     * @return \Laminas\Http\Response|\Laminas\View\Model\ViewModel
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function accountAction()
-    {
-        $accountId    = $this->params()->fromRoute('id', 0);
-        $dateMin      = $this->params()->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months')));
-        $dateMax      = $this->params()->fromQuery('dateMax', date('Y-m-d'));
-        $searchParams = [
-            'account' => $accountId,
-            'amountMax' => $this->params()->fromQuery('amountMax'),
-            'amountMin' => $this->params()->fromQuery('amountMin'),
-            'category' => $this->params()->fromQuery('category'),
-            'dateMax' => $dateMax,
-            'dateMin' => $dateMin,
-            'description' => $this->params()->fromQuery('description'),
-            'user' => $this->user->getId(),
-        ];
-
-        $criteria = ['id' => $accountId, 'user' => $this->user->getId()];
-        $account = $this->em->getRepository(Account::class)->findOneBy($criteria);
-
-        if (!$account) {
-            return $this->getRedirectToDashboard();
-        }
-
-        $categories = $this->em->getRepository(Category::class)
-            ->findBy(['active' => true, 'user' => $this->user->getId()], ['description' => 'ASC']);
-
-        /** @var \Application\Repository\MovementRepository $movementRepository */
-        $movementRepository = $this->em->getRepository(Movement::class);
-        $rows               = $movementRepository->search($searchParams);
-
-        $previewsDate    = date('Y-m-d', (int) strtotime("$dateMin -1 day"));
-        $previewsBalance = $movementRepository->getBalance($accountId, new \DateTime($previewsDate));
-        $balances        = [$previewsDate => $previewsBalance];
-
-        /** @var Movement $movement */
-        foreach (array_reverse($rows) as $movement) {
-            $date = $movement->getDate()->format('Y-m-d');
-
-            if (isset($balances[$date])) {
-                $balances[$date] += $movement->getAmount();
-            } else {
-                $balances[$date] = $movement->getAmount() + $balances[$previewsDate];
-                $previewsDate = $date;
-            }
-        }
-
-        $dataLineChart = [];
-        foreach ($balances as $date => $balance) {
-            $dataLineChart[] = ['date' => $date, 'balance' => $balance];
-        }
-
-        return new ViewModel([
-            'account'          => $account,
-            'balanceAccount'   => $movementRepository->getBalance($accountId),
-            'balanceAvailable' => $movementRepository->getBalance($accountId, new \DateTime()),
-            'categories'       => $categories,
-            'dataLineChart'    => $dataLineChart,
-            'rows'             => $movementRepository->search($searchParams),
-            'searchParams'     => $searchParams,
-        ]);
-    }
-
-    /**
      * @return \Laminas\Http\Response|ViewModel
      */
     public function exportAction()
@@ -171,11 +105,7 @@ class MovementController extends AbstractActionController
 
         $this->em->remove($item);
         $this->em->flush();
-        return $this->redirect()->toRoute(
-            'accantonaMovement',
-            ['action' => 'account', 'id' => $item->getAccount()->getId()],
-            ['query' => $this->params()->fromQuery()]
-        );
+        return $this->redirect()->toRoute('accantonaMovement', [], ['query' => $this->params()->fromQuery()]);
     }
 
     /**
@@ -231,19 +161,18 @@ class MovementController extends AbstractActionController
 
                 $this->em->flush();
 
-                $routeParams = ['action' => 'account', 'id' => $sourceAccount->getId()];
-                return $this->redirect()->toRoute('accantonaMovement', $routeParams, ['query' => $searchParams]);
+                return $this->redirect()->toRoute('accantonaAccount');
             }
         }
 
         $routeParams = ['action' => 'move', 'id' => $id];
         $routeOptions = ['query' => $searchParams];
         $form->setAttribute('action', $this->url()->fromRoute('accantonaMovement', $routeParams, $routeOptions));
-        return ['sourceAccount' => $sourceAccount, 'form' => $form, 'searchParams' => $searchParams];
+        return ['sourceAccount' => $sourceAccount, 'form' => $form];
     }
 
     /**
-     * @return array<mixed>|\Laminas\Http\Response
+     * @return array<string, mixed>|\Laminas\Http\Response
      * @throws \Exception
      */
     public function addAction()
@@ -278,11 +207,7 @@ class MovementController extends AbstractActionController
                 $this->em->persist($movement);
                 $this->em->flush();
 
-                return $this->redirect()->toRoute(
-                    'accantonaMovement',
-                    ['action' => 'account', 'id' => $data['account']],
-                    ['query' => $searchParams]
-                );
+                return $this->redirect()->toRoute('accantonaMovement', [], ['query' => $searchParams]);
             }
         }
 
@@ -337,11 +262,7 @@ class MovementController extends AbstractActionController
                 $movement->setDescription($data['description']);
                 $this->em->flush();
 
-                return $this->redirect()->toRoute(
-                    'accantonaMovement',
-                    ['action' => 'account', 'id' => $movement->getAccount()->getId()],
-                    ['query' => $searchParams]
-                );
+                return $this->redirect()->toRoute('accantonaMovement', [], ['query' => $searchParams]);
             }
         }
 
