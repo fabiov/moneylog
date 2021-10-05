@@ -234,7 +234,7 @@ class MovementController extends AbstractActionController
         $routeParams = ['action' => 'move', 'id' => $id];
         $routeOptions = ['query' => $searchParams];
         $form->setAttribute('action', $this->url()->fromRoute('accantonaMovement', $routeParams, $routeOptions));
-        return ['sourceAccount' => $sourceAccount, 'form' => $form, 'searchParams' => $searchParams];
+        return ['sourceAccount' => $sourceAccount, 'form' => $form];
     }
 
     /**
