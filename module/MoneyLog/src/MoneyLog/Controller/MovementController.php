@@ -328,11 +328,7 @@ class MovementController extends AbstractActionController
                 $movement->setDescription($data['description']);
                 $this->em->flush();
 
-                return $this->redirect()->toRoute(
-                    'accantonaMovement',
-                    ['action' => 'account', 'id' => $movement->getAccount()->getId()],
-                    ['query' => $searchParams]
-                );
+                return $this->redirect()->toRoute('accantonaMovement', [], ['query' => $searchParams]);
             }
         }
 
