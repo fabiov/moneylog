@@ -81,6 +81,7 @@ class AccountController extends AbstractActionController
             $data[$i['id']]['status'] = $i['status'];
             $data[$i['id']]['balance'] = $i['total'];
         }
+
         return new ViewModel(['rows' => $data]);
     }
 

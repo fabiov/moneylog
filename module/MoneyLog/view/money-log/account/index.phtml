@@ -54,7 +54,7 @@ $stateMap = [
                                 <?php echo $this->currencyForma($row['balance'] ?? 0); ?>
                             </td>
                             <td class="text-right">
-                                <?php if (!$row['closed']): ?>
+                                <?php if ($row['status'] !== \Application\Entity\Account::STATUS_CLOSED): ?>
                                 <a href="<?php echo $this->url('accantonaMovement', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
                                     <span class="glyphicon glyphicon-transfer" title="Giroconto: sposta i soldi da un conto ad un'altro"></span>
                                 </a>

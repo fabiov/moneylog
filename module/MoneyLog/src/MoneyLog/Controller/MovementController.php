@@ -121,9 +121,9 @@ class MovementController extends AbstractActionController
         $accountRepository = $this->em->getRepository(Account::class);
 
         /** @var ?Account $sourceAccount */
-        $sourceAccount = $accountRepository->find($id);
+        $sourceAccount = $this->getUserAccount($id);
 
-        if (!$sourceAccount || $sourceAccount->getUser()->getId() != $this->user->getId()) {
+        if (!$sourceAccount || $sourceAccount->getStatus() === Account::STATUS_CLOSED) {
             return $this->getRedirectToDashboard();
         }
 
@@ -145,9 +145,9 @@ class MovementController extends AbstractActionController
                 $data = $form->getData();
 
                 /** @var ?Account $targetAccount */
-                $targetAccount = $accountRepository->find($data['targetAccountId']);
+                $targetAccount = $this->getUserAccount($data['targetAccountId']);
 
-                if (!$targetAccount || $targetAccount->getUser()->getId() != $this->user->getId()) {
+                if (!$targetAccount || $targetAccount->getStatus() === Account::STATUS_CLOSED) {
                     return $this->getRedirectToDashboard();
                 }
 
@@ -190,7 +190,7 @@ class MovementController extends AbstractActionController
             if ($form->isValid()) {
                 /** @var array<string, mixed> $validatedData */
                 $validatedData = $form->getData();
-                $account = $this->getAccount($validatedData['account']);
+                $account = $this->getUserAccount($validatedData['account']);
 
                 if (!$account) {
                     return $this->getRedirectToDashboard();
@@ -250,7 +250,7 @@ class MovementController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-                $account = $this->getAccount($data['account']);
+                $account = $this->getUserAccount($data['account']);
 
                 if (!$account) {
                     return $this->getRedirectToDashboard();
@@ -274,7 +274,7 @@ class MovementController extends AbstractActionController
         return ['item' => $movement, 'form' => $form, 'searchParams' => $searchParams];
     }
 
-    private function getAccount(int $id): ?Account
+    private function getUserAccount(int $id): ?Account
     {
         /** @var ?Account $account */
         $account = $this->em
