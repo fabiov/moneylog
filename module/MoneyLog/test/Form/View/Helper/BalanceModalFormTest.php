@@ -1,18 +1,19 @@
 <?php
 
-namespace MoneyLog\View\Helper;
+declare(strict_types=1);
 
-use Laminas\View\Helper\AbstractHelper;
+namespace MoneyLogTest\Form\View\Helper;
 
-/**
- * Class BalanceModalForm
- * @package Accantona\View\Helper
- */
-class BalanceModalForm extends AbstractHelper
+use MoneyLog\View\Helper\BalanceModalForm;
+use PHPUnit\Framework\TestCase;
+
+class BalanceModalFormTest extends TestCase
 {
-    public function __invoke(): string
+    public static function test(): void
     {
-        return <<< EOC
+        $viewHelper = new BalanceModalForm();
+
+        $expected = <<< EOC
             <div class="modal fade" id="modal-balance" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -34,5 +35,7 @@ class BalanceModalForm extends AbstractHelper
                 </div>
             </div>
             EOC;
+
+        self::assertSame($expected, ($viewHelper)());
     }
 }

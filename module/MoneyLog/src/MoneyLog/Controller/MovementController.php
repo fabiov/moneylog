@@ -66,9 +66,9 @@ class MovementController extends AbstractActionController
     }
 
     /**
-     * @return \Laminas\Http\Response|ViewModel
+     * @return ViewModel
      */
-    public function exportAction()
+    public function exportAction(): ViewModel
     {
         $searchParams = [
             'accountId' => $this->params()->fromRoute('id'),
@@ -221,6 +221,7 @@ class MovementController extends AbstractActionController
 
     /**
      * @return array<string, mixed>|\Laminas\Http\Response
+     * @throws \Exception
      */
     public function editAction()
     {
@@ -238,6 +239,7 @@ class MovementController extends AbstractActionController
             'account' => $movement->getAccount(),
             'amount' => abs($movement->getAmount()),
             'category' => $movement->getCategory(),
+            'date' => $movement->getDate()->format('Y-m-d'),
             'description' => $movement->getDescription(),
             'type' => $movement->getAmount() < 0 ? Movement::OUT : Movement::IN,
         ]);
@@ -259,6 +261,7 @@ class MovementController extends AbstractActionController
                 $movement->setAccount($account);
                 $movement->setAmount($data['amount'] * $data['type']);
                 $movement->setCategory($this->getCategory((int) $data['category']));
+                $movement->setDate(new \DateTime($data['date']));
                 $movement->setDescription($data['description']);
                 $this->em->flush();
 
