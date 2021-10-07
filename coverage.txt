@@ -1,12 +1,12 @@
 
 
 Code Coverage Report:       
-  2021-10-07 10:09:03       
+  2021-10-07 10:27:55       
                             
  Summary:                   
-  Classes: 51.61% (32/62)   
-  Methods: 54.73% (110/201) 
-  Lines:   36.06% (410/1137)
+  Classes: 53.23% (33/62)   
+  Methods: 55.22% (111/201) 
+  Lines:   36.18% (411/1136)
 
 Application\Controller\PageController
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
@@ -115,7 +115,7 @@ MoneyLog\Form\ProvisionForm
 MoneyLog\Form\SettingForm
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  8/  8)
 MoneyLog\View\Helper\BalanceModalForm
-  Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/  2)
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
 MoneyLog\View\Helper\CurrencyForma
   Methods:   0.00% ( 0/ 1)   Lines:   0.00% (  0/  1)
 MoneyLog\View\Helper\DataTable
