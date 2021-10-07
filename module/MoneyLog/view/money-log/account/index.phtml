@@ -42,15 +42,19 @@ $stateMap = [
                         ?>
                         <tr>
                             <td class="name">
-                                <a href="<?php echo $this->url('accantonaMovement', array('action' => 'account', 'id' => $row['id'])); ?>">
-                                    <?php echo $this->escapeHtml($row['name']); ?>
-                                </a>
+                                <a href="<?php echo $this->url('accantonaMovement', [], ['query' => ['account' => $row['id']]]); ?>"><?php echo $this->escapeHtml($row['name']); ?></a>
                             </td>
-                            <td><?php echo $stateMap[$row['status']]; ?></td>
-                            <td class="text-right total"><?php echo $this->currencyForma($row['available'] ?? 0); ?></td>
-                            <td class="text-right total"><?php echo $this->currencyForma($row['balance'] ?? 0); ?></td>
+                            <td>
+                                <?php echo $stateMap[$row['status']]; ?>
+                            </td>
+                            <td class="text-right total">
+                                <?php echo $this->currencyForma($row['available'] ?? 0); ?>
+                            </td>
+                            <td class="text-right total">
+                                <?php echo $this->currencyForma($row['balance'] ?? 0); ?>
+                            </td>
                             <td class="text-right">
-                                <?php if (!$row['closed']): ?>
+                                <?php if ($row['status'] !== \Application\Entity\Account::STATUS_CLOSED): ?>
                                 <a href="<?php echo $this->url('accantonaMovement', array('action' => 'move', 'id' => $row['id'])); ?>" class="btn btn-default">
                                     <span class="glyphicon glyphicon-transfer" title="Giroconto: sposta i soldi da un conto ad un'altro"></span>
                                 </a>
@@ -100,7 +104,7 @@ $stateMap = [
 </div>
 <?php endif; ?>
 <?php
-echo $this->balanceModalForm(0, 'accantonaAccount');
+echo $this->balanceModalForm('accantonaAccount');
 $js = <<< js
 $(document).on("click", ".delete-item", function(e) {
     var button = $(this);

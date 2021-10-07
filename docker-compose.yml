@@ -21,14 +21,9 @@ services:
             - ./docker/php-apache/logs:/var/log/apache2
         depends_on:
             - db
-
     db:
+        image: mysql:8.0.26
         container_name: ${PROJECT_NAME}_db_${VERSION_ID}
-        build:
-            context: ./docker/mysql
-            args:
-                - DB_USER=${DB_USER}
-#                - DB_GROUP=${DB_GROUP}
         ports:
             - ${DB_PORT_EXPOSED}:3306
         volumes:
