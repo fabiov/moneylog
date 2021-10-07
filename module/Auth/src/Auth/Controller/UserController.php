@@ -106,7 +106,7 @@ class UserController extends AbstractActionController
                 }
             }
         }
-        $this->layout('layout/unlogged');
+        $this->layout('layout/unlogged-bootstrap5');
         return ['form' => $form, 'messages' => $messages];
     }
 
