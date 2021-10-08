@@ -4,7 +4,7 @@
  * @var Laminas\View\Renderer\PhpRenderer $this
  * @var string $messages
  */
-//$this->headLink()->appendStylesheet('/css/page/user-login.css');
+$this->headLink()->appendStylesheet('/css/page/user-login.css');
 $form->setAttributes(['action' => $this->url('auth', ['action' => 'login']), 'class' => 'form-signin']);
 $form->prepare();
 ?>
