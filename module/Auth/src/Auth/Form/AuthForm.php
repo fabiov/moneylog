@@ -2,6 +2,9 @@
 
 namespace Auth\Form;
 
+use Laminas\Form\Element\Checkbox;
+use Laminas\Form\Element\Email;
+use Laminas\Form\Element\Password;
 use Laminas\Form\Form;
 
 class AuthForm extends Form
@@ -13,31 +16,17 @@ class AuthForm extends Form
 
         $this->add([
             'name' => 'email',
-            'attributes' => ['type' => 'email', 'class' => 'form-control'],
-            'options' => ['label' => 'Email'],
+            'type' => Email::class,
         ]);
         $this->add([
             'name' => 'password',
-            'attributes' => ['type' => 'password', 'class' => 'form-control'],
-            'options' => [
-                'label' => 'Password',
-            ],
+            'type' => Password::class,
         ]);
         $this->add([
-            'name' => 'rememberme',
-            'type' => 'checkbox',
-            'attributes' => [],
-            'options' => ['label' => 'Remember me'],
-        ]);
-        $this->add([
-            'name' => 'submit',
-            'value' => 'Sign in',
-            'attributes' => [
-                'type'  => 'submit',
-                'id' => 'submitbutton',
-                'class' => 'btn btn-lg btn-primary btn-block',
-                'value' => 'Sign in',
-            ],
+            'name' => 'rememberMe',
+            'required' => false,
+            'options' => ['checked_value' => '0', 'unchecked_value' => '1'],
+            'type' => Checkbox::class,
         ]);
     }
 }

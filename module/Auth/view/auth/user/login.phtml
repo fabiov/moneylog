@@ -8,36 +8,36 @@ $this->headLink()->appendStylesheet('/css/page/user-login.css');
 $form->setAttributes(['action' => $this->url('auth', ['action' => 'login']), 'class' => 'form-signin']);
 $form->prepare();
 ?>
-<style type="text/css">
-    .form-signin {
-        max-width: 330px;
-        padding: 15px;
-        margin: 0 auto;
-    }
-</style>
 <?php echo $this->form()->openTag($form); ?>
-    <h1 class="form-signin-heading">Please sign in</h1>
+    <img class="mb-4" src="/img/wallet.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-    <?php echo $this->formLabel($form->get('email')); ?>
-    <?php echo $this->formInput($form->get('email')); ?>
-
-    <?php echo $this->formLabel($form->get('password')); ?>
-    <?php echo $this->formInput($form->get('password')); ?>
-
-    <!-- div class="checkbox">
-        <?php echo $this->formRow($form->get('rememberme')->setAttribute('checked', 'checked')); ?>
-    </div -->
-
-    <div class="checkbox">
-        <label><input name="rememberme" type="hidden" value="0"><input checked name="rememberme" type="checkbox" value="1">Remember Me</label>
+    <div class="form-floating">
+        <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
     </div>
 
-    <?php echo $this->formSubmit($form->get('submit')); ?>
-    <br />
+    <div class="form-floating">
+        <div class="form-floating">
+            <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+    </div>
+
+    <div class="checkbox mb-3">
+        <label>
+            <input name="rememberMe" type="hidden" value="0">
+            <input name="rememberMe" type="checkbox" value="1">
+            Remember me
+        </label>
+    </div>
+
+    <button class="w-100 btn btn-lg btn-primary" name="submit" type="submit">Sign in</button>
+
     <?php if ($messages): ?>
-    <div class="alert alert-danger" role="alert"><?php echo $this->escapeHtml($messages); ?></div>
+    <div class="m-1 text-danger" role="alert"><?php echo $this->escapeHtml($messages); ?></div>
     <?php endif; ?>
-    <div>
+    <div class="mt-4">
         <a href="<?php echo $this->url('auth_registration', ['action' => 'index']);?>"><?php echo $this->translate('Register'); ?></a>
         |
         <a href="<?php echo $this->url('auth_registration', ['action' => 'forgotten-password']);?>"><?php echo $this->translate('Forgotten Password'); ?></a>

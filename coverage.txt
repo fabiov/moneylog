@@ -1,12 +1,12 @@
 
 
 Code Coverage Report:       
-  2021-10-07 20:15:46       
+  2021-10-11 20:25:30       
                             
  Summary:                   
   Classes: 53.23% (33/62)   
   Methods: 55.22% (111/201) 
-  Lines:   36.18% (411/1136)
+  Lines:   35.84% (405/1130)
 
 Application\Controller\PageController
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
@@ -51,11 +51,11 @@ Auth\Controller\RegistrationController
 Auth\Controller\UserController
   Methods:  20.00% ( 1/ 5)   Lines:  15.71% ( 11/ 70)
 Auth\Form\AuthForm
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 11/ 11)
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  9/  9)
 Auth\Form\ChangePasswordForm
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  9/  9)
 Auth\Form\Filter\ChangePasswordFilter
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 11/ 11)
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  7/  7)
 Auth\Form\Filter\LoginFilter
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  5/  5)
 Auth\Form\Filter\RegistrationFilter

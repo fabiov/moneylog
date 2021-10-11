@@ -81,7 +81,7 @@ class UserController extends AbstractActionController
             return $this->redirect()->toRoute('accantona_recap');
         }
         $form = new AuthForm();
-        $messages = null;
+        $messages = '';
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -93,7 +93,7 @@ class UserController extends AbstractActionController
                 $data = $form->getData();
 
                 // Perform login attempt.
-                $result = $this->authManager->login($data['email'], $data['password'], $data['rememberme']);
+                $result = $this->authManager->login($data['email'], $data['password'], (bool) $data['rememberMe']);
 
                 switch ($result->getCode()) {
                     case Result::SUCCESS:
@@ -106,7 +106,7 @@ class UserController extends AbstractActionController
                 }
             }
         }
-        $this->layout('layout/unlogged-bootstrap5');
+        $this->layout('layout/sign-in-b5');
         return ['form' => $form, 'messages' => $messages];
     }
 
@@ -120,10 +120,7 @@ class UserController extends AbstractActionController
     }
 
     /**
-     * @return array|\Laminas\Http\Response|mixed
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @return array|Response|mixed
      */
     public function changePasswordAction()
     {
