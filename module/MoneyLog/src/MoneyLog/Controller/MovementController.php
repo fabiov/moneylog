@@ -209,7 +209,7 @@ class MovementController extends AbstractActionController
                 $this->em->persist($movement);
                 $this->em->flush();
 
-                $searchParams['account'] = $form->get('account')->getValue();
+                $searchParams['account'] = $account->getId();
                 return $this->redirect()->toRoute('accantonaMovement', [], ['query' => $searchParams]);
             }
         }
@@ -267,6 +267,8 @@ class MovementController extends AbstractActionController
                 $movement->setDate(new \DateTime($data['date']));
                 $movement->setDescription($data['description']);
                 $this->em->flush();
+
+                $searchParams['account'] = $account->getId();
 
                 return $this->redirect()->toRoute('accantonaMovement', [], ['query' => $searchParams]);
             }
