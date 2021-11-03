@@ -182,6 +182,8 @@ class MovementController extends AbstractActionController
 
         $request = $this->getRequest();
         $form = new MovementForm('movement', $this->em, $this->user->getId());
+        $form->get('account')->setValue((int) $searchParams['account']);
+
         if ($request->isPost()) {
             $data = $request->getPost();
             $form->setInputFilter(new MovementFilter());
@@ -207,6 +209,7 @@ class MovementController extends AbstractActionController
                 $this->em->persist($movement);
                 $this->em->flush();
 
+                $searchParams['account'] = $form->get('account')->getValue();
                 return $this->redirect()->toRoute('accantonaMovement', [], ['query' => $searchParams]);
             }
         }
