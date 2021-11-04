@@ -1,12 +1,12 @@
 
 
 Code Coverage Report:       
-  2021-10-07 10:27:55       
+  2021-11-04 19:03:35       
                             
  Summary:                   
-  Classes: 53.23% (33/62)   
-  Methods: 55.22% (111/201) 
-  Lines:   36.18% (411/1136)
+  Classes: 54.84% (34/62)   
+  Methods: 57.21% (115/201) 
+  Lines:   36.67% (418/1140)
 
 Application\Controller\PageController
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
@@ -45,7 +45,7 @@ Application\ViewHelper\SbaFormRow
 Application\ViewHelper\SortLink
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 12/ 12)
 Application\ViewHelper\UserData
-  Methods:   0.00% ( 0/ 4)   Lines:   0.00% (  0/  6)
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% (  7/  7)
 Auth\Controller\RegistrationController
   Methods:  10.00% ( 1/10)   Lines:   8.51% (  8/ 94)
 Auth\Controller\UserController
@@ -87,7 +87,7 @@ MoneyLog\Controller\CategoryController
 MoneyLog\Controller\DashboardController
   Methods:   0.00% ( 0/ 2)   Lines:   0.00% (  0/ 46)
 MoneyLog\Controller\MovementController
-  Methods:   0.00% ( 0/10)   Lines:   0.00% (  0/103)
+  Methods:   0.00% ( 0/10)   Lines:   0.00% (  0/106)
 MoneyLog\Controller\ProvisionController
   Methods:   0.00% ( 0/ 5)   Lines:   0.00% (  0/ 43)
 MoneyLog\Controller\SettingsController
