@@ -1,12 +1,12 @@
 
 
 Code Coverage Report:       
-  2021-11-04 19:17:37       
+  2021-11-04 21:29:30       
                             
  Summary:                   
-  Classes: 54.84% (34/62)   
-  Methods: 57.21% (115/201) 
-  Lines:   36.67% (418/1140)
+  Classes: 53.97% (34/63)   
+  Methods: 56.65% (115/203) 
+  Lines:   36.16% (418/1156)
 
 Application\Controller\PageController
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
@@ -87,7 +87,7 @@ MoneyLog\Controller\CategoryController
 MoneyLog\Controller\DashboardController
   Methods:   0.00% ( 0/ 2)   Lines:   0.00% (  0/ 46)
 MoneyLog\Controller\MovementController
-  Methods:   0.00% ( 0/10)   Lines:   0.00% (  0/106)
+  Methods:   0.00% ( 0/10)   Lines:   0.00% (  0/109)
 MoneyLog\Controller\ProvisionController
   Methods:   0.00% ( 0/ 5)   Lines:   0.00% (  0/ 43)
 MoneyLog\Controller\SettingsController
@@ -112,6 +112,8 @@ MoneyLog\Form\MovementForm
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 28/ 28)
 MoneyLog\Form\ProvisionForm
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% ( 10/ 10)
+MoneyLog\Form\SearchMovementForm
+  Methods:   0.00% ( 0/ 2)   Lines:   0.00% (  0/ 13)
 MoneyLog\Form\SettingForm
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  8/  8)
 MoneyLog\View\Helper\BalanceModalForm
