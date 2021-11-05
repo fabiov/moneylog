@@ -2,6 +2,7 @@
 /**
  * @var Doctrine\ORM\Tools\Pagination\Paginator<\Application\Entity\Movement> $paginator
  * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var MoneyLog\Form\SearchMovementForm $form
  * @var array<\Application\Entity\Account> $accounts
  * @var array<\Application\Entity\Category> $categories
  * @var array<array> $balances
@@ -63,14 +64,7 @@
                         <div class="col-lg-3 col-md-3">
                             <div class="form-group">
                                 <label>Conto</label>
-                                <select class="form-control" name="account">
-                                    <option value="0">Tutti</option>
-                                    <?php foreach ($accounts as $account): ?>
-                                        <option value="<?php echo $account->getId(); ?>"<?php if ($account->getId() == $searchParams['account']) echo ' selected="selected"'?>>
-                                            <?php echo $account->getName(); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <?php echo $this->formSelect($form->get('account')); ?>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3">

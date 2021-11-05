@@ -14,6 +14,7 @@ use Laminas\View\Model\ViewModel;
 use MoneyLog\Form\Filter\MovementFilter;
 use MoneyLog\Form\MoveForm;
 use MoneyLog\Form\MovementForm;
+use MoneyLog\Form\SearchMovementForm;
 
 class MovementController extends AbstractActionController
 {
@@ -55,10 +56,16 @@ class MovementController extends AbstractActionController
             'orderType' => $params->fromQuery('orderType', 'DESC'),
         ];
 
+        $accounts = $accountRepository->findBy(['user' => $userId], ['name' => 'ASC']);
+
+        $searchMovementForm = new SearchMovementForm($accounts);
+        $searchMovementForm->get('account')->setValue($searchParams['account']);
+
         return new ViewModel([
-            'accounts' => $accountRepository->findBy(['user' => $userId], ['name' => 'ASC']),
+            'accounts' => $accounts,
             'balances' => $accountRepository->getUserAccountBalances($userId),
             'categories' => $categoryRepository->getUserCategories($userId),
+            'form' => $searchMovementForm,
             'page' => $page,
             'paginator' => $movementRepository->paginator(array_merge($searchParams, ['user' => $userId]), $page, $pageSize),
             'searchParams' => $searchParams,
