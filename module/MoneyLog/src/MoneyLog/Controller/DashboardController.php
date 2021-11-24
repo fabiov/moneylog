@@ -100,6 +100,7 @@ class DashboardController extends AbstractActionController
             ];
         }
 
+        $this->layout('layout/layout-b5');
         return new ViewModel([
             'accounts'              => $accounts,
             'avgPerCategory'        => $avgPerCategory,
