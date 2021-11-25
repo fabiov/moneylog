@@ -1,12 +1,12 @@
 
 
 Code Coverage Report:       
-  2021-11-25 19:15:20       
+  2021-11-25 20:10:18       
                             
  Summary:                   
   Classes: 57.14% (36/63)   
-  Methods: 59.11% (120/203) 
-  Lines:   38.31% (444/1159)
+  Methods: 58.54% (120/205) 
+  Lines:   38.18% (444/1163)
 
 Application\Controller\PageController
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  2/  2)
@@ -87,7 +87,7 @@ MoneyLog\Controller\CategoryController
 MoneyLog\Controller\DashboardController
   Methods:   0.00% ( 0/ 2)   Lines:   0.00% (  0/ 46)
 MoneyLog\Controller\MovementController
-  Methods:   0.00% ( 0/10)   Lines:   0.00% (  0/109)
+  Methods:   0.00% ( 0/12)   Lines:   0.00% (  0/113)
 MoneyLog\Controller\ProvisionController
   Methods:   0.00% ( 0/ 5)   Lines:   0.00% (  0/ 43)
 MoneyLog\Controller\SettingsController
