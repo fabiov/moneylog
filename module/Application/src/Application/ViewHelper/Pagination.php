@@ -18,13 +18,16 @@ class Pagination extends AbstractHelper
      * @return string
      * @throws \Exception
      */
-    public function __invoke(Paginator $paginator, int $current, string $route, array $queryParams = []): string
-    {
+    public function __invoke(
+        Paginator $paginator,
+        int $current,
+        int $pageSize,
+        string $route,
+        array $queryParams = []
+    ): string {
         $items = '';
         $totalItems = $paginator->count();
-        $pageSize = $paginator->getIterator()->count();
         $totalPages = (int) ceil($totalItems / $pageSize);
-        $queryParams['limit'] = $pageSize;
 
 //        if ($current > 1) {
 //            $queryParams['page'] = $current - 1;

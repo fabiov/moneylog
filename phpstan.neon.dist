@@ -17,7 +17,6 @@ parameters:
         - '/Call to an undefined method Laminas\\View\\Renderer\\PhpRenderer::\w+\(\)\./'
         - '/Call to an undefined method Laminas\\View\\Renderer\\RendererInterface::\w+\(\)\./'
         - '/Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::\w+\(\)\./'
-        - '/Call to an undefined method Traversable<mixed, mixed>::count\(\)\./'
         - '/Method MoneyLog\\Controller\\\w+::\w+\(\) return type has no value type specified in iterable type Laminas\\View\\Model\\ViewModel\./'
         - '/PHPDoc tag @var for variable \$form has no value type specified in iterable type \w+\\Form\\\w+\./'
         - '/Parameter #1 \(Laminas\\View\\Helper\\Partial\|string\) of echo cannot be converted to string\./'

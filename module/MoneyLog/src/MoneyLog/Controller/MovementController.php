@@ -18,6 +18,9 @@ use MoneyLog\Form\SearchMovementForm;
 
 class MovementController extends AbstractActionController
 {
+    public const PAGE_SIZE_MIN = 25;
+    public const PAGE_SIZE_MAX = 100;
+
     private LoggedUser $user;
 
     private EntityManagerInterface $em;
@@ -30,8 +33,8 @@ class MovementController extends AbstractActionController
 
     public function indexAction(): ViewModel
     {
-        $page = (int) $this->getRequest()->getQuery('page', 1);
-        $pageSize = (int) $this->getRequest()->getQuery('limit', 25);
+        $page = $this->getPage();
+        $pageSize = $this->getPageSize();
         $userId = $this->user->getId();
 
         /** @var AccountRepository $accountRepository */
@@ -67,6 +70,7 @@ class MovementController extends AbstractActionController
             'categories' => $categoryRepository->getUserCategories($userId),
             'form' => $searchMovementForm,
             'page' => $page,
+            'pageSize' => $pageSize,
             'paginator' => $movementRepository->paginator(array_merge($searchParams, ['user' => $userId]), $page, $pageSize),
             'searchParams' => $searchParams,
         ]);
@@ -312,5 +316,17 @@ class MovementController extends AbstractActionController
     private function getRedirectToDashboard(): Response
     {
         return $this->redirect()->toRoute('accantonaAccount', ['action' => 'index']);
+    }
+
+    private function getPage(): int
+    {
+        $page = (int) $this->getRequest()->getQuery('page', 1);
+        return $page > 0 ? $page : 1;
+    }
+
+    private function getPageSize(): int
+    {
+        $pageSize = (int) $this->getRequest()->getQuery('limit', self::PAGE_SIZE_MIN);
+        return self::PAGE_SIZE_MIN <= $pageSize && $pageSize <= self::PAGE_SIZE_MAX ? $pageSize : self::PAGE_SIZE_MIN;
     }
 }
