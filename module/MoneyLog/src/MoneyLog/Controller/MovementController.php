@@ -67,6 +67,7 @@ class MovementController extends AbstractActionController
             'categories' => $categoryRepository->getUserCategories($userId),
             'form' => $searchMovementForm,
             'page' => $page,
+            'pageSize' => $pageSize,
             'paginator' => $movementRepository->paginator(array_merge($searchParams, ['user' => $userId]), $page, $pageSize),
             'searchParams' => $searchParams,
         ]);
