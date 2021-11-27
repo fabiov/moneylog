@@ -74,7 +74,9 @@ if [[ -n "$PHP_STAGED_FILES" ]]; then
         done
     fi
 
-    docker-compose exec web vendor/bin/phpunit --coverage-text=coverage.txt < /dev/tty
+    docker-compose exec web vendor/bin/phpunit --coverage-text=coverage.tmp.txt < /dev/tty
+    head -n 9 coverage.tmp.txt | tail -n 3 > coverage.txt
+    rm coverage.tmp.txt
     STATUS=$?
 
     if [[ "$STATUS" -eq 0 ]]; then

@@ -324,6 +324,9 @@ class MovementController extends AbstractActionController
         return $page > 0 ? $page : 1;
     }
 
+    /**
+     * @return int
+     */
     private function getPageSize(): int
     {
         $pageSize = (int) $this->getRequest()->getQuery('limit', self::PAGE_SIZE_MIN);
