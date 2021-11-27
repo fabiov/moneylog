@@ -46,8 +46,8 @@ class MovementRepository extends EntityRepository
     {
         $query = $this
             ->getQuery($searchParams)
-            ->setFirstResult($page > 0 ? $page - 1 : 0)
-            ->setMaxResults($limit > 0 ? $limit : 10);
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
 
         return new Paginator($query);
     }
