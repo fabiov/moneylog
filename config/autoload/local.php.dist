@@ -23,11 +23,11 @@ return [
             'orm_default' => [
                 'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
                 'params' => [
-                    'dbname'   => 'moneylog',
-                    'host'     => 'localhost',
-                    'password' => 'root',
-                    'port'     => '3306',
-                    'user'     => 'root',
+                    'user' => 'dbuser',
+                    'password' => 'dbpass',
+                    'host' => 'db',
+                    'port' => '3306',
+                    'dbname' => 'moneylog',
                 ],
             ],
         ],
