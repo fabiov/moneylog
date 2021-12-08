@@ -40,5 +40,7 @@ mysql:
 setup: up
 	@docker-compose exec web composer install
 	@cp config/autoload/local.php.dist config/autoload/local.php
+	@mkdir -p data/DoctrineORMModule/Proxy
+	@chmod a+w data/DoctrineORMModule/Proxy
 	@docker-compose exec web vendor/bin/doctrine-module orm:schema-tool:update --force
 	@git config core.hooksPath .githooks
