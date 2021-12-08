@@ -41,3 +41,4 @@ setup: up
 	@docker-compose exec web composer install
 	@cp config/autoload/local.php.dist config/autoload/local.php
 	@docker-compose exec web vendor/bin/doctrine-module orm:schema-tool:update --force
+	@git config core.hooksPath .githooks
