@@ -145,7 +145,7 @@ class MovementRepository extends EntityRepository
 
         switch ($params['orderField']) {
             case 'amount':
-            $qb->orderBy('m.amount', $params['orderType'] === 'DESC' ? 'DESC' : 'ASC');
+                $qb->orderBy('m.amount', $params['orderType'] === 'DESC' ? 'DESC' : 'ASC');
                 break;
             case 'description':
                 $qb->orderBy('m.description', $params['orderType'] === 'DESC' ? 'DESC' : 'ASC');
