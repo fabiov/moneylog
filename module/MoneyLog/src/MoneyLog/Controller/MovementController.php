@@ -6,6 +6,8 @@ use Application\Entity\Account;
 use Application\Entity\Category;
 use Application\Entity\Movement;
 use Application\Repository\AccountRepository;
+use Application\Repository\CategoryRepository;
+use Application\Repository\MovementRepository;
 use Auth\Model\LoggedUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Http\Response;
@@ -36,28 +38,16 @@ class MovementController extends AbstractActionController
         $page = $this->getPage();
         $pageSize = $this->getPageSize();
         $userId = $this->user->getId();
+        $searchParams = $this->makeMovementsSearchParams();
 
         /** @var AccountRepository $accountRepository */
         $accountRepository = $this->em->getRepository(Account::class);
 
-        /** @var \Application\Repository\CategoryRepository $categoryRepository */
+        /** @var CategoryRepository $categoryRepository */
         $categoryRepository = $this->em->getRepository(Category::class);
 
-        /** @var \Application\Repository\MovementRepository $movementRepository */
+        /** @var MovementRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Movement::class);
-
-        $params = $this->params();
-        $searchParams = [
-            'account' => $params->fromQuery('account'),
-            'amountMax' => $params->fromQuery('amountMax'),
-            'amountMin' => $params->fromQuery('amountMin'),
-            'category' => $params->fromQuery('category'),
-            'dateMax' => $params->fromQuery('dateMax', date('Y-m-d')),
-            'dateMin' => $params->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months'))),
-            'description' => $params->fromQuery('description'),
-            'orderField' => $params->fromQuery('orderField', 'date'),
-            'orderType' => $params->fromQuery('orderType', 'DESC'),
-        ];
 
         $accounts = $accountRepository->findBy(['user' => $userId], ['name' => 'ASC']);
 
@@ -71,7 +61,7 @@ class MovementController extends AbstractActionController
             'form' => $searchMovementForm,
             'page' => $page,
             'pageSize' => $pageSize,
-            'paginator' => $movementRepository->paginator(array_merge($searchParams, ['user' => $userId]), $page, $pageSize),
+            'paginator' => $movementRepository->paginator($searchParams, $page, $pageSize),
             'searchParams' => $searchParams,
         ]);
     }
@@ -81,18 +71,9 @@ class MovementController extends AbstractActionController
      */
     public function exportAction(): ViewModel
     {
-        $searchParams = [
-            'accountId' => $this->params()->fromRoute('id'),
-            'amountMax' => $this->params()->fromQuery('amountMax'),
-            'amountMin' => $this->params()->fromQuery('amountMin'),
-            'category' => $this->params()->fromQuery('category'),
-            'dateMax' => $this->params()->fromQuery('dateMax'),
-            'dateMin' => $this->params()->fromQuery('dateMin'),
-            'description' => $this->params()->fromQuery('description'),
-            'user' => $this->user->getId(),
-        ];
+        $searchParams = $this->makeMovementsSearchParams();
 
-        /** @var \Application\Repository\MovementRepository $movementRepository */
+        /** @var MovementRepository $movementRepository */
         $movementRepository = $this->em->getRepository(Movement::class);
 
         $fileName = 'export-' . date('Y-m-d') . '.csv';
@@ -291,6 +272,23 @@ class MovementController extends AbstractActionController
             ['query' => $searchParams]
         ));
         return ['item' => $movement, 'form' => $form, 'searchParams' => $searchParams];
+    }
+
+    private function makeMovementsSearchParams(): array
+    {
+        $params = $this->params();
+        return [
+            'account' => $params->fromQuery('account'),
+            'amountMax' => $params->fromQuery('amountMax'),
+            'amountMin' => $params->fromQuery('amountMin'),
+            'category' => $params->fromQuery('category'),
+            'dateMax' => $params->fromQuery('dateMax', date('Y-m-d')),
+            'dateMin' => $params->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months'))),
+            'description' => $params->fromQuery('description'),
+            'user' => $this->user->getId(),
+            'orderField' => $params->fromQuery('orderField', 'date'),
+            'orderType' => $params->fromQuery('orderType', 'DESC'),
+        ];
     }
 
     private function getUserAccount(int $id): ?Account
