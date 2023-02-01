@@ -7,9 +7,15 @@ namespace Application\Repository;
 use Application\Entity\Movement;
 use Application\Entity\Provision;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 class ProvisionRepository extends EntityRepository
 {
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function getBalance(int $userId): float
     {
         $em = $this->getEntityManager();
@@ -20,7 +26,7 @@ class ProvisionRepository extends EntityRepository
             ->where('Provision.user=:userId')
             ->setParameter(':userId', $userId);
 
-        /** @var \Application\Repository\MovementRepository $movementRepository */
+        /** @var MovementRepository $movementRepository */
         $movementRepository = $em->getRepository(Movement::class);
 
         return $qb->getQuery()->getSingleScalarResult() + $movementRepository->getTotalExpense($userId);
