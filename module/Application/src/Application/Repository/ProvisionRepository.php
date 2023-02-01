@@ -69,8 +69,8 @@ class ProvisionRepository extends EntityRepository
     /**
      * @param int $userId
      * @return float
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function getSum(int $userId): float
     {
