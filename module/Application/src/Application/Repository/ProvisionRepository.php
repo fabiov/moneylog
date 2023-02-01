@@ -52,7 +52,7 @@ class ProvisionRepository extends EntityRepository
             $cleanParams['dateMax'] = $params['dateMax'];
         }
         if (!empty($params['description'])) {
-            $qb->andWhere('Provision.descrizione LIKE :description');
+            $qb->andWhere('Provision.description LIKE :description');
             $cleanParams['description'] = '%' . $params['description'] . '%';
         }
 
