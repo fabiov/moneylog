@@ -87,5 +87,11 @@
         "phpstan-clear-cache": "rm -rf $(php -r 'echo sys_get_temp_dir() . \"/phpstan\";')",
         "schema-create": "vendor/bin/doctrine-module orm:schema-tool:create",
         "schema-drop": "vendor/bin/doctrine-module orm:schema-tool:drop --force"
+    },
+    "config": {
+        "allow-plugins": {
+            "laminas/laminas-dependency-plugin": true,
+            "laminas/laminas-component-installer": true
+        }
     }
 }

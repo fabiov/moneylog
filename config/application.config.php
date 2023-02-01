@@ -3,6 +3,22 @@
 return [
     // This should be an array of module namespaces used in the application.
     'modules' => [
+        'Laminas\ServiceManager\Di',
+        'Laminas\Serializer',
+        'Laminas\Navigation',
+        'Laminas\Mvc\Plugin\FilePrg',
+        'Laminas\Mvc\Plugin\Identity',
+        'Laminas\Mvc\Plugin\Prg',
+        'Laminas\Mvc\I18n',
+        'Laminas\Mail',
+        'Laminas\Log',
+        'Laminas\Db',
+        'Laminas\Cache',
+        'Laminas\InputFilter',
+        'Laminas\Filter',
+        'Laminas\Paginator',
+        'Laminas\Hydrator',
+        'Laminas\Validator',
         'Application',
         'Authorize',
         'MoneyLog',
