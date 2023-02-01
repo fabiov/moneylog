@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MoneyLog\Controller;
 
 use Application\Entity\Account;
@@ -274,20 +276,23 @@ class MovementController extends AbstractActionController
         return ['item' => $movement, 'form' => $form, 'searchParams' => $searchParams];
     }
 
+    /**
+     * @return array<string, float|int|string>
+     */
     private function makeMovementsSearchParams(): array
     {
         $params = $this->params();
         return [
-            'account' => $params->fromQuery('account'),
-            'amountMax' => $params->fromQuery('amountMax'),
-            'amountMin' => $params->fromQuery('amountMin'),
-            'category' => $params->fromQuery('category'),
-            'dateMax' => $params->fromQuery('dateMax', date('Y-m-d')),
-            'dateMin' => $params->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months'))),
-            'description' => $params->fromQuery('description'),
+            'account' => (int) $params->fromQuery('account'),
+            'amountMax' => (float) $params->fromQuery('amountMax'),
+            'amountMin' => (float) $params->fromQuery('amountMin'),
+            'category' => (string) $params->fromQuery('category'),
+            'dateMax' => (string) $params->fromQuery('dateMax', date('Y-m-d')),
+            'dateMin' => (string) $params->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months'))),
+            'description' => (string) $params->fromQuery('description'),
             'user' => $this->user->getId(),
-            'orderField' => $params->fromQuery('orderField', 'date'),
-            'orderType' => $params->fromQuery('orderType', 'DESC'),
+            'orderField' => (string) $params->fromQuery('orderField', 'date'),
+            'orderType' => (string) $params->fromQuery('orderType', 'DESC'),
         ];
     }
 
