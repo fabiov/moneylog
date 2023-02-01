@@ -51,18 +51,25 @@ class Movement
      */
     private string $description;
 
+    /**
+     * @ORM\Column(name="createdAt", type="datetime_immutable", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private ?\DateTimeImmutable $createdAt;
+
     public function __construct(
         Account $account,
         float $amount,
         \DateTime $date,
         string $description,
-        ?Category $category = null
+        ?Category $category = null,
+        ?\DateTimeImmutable $createdAt = null
     ) {
         $this->account = $account;
         $this->amount = $amount;
         $this->date = $date;
         $this->description = $description;
         $this->category = $category;
+        $this->createdAt = $createdAt;
     }
 
     public function getId(): ?int
@@ -117,5 +124,10 @@ class Movement
     public function setDescription(string $description): void
     {
         $this->description = $description;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 }
