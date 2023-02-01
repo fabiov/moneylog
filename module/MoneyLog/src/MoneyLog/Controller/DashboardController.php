@@ -58,8 +58,10 @@ class DashboardController extends AbstractActionController
         $currentDay     = date('j');
         $monthBudget    = $stored > 0 && $setting->hasProvisioning() ? 0 - $stored : 0;
         $payDay         = $setting->getPayday();
+        $totalBalance   = 0;
 
         foreach ($avgPerCategory as $category) {
+            $totalBalance += $category['average'];
             if ($category['average'] < 0) {
                 $donutSpends[] = ['label' => $category['description'], 'value' => abs($category['average'])];
             }
@@ -109,6 +111,7 @@ class DashboardController extends AbstractActionController
             'monthlyOverviewData'   => $monthlyOverviewData,
             'remainingDays'         => $remainingDays,
             'stored'                => $stored,
+            'totalBalance'          => $totalBalance,
         ]);
     }
 }

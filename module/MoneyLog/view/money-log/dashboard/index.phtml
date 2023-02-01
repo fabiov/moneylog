@@ -8,10 +8,10 @@
  * @var array<array> $monthlyOverviewData
  * @var float $monthBudget
  * @var float $stored
+ * @var float $totalBalance
  * @var int $remainingDays
  */
 
-$sum = 0;
 echo $this->pageHeader('Cruscotto');
 ?>
 <div class="row">
@@ -121,40 +121,31 @@ echo $this->pageHeader('Cruscotto');
     <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>Spese per categoria</h3>
+                <h3>Bilancio per categoria</h3>
             </div>
             <div class="panel-body">
                 <?php if ($avgPerCategory): ?>
                 <table class="table">
                     <thead>
-                    <tr>
-                        <th>Categoria</th>
-                        <th class="text-right">Spesa media mensile</th>
-                    </tr>
+                        <tr>
+                            <th>Categoria</th>
+                            <th class="text-right">Bilancio medio mensile</th>
+                        </tr>
                     </thead>
-
                     <tbody>
                     <?php foreach ($avgPerCategory as $row) : ?>
-                        <?php if ($row['active'] == true): ?>
+                        <?php if ($row['active'] === true): ?>
                         <tr>
                             <td><?php echo $this->escapeHtml($row['description']); ?></td>
-                            <td class="text-right">
-                                <?php
-                                if ($row['average'] <= 0) {
-                                    $average = abs($row['average']);
-                                    $sum += $average;
-                                    echo $this->currencyForma($average);
-                                }
-                                ?>
-                            </td>
+                            <td class="text-right"><?php echo $this->currencyForma($row['average']); ?></td>
                         </tr>
                         <?php endif; ?>
                     <?php endforeach; ?>
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td><strong>Somma</strong></td>
-                        <td class="text-right"><strong><?php echo $this->currencyForma($sum); ?></strong></td>
+                        <td><strong>Totale</strong></td>
+                        <td class="text-right"><strong><?php echo $this->currencyForma($totalBalance); ?></strong></td>
                     </tr>
                     </tfoot>
                 </table>
