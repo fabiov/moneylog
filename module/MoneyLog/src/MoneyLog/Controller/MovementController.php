@@ -277,22 +277,28 @@ class MovementController extends AbstractActionController
     }
 
     /**
-     * @return array<string, float|int|string>
+     * @return array<string, float|int|null|string>
      */
     private function makeMovementsSearchParams(): array
     {
         $params = $this->params();
+
+        $account = $params->fromQuery('account');
+        $maxAmount = $params->fromQuery('amountMax');
+        $amountMin = $params->fromQuery('amountMin');
+        $category = $params->fromQuery('category');
+
         return [
-            'account' => (int) $params->fromQuery('account'),
-            'amountMax' => (float) $params->fromQuery('amountMax'),
-            'amountMin' => (float) $params->fromQuery('amountMin'),
-            'category' => (string) $params->fromQuery('category'),
+            'account' => is_numeric($account) ? (int) $account : null,
+            'amountMax' => is_numeric($maxAmount) ? (float) $maxAmount : null,
+            'amountMin' => is_numeric($amountMin) ? (float) $amountMin : null,
+            'category' => is_numeric($category) ? (int) $category : null,
             'dateMax' => (string) $params->fromQuery('dateMax', date('Y-m-d')),
             'dateMin' => (string) $params->fromQuery('dateMin', date('Y-m-d', strtotime('-3 months'))),
             'description' => (string) $params->fromQuery('description'),
-            'user' => $this->user->getId(),
             'orderField' => (string) $params->fromQuery('orderField', 'date'),
             'orderType' => (string) $params->fromQuery('orderType', 'DESC'),
+            'user' => $this->user->getId(),
         ];
     }
 
