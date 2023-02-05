@@ -246,7 +246,7 @@ class MovementController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-                $account = $this->getUserAccount($data['account']);
+                $account = $this->getUserAccount((int) $data['account']);
 
                 if (!$account) {
                     return $this->getRedirectToDashboard();
