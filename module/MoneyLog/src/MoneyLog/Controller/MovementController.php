@@ -68,9 +68,6 @@ class MovementController extends AbstractActionController
         ]);
     }
 
-    /**
-     * @return ViewModel
-     */
     public function exportAction(): ViewModel
     {
         $searchParams = $this->makeMovementsSearchParams();
@@ -103,7 +100,7 @@ class MovementController extends AbstractActionController
     }
 
     /**
-     * @return array<string, mixed>|\Laminas\Http\Response
+     * @return array<string, mixed>|Response
      * @throws \Exception
      */
     public function moveAction()
@@ -166,7 +163,7 @@ class MovementController extends AbstractActionController
     }
 
     /**
-     * @return array<string, mixed>|\Laminas\Http\Response
+     * @return array<string, mixed>|Response
      * @throws \Exception
      */
     public function addAction()
@@ -196,7 +193,7 @@ class MovementController extends AbstractActionController
                     $account,
                     $validatedData['amount'] * $validatedData['type'],
                     new \DateTime($validatedData['date']),
-                    $validatedData['description'],
+                    trim($validatedData['description']),
                     $this->getCategory($validatedData['category'])
                 );
 
@@ -217,7 +214,7 @@ class MovementController extends AbstractActionController
     }
 
     /**
-     * @return array<string, mixed>|\Laminas\Http\Response
+     * @return array<string, mixed>|Response
      * @throws \Exception
      */
     public function editAction()
@@ -249,7 +246,7 @@ class MovementController extends AbstractActionController
             $form->setData($data);
 
             if ($form->isValid()) {
-                $account = $this->getUserAccount($data['account']);
+                $account = $this->getUserAccount((int) $data['account']);
 
                 if (!$account) {
                     return $this->getRedirectToDashboard();
