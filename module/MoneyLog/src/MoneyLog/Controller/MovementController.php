@@ -134,9 +134,10 @@ class MovementController extends AbstractActionController
             if ($form->isValid()) {
                 /** @var array<string, mixed> $data */
                 $data = $form->getData();
+                $amount = (float) $data['amount'];
 
                 /** @var ?Account $targetAccount */
-                $targetAccount = $this->getUserAccount($data['targetAccountId']);
+                $targetAccount = $this->getUserAccount((int) $data['targetAccountId']);
 
                 if (!$targetAccount || $targetAccount->getStatus() === Account::STATUS_CLOSED) {
                     return $this->getRedirectToDashboard();
@@ -144,10 +145,10 @@ class MovementController extends AbstractActionController
 
                 $date = new \DateTime($data['date']);
 
-                $outComing = new Movement($sourceAccount, $data['amount'] * -1, $date, $data['description']);
+                $outComing = new Movement($sourceAccount, $amount * -1, $date, $data['description']);
                 $this->em->persist($outComing);
 
-                $inComing = new Movement($targetAccount, $data['amount'], $date, $data['description']);
+                $inComing = new Movement($targetAccount, $amount, $date, $data['description']);
                 $this->em->persist($inComing);
 
                 $this->em->flush();
