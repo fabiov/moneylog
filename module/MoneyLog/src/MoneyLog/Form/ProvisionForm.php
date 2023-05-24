@@ -21,7 +21,6 @@ class ProvisionForm extends Form
         $this->add([
             'attributes' => [
                 'class' => 'form-control text-right',
-                'min' => 0.01,
                 'placeholder' => '0.00',
                 'step' => 0.01
             ],
