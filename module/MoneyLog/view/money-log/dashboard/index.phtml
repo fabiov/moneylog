@@ -137,7 +137,7 @@ echo $this->pageHeader('Cruscotto');
                         <?php if ($row['active'] === true): ?>
                         <tr>
                             <td><?php echo $this->escapeHtml($row['description']); ?></td>
-                            <td class="text-right"><?php echo $this->currencyForma($row['average']); ?></td>
+                            <td class="text-right"><?php echo $this->currencyForma($row['average'] ?? 0); ?></td>
                         </tr>
                         <?php endif; ?>
                     <?php endforeach; ?>
