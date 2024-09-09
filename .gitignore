@@ -11,4 +11,5 @@ data/DoctrineORMModule/*
 docker/mysql/data
 docker/php-apache/logs
 notes
+var
 vendor/*
